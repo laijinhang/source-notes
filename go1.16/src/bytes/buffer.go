@@ -150,16 +150,8 @@ func (b *Buffer) WriteString(s string) (n int, err error) {
 	return copy(b.buf[m:], s), nil
 }
 
-// MinRead is the minimum slice size passed to a Read call by
-// Buffer.ReadFrom. As long as the Buffer has at least MinRead bytes beyond
-// what is required to hold the contents of r, ReadFrom will not grow the
-// underlying buffer.
 const MinRead = 512
 
-// ReadFrom reads data from r until EOF and appends it to the buffer, growing
-// the buffer as needed. The return value n is the number of bytes read. Any
-// error except io.EOF encountered during the read is also returned. If the
-// buffer becomes too large, ReadFrom will panic with ErrTooLarge.
 func (b *Buffer) ReadFrom(r io.Reader) (n int64, err error) {
 	b.lastRead = opInvalid
 	for {
@@ -181,8 +173,7 @@ func (b *Buffer) ReadFrom(r io.Reader) (n int64, err error) {
 	}
 }
 
-// makeSlice allocates a slice of size n. If the allocation fails, it panics
-// with ErrTooLarge.
+// 分配一个长度为n的切片
 func makeSlice(n int) []byte {
 	// If the make fails, give a known error.
 	defer func() {
@@ -193,10 +184,6 @@ func makeSlice(n int) []byte {
 	return make([]byte, n)
 }
 
-// WriteTo writes data to w until the buffer is drained or an error occurs.
-// The return value n is the number of bytes written; it always fits into an
-// int, but it is int64 to match the io.WriterTo interface. Any error
-// encountered during the write is also returned.
 func (b *Buffer) WriteTo(w io.Writer) (n int64, err error) {
 	b.lastRead = opInvalid
 	if nBytes := b.Len(); nBytes > 0 {

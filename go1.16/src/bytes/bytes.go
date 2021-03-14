@@ -1,9 +1,3 @@
-// Copyright 2009 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
-
-// Package bytes implements functions for the manipulation of byte slices.
-// It is analogous to the facilities of the strings package.
 package bytes
 
 import (
@@ -12,23 +6,21 @@ import (
 	"unicode/utf8"
 )
 
-// Equal reports whether a and b
-// are the same length and contain the same bytes.
-// A nil argument is equivalent to an empty slice.
+// 比较 a, b 是否一致
+// 其实现原理是将[]byte转成string后再比较
 func Equal(a, b []byte) bool {
-	// Neither cmd/compile nor gccgo allocates for these string conversions.
 	return string(a) == string(b)
 }
 
-// Compare returns an integer comparing two byte slices lexicographically.
-// The result will be 0 if a==b, -1 if a < b, and +1 if a > b.
-// A nil argument is equivalent to an empty slice.
+// 比较返回一个按字典顺序比较两个字节切片的整数。nil参数等同于空切片
+// 如果a == b则结果为0
+// 如果a <b则结果为-1
+// 如果a> b则结果为+1。
 func Compare(a, b []byte) int {
+	// 汇编实现
 	return bytealg.Compare(a, b)
 }
 
-// explode splits s into a slice of UTF-8 sequences, one per Unicode code point (still slices of bytes),
-// up to a maximum of n byte slices. Invalid UTF-8 sequences are chopped into individual bytes.
 func explode(s []byte, n int) [][]byte {
 	if n <= 0 {
 		n = len(s)
