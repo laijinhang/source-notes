@@ -149,11 +149,6 @@ func (b *Reader) Peek(n int) ([]byte, error) {
 	return b.buf[b.r : b.r+n], err
 }
 
-// Discard skips the next n bytes, returning the number of bytes discarded.
-//
-// If Discard skips fewer than n bytes, it also returns an error.
-// If 0 <= n <= b.Buffered(), Discard is guaranteed to succeed without
-// reading from the underlying io.Reader.
 func (b *Reader) Discard(n int) (discarded int, err error) {
 	if n < 0 {
 		return 0, ErrNegativeCount
@@ -182,12 +177,6 @@ func (b *Reader) Discard(n int) (discarded int, err error) {
 	}
 }
 
-// Read reads data into p.
-// It returns the number of bytes read into p.
-// The bytes are taken from at most one Read on the underlying Reader,
-// hence n may be less than len(p).
-// To read exactly len(p) bytes, use io.ReadFull(b, p).
-// At EOF, the count will be zero and err will be io.EOF.
 func (b *Reader) Read(p []byte) (n int, err error) {
 	n = len(p)
 	if n == 0 {
@@ -235,8 +224,6 @@ func (b *Reader) Read(p []byte) (n int, err error) {
 	return n, nil
 }
 
-// ReadByte reads and returns a single byte.
-// If no byte is available, returns an error.
 func (b *Reader) ReadByte() (byte, error) {
 	b.lastRuneSize = -1
 	for b.r == b.w {

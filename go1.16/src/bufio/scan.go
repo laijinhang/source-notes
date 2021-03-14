@@ -1,7 +1,3 @@
-// Copyright 2013 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
-
 package bufio
 
 import (
@@ -11,60 +7,29 @@ import (
 	"unicode/utf8"
 )
 
-// Scanner provides a convenient interface for reading data such as
-// a file of newline-delimited lines of text. Successive calls to
-// the Scan method will step through the 'tokens' of a file, skipping
-// the bytes between the tokens. The specification of a token is
-// defined by a split function of type SplitFunc; the default split
-// function breaks the input into lines with line termination stripped. Split
-// functions are defined in this package for scanning a file into
-// lines, bytes, UTF-8-encoded runes, and space-delimited words. The
-// client may instead provide a custom split function.
-//
-// Scanning stops unrecoverably at EOF, the first I/O error, or a token too
-// large to fit in the buffer. When a scan stops, the reader may have
-// advanced arbitrarily far past the last token. Programs that need more
-// control over error handling or large tokens, or must run sequential scans
-// on a reader, should use bufio.Reader instead.
-//
+// Scanner提供一个按指定规则来读取数据的缓冲区IO，比如通过“行匹配函数”来逐行读取数据，Scanner通过Scan方法来按“匹配函数”读取
+// Scan方法会通过一个“函数匹配`”读取数据中符合要求的部分，跳过不符合的部分
+// “函数匹配”由调用者指定，本包中提供的匹配函数有“行匹配函数”、“字节匹配函数”、“字符串匹配函数”、
+// “单词匹配函数”，用户也可以自定义“匹配函数”。默认的匹配函数是“行匹配函数”，用于获取数据中的
+// 一行内容（不包括行尾表标记）
+
 type Scanner struct {
-	r            io.Reader // The reader provided by the client.
-	split        SplitFunc // The function to split the tokens.
-	maxTokenSize int       // Maximum size of a token; modified by tests.
-	token        []byte    // Last token returned by split.
+	r            io.Reader // 由用户提供的io.Reader
+	split        SplitFunc // 用于拆分tokens的函数（匹配函数，默认是行匹配）
+	maxTokenSize int       // token的最大长度
+	token        []byte    // 记录最后一次Scan操作匹配到的数据
 	buf          []byte    // Buffer used as argument to split.
-	start        int       // First non-processed byte in buf.
-	end          int       // End of data in buf.
+	start        int       // 记录缓冲区第一个未扫描的位置
+	end          int       // 记录缓冲区结束的位置
 	err          error     // Sticky error.
-	empties      int       // Count of successive empty tokens.
-	scanCalled   bool      // Scan has been called; buffer is in use.
-	done         bool      // Scan has finished.
+	empties      int       // 记录匹配到空数据的次数，如果超过指定maxConsecutiveEmptyReads次数，则会panic
+	scanCalled   bool      // 标记Scan方法是否已经调用过，如果调用过则置为true，说明buffer正在使用
+	done         bool      // 标记是否已经扫描结束
 }
 
-// SplitFunc is the signature of the split function used to tokenize the
-// input. The arguments are an initial substring of the remaining unprocessed
-// data and a flag, atEOF, that reports whether the Reader has no more data
-// to give. The return values are the number of bytes to advance the input
-// and the next token to return to the user, if any, plus an error, if any.
-//
-// Scanning stops if the function returns an error, in which case some of
-// the input may be discarded.
-//
-// Otherwise, the Scanner advances the input. If the token is not nil,
-// the Scanner returns it to the user. If the token is nil, the
-// Scanner reads more data and continues scanning; if there is no more
-// data--if atEOF was true--the Scanner returns. If the data does not
-// yet hold a complete token, for instance if it has no newline while
-// scanning lines, a SplitFunc can return (0, nil, nil) to signal the
-// Scanner to read more data into the slice and try again with a
-// longer slice starting at the same point in the input.
-//
-// The function is never called with an empty data slice unless atEOF
-// is true. If atEOF is true, however, data may be non-empty and,
-// as always, holds unprocessed text.
+// SplitFunc用来定义“匹配函数”类型，data是缓存中的数据，atEOF标记数据是否读完
 type SplitFunc func(data []byte, atEOF bool) (advance int, token []byte, err error)
 
-// Errors returned by Scanner.
 var (
 	ErrTooLong         = errors.New("bufio.Scanner: token too long")
 	ErrNegativeAdvance = errors.New("bufio.Scanner: SplitFunc returns negative advance count")
@@ -73,17 +38,11 @@ var (
 )
 
 const (
-	// MaxScanTokenSize is the maximum size used to buffer a token
-	// unless the user provides an explicit buffer with Scanner.Buffer.
-	// The actual maximum token size may be smaller as the buffer
-	// may need to include, for instance, a newline.
 	MaxScanTokenSize = 64 * 1024
 
 	startBufSize = 4096 // Size of initial allocation for buffer.
 )
 
-// NewScanner returns a new Scanner to read from r.
-// The split function defaults to ScanLines.
 func NewScanner(r io.Reader) *Scanner {
 	return &Scanner{
 		r:            r,
