@@ -1,10 +1,3 @@
-// Copyright 2009 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
-
-// Package bufio implements buffered I/O. It wraps an io.Reader or io.Writer
-// object, creating another object (Reader or Writer) that also implements
-// the interface but provides buffering and some help for textual I/O.
 package bufio
 
 import (
@@ -16,6 +9,7 @@ import (
 )
 
 const (
+	// 默认buf大小，4096字节，4K字节
 	defaultBufSize = 4096
 )
 
@@ -41,9 +35,9 @@ type Reader struct {
 const minReadBufferSize = 16
 const maxConsecutiveEmptyReads = 100
 
-// NewReaderSize returns a new Reader whose buffer has at least the specified
-// size. If the argument io.Reader is already a Reader with large enough
-// size, it returns the underlying Reader.
+// 如果传入的rd实现了Reader，并且长度大于等于传入的size，则直接返回转换之后的rd
+// 如果传入的rd实现了Reader，并且长度大小传入的size，则为其创建一个新的Reader
+// 对于size的长度，如果小于16，则设为16
 func NewReaderSize(rd io.Reader, size int) *Reader {
 	// Is it already a Reader?
 	b, ok := rd.(*Reader)
@@ -58,16 +52,15 @@ func NewReaderSize(rd io.Reader, size int) *Reader {
 	return r
 }
 
-// NewReader returns a new Reader whose buffer has the default size.
+// 创建一个4k字节的Reader
 func NewReader(rd io.Reader) *Reader {
 	return NewReaderSize(rd, defaultBufSize)
 }
 
-// Size returns the size of the underlying buffer in bytes.
+// 获取Reader的大小
 func (b *Reader) Size() int { return len(b.buf) }
 
-// Reset discards any buffered data, resets all state, and switches
-// the buffered reader to read from r.
+// 重置到初始
 func (b *Reader) Reset(r io.Reader) {
 	b.reset(b.buf, r)
 }
