@@ -43,6 +43,7 @@ const (
 	startBufSize = 4096 // Size of initial allocation for buffer.
 )
 
+// 初始化一个Scanner对象，默认是行匹配
 func NewScanner(r io.Reader) *Scanner {
 	return &Scanner{
 		r:            r,
@@ -51,7 +52,7 @@ func NewScanner(r io.Reader) *Scanner {
 	}
 }
 
-// Err returns the first non-EOF error that was encountered by the Scanner.
+// 获取扫描中遇到的非EOF错误
 func (s *Scanner) Err() error {
 	if s.err == io.EOF {
 		return nil
@@ -72,35 +73,14 @@ func (s *Scanner) Text() string {
 	return string(s.token)
 }
 
-// ErrFinalToken is a special sentinel error value. It is intended to be
-// returned by a Split function to indicate that the token being delivered
-// with the error is the last token and scanning should stop after this one.
-// After ErrFinalToken is received by Scan, scanning stops with no error.
-// The value is useful to stop processing early or when it is necessary to
-// deliver a final empty token. One could achieve the same behavior
-// with a custom error value but providing one here is tidier.
-// See the emptyFinalToken example for a use of this value.
 var ErrFinalToken = errors.New("final token")
 
-// Scan advances the Scanner to the next token, which will then be
-// available through the Bytes or Text method. It returns false when the
-// scan stops, either by reaching the end of the input or an error.
-// After Scan returns false, the Err method will return any error that
-// occurred during scanning, except that if it was io.EOF, Err
-// will return nil.
-// Scan panics if the split function returns too many empty
-// tokens without advancing the input. This is a common error mode for
-// scanners.
 func (s *Scanner) Scan() bool {
 	if s.done {
 		return false
 	}
 	s.scanCalled = true
-	// Loop until we have a token.
 	for {
-		// See if we can get a token with what we already have.
-		// If we've run out of data but have an error, give the split function
-		// a chance to recover any remaining, possibly empty token.
 		if s.end > s.start || s.err != nil {
 			advance, token, err := s.split(s.buf[s.start:s.end], s.err != nil)
 			if err != nil {
@@ -129,23 +109,16 @@ func (s *Scanner) Scan() bool {
 				return true
 			}
 		}
-		// We cannot generate a token with what we are holding.
-		// If we've already hit EOF or an I/O error, we are done.
 		if s.err != nil {
-			// Shut it down.
 			s.start = 0
 			s.end = 0
 			return false
 		}
-		// Must read more data.
-		// First, shift data to beginning of buffer if there's lots of empty space
-		// or space is needed.
 		if s.start > 0 && (s.end == len(s.buf) || s.start > len(s.buf)/2) {
 			copy(s.buf, s.buf[s.start:s.end])
 			s.end -= s.start
 			s.start = 0
 		}
-		// Is the buffer full? If so, resize.
 		if s.end == len(s.buf) {
 			// Guarantee no overflow in the multiplication below.
 			const maxInt = int(^uint(0) >> 1)
@@ -166,9 +139,6 @@ func (s *Scanner) Scan() bool {
 			s.end -= s.start
 			s.start = 0
 		}
-		// Finally we can read some input. Make sure we don't get stuck with
-		// a misbehaving Reader. Officially we don't need to do this, but let's
-		// be extra careful: Scanner is for safe, simple jobs.
 		for loop := 0; ; {
 			n, err := s.r.Read(s.buf[s.end:len(s.buf)])
 			if n < 0 || len(s.buf)-s.end < n {
@@ -214,15 +184,6 @@ func (s *Scanner) setErr(err error) {
 	}
 }
 
-// Buffer sets the initial buffer to use when scanning and the maximum
-// size of buffer that may be allocated during scanning. The maximum
-// token size is the larger of max and cap(buf). If max <= cap(buf),
-// Scan will use this buffer only and do no allocation.
-//
-// By default, Scan uses an internal buffer and sets the
-// maximum token size to MaxScanTokenSize.
-//
-// Buffer panics if it is called after scanning has started.
 func (s *Scanner) Buffer(buf []byte, max int) {
 	if s.scanCalled {
 		panic("Buffer called after Scan")
@@ -231,10 +192,6 @@ func (s *Scanner) Buffer(buf []byte, max int) {
 	s.maxTokenSize = max
 }
 
-// Split sets the split function for the Scanner.
-// The default split function is ScanLines.
-//
-// Split panics if it is called after scanning has started.
 func (s *Scanner) Split(split SplitFunc) {
 	if s.scanCalled {
 		panic("Split called after Scan")
@@ -242,9 +199,7 @@ func (s *Scanner) Split(split SplitFunc) {
 	s.split = split
 }
 
-// Split functions
-
-// ScanBytes is a split function for a Scanner that returns each byte as a token.
+// 字节匹配函数
 func ScanBytes(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	if atEOF && len(data) == 0 {
 		return 0, nil, nil
@@ -254,12 +209,7 @@ func ScanBytes(data []byte, atEOF bool) (advance int, token []byte, err error) {
 
 var errorRune = []byte(string(utf8.RuneError))
 
-// ScanRunes is a split function for a Scanner that returns each
-// UTF-8-encoded rune as a token. The sequence of runes returned is
-// equivalent to that from a range loop over the input as a string, which
-// means that erroneous UTF-8 encodings translate to U+FFFD = "\xef\xbf\xbd".
-// Because of the Scan interface, this makes it impossible for the client to
-// distinguish correctly encoded replacement runes from encoding errors.
+// 字符匹配函数
 func ScanRunes(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	if atEOF && len(data) == 0 {
 		return 0, nil, nil
@@ -292,7 +242,7 @@ func ScanRunes(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	return 1, errorRune, nil
 }
 
-// dropCR drops a terminal \r from the data.
+// 如果data末尾字节是'\r'，则将其删除
 func dropCR(data []byte) []byte {
 	if len(data) > 0 && data[len(data)-1] == '\r' {
 		return data[0 : len(data)-1]
@@ -300,18 +250,15 @@ func dropCR(data []byte) []byte {
 	return data
 }
 
-// ScanLines is a split function for a Scanner that returns each line of
-// text, stripped of any trailing end-of-line marker. The returned line may
-// be empty. The end-of-line marker is one optional carriage return followed
-// by one mandatory newline. In regular expression notation, it is `\r?\n`.
-// The last non-empty line of input will be returned even if it has no
-// newline.
+// 行匹配函数,advance表示已处理的字节数（其中\r和\n也算），token表示匹配到的第一行
+// 如果atEOF为false && 数据长度为0，返回 0，nil, nil
+// 如果data里面包含\n，则返回扫描到的第一行
+// 如果atEOF为false，并且没有\n，则会先判断最后一个字节是否为\r，如果是，则删去，返回数据
 func ScanLines(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	if atEOF && len(data) == 0 {
 		return 0, nil, nil
 	}
 	if i := bytes.IndexByte(data, '\n'); i >= 0 {
-		// We have a full newline-terminated line.
 		return i + 1, dropCR(data[0:i]), nil
 	}
 	// If we're at EOF, we have a final, non-terminated line. Return it.
@@ -322,9 +269,6 @@ func ScanLines(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	return 0, nil, nil
 }
 
-// isSpace reports whether the character is a Unicode white space character.
-// We avoid dependency on the unicode package, but check validity of the implementation
-// in the tests.
 func isSpace(r rune) bool {
 	if r <= '\u00FF' {
 		// Obvious ASCII ones: \t through \r plus space. Plus two Latin-1 oddballs.
@@ -347,12 +291,8 @@ func isSpace(r rune) bool {
 	return false
 }
 
-// ScanWords is a split function for a Scanner that returns each
-// space-separated word of text, with surrounding spaces deleted. It will
-// never return an empty string. The definition of space is set by
-// unicode.IsSpace.
+// 单词匹配函数
 func ScanWords(data []byte, atEOF bool) (advance int, token []byte, err error) {
-	// Skip leading spaces.
 	start := 0
 	for width := 0; start < len(data); start += width {
 		var r rune
