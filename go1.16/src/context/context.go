@@ -55,14 +55,13 @@ import (
 	"time"
 )
 
-// A Context carries a deadline, a cancellation signal, and other values across
-// API boundaries.
+// Context包含截止时间，取消时间和其他API
 //
-// Context's methods may be called by multiple goroutines simultaneously.
+// Context方法可以被多个协程同时调用
 type Context interface {
-	// Deadline returns the time when work done on behalf of this context
-	// should be canceled. Deadline returns ok==false when no deadline is
-	// set. Successive calls to Deadline return the same results.
+	// Deadline返回应取消代表该上下文完成工作的时间
+	// 如果未设置截止时间，则返回的ok变量为false
+	// 连续调用Deadline会返回相同的结果
 	Deadline() (deadline time.Time, ok bool)
 
 	// Done returns a channel that's closed when work done on behalf of this
@@ -70,6 +69,8 @@ type Context interface {
 	// never be canceled. Successive calls to Done return the same value.
 	// The close of the Done channel may happen asynchronously,
 	// after the cancel function returns.
+	// Done会返回一个channel，当该context被取消的时候，该channel会被关闭，
+	// 同时对应的使用该context的routine也应该结束并返回。
 	//
 	// WithCancel arranges for Done to be closed when cancel is called;
 	// WithDeadline arranges for Done to be closed when the deadline
@@ -150,6 +151,7 @@ type Context interface {
 	// 		u, ok := ctx.Value(userKey).(*User)
 	// 		return u, ok
 	// 	}
+	// Value可以让协程共享一些数据，当然获取数据是协程安全的
 	Value(key interface{}) interface{}
 }
 
