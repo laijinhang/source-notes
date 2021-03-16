@@ -270,30 +270,36 @@ func ScanLines(data []byte, atEOF bool) (advance int, token []byte, err error) {
 }
 
 func isSpace(r rune) bool {
+	// \u0000 ~ \u00ff 表示ASCII/ANSI字符。\u是一个Unicode值。
 	if r <= '\u00FF' {
 		// Obvious ASCII ones: \t through \r plus space. Plus two Latin-1 oddballs.
 		switch r {
 		case ' ', '\t', '\n', '\v', '\f', '\r':
 			return true
+		//  '', ' '
 		case '\u0085', '\u00A0':
 			return true
 		}
 		return false
 	}
 	// High-valued ones.
+	// ' ' <= r && r <= ' '
 	if '\u2000' <= r && r <= '\u200a' {
 		return true
 	}
 	switch r {
+	// ' ', ' ', ' ', ' ', ' ', '　'
 	case '\u1680', '\u2028', '\u2029', '\u202f', '\u205f', '\u3000':
 		return true
 	}
 	return false
 }
 
-// 单词匹配函数
+// 单词匹配函数：返回以空格进行分隔的单词
 func ScanWords(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	start := 0
+	// start是单词第一个字母的下标位置
+	// 这个for循环的目的是定位到一个字母所在位置
 	for width := 0; start < len(data); start += width {
 		var r rune
 		r, width = utf8.DecodeRune(data[start:])
@@ -301,7 +307,7 @@ func ScanWords(data []byte, atEOF bool) (advance int, token []byte, err error) {
 			break
 		}
 	}
-	// Scan until space, marking end of word.
+	// 如果这个单词有分隔符，则会在这个for里面返回
 	for width, i := 0, start; i < len(data); i += width {
 		var r rune
 		r, width = utf8.DecodeRune(data[i:])
@@ -309,10 +315,8 @@ func ScanWords(data []byte, atEOF bool) (advance int, token []byte, err error) {
 			return i + width, data[start:i], nil
 		}
 	}
-	// If we're at EOF, we have a final, non-empty, non-terminated word. Return it.
 	if atEOF && len(data) > start {
 		return len(data), data[start:], nil
 	}
-	// Request more data.
 	return start, nil, nil
 }
