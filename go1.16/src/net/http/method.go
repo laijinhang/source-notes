@@ -4,6 +4,7 @@
 
 package http
 
+// 这个文件里定义了HTTP协议公共的请求方法
 // Common HTTP methods.
 //
 // Unless otherwise noted, these are defined in RFC 7231 section 4.3.

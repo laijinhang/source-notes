@@ -54,6 +54,30 @@ import (
 // with the updated values (assuming the origin matches).
 // If Jar is nil, the initial cookies are forwarded without change.
 //
+
+// Client是HTTP客户端，它的默认客户端（DefaultClient）是使用默认可使用的可用客户端。
+// 客户端的传输通常具有内部状态（缓存的TCP），因此应该重用客户端，而不是根据需要创建客户端。
+//
+// 客户端可以安全的被多个协程并发使用
+//
+// 客户端的级别比RoundTripper的级别高（例如Transport）并另外处理HTTP详细信息，例如cookie和重定向。
+//
+// 在进行重定向后，客户端将转发在 初始请求，但以下内容除外：
+//
+// 转发诸如“授权”之类的敏感标头时，
+// 将“ WWW-Authenticate”和“ Cookie”设置为不受信任的目标。
+// 重定向到域后，这些标头将被忽略
+// 这不是子域匹配项，也不是初始域的完全匹配项。
+// 例如，从“ foo.com”重定向到“ foo.com”或“ sub.foo.com”
+// 将转发敏感的标头，但不会重定向到“ bar.com”。
+//
+// 使用非零值Cookie罐转发“ Cookie”标头时。
+// 由于每次重定向都可能会使Cookie罐的状态发生变化，
+// 重定向可能会更改初始请求中设置的cookie。
+// 当转发“ Cookie”标头时，所有突变的cookie都将被忽略，
+// 期望Jar会插入那些变异的cookie
+// 具有更新后的值（假设原点匹配）。
+// 如果Jar为nil，则将转发原始Cookie，而不会进行任何更改。
 type Client struct {
 	// Transport specifies the mechanism by which individual
 	// HTTP requests are made.
@@ -106,6 +130,7 @@ type Client struct {
 }
 
 // DefaultClient is the default Client and is used by Get, Head, and Post.
+// DefaultClient是默认客户端，提供给 暴露的GET、Head、Post方法 使用
 var DefaultClient = &Client{}
 
 // RoundTripper is an interface representing the ability to execute a
@@ -442,6 +467,24 @@ func basicAuth(username, password string) string {
 //
 // To make a request with custom headers, use NewRequest and
 // DefaultClient.Do.
+
+// 获取对指定url的GET请求，如果响应是以下情况之一
+// 以下重定向代码，Get遵循该重定向，直到最多10个重定向：
+//
+// 301（永久重定向）
+// 302（临时重定向，不希望改变原有的请求方法）
+// 303（临时重定向，并且希望客户端收到后改成GET来请求临时重定向后的地址）
+// 307（临时重定向，不希望改变原有的请求方法）
+// 308（永久重定向）
+//
+// 如果重定向过多，则返回错误信息是HTTP协议错误
+// 非2xx的响应不会导致错误。返回的任何错误都是 *url.Error 类型
+// 如果请求超时或取消，则value的Timeout方法返回true
+// 当err为nil时，resp始终包含非nil resp.Body。读取完后，调用者应关闭resp.Body。
+//
+// Get是DefaultClient.Get的包装。
+//
+// 要使用自定义标头发出请求，请使用NewRequest和 DefaultClient.Do。
 func Get(url string) (resp *Response, err error) {
 	return DefaultClient.Get(url)
 }
