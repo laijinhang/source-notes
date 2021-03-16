@@ -1,15 +1,11 @@
-// Copyright 2009 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
+// 包io提供了与I/O原语的基本接口。
+// 它的主要工作是包装此类原语的现有实现，
+// （例如os套件中的程式码）放入共用的公用介面
+// 对功能进行抽象，再加上其他一些相关的原语。
 
-// Package io provides basic interfaces to I/O primitives.
-// Its primary job is to wrap existing implementations of such primitives,
-// such as those in package os, into shared public interfaces that
-// abstract the functionality, plus some other related primitives.
-//
-// Because these interfaces and primitives wrap lower-level operations with
-// various implementations, unless otherwise informed clients should not
-// assume they are safe for parallel execution.
+// 因为这些接口和原语使用
+// 各种实现，除非另行通知，客户端不应
+// 假设它们对于并行执行是安全的。
 package io
 
 import (
@@ -17,15 +13,13 @@ import (
 	"sync"
 )
 
-// Seek whence values.
 const (
-	SeekStart   = 0 // seek relative to the origin of the file
-	SeekCurrent = 1 // seek relative to the current offset
-	SeekEnd     = 2 // seek relative to the end
+	SeekStart   = 0 // 相对于文件的起始点查找
+	SeekCurrent = 1 // 相对于文件的当前偏移点查找
+	SeekEnd     = 2 // 相对于文件的结束点查找
 )
 
-// ErrShortWrite means that a write accepted fewer bytes than requested
-// but failed to return an explicit error.
+// ErrShortWrite表示写入接受的字节数少于请求的字节数
 var ErrShortWrite = errors.New("short write")
 
 // errInvalidWrite means that a write returned an impossible count.
@@ -84,15 +78,15 @@ type Reader interface {
 	Read(p []byte) (n int, err error)
 }
 
-// Writer is the interface that wraps the basic Write method.
-//
-// Write writes len(p) bytes from p to the underlying data stream.
-// It returns the number of bytes written from p (0 <= n <= len(p))
-// and any error encountered that caused the write to stop early.
-// Write must return a non-nil error if it returns n < len(p).
-// Write must not modify the slice data, even temporarily.
-//
+// Writer是包装基本Write方法的接口
+
+// Write将 字节切片p 写入数据流中
+// 返回从p写入的字节数（0 <= n <= len(p)），和遇到的任何导致写入提前停止的错误
+// 如果写入返回 n < len(p）,则必须返回一个非nil错误
+// 写操作不得修改切片数据，即使是临时的也不行
+
 // Implementations must not retain p.
+// 实现不得保留p，不理解这一行代表什么意思？？？
 type Writer interface {
 	Write(p []byte) (n int, err error)
 }
@@ -101,6 +95,11 @@ type Writer interface {
 //
 // The behavior of Close after the first call is undefined.
 // Specific implementations may document their own behavior.
+
+// Closer是包装基本Close方法的接口
+
+// 第一次调用后关闭的行为是不确定的
+// 特定的实现可能会记录其自身的行为
 type Closer interface {
 	Close() error
 }
