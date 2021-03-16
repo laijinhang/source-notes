@@ -55,6 +55,15 @@ import (
 	"time"
 )
 
+/*
+	起先对Context接口的方法做了作用定义
+
+	所谓的继承/派生 父Context，其实就是 新定一个结构体，里面先继承Context类，再附加功能，如超时，取消，存储k-v，创建的时候，把父Context对象赋值给子Context，
+	其实就是使用通一个对象
+
+	对于Context协程安全，是因为使用了 互斥锁
+*/
+
 // Context包含截止时间，取消时间和其他API
 //
 // Context方法可以被多个协程同时调用
@@ -531,11 +540,12 @@ func WithValue(parent Context, key, val interface{}) Context {
 	if !reflectlite.TypeOf(key).Comparable() {
 		panic("key is not comparable")
 	}
+	// 直接使用了parent这个Context，也就是说，创建之后调用的方法是和parent是同一个对象
 	return &valueCtx{parent, key, val}
 }
 
-// A valueCtx carries a key-value pair. It implements Value for that key and
-// delegates all other calls to the embedded Context.
+// 存储key-val的结构体
+// 应用场景：我觉得
 type valueCtx struct {
 	Context
 	key, val interface{}
