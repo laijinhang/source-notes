@@ -864,6 +864,14 @@ func defaultCheckRedirect(req *Request, via []*Request) error {
 //
 // See the Client.Do method documentation for details on how redirects
 // are handled.
+
+// Post 请求指定URL
+//
+// 读取完后，调用者应该关闭resp.Body
+//
+// 如果提供的主体是io.Closer，则请求后将其关闭
+//
+// Post是
 func Post(url, contentType string, body io.Reader) (resp *Response, err error) {
 	return DefaultClient.Post(url, contentType, body)
 }

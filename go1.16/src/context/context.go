@@ -104,6 +104,9 @@ type Context interface {
 	// Canceled if the context was canceled
 	// or DeadlineExceeded if the context's deadline passed.
 	// After Err returns a non-nil error, successive calls to Err return the same error.
+	// 如果 Done 尚未关闭，Err返回nil
+	// 如果 Done 已经关闭，Err返回一个非nil的错误，原因：
+	//
 	Err() error
 
 	// Value returns the value associated with this context for key, or nil
@@ -155,21 +158,21 @@ type Context interface {
 	Value(key interface{}) interface{}
 }
 
-// Canceled is the error returned by Context.Err when the context is canceled.
+// 当context取消时，调用Context.Err会返回这个错误
 var Canceled = errors.New("context canceled")
 
-// DeadlineExceeded is the error returned by Context.Err when the context's
-// deadline passes.
+// 当context超时时，调用context.Err会返回这个错误
 var DeadlineExceeded error = deadlineExceededError{}
 
+// 超时错误
 type deadlineExceededError struct{}
 
 func (deadlineExceededError) Error() string   { return "context deadline exceeded" }
 func (deadlineExceededError) Timeout() bool   { return true }
 func (deadlineExceededError) Temporary() bool { return true }
 
-// An emptyCtx is never canceled, has no values, and has no deadline. It is not
-// struct{}, since vars of this type must have distinct addresses.
+// emptyCtx永远是一个取消，没有值，没有超时。它不是一个结构体，
+// 因此此类型的var必须具有不同的地址
 type emptyCtx int
 
 func (*emptyCtx) Deadline() (deadline time.Time, ok bool) {
@@ -203,10 +206,8 @@ var (
 	todo       = new(emptyCtx)
 )
 
-// Background returns a non-nil, empty Context. It is never canceled, has no
-// values, and has no deadline. It is typically used by the main function,
-// initialization, and tests, and as the top-level Context for incoming
-// requests.
+// Backgroud返回一个非nil，空的Context。它永远是一个取消，没有值，没有超时。
+// 它通常由main函数使用，初始化和测试，作为传入的最起始的上下文
 func Background() Context {
 	return background
 }
@@ -215,14 +216,15 @@ func Background() Context {
 // it's unclear which Context to use or it is not yet available (because the
 // surrounding function has not yet been extended to accept a Context
 // parameter).
+// TODO返回一个非nil，空的Context。
 func TODO() Context {
 	return todo
 }
 
-// A CancelFunc tells an operation to abandon its work.
-// A CancelFunc does not wait for the work to stop.
-// A CancelFunc may be called by multiple goroutines simultaneously.
-// After the first call, subsequent calls to a CancelFunc do nothing.
+// CancelFunc告诉一个操作放弃其工作。 => CannelFunc通知操作停止
+// CancelFunc不等待工作停止。 => 异步
+// 多个协程可以同时调用CancelFunc
+// 在第一个调用之后，随后CancelFunc的调用什么也不做
 type CancelFunc func()
 
 // WithCancel returns a copy of parent with a new Done channel. The returned
@@ -231,6 +233,7 @@ type CancelFunc func()
 //
 // Canceling this context releases resources associated with it, so code should
 // call cancel as soon as the operations running in this Context complete.
+// WithCancel会一个拷贝parent带Done
 func WithCancel(parent Context) (ctx Context, cancel CancelFunc) {
 	if parent == nil {
 		panic("cannot create context from nil parent")
@@ -240,12 +243,12 @@ func WithCancel(parent Context) (ctx Context, cancel CancelFunc) {
 	return &c, func() { c.cancel(true, Canceled) }
 }
 
-// newCancelCtx returns an initialized cancelCtx.
+// newCancelCtx返回一个初始化的cancelCtx。
 func newCancelCtx(parent Context) cancelCtx {
 	return cancelCtx{Context: parent}
 }
 
-// goroutines counts the number of goroutines ever created; for testing.
+// goroutines计算曾经的创建的协程数；供测试使用。
 var goroutines int32
 
 // propagateCancel arranges for child to be canceled when parent is.
