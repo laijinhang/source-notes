@@ -35,15 +35,27 @@ const (
 // State represents the printer state passed to custom formatters.
 // It provides access to the io.Writer interface plus information about
 // the flags and options for the operand's format specifier.
+/*
+ * go格式化语法
+ * fmt.Printf("hello%+3.2f%s%v \n", -12.310, "str", 123)
+ * %：表示格式化的开始位置
+ * +：%后面紧跟的+，表示flags
+ * 数：+后面紧跟的3.2，表示宽度width和精度precision
+ * f：占位符verb
+ *
+ * go格式化语法包含了：开始位置、flags、宽度、精度、占位符 五部分组成，State接口包含了其中三项信息。
+ * 在解析格式化字符串的时候，会一个一个解析，当解析完成一个这样的%+3.2f整体结构以后，数据保存到State，下一步调用printArg进行格式化，
+ * 并将格式化后的数据写入buffer，所有的结构解析完成之后写入到io.Writer，并在控制台输出
+ */
 type State interface {
-	// Write is the function to call to emit formatted output to be printed.
+	// Write方法用来写入格式化的文本
 	Write(b []byte) (n int, err error)
-	// Width returns the value of the width option and whether it has been set.
+	// Width返回宽度值，及其是否被设置
 	Width() (wid int, ok bool)
-	// Precision returns the value of the precision option and whether it has been set.
+	// Precision返回精度值，及其是否被设置
 	Precision() (prec int, ok bool)
 
-	// Flag reports whether the flag c, a character, has been set.
+	// Flag报告是否设置了flag c（一个字符，如+、-、#等）
 	Flag(c int) bool
 }
 
@@ -51,6 +63,7 @@ type State interface {
 // The implementation controls how State and rune are interpreted,
 // and may call Sprint(f) or Fprint(f) etc. to generate its output.
 type Formatter interface {
+	// 用于实现自定义格式化
 	Format(f State, verb rune)
 }
 
@@ -101,24 +114,24 @@ func (bp *buffer) writeRune(r rune) {
 	*bp = b[:n+w]
 }
 
-// pp is used to store a printer's state and is reused with sync.Pool to avoid allocations.
+// pp用于printer's存储的状态，并与sync.Pool一起重用以避免分配。
 type pp struct {
 	buf buffer
 
-	// arg holds the current item, as an interface{}.
+	// arg将当前项保存为interface{}。
 	arg interface{}
 
-	// value is used instead of arg for reflect values.
+	// 使用value而不是arg来反映值。
 	value reflect.Value
 
-	// fmt is used to format basic items such as integers or strings.
+	// fmt用于格式化基本项目，例如整数或字符串。
 	fmt fmt
 
-	// reordered records whether the format string used argument reordering.
+	// 重新排序记录格式字符串是否使用了参数重新排序.
 	reordered bool
-	// goodArgNum records whether the most recent reordering directive was valid.
+	// goodArgNum记录最近的重新排序指令是否有效.
 	goodArgNum bool
-	// panicking is set by catchPanic to avoid infinite panic, recover, panic, ... recursion.
+	// catchPanic设置恐慌，以避免无限恐慌，恢复，恐慌，...递归。
 	panicking bool
 	// erroring is set when printing an error string to guard against calling handleMethods.
 	erroring bool
@@ -132,7 +145,7 @@ var ppFree = sync.Pool{
 	New: func() interface{} { return new(pp) },
 }
 
-// newPrinter allocates a new pp struct or grabs a cached one.
+// newPrinter分配一个新的pp结构或获取一个缓存的pp结构。
 func newPrinter() *pp {
 	p := ppFree.Get().(*pp)
 	p.panicking = false
@@ -197,8 +210,8 @@ func (p *pp) WriteString(s string) (ret int, err error) {
 
 // These routines end in 'f' and take a format string.
 
-// Fprintf formats according to a format specifier and writes to w.
-// It returns the number of bytes written and any write error encountered.
+// Fprintf根据格式说明符格式化并写入w。
+// 返回写入的字节数以及遇到的任何写入错误。
 func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) {
 	p := newPrinter()
 	p.doPrintf(format, a)
@@ -207,8 +220,8 @@ func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) {
 	return
 }
 
-// Printf formats according to a format specifier and writes to standard output.
-// It returns the number of bytes written and any write error encountered.
+// Printf根据格式说明符设置格式并写入标准输出。
+// 返回写入的字节数以及遇到的任何写入错误。
 func Printf(format string, a ...interface{}) (n int, err error) {
 	return Fprintf(os.Stdout, format, a...)
 }

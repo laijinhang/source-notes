@@ -10,16 +10,17 @@ import (
 )
 
 const (
-	ldigits = "0123456789abcdefx"
-	udigits = "0123456789ABCDEFX"
+	ldigits = "0123456789abcdefx" // 十六进制小写
+	udigits = "0123456789ABCDEFX" // 十六进制大写
 )
 
 const (
-	signed   = true
-	unsigned = false
+	signed   = true  // 有符号
+	unsigned = false // 无符号
 )
 
 // flags placed in a separate struct for easy clearing.
+// flags放置在单独的结构体中以便清除。
 type fmtFlags struct {
 	widPresent  bool
 	precPresent bool
@@ -36,8 +37,8 @@ type fmtFlags struct {
 	sharpV bool
 }
 
-// A fmt is the raw formatter used by Printf etc.
-// It prints into a buffer that must be set up separately.
+// fmt是Printf等使用的原始格式化程序。
+// 它打印到必须单独设置的缓冲区中。
 type fmt struct {
 	buf *buffer
 
@@ -46,21 +47,23 @@ type fmt struct {
 	wid  int // width
 	prec int // precision
 
-	// intbuf is large enough to store %b of an int64 with a sign and
-	// avoids padding at the end of the struct on 32 bit architectures.
+	// intbuf足够大，可以存储带符号的int64的％b和
+	// 避免在32位体系结构的结构末尾进行填充。
 	intbuf [68]byte
 }
 
+// 清除flags
 func (f *fmt) clearflags() {
 	f.fmtFlags = fmtFlags{}
 }
 
+// 初始化flags
 func (f *fmt) init(buf *buffer) {
 	f.buf = buf
 	f.clearflags()
 }
 
-// writePadding generates n bytes of padding.
+// writePadding生成n个字节的填充。
 func (f *fmt) writePadding(n int) {
 	if n <= 0 { // No padding bytes needed.
 		return
@@ -68,12 +71,12 @@ func (f *fmt) writePadding(n int) {
 	buf := *f.buf
 	oldLen := len(buf)
 	newLen := oldLen + n
-	// Make enough room for padding.
+	// 为填充留出足够的空间
 	if newLen > cap(buf) {
 		buf = make(buffer, cap(buf)*2+n)
 		copy(buf, *f.buf)
 	}
-	// Decide which byte the padding should be filled with.
+	// 确定应填充填充的哪个字节。
 	padByte := byte(' ')
 	if f.zero {
 		padByte = byte('0')
