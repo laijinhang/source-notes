@@ -108,6 +108,7 @@ func (f *fmt) pad(b []byte) {
 }
 
 // padString appends s to f.buf, padded on left (!f.minus) or right (f.minus).
+// padString将s填充到f.buf，在左侧（！f.minus）或右侧（f.minus）填充。
 func (f *fmt) padString(s string) {
 	if !f.widPresent || f.wid == 0 {
 		f.buf.writeString(s)
@@ -126,6 +127,7 @@ func (f *fmt) padString(s string) {
 }
 
 // fmtBoolean formats a boolean.
+// fmtBoolean格式化布尔值。
 func (f *fmt) fmtBoolean(v bool) {
 	if v {
 		f.padString("true")

@@ -11,9 +11,10 @@ import (
 	"time"
 )
 
-// defaultTCPKeepAlive is a default constant value for TCPKeepAlive times
+// defaultTCPKeepAlive是TCPKeepAlive时间的默认常数
 // See golang.org/issue/31510
 const (
+	// 默认保活15秒
 	defaultTCPKeepAlive = 15 * time.Second
 )
 
@@ -25,30 +26,22 @@ const (
 //
 // It is safe to call Dialer's methods concurrently.
 type Dialer struct {
-	// Timeout is the maximum amount of time a dial will wait for
-	// a connect to complete. If Deadline is also set, it may fail
-	// earlier.
+	// Timeout是拨号等待连接成功的最长时间。
+	// 如果设置了超时时间，则它可能会更早时间。
 	//
-	// The default is no timeout.
+	// 默认是没有设置超时时间
 	//
-	// When using TCP and dialing a host name with multiple IP
-	// addresses, the timeout may be divided between them.
+	// 使用TCP连接具有多个IP地址的主机名时，可能会在两个主机之间分配超时。
 	//
-	// With or without a timeout, the operating system may impose
-	// its own earlier timeout. For instance, TCP timeouts are
-	// often around 3 minutes.
+	// 如果没有设置，则会根据操作系统所设置的。 例如，TCP超时通常为3分钟左右。
 	Timeout time.Duration
 
-	// Deadline is the absolute point in time after which dials
-	// will fail. If Timeout is set, it may fail earlier.
-	// Zero means no deadline, or dependent on the operating system
-	// as with the Timeout option.
+	// 截至时间是连接失败的绝对时间点。如果设置了超时，它可能会更早失败。
+	// 零值表示没有截至时间，或者与“超时”选项一样依赖于操作系统。
 	Deadline time.Time
 
-	// LocalAddr is the local address to use when dialing an
-	// address. The address must be of a compatible type for the
-	// network being dialed.
-	// If nil, a local address is automatically chosen.
+	// LocalAddr是拨打地址时要使用的本地地址。
+	// 该地址必须是所拨打网络的兼容类型。 如果为零，将自动选择一个本地地址。
 	LocalAddr Addr
 
 	// DualStack previously enabled RFC 6555 Fast Fallback
@@ -58,6 +51,8 @@ type Dialer struct {
 	//
 	// Deprecated: Fast Fallback is enabled by default. To
 	// disable, set FallbackDelay to a negative value.
+	// 当网络类型是tcp并且一个主机名字具有多个dns记录地址时，
+	// DualStack允许一个dial创建多个ipv4和ipv6的连接，并且返回第一个创建的连接
 	DualStack bool
 
 	// FallbackDelay specifies the length of time to wait before
@@ -77,6 +72,8 @@ type Dialer struct {
 	// system. Network protocols or operating systems that do
 	// not support keep-alives ignore this field.
 	// If negative, keep-alive probes are disabled.
+	// KeepAlive指定一个网络连接的保持声明的时间段；如果为0，会禁止keep-alive。当网络协议不支持keep-alives时便会忽略掉这个值。
+	// 不支持keep-alive的网络连接会忽略本字段。
 	KeepAlive time.Duration
 
 	// Resolver optionally specifies an alternate resolver to use.
