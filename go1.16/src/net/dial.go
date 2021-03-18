@@ -116,6 +116,7 @@ func minNonzeroTime(a, b time.Time) time.Time {
 //   - the context's deadline
 // Or zero, if none of Timeout, Deadline, or context's deadline is set.
 func (d *Dialer) deadline(ctx context.Context, now time.Time) (earliest time.Time) {
+	// 如果设置了超时时间
 	if d.Timeout != 0 { // including negative, for historical reasons
 		earliest = now.Add(d.Timeout)
 	}
@@ -307,12 +308,11 @@ func (r *Resolver) resolveAddrList(ctx context.Context, op, network, addr string
 //	Dial("ip6:ipv6-icmp", "2001:db8::1")
 //	Dial("ip6:58", "fe80::1%lo0")
 //
-// For TCP, UDP and IP networks, if the host is empty or a literal
-// unspecified IP address, as in ":80", "0.0.0.0:80" or "[::]:80" for
-// TCP and UDP, "", "0.0.0.0" or "::" for IP, the local system is
-// assumed.
+// 对于TCP，UDP和IP网络，如果主机为空或
+// 未指定的IP地址，如“：80”，“ 0.0.0.0:80”或“ [::]：80”
+// 对于IP，TCP和UDP，“”，“ 0.0.0.0”或“ ::”（假定为本地系统）。
 //
-// For Unix networks, the address must be a file system path.
+// 对于Unix网络，该地址必须是文件系统路径。
 func Dial(network, address string) (Conn, error) {
 	var d Dialer
 	return d.Dial(network, address)
@@ -340,28 +340,21 @@ type sysDialer struct {
 }
 
 // Dial connects to the address on the named network.
-//
-// See func Dial for a description of the network and address
-// parameters.
 func (d *Dialer) Dial(network, address string) (Conn, error) {
 	return d.DialContext(context.Background(), network, address)
 }
 
-// DialContext connects to the address on the named network using
-// the provided context.
+// DialContext使用提供的上下文连接到命名网络上的地址。
 //
-// The provided Context must be non-nil. If the context expires before
-// the connection is complete, an error is returned. Once successfully
-// connected, any expiration of the context will not affect the
-// connection.
+// 提供的Context必须为非null。如果上下文在连接完成之前过期，则返回错误。
+// 一旦成功连接，上下文的任何到期都不会影响连接。
 //
-// When using TCP, and the host in the address parameter resolves to multiple
-// network addresses, any dial timeout (from d.Timeout or ctx) is spread
-// over each consecutive dial, such that each is given an appropriate
-// fraction of the time to connect.
-// For example, if a host has 4 IP addresses and the timeout is 1 minute,
-// the connect to each single address will be given 15 seconds to complete
-// before trying the next one.
+// 使用TCP时，地址参数中的主机解析为多个
+// 网络地址，任何拨号超时（来自d.Timeout或ctx）都会传播
+// 在每个连续的拨盘上，以便为每个拨盘提供适当的
+// 连接时间的一小部分。
+// 例如，如果主机有4个IP地址，并且超时为1分钟，
+// 与每个地址的连接将在15秒内完成在尝试下一个之前。
 //
 // See func Dial for a description of the network and address
 // parameters.
@@ -369,8 +362,10 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 	if ctx == nil {
 		panic("nil context")
 	}
+	// 获取超时时间
 	deadline := d.deadline(ctx, time.Now())
 	if !deadline.IsZero() {
+		// 如果ctx没有设置超时时间，或则ctx里面的超时时间大于deadline，则重新设置为比较小的
 		if d, ok := ctx.Deadline(); !ok || deadline.Before(d) {
 			subCtx, cancel := context.WithDeadline(ctx, deadline)
 			defer cancel()
@@ -428,6 +423,7 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 	}
 
 	if tc, ok := c.(*TCPConn); ok && d.KeepAlive >= 0 {
+		// 设置保活时间
 		setKeepAlive(tc.fd, true)
 		ka := d.KeepAlive
 		if d.KeepAlive == 0 {
