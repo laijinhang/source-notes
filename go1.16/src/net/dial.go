@@ -97,10 +97,13 @@ type Dialer struct {
 
 func (d *Dialer) dualStack() bool { return d.FallbackDelay >= 0 }
 
+// 获取a，b时间中比较小的那个
 func minNonzeroTime(a, b time.Time) time.Time {
+	// 如果a为零值（默认值），则返回b
 	if a.IsZero() {
 		return b
 	}
+	// 如果b为零值 或 b时间在a之后
 	if b.IsZero() || a.Before(b) {
 		return a
 	}
@@ -265,17 +268,16 @@ func (r *Resolver) resolveAddrList(ctx context.Context, op, network, addr string
 	return naddrs, nil
 }
 
-// Dial connects to the address on the named network.
+// Dial 根据地址连接到指定网络。
 //
-// Known networks are "tcp", "tcp4" (IPv4-only), "tcp6" (IPv6-only),
+// 已知网络是 "tcp", "tcp4" (IPv4-only), "tcp6" (IPv6-only),
 // "udp", "udp4" (IPv4-only), "udp6" (IPv6-only), "ip", "ip4"
 // (IPv4-only), "ip6" (IPv6-only), "unix", "unixgram" and
 // "unixpacket".
 //
-// For TCP and UDP networks, the address has the form "host:port".
-// The host must be a literal IP address, or a host name that can be
-// resolved to IP addresses.
-// The port must be a literal port number or a service name.
+// 对于TCP和UDP网络, 该地址的网络格式是 "host:port".
+// 主机必须是原义IP地址，或者是可以解析为IP地址的主机名。
+// 该端口必须是端口号或服务名称.
 // If the host is a literal IPv6 address it must be enclosed in square
 // brackets, as in "[2001:db8::1]:80" or "[fe80::1%zone]:80".
 // The zone specifies the scope of the literal IPv6 address as defined
