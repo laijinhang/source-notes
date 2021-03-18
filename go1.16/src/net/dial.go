@@ -334,6 +334,7 @@ func DialTimeout(network, address string, timeout time.Duration) (Conn, error) {
 }
 
 // sysDialer contains a Dial's parameters and configuration.
+// sysDialer包含一个Dial的参数和配置。
 type sysDialer struct {
 	Dialer
 	network, address string
@@ -426,6 +427,7 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 		// 设置保活时间
 		setKeepAlive(tc.fd, true)
 		ka := d.KeepAlive
+		// 如果d,KeepAlive设置的保活时间为0，则使用默认的15秒
 		if d.KeepAlive == 0 {
 			ka = defaultTCPKeepAlive
 		}
