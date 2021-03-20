@@ -19,6 +19,7 @@ import (
 )
 
 // Error reports an error and the operation and URL that caused it.
+// Error报告错误以及导致该错误的操作和 URL。
 type Error struct {
 	Op  string
 	URL string
@@ -271,6 +272,7 @@ func unescape(s string, mode encoding) (string, error) {
 
 // QueryEscape escapes the string so it can be safely placed
 // inside a URL query.
+// QueryEscape对该字符串进行转义，以便可以将其安全地放置在URL查询中。
 func QueryEscape(s string) string {
 	return escape(s, encodeQueryComponent)
 }
