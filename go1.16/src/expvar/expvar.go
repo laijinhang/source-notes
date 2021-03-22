@@ -19,6 +19,9 @@
 // this way, link this package into your program:
 //	import _ "expvar"
 //
+
+// 这个库用来暴露一些公共的变量，它会自动注册到 /debug/vars 这个路径下
+// 这个库使用了原子操作，并发安全
 package expvar
 
 import (
@@ -37,35 +40,38 @@ import (
 )
 
 // Var is an abstract type for all exported variables.
+// Var是所有导出变量的抽象类型。
 type Var interface {
-	// String returns a valid JSON value for the variable.
-	// Types with String methods that do not return valid JSON
-	// (such as time.Time) must not be used as a Var.
+	// String返回变量的有效JSON值。带有不返回有效JSON（例如time.Time）的String方法的类型不得用作Var。
 	String() string
 }
 
-// Int is a 64-bit integer variable that satisfies the Var interface.
+// Int是一个满足Var接口的64位整数变量。
 type Int struct {
 	i int64
 }
 
+// 获取值
 func (v *Int) Value() int64 {
 	return atomic.LoadInt64(&v.i)
 }
 
+// 转成字符串
 func (v *Int) String() string {
 	return strconv.FormatInt(atomic.LoadInt64(&v.i), 10)
 }
 
+// 加
 func (v *Int) Add(delta int64) {
 	atomic.AddInt64(&v.i, delta)
 }
 
+// 设置值
 func (v *Int) Set(value int64) {
 	atomic.StoreInt64(&v.i, value)
 }
 
-// Float is a 64-bit float variable that satisfies the Var interface.
+// Float是一个满足Var接口的64位float变量。
 type Float struct {
 	f uint64
 }
@@ -79,7 +85,7 @@ func (v *Float) String() string {
 		math.Float64frombits(atomic.LoadUint64(&v.f)), 'g', -1, 64)
 }
 
-// Add adds delta to v.
+// Add将增量添加到v。
 func (v *Float) Add(delta float64) {
 	for {
 		cur := atomic.LoadUint64(&v.f)
@@ -92,19 +98,19 @@ func (v *Float) Add(delta float64) {
 	}
 }
 
-// Set sets v to value.
+// 设置值
 func (v *Float) Set(value float64) {
 	atomic.StoreUint64(&v.f, math.Float64bits(value))
 }
 
-// Map is a string-to-Var map variable that satisfies the Var interface.
+// Map是满足Var接口的字符串到Var映射变量。
 type Map struct {
 	m      sync.Map // map[string]Var
 	keysMu sync.RWMutex
 	keys   []string // sorted
 }
 
-// KeyValue represents a single entry in a Map.
+// KeyValue表示Map中的单个条目。
 type KeyValue struct {
 	Key   string
 	Value Var
@@ -125,7 +131,7 @@ func (v *Map) String() string {
 	return b.String()
 }
 
-// Init removes all keys from the map.
+// Init 从v.m中移除所有key值
 func (v *Map) Init() *Map {
 	v.keysMu.Lock()
 	defer v.keysMu.Unlock()
@@ -291,8 +297,7 @@ func Get(name string) Var {
 	return v
 }
 
-// Convenience functions for creating new exported variables.
-
+// 方便的功能用于创建新的导出变量。
 func NewInt(name string) *Int {
 	v := new(Int)
 	Publish(name, v)
@@ -317,9 +322,7 @@ func NewString(name string) *String {
 	return v
 }
 
-// Do calls f for each exported variable.
-// The global variable map is locked during the iteration,
-// but existing entries may be concurrently updated.
+// 为每个导出的变量调用f。全局变量映射在迭代过程中被锁定，但是现有条目可能会同时更新。
 func Do(f func(KeyValue)) {
 	varKeysMu.RLock()
 	defer varKeysMu.RUnlock()
@@ -343,9 +346,9 @@ func expvarHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "\n}\n")
 }
 
-// Handler returns the expvar HTTP Handler.
+// 处理程序返回expvar HTTP处理程序。
 //
-// This is only needed to install the handler in a non-standard location.
+// 仅需要将处理程序安装在非标准位置。
 func Handler() http.Handler {
 	return http.HandlerFunc(expvarHandler)
 }
