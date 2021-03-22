@@ -18,11 +18,14 @@ import (
 
 func throw(string) // provided by runtime
 
-// A Mutex is a mutual exclusion lock.
-// The zero value for a Mutex is an unlocked mutex.
+// Mutex是互斥锁。
+// 互斥锁的零值是未锁定的互斥锁。
 //
-// A Mutex must not be copied after first use.
+// 首次使用后不得复制Mutex。
 type Mutex struct {
+	// state是一个共用的字段
+	// 第 0个bit位 标记 mutex 是否被某个协程占用，也就是有没有加锁
+	// 第 1个bit位 标记 mutex 是否被唤醒，就是某个被唤醒的mutex尝试去获取锁
 	state int32
 	sema  uint32
 }
@@ -71,7 +74,10 @@ const (
 // blocks until the mutex is available.
 func (m *Mutex) Lock() {
 	// Fast path: grab unlocked mutex.
+	// 如果mutex的state没有被锁，也没有等待/唤醒的协程，锁处于正常状态（未上锁），那么获得锁，返回
+	// 原子操作，如果m.state未上锁，也就是值为0，则上锁，并返回true/false（设置成功，则true，否则false）
 	if atomic.CompareAndSwapInt32(&m.state, 0, mutexLocked) {
+		// 看里面内容，下面三行代码什么也没做，估计是待实现内容
 		if race.Enabled {
 			race.Acquire(unsafe.Pointer(m))
 		}
