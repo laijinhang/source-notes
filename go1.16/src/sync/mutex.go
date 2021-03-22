@@ -42,30 +42,25 @@ const (
 	mutexStarving
 	mutexWaiterShift = iota
 
-	// Mutex fairness.
+	// 互斥公平.
 	//
-	// Mutex can be in 2 modes of operations: normal and starvation.
-	// In normal mode waiters are queued in FIFO order, but a woken up waiter
-	// does not own the mutex and competes with new arriving goroutines over
-	// the ownership. New arriving goroutines have an advantage -- they are
-	// already running on CPU and there can be lots of them, so a woken up
-	// waiter has good chances of losing. In such case it is queued at front
-	// of the wait queue. If a waiter fails to acquire the mutex for more than 1ms,
-	// it switches mutex to the starvation mode.
+	// Mutex有2种操作模式: 正常模式 和 饥饿模式.
+	// 在正常模式下，等待着waiter会进入到一个FIFO队列，在获取锁时waiter会按照先进先出的顺序获取。
+	// 当唤醒一个waiter时，它并不会立即获取锁，而是继续与新来的协程竞争，这种情况下新来的协程比较有优势，
+	// 主要是因为它已经运行在CPU，可能这种的数量还不少，所以waiter大概率下获取不到锁。在这种waiter获取
+	// 不到锁的情况下，waiter会被添加到队列的前面。如果waiter获取不到锁的时间超过1毫秒，它将被切换到饥饿模式。
+	// 这里的waiter是指新来的协程尝试一次获取锁，如果获取不到我们就视其为waiter，并将其添加到FIFO队列里。
 	//
-	// In starvation mode ownership of the mutex is directly handed off from
-	// the unlocking goroutine to the waiter at the front of the queue.
-	// New arriving goroutines don't try to acquire the mutex even if it appears
-	// to be unlocked, and don't try to spin. Instead they queue themselves at
-	// the tail of the wait queue.
+	// 在饥饿模式下，锁将直接交给队列最前面的waiter。新来的协程即使在锁未被挟持情况下也不会参与竞争锁，
+	// 同时也不会进行自旋，而直接将其添加到队列的尾部。
 	//
-	// If a waiter receives ownership of the mutex and sees that either
-	// (1) it is the last waiter in the queue, or (2) it waited for less than 1 ms,
-	// it switches mutex back to normal operation mode.
+	// 如果拥有锁的waiter发现有以下两种情况，它将切回到正常模式：
+	// 1.它是队列里的最后一个waiter，再也没有其它waiter
+	// 2.等待时间小于1毫秒
 	//
-	// Normal mode has considerably better performance as a goroutine can acquire
-	// a mutex several times in a row even if there are blocked waiters.
-	// Starvation mode is important to prevent pathological cases of tail latency.
+	// 正常模式拥有更好的性能，因为即使有等待抢锁的waiter，协程也可以连续多次获取到锁。
+	// 饥饿模式锁公平性和性能的一种平衡，它避免了某些协程长时间的等待锁。
+	// 在饥饿模式下，优先处理的是那些在一直等待的waiter。饥饿模式在一定时机会切换回正常模式。
 	starvationThresholdNs = 1e6
 )
 
