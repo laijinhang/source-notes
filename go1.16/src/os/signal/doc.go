@@ -3,26 +3,24 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package signal implements access to incoming signals.
+signal包实现对输入信号的访问。
 
-Signals are primarily used on Unix-like systems. For the use of this
-package on Windows and Plan 9, see below.
+信号主要用于类Unix系统上。对于此用途
+Windows和Plan 9上的软件包，请参见下文。
 
-Types of signals
+信号类型
 
-The signals SIGKILL and SIGSTOP may not be caught by a program, and
-therefore cannot be affected by this package.
+信号SIGKILL和SIGSTOP可能未被程序捕获，并且
+因此不受此软件包的影响。
 
-Synchronous signals are signals triggered by errors in program
-execution: SIGBUS, SIGFPE, and SIGSEGV. These are only considered
-synchronous when caused by program execution, not when sent using
-os.Process.Kill or the kill program or some similar mechanism. In
-general, except as discussed below, Go programs will convert a
-synchronous signal into a run-time panic.
+同步信号是由程序错误触发的信号
+执行：SIGBUS，SIGFPE和SIGSEGV。这些仅被考虑
+由程序执行引起的同步，而不是使用
+os.Process.Kill或kill程序或某种类似的机制。在
+一般，除了以下讨论的内容外，Go程序将转换为
+同步信号进入运行时恐慌状态。
 
-The remaining signals are asynchronous signals. They are not
-triggered by program errors, but are instead sent from the kernel or
-from some other program.
+其余信号是异步信号。它们不是由程序错误触发的，而是从内核或其他程序发送的。
 
 Of the asynchronous signals, the SIGHUP signal is sent when a program
 loses its controlling terminal. The SIGINT signal is sent when the

@@ -29,19 +29,25 @@ type stopping struct {
 	h *handler
 }
 
+// handler定义了处理信号量的数据结构
 type handler struct {
-	mask [(numSig + 31) / 32]uint32
+	mask [(numSig + 31) / 32]uint32 // => mask [2]uint32
 }
 
 func (h *handler) want(sig int) bool {
+	// 判断传入的sig是不是这62个信号量中的一个
 	return (h.mask[sig/32]>>uint(sig&31))&1 != 0
 }
 
 func (h *handler) set(sig int) {
+	// sig & 00011111，截取整数后5位，左移一位是因为信号量是从1开始的
+	// 前31个信号量存放在mask数组的第一个元素中
+	// 如果存在哪个信号量，则在对应的bit位设为1？？？这样理解对吗？
 	h.mask[sig/32] |= 1 << uint(sig&31)
 }
 
 func (h *handler) clear(sig int) {
+	// 利用&^将对应位置清零
 	h.mask[sig/32] &^= 1 << uint(sig&31)
 }
 

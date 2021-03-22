@@ -29,7 +29,7 @@ func init() {
 }
 
 const (
-	numSig = 65 // max across all systems
+	numSig = 65 // 所有系统的信号量最大值
 )
 
 func signum(sig os.Signal) int {
