@@ -10,12 +10,11 @@ import (
 )
 
 func hostname() (name string, err error) {
-	// Try uname first, as it's only one system call and reading
-	// from /proc is not allowed on Android.
+	// 首先尝试uname，因为这只是一个系统调用，并且在Android上不允许从 /proc 读取。
 	var un syscall.Utsname
 	err = syscall.Uname(&un)
 
-	var buf [512]byte // Enough for a DNS name.
+	var buf [512]byte // 足够存放一个DNS名称
 	for i, b := range un.Nodename[:] {
 		buf[i] = uint8(b)
 		if b == 0 {
@@ -23,8 +22,7 @@ func hostname() (name string, err error) {
 			break
 		}
 	}
-	// If we got a name and it's not potentially truncated
-	// (Nodename is 65 bytes), return it.
+	// 如果我们得到一个名称，并且该名称没有被截断（节点名称为65个字节），请返回该名称。
 	if err == nil && len(name) > 0 && len(name) < 64 {
 		return name, nil
 	}

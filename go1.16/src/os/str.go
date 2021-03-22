@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Simple conversions to avoid depending on strconv.
+// 简单转换，避免依赖于strconv。
 
 package os
 
-// Convert integer to decimal string
+// 将整数转换为十进制字符串
 func itoa(val int) string {
 	if val < 0 {
 		return "-" + uitoa(uint(-val))
@@ -14,12 +14,12 @@ func itoa(val int) string {
 	return uitoa(uint(val))
 }
 
-// Convert unsigned integer to decimal string
+// 将无符号整数转换为十进制字符串
 func uitoa(val uint) string {
 	if val == 0 { // avoid string allocation
 		return "0"
 	}
-	var buf [20]byte // big enough for 64bit value base 10
+	var buf [20]byte // 足够大，可以容纳10位的64位值
 	i := len(buf) - 1
 	for val >= 10 {
 		q := val / 10

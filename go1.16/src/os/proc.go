@@ -18,6 +18,7 @@ var Args []string
 func init() {
 	if runtime.GOOS == "windows" {
 		// Initialized in exec_windows.go.
+		// 如果是windows，则在exec_windows.go中初始化。
 		return
 	}
 	Args = runtime_args()
@@ -25,30 +26,30 @@ func init() {
 
 func runtime_args() []string // in package runtime
 
-// Getuid returns the numeric user id of the caller.
+// Getuid返回调用方的数字用户ID。
 //
-// On Windows, it returns -1.
+// 在Windows上，它返回-1。
 func Getuid() int { return syscall.Getuid() }
 
-// Geteuid returns the numeric effective user id of the caller.
+// Geteuid返回调用者的数字有效用户ID。
 //
-// On Windows, it returns -1.
+// 在Windows上，它返回-1。
 func Geteuid() int { return syscall.Geteuid() }
 
-// Getgid returns the numeric group id of the caller.
+// Getgid返回调用者的数字组ID。
 //
-// On Windows, it returns -1.
+// 在Windows上，它返回-1。
 func Getgid() int { return syscall.Getgid() }
 
-// Getegid returns the numeric effective group id of the caller.
+// Getegid返回调用者的数字有效组ID。
 //
-// On Windows, it returns -1.
+// 在Windows上，它返回-1。
 func Getegid() int { return syscall.Getegid() }
 
-// Getgroups returns a list of the numeric ids of groups that the caller belongs to.
+// Getgroups返回调用者所属的组的数字ID的列表。
 //
-// On Windows, it returns syscall.EWINDOWS. See the os/user package
-// for a possible alternative.
+// 在Windows上，它返回syscall.EWINDOWS。查看 os/user 软件包
+// 作为可能的替代方法
 func Getgroups() ([]int, error) {
 	gids, e := syscall.Getgroups()
 	return gids, NewSyscallError("getgroups", e)

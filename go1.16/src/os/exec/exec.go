@@ -35,12 +35,11 @@ import (
 	"syscall"
 )
 
-// Error is returned by LookPath when it fails to classify a file as an
-// executable.
+// 如果LookPath无法将文件归类为可执行文件，则会返回错误。
 type Error struct {
-	// Name is the file name for which the error occurred.
+	// Name是发生错误的文件名。
 	Name string
-	// Err is the underlying error.
+	// Err是潜在的错误。
 	Err error
 }
 
@@ -367,12 +366,11 @@ func lookExtensions(path, dir string) (string, error) {
 	return path + ext, nil
 }
 
-// Start starts the specified command but does not wait for it to complete.
+// Start启动指定的命令，但不等待其完成。
 //
-// If Start returns successfully, the c.Process field will be set.
+// 如果Start成功返回，则将设置c.Process字段。
 //
-// The Wait method will return the exit code and release associated resources
-// once the command exits.
+// Wait方法将返回退出代码并释放关联的资源一旦命令退出。
 func (c *Cmd) Start() error {
 	if c.lookPathErr != nil {
 		c.closeDescriptors(c.closeAfterStart)
