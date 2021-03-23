@@ -18,6 +18,7 @@ import (
 // when calling the Wait method.
 //
 // A Cond must not be copied after first use.
+// 一个Cond在被使用之后，不能被复制。
 type Cond struct {
 	noCopy noCopy
 

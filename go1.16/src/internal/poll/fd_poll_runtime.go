@@ -14,6 +14,7 @@ import (
 	_ "unsafe" // for go:linkname
 )
 
+// runtimeNano返回运行时时钟的当前值（以纳秒为单位）。
 // runtimeNano returns the current value of the runtime clock in nanoseconds.
 //go:linkname runtimeNano runtime.nanotime
 func runtimeNano() int64
@@ -34,6 +35,7 @@ type pollDesc struct {
 
 var serverInit sync.Once
 
+// epoll初始化
 func (pd *pollDesc) init(fd *FD) error {
 	serverInit.Do(runtime_pollServerInit)
 	ctx, errno := runtime_pollOpen(uintptr(fd.Sysfd))

@@ -42,6 +42,26 @@ import (
 //
 // A Pool must not be copied after first use.
 type Pool struct {
+	// 不复制Pool结构体，理解起来就是浅拷贝
+	/*
+		下面c、c1、c2指向的都是同一个Pool
+		func main() {
+			c := sync.Pool{}
+			c1 := c
+			c1.New = func() interface{} {
+				return 123
+			}
+			c1.Put("x1")
+			c1.Put("x2")
+			c2 := sync.Pool{}
+			c2 = c1
+			fmt.Println(c2.Get())	// x1
+			fmt.Println(c2.Get())	// x2
+			fmt.Println(c1.Get())	// 123
+			c2.Put("x3")
+			fmt.Println(c1.Get())	// x3
+		}
+	*/
 	noCopy noCopy
 
 	local     unsafe.Pointer // local fixed-size per-P pool, actual type is [P]poolLocal
@@ -257,7 +277,7 @@ func poolCleanup() {
 }
 
 var (
-	allPoolsMu Mutex
+	allPoolsMu Mutex // 全局锁
 
 	// allPools is the set of pools that have non-empty primary
 	// caches. Protected by either 1) allPoolsMu and pinning or 2)

@@ -217,9 +217,11 @@ func execIO(o *operation, submit func(o *operation) error) (int, error) {
 
 // FD is a file descriptor. The net and os packages embed this type in
 // a larger type representing a network connection or OS file.
+// FD是一个文件描述符。net和os包引用这种类型
+//  a larger type 代表网络连接或OS文件。
 type FD struct {
 	// Lock sysfd and serialize access to Read and Write methods.
-	fdmu fdMutex
+	fdmu fdMutex // 为socket创建的文件描述符
 
 	// System file descriptor. Immutable until Close.
 	Sysfd syscall.Handle
@@ -230,7 +232,7 @@ type FD struct {
 	wop operation
 
 	// I/O poller.
-	pd pollDesc
+	pd pollDesc // epoll相关的底层结构体
 
 	// Used to implement pread/pwrite.
 	l sync.Mutex
@@ -261,18 +263,19 @@ type FD struct {
 	kind fileKind
 }
 
-// fileKind describes the kind of file.
+// fileKind描述文件的类型。
 type fileKind byte
 
 const (
-	kindNet fileKind = iota
-	kindFile
-	kindConsole
-	kindDir
-	kindPipe
+	kindNet     fileKind = iota // 网络类型文件
+	kindFile                    // 文件类型
+	kindConsole                 // 终端类型
+	kindDir                     // 目录类型
+	kindPipe                    // Pipe类型
 )
 
 // logInitFD is set by tests to enable file descriptor initialization logging.
+// logInitFD由测试设置以启用文件描述符初始化日志记录。
 var logInitFD func(net string, fd *FD, err error)
 
 // Init initializes the FD. The Sysfd field should already be set.
