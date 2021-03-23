@@ -2,9 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// 说明这个文件里的中文翻译很大一部分来自：https://blog.csdn.net/DERRANTCM/article/details/105480764，这篇大佬的博文
 // Memory allocator.
+// 内存分配器。
 //
 // This was originally based on tcmalloc, but has diverged quite a bit.
+// 这最初基于tcmalloc，但相差很大。
 // http://goog-perftools.sourceforge.net/doc/tcmalloc.html
 
 // The main allocator works in runs of pages.
@@ -13,6 +16,12 @@
 // has its own free set of objects of exactly that size.
 // Any free page of memory can be split into a set of objects
 // of one size class, which are then managed using a free bitmap.
+// 主分配器在页面运行中工作。
+// 较小的分配大小（最大为32 kB，包括32 kB）
+// 四舍五入为大约70个尺寸等级之一，每个等级
+// 有自己的免费对象，大小恰好与此相同。
+// 任何可用的内存页都可以拆分为一组对象
+// 一个大小级别的对象，然后使用免费的位图进行管理。
 //
 // The allocator's data structures are:
 //
@@ -24,66 +33,102 @@
 //	mcache: a per-P cache of mspans with free space.
 //	mstats: allocation statistics.
 //
+//  分配器的数据结构为：
+//	fixalloc：用于固定大小的堆外对象的自由列表分配器，
+//		用于管理分配器使用的存储。
+//	mheap：malloc堆，以页面（8192字节）粒度进行管理。
+//	mspan：由mheap管理的一系列使用中的页面。
+//	mcentral：收集给定大小类的所有跨度。
+//	mcache：具有可用空间的mspans的每P缓存。
+// 	mstats：分配统计信息。
+//
 // Allocating a small object proceeds up a hierarchy of caches:
+// 分配一个小对象将继续进行高速缓存的层次结构：
 //
 //	1. Round the size up to one of the small size classes
 //	   and look in the corresponding mspan in this P's mcache.
 //	   Scan the mspan's free bitmap to find a free slot.
 //	   If there is a free slot, allocate it.
 //	   This can all be done without acquiring a lock.
+//     将大小四舍五入为较小的类之一，然后在此P的mcache中查看相应的mspan。
+//	   扫描mspan的可用位图以找到可用插槽。
+//	   如果有空闲插槽，请分配它。
+//	   无需获取锁即可完成所有操作。
 //
 //	2. If the mspan has no free slots, obtain a new mspan
 //	   from the mcentral's list of mspans of the required size
 //	   class that have free space.
 //	   Obtaining a whole span amortizes the cost of locking
 //	   the mcentral.
+//	   如果mspan没有可用位置，则从mcentral的具有可用空间的所需size类的mspan列表中获取一个新的mspan。
+//	   获得整个跨度（span）会摊销锁定mcentral的成本。
 //
 //	3. If the mcentral's mspan list is empty, obtain a run
 //	   of pages from the mheap to use for the mspan.
+//	   如果mcentral的mspan列表为空，从mheap获取一系列页以用于mspan。
 //
 //	4. If the mheap is empty or has no page runs large enough,
 //	   allocate a new group of pages (at least 1MB) from the
 //	   operating system. Allocating a large run of pages
 //	   amortizes the cost of talking to the operating system.
+//	   如果mheap为空或没有足够大的页，
+//	   则从操作系统中分配一组新的页（至少1MB）。
+//	   分配大量页面将分摊与操作系统进行对话的成本。
 //
 // Sweeping an mspan and freeing objects on it proceeds up a similar
 // hierarchy:
+// 清除mspan并释放对象沿用了类似的层次结构：
 //
 //	1. If the mspan is being swept in response to allocation, it
 //	   is returned to the mcache to satisfy the allocation.
+//	   如果响应分配而清除了mspan，则将mspan返还到mcache以满足分配。
 //
 //	2. Otherwise, if the mspan still has allocated objects in it,
 //	   it is placed on the mcentral free list for the mspan's size
 //	   class.
+//	   否则，如果mspan仍有已分配的对象，则将其放在mspan的size类别的mcentral空闲列表上。
 //
 //	3. Otherwise, if all objects in the mspan are free, the mspan's
 //	   pages are returned to the mheap and the mspan is now dead.
+//	   否则，如果mspan中的所有对象都是空闲的，则mspan的页面将返回到mheap，并且mspan现在已失效。
 //
 // Allocating and freeing a large object uses the mheap
 // directly, bypassing the mcache and mcentral.
+// 分配和释放大对象直接使用mheap，而绕过mcache和mcentral。
 //
 // If mspan.needzero is false, then free object slots in the mspan are
 // already zeroed. Otherwise if needzero is true, objects are zeroed as
 // they are allocated. There are various benefits to delaying zeroing
 // this way:
+// 如果mspan.needzero为false，则mspan中的可用对象位置已被清零。
+// 否则，如果needzero为true，则在分配对象时将其清零。
+// 通过这种方式延迟归零有很多好处：
 //
 //	1. Stack frame allocation can avoid zeroing altogether.
+//	   堆栈帧分配可以完全避免置零。
 //
 //	2. It exhibits better temporal locality, since the program is
 //	   probably about to write to the memory.
+//	   它具有更好的时间局部性，因为该程序可能即将写入内存。
 //
 //	3. We don't zero pages that never get reused.
-
+//     我们不会将永远不会被重用的页面归零。
+//
 // Virtual memory layout
+// 虚拟内存布局
 //
 // The heap consists of a set of arenas, which are 64MB on 64-bit and
 // 4MB on 32-bit (heapArenaBytes). Each arena's start address is also
 // aligned to the arena size.
+// 堆由一组arena组成，这些arena在64位上为64MB，在32位（heapArenaBytes）上为4MB。
+// 每个arena的起始地址也与arena大小对齐。
 //
 // Each arena has an associated heapArena object that stores the
 // metadata for that arena: the heap bitmap for all words in the arena
 // and the span map for all pages in the arena. heapArena objects are
 // themselves allocated off-heap.
+// 每个arena都有一个关联的heapArena对象，该对象存储该arena的元数据：arena中所有字（word）
+// 的堆位图和arena中所有页的跨度（span）图。它们本身是堆外分配的。
 //
 // Since arenas are aligned, the address space can be viewed as a
 // series of arena frames. The arena map (mheap_.arenas) maps from
@@ -92,11 +137,18 @@
 // two-level array consisting of a "L1" arena map and many "L2" arena
 // maps; however, since arenas are large, on many architectures, the
 // arena map consists of a single, large L2 map.
+// 由于arena是对齐的，因此可以将地址空间视为一系列arena帧（frame）。
+// arena映射（mheap_.arenas）从arena帧号映射到*heapArena，
+// 对于不由Go堆支持的部分地址空间，映射为nil。arena映射的结构为两层数组，
+// 由“L1”arena映射和许多“ L2”arena映射组成；
+// 但是，由于arena很大，因此在许多体系结构上，arena映射都由一个大型L2映射组成。
 //
 // The arena map covers the entire possible address space, allowing
 // the Go heap to use any part of the address space. The allocator
 // attempts to keep arenas contiguous so that large spans (and hence
 // large objects) can cross arenas.
+// arena地图覆盖了整个可用的地址空间，从而允许Go堆使用地址空间的任何部分。
+// 分配器尝试使arena保持连续，以便大跨度（以及大对象）可以跨越arena。
 
 package runtime
 
@@ -346,6 +398,7 @@ var (
 )
 
 // OS memory management abstraction layer
+// OS内存管理抽象层
 //
 // Regions of the address space managed by the runtime may be in one of four
 // states at any given time:
@@ -357,6 +410,12 @@ var (
 //               Ready. Accessing memory in such a region is undefined (may
 //               fault, may give back unexpected zeroes, etc.).
 // 4) Ready - may be accessed safely.
+// 在任何给定时间，运行时管理的地址空间区域可能处于四种状态之一：
+// 1）无（None）- 未保留和未映射，这是任何区域的默认状态。
+// 2）保留（Reserved）- 运行时拥有，但是访问它会导致故障。不计入进行的内存占用。
+// 3）已准备（Prepared）- 保留，意在不由物理内存支持（尽管OS可能会延迟实现）。
+//		可以有效过渡到就绪。在这样的区域中访问内存是不确定的（可能会出错，可能会返回意外的等等）。
+// 4）就绪（Ready）- 可以安全地访问。
 //
 // This set of states is more than is strictly necessary to support all the
 // currently supported platforms. One could get by with just None, Reserved, and
@@ -368,14 +427,24 @@ var (
 // Ready to Prepared. Thus with the Prepared state we can set the permission
 // bits just once early on, we can efficiently tell the OS that it's free to
 // take pages away from us when we don't strictly need them.
+// 这组状态对于所支持所有当前受支持的平台而言绝对不是必需的。只需一个“无”，“保留”和“就绪”就可以
+// 解决问题。但是，“已准备”状态为我们提供了用于性能目的的灵活性。例如，在POSIX-y操作系统上，“保留”
+// 通常是设置了PROT_NONE的私有匿名mmap'd区域，要转换到“就绪”状态，需要设置PROT_READ|PROT_WRITE。
+// 但是，Prepared的规格不足使我们仅使用MADV_FREE从Ready过渡到Prepared。因此，在“准备好”状态下，
+// 我们可以提早设置一次权限位，我们可以有效地告诉操作系统，当我们严格不需要它们时，可以自由地将页面从我们手中夺走。
 //
 // For each OS there is a common set of helpers defined that transition
 // memory regions between these states. The helpers are as follows:
+// 对于每个操作系统，都有一组通用的帮助程序，这些帮助程序在这些状态之间转换内存区域。
+// 帮助程序如下：
 //
 // sysAlloc transitions an OS-chosen region of memory from None to Ready.
 // More specifically, it obtains a large chunk of zeroed memory from the
 // operating system, typically on the order of a hundred kilobytes
 // or a megabyte. This memory is always immediately available for use.
+// sysAlloc将OS选择的内存区域从“无”转换为“就绪”。
+// 更具体地说，它从操作系统中获取大量的零位内存，通常大约为一百千字节或兆字节。
+// 该内存始终可以立即使用。
 //
 // sysFree transitions a memory region from any state to None. Therefore, it
 // returns memory unconditionally. It is used if an out-of-memory error has been
@@ -383,6 +452,10 @@ var (
 // the address space. It is okay if sysFree is a no-op only if sysReserve always
 // returns a memory region aligned to the heap allocator's alignment
 // restrictions.
+// sysFree将内存区域从任何状态转换为“无（Ready）”。
+// 因此，它无条件返回内存。
+// 如果在分配过程中检测到内存不足错误，或用于划分出地址空间的对齐部分，则使用此方法。
+// 仅当sysReserve始终返回与堆分配器的对齐限制对齐的内存区域时，如果sysFree是无操作的，这是可以的。
 //
 // sysReserve transitions a memory region from None to Reserved. It reserves
 // address space in such a way that it would cause a fatal fault upon access
@@ -394,25 +467,43 @@ var (
 // NOTE: sysReserve returns OS-aligned memory, but the heap allocator
 // may use larger alignment, so the caller must be careful to realign the
 // memory obtained by sysReserve.
+// sysReserve将内存区域从“无（None）”转换为“保留（Reserved）”。
+// 它以这样一种方式保留地址空间，即在访问时（通过权限或未提交内存）会导致致命错误。
+// 因此，这种保留永远不会受到物理内存的支持。
+// 如果传递给它的指针为非nil，则调用者希望在那里保留，
+// 但是sysReserve仍然可以选择另一个位置（如果该位置不可用）。
+//
+// 注意：sysReserve返回OS对齐的内存，但是堆分配器可能使用更大的对齐方式，
+// 因此调用者必须小心地重新对齐sysReserve获得的内存。
 //
 // sysMap transitions a memory region from Reserved to Prepared. It ensures the
 // memory region can be efficiently transitioned to Ready.
+// sysMap将内存区域从“保留（Reserved）”状态转换为“已准备（Prepared）”状态。
+// 它确保可以将存储区域有效地转换为“就绪（Ready）”。
 //
 // sysUsed transitions a memory region from Prepared to Ready. It notifies the
 // operating system that the memory region is needed and ensures that the region
 // may be safely accessed. This is typically a no-op on systems that don't have
 // an explicit commit step and hard over-commit limits, but is critical on
 // Windows, for example.
+// sysUsed将内存区域从“已准备（Prepared）”过渡到“就绪（Ready）”。
+// 它通知操作系统需要内存区域，并确保可以安全地访问该区域。
+// 在没有明确的提交步骤和严格的过量提交限制的系统上，这通常是不操作的，例如，在Windows上至关重要。
 //
 // sysUnused transitions a memory region from Ready to Prepared. It notifies the
 // operating system that the physical pages backing this memory region are no
 // longer needed and can be reused for other purposes. The contents of a
 // sysUnused memory region are considered forfeit and the region must not be
 // accessed again until sysUsed is called.
+// sysUnused将内存区域从“就绪（Ready）”转换为“已准备（Prepared）”。
+// 它通知操作系统，不再需要支持该内存区域的物理页，并且可以将其重新用于其他目的。
+// sysUnused内存区域的内容被认为是没用的，在调用sysUsed之前，不得再次访问该区域。
 //
 // sysFault transitions a memory region from Ready or Prepared to Reserved. It
 // marks a region such that it will always fault if accessed. Used only for
 // debugging the runtime.
+// sysFault将内存区域从“就绪（Ready）”或“已准备（Prepared）”转换为“保留（Reserved）”。
+// 它标记了一个区域，以便在访问时总是会发生故障。仅用于调试运行时。
 
 func mallocinit() {
 	if class_to_size[_TinySizeClass] != _TinySize {
@@ -487,17 +578,21 @@ func mallocinit() {
 	if sys.PtrSize == 8 {
 		// On a 64-bit machine, we pick the following hints
 		// because:
+		// 在64位计算机上，我们选择以下hit因为：
 		//
 		// 1. Starting from the middle of the address space
 		// makes it easier to grow out a contiguous range
 		// without running in to some other mapping.
+		// 从地址空间的中间开始，可以轻松扩展到连续范围，而无需运行其他映射。
 		//
 		// 2. This makes Go heap addresses more easily
 		// recognizable when debugging.
+		// 这使Go堆地址在调试时更容易识别。
 		//
 		// 3. Stack scanning in gccgo is still conservative,
 		// so it's important that addresses be distinguishable
 		// from other data.
+		// gccgo中的堆栈扫描仍然很保守，因此将地址与其他数据区分开很重要。
 		//
 		// Starting at 0x00c0 means that the valid memory addresses
 		// will begin 0x00c0, 0x00c1, ...
@@ -510,14 +605,22 @@ func mallocinit() {
 		// These choices reduce the odds of a conservative garbage collector
 		// not collecting memory because some non-pointer block of memory
 		// had a bit pattern that matched a memory address.
+		// 从0x00c0开始意味着有效的内存地址将从0x00c0、0x00c1 … n 小端开始，
+		// 即c0 00，c1 00，…这些都不是有效的UTF-8序列，否则它们是尽可能远离ff（可能是一个公共字节）。
+		// 如果失败，我们尝试其他0xXXc0地址。较早的尝试使用0x11f8导致线程分配期间OS X上的内存不足错误。
+		// 0x00c0导致与AddressSanitizer发生冲突，后者保留了最多0x0100的所有内存。
+		// 这些选择减少了保守的垃圾收集器不收集内存的可能性，因为某些非指针内存块具有与内存地址匹配的位模式。
 		//
 		// However, on arm64, we ignore all this advice above and slam the
 		// allocation at 0x40 << 32 because when using 4k pages with 3-level
 		// translation buffers, the user address space is limited to 39 bits
 		// On ios/arm64, the address space is even smaller.
+		// 但是，在arm64上，我们忽略了上面的所有建议，并在0x40 << 32处分配，因为当使用具有3级转换缓冲区的4k页面时，
+		// 用户地址空间在darwin/arm64上被限制为39位，地址空间更小
 		//
 		// On AIX, mmaps starts at 0x0A00000000000000 for 64-bit.
 		// processes.
+		// 在AIX上，对于64位，mmaps从0x0A00000000000000开始。
 		for i := 0x7f; i >= 0; i-- {
 			var p uintptr
 			switch {
@@ -551,19 +654,25 @@ func mallocinit() {
 		// On a 32-bit machine, we're much more concerned
 		// about keeping the usable heap contiguous.
 		// Hence:
+		// 在32位计算机上，我们更加关注保持可用堆是连续的。
+		// 因此：
 		//
 		// 1. We reserve space for all heapArenas up front so
 		// they don't get interleaved with the heap. They're
 		// ~258MB, so this isn't too bad. (We could reserve a
 		// smaller amount of space up front if this is a
 		// problem.)
+		// 我们为所有的heapArena保留空间，这样它们就不会与heap交错。
+		// 它们约为258MB，因此还算不错。（如果出现问题，我们可以在前面预留较小的空间。）
 		//
 		// 2. We hint the heap to start right above the end of
 		// the binary so we have the best chance of keeping it
 		// contiguous.
+		// 我们建议堆从二进制文件的末尾开始，因此我们有最大的机会保持其连续性。
 		//
 		// 3. We try to stake out a reasonably large initial
 		// heap reservation.
+		// 我们尝试放出一个相当大的初始堆保留。
 
 		const arenaMetaSize = (1 << arenaBits) * unsafe.Sizeof(heapArena{})
 		meta := uintptr(sysReserve(nil, arenaMetaSize))
@@ -838,6 +947,7 @@ retry:
 }
 
 // base address for all 0-byte allocations
+// 所有0字节分配的基地址
 var zerobase uintptr
 
 // nextFreeFast returns the next free object if one is quickly available.
