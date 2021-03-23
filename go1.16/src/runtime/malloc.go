@@ -171,6 +171,7 @@ const (
 	pageMask  = _PageMask
 	// By construction, single page spans of the smallest object class
 	// have the most objects per span.
+	// 通过构造，对象类别最小的单个页面跨度在每个跨度中具有最多的对象。
 	maxObjsPerSpan = pageSize / 8
 
 	concurrentSweep = _ConcurrentSweep
@@ -196,6 +197,10 @@ const (
 	// will be allocated directly.
 	// Since FixedStack is different on different systems, we
 	// must vary NumStackOrders to keep the same maximum cached size.
+	// 获得缓存的order数。Order 0是FixedStack，每个连续的order是其两倍。
+	// 我们要缓存2KB，4KB，8KB和16KB堆栈。较大的堆栈将直接分配。
+	// 由于FixedStack在不同的操作系统上是不同的，因此我们必须改变NumStackOrders以保持相同
+	// 下面是不同的操作系统对应的FixedStack和NumStackOrders的对应表
 	//   OS               | FixedStack | NumStackOrders
 	//   -----------------+------------+---------------
 	//   linux/darwin/bsd | 2KB        | 4
@@ -210,6 +215,7 @@ const (
 	//
 	// On most 64-bit platforms, we limit this to 48 bits based on a
 	// combination of hardware and OS limitations.
+	// 在大多数64位平台上，基于硬件和操作系统限制的组合，我们将其限制为48位。
 	//
 	// amd64 hardware limits addresses to 48 bits, sign-extended
 	// to 64 bits. Addresses where the top 16 bits are not either
@@ -221,14 +227,21 @@ const (
 	// supports this extension and the kernel will never choose an
 	// address above 1<<47 unless mmap is called with a hint
 	// address above 1<<47 (which we never do).
+	// amd64硬件将地址限制为48位，符号扩展为64位。前16位不全为0或全为1的地址是“非规范的”且无效。
+	// 由于存在这些”负“地址，因此在计算进入堆竞技场索引的索引之前，在amd64上将地址偏移1 << 47（arenaBaseOffset）。
+	// 2017年，amd64硬件增加了对57位地址的支持;但是，当前只有Linux支持此扩展，内核将永远不会选择大于1 << 47的地址，
+	// 除非调用mmap的提示地址大于1 << 47（我们从未这样做）。
 	//
 	// arm64 hardware (as of ARMv8) limits user addresses to 48
 	// bits, in the range [0, 1<<48).
+	// arm64硬件（自ARMv8起）将用户地址限制为48位，范围为[0，1 << 48）。
 	//
 	// ppc64, mips64, and s390x support arbitrary 64 bit addresses
 	// in hardware. On Linux, Go leans on stricter OS limits. Based
 	// on Linux's processor.h, the user address space is limited as
 	// follows on 64-bit architectures:
+	// ppc64，mips64和s390x在硬件中支持任意64位地址。在Linux上，Go依靠更严格的OS限制。
+	// 基于Linux的processor.h，在64位体系结构上，用户地址空间受到如下限制：
 	//
 	// Architecture  Name              Maximum Value (exclusive)
 	// ---------------------------------------------------------------------
@@ -244,11 +257,15 @@ const (
 	// significantly below 48 bits, so even if it's possible to
 	// exceed Go's 48 bit limit, it's extremely unlikely in
 	// practice.
+	// 这些限制可能会随时间增加，但目前最多为48位，但s390x除外。在所有体系结构上，
+	// Linux都开始将mmap'd区域放置在明显低于48位的地址上，因此，即使有可能超过Go的48位限制，在实践中也极不可能。
 	//
 	// On 32-bit platforms, we accept the full 32-bit address
 	// space because doing so is cheap.
 	// mips32 only has access to the low 2GB of virtual memory, so
 	// we further limit it to 31 bits.
+	// 在32位平台上，我们接受完整的32位地址空间，因为这样做很便宜。 mips32仅可以访问2GB的低虚拟内存，
+	// 因此我们进一步将其限制为31位。
 	//
 	// On ios/arm64, although 64-bit pointers are presumably
 	// available, pointers are truncated to 33 bits. Furthermore,
@@ -257,8 +274,12 @@ const (
 	// simplicity.
 	// TODO(mknyszek): Consider limiting it to 32 bits and using
 	// arenaBaseOffset to offset into the top 4 GiB.
+	// 在darwin / arm64上，尽管大概可以使用64位指针，但指针会被截断为33位。此外，
+	// 只有地址空间的前4个GiB实际上可供应用程序使用，但是为了简单起见，我们还是允许全部33位。
+	// TODO（mknyszek）：考虑将其限制为32位，并使用arenaBaseOffset偏移到前4个GiB中。
 	//
 	// WebAssembly currently has a limit of 4GB linear memory.
+	// WebAssembly当前限制为4GB线性内存。
 	heapAddrBits = (_64bit*(1-sys.GoarchWasm)*(1-sys.GoosIos*sys.GoarchArm64))*48 + (1-_64bit+sys.GoarchWasm)*(32-(sys.GoarchMips+sys.GoarchMipsle)) + 33*sys.GoosIos*sys.GoarchArm64
 
 	// maxAlloc is the maximum size of an allocation. On 64-bit,
@@ -266,6 +287,8 @@ const (
 	// 32-bit, however, this is one less than 1<<32 because the
 	// number of bytes in the address space doesn't actually fit
 	// in a uintptr.
+	// maxAlloc是分配的最大大小。在64位上，理论上可以分配1 << heapAddrBits字节。
+	// 但是，在32位上，这比1<<32小1，因为地址空间中的字节数实际上不适合uintptr。
 	maxAlloc = (1 << heapAddrBits) - (1-_64bit)*1
 
 	// The number of bits in a heap address, the size of heap
@@ -274,6 +297,11 @@ const (
 	//   (1 << addr bits) = arena size * L1 entries * L2 entries
 	//
 	// Currently, we balance these as follows:
+	// 堆地址中的位数，堆arena的大小以及L1和L2 arena映射的大小与
+	//
+	// 1 << addr位）=arena大小* L1条目* L2条目
+	//
+	// 目前，我们将这些平衡如下：
 	//
 	//       Platform  Addr bits  Arena size  L1 entries   L2 entries
 	// --------------  ---------  ----------  ----------  -----------
@@ -285,6 +313,8 @@ const (
 	// heapArenaBytes is the size of a heap arena. The heap
 	// consists of mappings of size heapArenaBytes, aligned to
 	// heapArenaBytes. The initial heap mapping is one arena.
+	// heapArenaBytes是堆arenas的大小。堆由大小为heapArenaBytes的映射组成，
+	// 并与heapArenaBytes对齐。最初的堆映射是一个arenas。
 	//
 	// This is currently 64MB on 64-bit non-Windows and 4MB on
 	// 32-bit and on Windows. We use smaller arenas on Windows
@@ -294,14 +324,21 @@ const (
 	// This is particularly important with the race detector,
 	// since it significantly amplifies the cost of committed
 	// memory.
+	// 在64位非windows上位64MB，在32位和windows上为4MB。
+	// 我们在windows上使用较小的arenas，因为所有已提交的内存都由进程负责，
+	// 即使未涉及也是如此。因此，对于具有小堆的进程，映射的arenas空间需要想对应。
+	// 这对于竞争检测器尤其重要，因为它会大大增加已提交内存的成本。
 	heapArenaBytes = 1 << logHeapArenaBytes
 
 	// logHeapArenaBytes is log_2 of heapArenaBytes. For clarity,
 	// prefer using heapArenaBytes where possible (we need the
 	// constant to compute some other constants).
+	// logHeapArenaBytes是heapArenaBytes的log_2。为了清楚起见，
+	// 最好在可能的地方使用headArenaBytes（我们需要使用常量赖计算其他常量）。
 	logHeapArenaBytes = (6+20)*(_64bit*(1-sys.GoosWindows)*(1-sys.GoarchWasm)) + (2+20)*(_64bit*sys.GoosWindows) + (2+20)*(1-_64bit) + (2+20)*sys.GoarchWasm
 
 	// heapArenaBitmapBytes is the size of each heap arena's bitmap.
+	// heapArenaBitmapBytes是每个堆的位图大小。
 	heapArenaBitmapBytes = heapArenaBytes / (sys.PtrSize * 8 / 2)
 
 	pagesPerArena = heapArenaBytes / pageSize
@@ -315,23 +352,32 @@ const (
 	// index is effectively unused. There is a performance benefit
 	// to this, since the generated code can be more efficient,
 	// but comes at the cost of having a large L2 mapping.
+	// 这个数字应该很小，因为第一级arena映射在二进制文件的BSS中需要PtrSize*(1<<arenaL1Bits)空间。
+	// 它可以为零，在这种情况下，第一级索引实际上未被使用。这会带来性能上的好处，
+	// 因为生成的代码可以更高效，但是以拥有较大的L2映射为代价。
 	//
 	// We use the L1 map on 64-bit Windows because the arena size
 	// is small, but the address space is still 48 bits, and
 	// there's a high cost to having a large L2.
+	// 我们在64位windows上使用L1映射，因为arena大小很小，但是地址空间仍然是48位，
+	// 并且拥有大型L2的成本很高。
 	arenaL1Bits = 6 * (_64bit * sys.GoosWindows)
 
 	// arenaL2Bits is the number of bits of the arena number
 	// covered by the second level arena index.
+	// arenaL2Bits是第二级arena索引覆盖的arena编号的位数。
 	//
 	// The size of each arena map allocation is proportional to
 	// 1<<arenaL2Bits, so it's important that this not be too
 	// large. 48 bits leads to 32MB arena index allocations, which
 	// is about the practical threshold.
+	// 每个arena映射分配的大小与1<<arenaL2Bits成正比，因此，不要太大也很重要。
+	// 48位导致32MVarena索引分配，这大约是实际的阀值。
 	arenaL2Bits = heapAddrBits - logHeapArenaBytes - arenaL1Bits
 
 	// arenaL1Shift is the number of bits to shift an arena frame
 	// number by to compute an index into the first level arena map.
+	// arenaL1Shift是将arena帧号移位计算进入第一级arena映射的索引的位数。
 	arenaL1Shift = arenaL2Bits
 
 	// arenaBits is the total bits in a combined arena map index.
