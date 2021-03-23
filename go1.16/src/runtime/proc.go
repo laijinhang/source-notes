@@ -6134,6 +6134,11 @@ func sync_runtime_canSpin(i int) bool {
 	// GOMAXPROCS>1 and there is at least one other running P and local runq is empty.
 	// As opposed to runtime mutex we don't do passive spinning here,
 	// because there can be work on global runq or on other Ps.
+	// 想要实现自旋，必须符合以下条件
+	// 1.自旋次数<4（active_spin）
+	// 2.CPU必须为多核处理器
+	// 3.当前程序设置的gomaxprocs个数>（空闲P个数+当前处于自旋m的个数+1）
+	// 4.至少有一个正在运行的P的本地运行队列为空
 	if i >= active_spin || ncpu <= 1 || gomaxprocs <= int32(sched.npidle+sched.nmspinning)+1 {
 		return false
 	}

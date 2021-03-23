@@ -26,8 +26,11 @@ type Mutex struct {
 	// state是一个共用的字段
 	// 第 0个bit位 标记 mutex 是否被某个协程占用，也就是有没有加锁
 	// 第 1个bit位 标记 mutex 是否被唤醒，就是某个被唤醒的mutex尝试去获取锁
+	// 第 2个bit位 标记 mutex 表示饥饿状态？？？
+	// 剩下的bit位表示 waiter 的个数，最大允许记录 1<<(32-3)-1 个协程
 	state int32
-	sema  uint32
+
+	sema uint32
 }
 
 // A Locker represents an object that can be locked and unlocked.
@@ -37,10 +40,10 @@ type Locker interface {
 }
 
 const (
-	mutexLocked = 1 << iota // mutex is locked
-	mutexWoken
-	mutexStarving
-	mutexWaiterShift = iota
+	mutexLocked      = 1 << iota // mutex is locked
+	mutexWoken                   // 2
+	mutexStarving                // 4
+	mutexWaiterShift = iota      // 3
 
 	// 互斥公平.
 	//
@@ -61,7 +64,7 @@ const (
 	// 正常模式拥有更好的性能，因为即使有等待抢锁的waiter，协程也可以连续多次获取到锁。
 	// 饥饿模式锁公平性和性能的一种平衡，它避免了某些协程长时间的等待锁。
 	// 在饥饿模式下，优先处理的是那些在一直等待的waiter。饥饿模式在一定时机会切换回正常模式。
-	starvationThresholdNs = 1e6
+	starvationThresholdNs = 1e6 // 1毫秒，用来与waiter的等待时间做比较
 )
 
 // Lock locks m.
@@ -79,29 +82,30 @@ func (m *Mutex) Lock() {
 		return
 	}
 	// Slow path (outlined so that the fast path can be inlined)
+	// 尝试自旋竞争或饥饿状态下饥饿协程竞争
 	m.lockSlow()
 }
 
 func (m *Mutex) lockSlow() {
-	var waitStartTime int64
-	starving := false
-	awoke := false
-	iter := 0
-	old := m.state
+	var waitStartTime int64 // 当前 waiter开始等待时间
+	starving := false       // 当前饥饿状态
+	awoke := false          // 当前唤醒状态
+	iter := 0               // 当前自旋次数
+	old := m.state          // 当前锁的状态
 	for {
-		// Don't spin in starvation mode, ownership is handed off to waiters
-		// so we won't be able to acquire the mutex anyway.
+		// 在饥饿模式下，直接将锁移交给waiter（队列头部的waiter）因此新来的协程永远也不会获取锁
+		// 在正常模式，锁被其他协程持有，如果允spinning，则尝试自旋
 		if old&(mutexLocked|mutexStarving) == mutexLocked && runtime_canSpin(iter) {
 			// Active spinning makes sense.
 			// Try to set mutexWoken flag to inform Unlock
 			// to not wake other blocked goroutines.
 			if !awoke && old&mutexWoken == 0 && old>>mutexWaiterShift != 0 &&
 				atomic.CompareAndSwapInt32(&m.state, old, old|mutexWoken) {
-				awoke = true
+				awoke = true // 设置当前协程唤醒成功
 			}
-			runtime_doSpin()
-			iter++
-			old = m.state
+			runtime_doSpin() // 自旋
+			iter++           // 当前自旋次数加1
+			old = m.state    // 当前协程再次获取锁的状态，之后会检查是否锁被释放了
 			continue
 		}
 		new := old
