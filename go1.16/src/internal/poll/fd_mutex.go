@@ -6,9 +6,9 @@ package poll
 
 import "sync/atomic"
 
-// fdMutex is a specialized synchronization primitive that manages
-// lifetime of an fd and serializes access to Read, Write and Close
-// methods on FD.
+// fdMutex是专门的同步原语，
+// 用于管理fd的生存期并序列化对FD上的Read，
+// Write和Close方法的访问。
 type fdMutex struct {
 	state uint64
 	rsema uint32
@@ -22,6 +22,13 @@ type fdMutex struct {
 // 20 bits - total number of references (read+write+misc).
 // 20 bits - number of outstanding read waiters.
 // 20 bits - number of outstanding write waiters.
+// fdMutex.state的组成如下：
+// 1 bit - 是否关闭FD，如果置位，则所有后续锁定操作将失败。
+// 1 bit - 锁定读取操作。
+// 1 bit - 锁定写入操作。
+// 20 bits - 引用总数（读+写+杂项）。
+// 20 bits - read waiter的数量
+// 20 bits - write waiter的数量
 const (
 	mutexClosed  = 1 << 0
 	mutexRLock   = 1 << 1

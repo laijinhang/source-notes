@@ -17,28 +17,42 @@ import (
 //
 // func netpollinit()
 //     Initialize the poller. Only called once.
+//	   初始化poller，仅调用一次
 //
 // func netpollopen(fd uintptr, pd *pollDesc) int32
 //     Arm edge-triggered notifications for fd. The pd argument is to pass
 //     back to netpollready when fd is ready. Return an errno value.
+//	   监听文件描述符上的边缘触发事件，创建事件并加入监听
 //
 // func netpoll(delta int64) gList
 //     Poll the network. If delta < 0, block indefinitely. If delta == 0,
 //     poll without blocking. If delta > 0, block for up to delta nanoseconds.
 //     Return a list of goroutines built by calling netpollready.
+//     轮询网络并返回一组已经准备就绪的 Goroutine，传入的参数会决定它的行为：
+//	   	1.如果参数小于0，无限等待文件描述符就绪；
+//		2.如果参数等于0，非阻塞地轮询网络；
+//		3.如果参数大于0，阻塞特定时间轮询网络；
 //
 // func netpollBreak()
 //     Wake up the network poller, assumed to be blocked in netpoll.
+//	   唤醒网络轮询器，例如：计时器向前修改时间时会通过该函数中断网络轮询器。
 //
 // func netpollIsPollDescriptor(fd uintptr) bool
 //     Reports whether fd is a file descriptor used by the poller.
-
+//	   判断文件描述符是否被轮询器使用。
+//
 // Error codes returned by runtime_pollReset and runtime_pollWait.
 // These must match the values in internal/poll/fd_poll_runtime.go.
+// untime_pollReset 和 runtime_pollWait 返回的错误码
+// 这些必须与internal/poll/fd_poll_runtime.go中的值匹配。
 const (
-	pollNoError        = 0 // no error
-	pollErrClosing     = 1 // descriptor is closed
-	pollErrTimeout     = 2 // I/O timeout
+	// 没有错误
+	pollNoError = 0 // no error
+	// 描述符已关闭
+	pollErrClosing = 1 // descriptor is closed
+	// I/O超时
+	pollErrTimeout = 2 // I/O timeout
+	// 通用错误轮询描述符
 	pollErrNotPollable = 3 // general error polling descriptor
 )
 
@@ -59,14 +73,19 @@ const (
 	pdWait  uintptr = 2
 )
 
-const pollBlockSize = 4 * 1024
+const pollBlockSize = 4 * 1024 // 4k
 
+// 操作系统中的I/O多路复用函数会监控文件描述符的可读或者可写,而Go语言网络轮询器会监听runtime.pollDesc结构体的状态，
+// 它会封装操作系统的文件描述符
 // Network poller descriptor.
+// 网络poller描述符。
 //
 // No heap pointers.
+// 没有堆指针。
 //
 //go:notinheap
 type pollDesc struct {
+	// 在pollcache中，受pollcache.lock保护
 	link *pollDesc // in pollcache, protected by pollcache.lock
 
 	// The lock protects pollOpen, pollSetDeadline, pollUnblock and deadlineimpl operations.
@@ -76,20 +95,28 @@ type pollDesc struct {
 	// in a lock-free way by all operations.
 	// NOTE(dvyukov): the following code uses uintptr to store *g (rg/wg),
 	// that will blow up when GC starts moving objects.
-	lock    mutex // protects the following fields
+
+	// 该锁可保护pollOpen，pollSetDeadline，pollUnblock和durationimpl操作。
+	// 这完全涵盖了seq，rt和wt变量。 在PollDesc的整个生命周期中，fd都是恒定的。
+	// pollReset，pollWait，pollWaitCanceled和运行时·netpollready（IO准备就绪通知）
+	//  不带锁继续操作。 因此，关闭，everr，rg，rd，wg和wd所有操作均以无锁方式进行操作。
+	// 注意（dvyukov）：以下代码使用uintptr存储* g（rg / wg），
+	// 当GC开始移动对象时，that will blow up???
+	lock    mutex // protects the following fields，保护以下字段
 	fd      uintptr
 	closing bool
-	everr   bool      // marks event scanning error happened
-	user    uint32    // user settable cookie
-	rseq    uintptr   // protects from stale read timers
-	rg      uintptr   // pdReady, pdWait, G waiting for read or nil
-	rt      timer     // read deadline timer (set if rt.f != nil)
-	rd      int64     // read deadline
-	wseq    uintptr   // protects from stale write timers
-	wg      uintptr   // pdReady, pdWait, G waiting for write or nil
-	wt      timer     // write deadline timer
-	wd      int64     // write deadline
-	self    *pollDesc // storage for indirect interface. See (*pollDesc).makeArg.
+	everr   bool    // marks event scanning error happened
+	user    uint32  // user settable cookie
+	rseq    uintptr // protects from stale read timers
+	rg      uintptr // pdReady, pdWait, G waiting for read or nil
+	rt      timer   // read deadline timer (set if rt.f != nil)
+	rd      int64   // read deadline
+	wseq    uintptr // protects from stale write timers
+	wg      uintptr // pdReady, pdWait, G waiting for write or nil
+	//
+	wt   timer     // write deadline timer
+	wd   int64     // write deadline
+	self *pollDesc // storage for indirect interface. See (*pollDesc).makeArg.
 }
 
 type pollCache struct {

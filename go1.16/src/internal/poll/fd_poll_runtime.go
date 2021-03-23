@@ -30,7 +30,7 @@ func runtime_pollUnblock(ctx uintptr)
 func runtime_isPollServerDescriptor(fd uintptr) bool
 
 type pollDesc struct {
-	runtimeCtx uintptr
+	runtimeCtx uintptr // 运行时上下文
 }
 
 var serverInit sync.Once

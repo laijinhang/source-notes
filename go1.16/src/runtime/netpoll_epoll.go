@@ -22,13 +22,17 @@ func epollwait(epfd int32, ev *epollevent, nev, timeout int32) int32
 func closeonexec(fd int32)
 
 var (
+	// epoll描述符
 	epfd int32 = -1 // epoll descriptor
 
 	netpollBreakRd, netpollBreakWr uintptr // for netpollBreak
 
+	// 用于避免重复调用netpollBreak
 	netpollWakeSig uint32 // used to avoid duplicate calls of netpollBreak
 )
 
+// epoll模型的初始化
+// 对于一个M主线程只会初始化一张epoll表，所有要监听的文件描述符都会放入这个表中。
 func netpollinit() {
 	epfd = epollcreate1(_EPOLL_CLOEXEC)
 	if epfd < 0 {
@@ -77,7 +81,7 @@ func netpollarm(pd *pollDesc, mode int) {
 	throw("runtime: unused")
 }
 
-// netpollBreak interrupts an epollwait.
+// netpollBreak中断epollwait。
 func netpollBreak() {
 	if atomic.Cas(&netpollWakeSig, 0, 1) {
 		for {
@@ -98,11 +102,11 @@ func netpollBreak() {
 	}
 }
 
-// netpoll checks for ready network connections.
-// Returns list of goroutines that become runnable.
-// delay < 0: blocks indefinitely
-// delay == 0: does not block, just polls
-// delay > 0: block for up to that many nanoseconds
+// netpoll检查网络连接是否就绪。
+// 返回可运行的goroutine列表。
+// 延迟  < 0：无限期阻止
+// 延迟 == 0：不阻止，仅轮询
+// 延迟  > 0：最多阻塞几纳秒
 func netpoll(delay int64) gList {
 	if epfd == -1 {
 		return gList{}

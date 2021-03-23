@@ -224,14 +224,19 @@ type FD struct {
 	fdmu fdMutex // 为socket创建的文件描述符
 
 	// System file descriptor. Immutable until Close.
+	// 系统返回的描述符，不会更改除非系统关闭回收
 	Sysfd syscall.Handle
 
 	// Read operation.
+	// 读操作，根据不同系统网络模型封装的统一类型，比如epoll，icop等封装为统一的操作，根据不同的操作系统调用不同的模型
 	rop operation
 	// Write operation.
+	// 写操作，同读操作一样，不过一个是读，另一个是写
 	wop operation
 
 	// I/O poller.
+	// 内部封装了协程等基本信息，这个变量会和内核epoll线程通信，
+	// 从而实现epoll通知和控制用户协程的效果。
 	pd pollDesc // epoll相关的底层结构体
 
 	// Used to implement pread/pwrite.
