@@ -617,6 +617,7 @@ type ListenConfig struct {
 // See func Listen for a description of the network and address
 // parameters.
 func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Listener, error) {
+	// 根据协议名称和地址取得Internet协议族地址列表
 	addrs, err := DefaultResolver.resolveAddrList(ctx, "listen", network, address, nil)
 	if err != nil {
 		return nil, &OpError{Op: "listen", Net: network, Source: nil, Addr: nil, Err: err}

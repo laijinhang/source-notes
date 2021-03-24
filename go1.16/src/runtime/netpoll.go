@@ -105,18 +105,17 @@ type pollDesc struct {
 	lock    mutex // protects the following fields，保护以下字段
 	fd      uintptr
 	closing bool
-	everr   bool    // marks event scanning error happened
-	user    uint32  // user settable cookie
-	rseq    uintptr // protects from stale read timers
-	rg      uintptr // pdReady, pdWait, G waiting for read or nil
-	rt      timer   // read deadline timer (set if rt.f != nil)
-	rd      int64   // read deadline
-	wseq    uintptr // protects from stale write timers
-	wg      uintptr // pdReady, pdWait, G waiting for write or nil
-	//
-	wt   timer     // write deadline timer
-	wd   int64     // write deadline
-	self *pollDesc // storage for indirect interface. See (*pollDesc).makeArg.
+	everr   bool      // marks event scanning error happened
+	user    uint32    // user settable cookie
+	rseq    uintptr   // protects from stale read timers
+	rg      uintptr   // pdReady, pdWait, G waiting for read or nil
+	rt      timer     // read deadline timer (set if rt.f != nil)
+	rd      int64     // read deadline
+	wseq    uintptr   // protects from stale write timers
+	wg      uintptr   // pdReady, pdWait, G waiting for write or nil
+	wt      timer     // write deadline timer
+	wd      int64     // write deadline
+	self    *pollDesc // storage for indirect interface. See (*pollDesc).makeArg.
 }
 
 type pollCache struct {
@@ -131,7 +130,8 @@ type pollCache struct {
 
 var (
 	netpollInitLock mutex
-	netpollInited   uint32
+	// 如果netpollInited值为0，则表示netpoll没有进行初始化
+	netpollInited uint32
 
 	pollcache      pollCache
 	netpollWaiters uint32
