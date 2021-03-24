@@ -378,15 +378,25 @@ type mSpanList struct {
 	last  *mspan // last span in list, or nil if none
 }
 
+/*
+mspan是mheap中管理的内存页的最基本结构。这是一个双向链表，
+像TCMalloc一样，Go将内存页按大小分为67个不同类别，大小从8字节到32KB
+*/
 //go:notinheap
 type mspan struct {
-	next *mspan     // next span in list, or nil if none
-	prev *mspan     // previous span in list, or nil if none
+	// 链表的下一个节点，如果下一个节点为空，则为nil
+	next *mspan // next span in list, or nil if none
+	// 链表的上一个节点，如果上一个节点为空，则为nil
+	prev *mspan // previous span in list, or nil if none
+	// 链表地址
 	list *mSpanList // For debugging. TODO: Remove.
 
+	// 该span在arena区域的起始地址
 	startAddr uintptr // address of first byte of span aka s.base()
-	npages    uintptr // number of pages in span
+	// 该span占用arena区域page的数量
+	npages uintptr // number of pages in span
 
+	// 空闲对象列表
 	manualFreeList gclinkptr // list of free objects in mSpanManual spans
 
 	// freeindex is the slot index between 0 and nelems at which to begin scanning
@@ -407,6 +417,7 @@ type mspan struct {
 	freeindex uintptr
 	// TODO: Look up nelems from sizeclass and remove this field if it
 	// helps performance.
+	// 管理的对象数
 	nelems uintptr // number of object in the span.
 
 	// Cache of the allocBits at freeindex. allocCache is shifted
@@ -415,6 +426,7 @@ type mspan struct {
 	// ctz (count trailing zero) to use it directly.
 	// allocCache may contain bits beyond s.nelems; the caller must ignore
 	// these.
+	// 从freeindex开始的标记位
 	allocCache uint64
 
 	// allocBits and gcmarkBits hold pointers to a span's mark and
@@ -439,8 +451,8 @@ type mspan struct {
 	// The sweep will free the old allocBits and set allocBits to the
 	// gcmarkBits. The gcmarkBits are replaced with a fresh zeroed
 	// out memory.
-	allocBits  *gcBits
-	gcmarkBits *gcBits
+	allocBits  *gcBits // 已分配的对象的个数
+	gcmarkBits *gcBits // span分类
 
 	// sweep generation:
 	// if sweepgen == h->sweepgen - 2, the span needs sweeping
@@ -450,19 +462,20 @@ type mspan struct {
 	// if sweepgen == h->sweepgen + 3, the span was swept and then cached and is still cached
 	// h->sweepgen is incremented by 2 after every GC
 
-	sweepgen    uint32
-	divMul      uint16        // for divide by elemsize - divMagic.mul
-	baseMask    uint16        // if non-0, elemsize is a power of 2, & this will get object allocation base
-	allocCount  uint16        // number of allocated objects
-	spanclass   spanClass     // size class and noscan (uint8)
-	state       mSpanStateBox // mSpanInUse etc; accessed atomically (get/set methods)
-	needzero    uint8         // needs to be zeroed before allocation
-	divShift    uint8         // for divide by elemsize - divMagic.shift
-	divShift2   uint8         // for divide by elemsize - divMagic.shift2
-	elemsize    uintptr       // computed from sizeclass or from npages
-	limit       uintptr       // end of data in span
-	speciallock mutex         // guards specials list
-	specials    *special      // linked list of special records sorted by offset.
+	sweepgen   uint32
+	divMul     uint16        // for divide by elemsize - divMagic.mul
+	baseMask   uint16        // if non-0, elemsize is a power of 2, & this will get object allocation base
+	allocCount uint16        // number of allocated objects
+	spanclass  spanClass     // size class and noscan (uint8)
+	state      mSpanStateBox // mSpanInUse etc; accessed atomically (get/set methods)
+	needzero   uint8         // needs to be zeroed before allocation
+	divShift   uint8         // for divide by elemsize - divMagic.shift
+	divShift2  uint8         // for divide by elemsize - divMagic.shift2
+	elemsize   uintptr       // computed from sizeclass or from npages
+	// 申请大对象内存块会用到，mspan的数据截止位置
+	limit       uintptr  // end of data in span
+	speciallock mutex    // guards specials list
+	specials    *special // linked list of special records sorted by offset.
 }
 
 func (s *mspan) base() uintptr {
