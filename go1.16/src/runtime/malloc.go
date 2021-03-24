@@ -383,6 +383,7 @@ const (
 	// arenaBits is the total bits in a combined arena map index.
 	// This is split between the index into the L1 arena map and
 	// the L2 arena map.
+	// arenaBits是组合的arena映射索引中的总位。这在进入L1 arena映射和L2 arena映射的索引之间进行划分。
 	arenaBits = arenaL1Bits + arenaL2Bits
 
 	// arenaBaseOffset is the pointer value that corresponds to
@@ -391,15 +392,20 @@ const (
 	// On amd64, the address space is 48 bits, sign extended to 64
 	// bits. This offset lets us handle "negative" addresses (or
 	// high addresses if viewed as unsigned).
+	// 在amd64上，地址空间位为48位，符号扩展为64位。此偏移量是我们可以处理”负“地址（如果视为无符号，则为高地址）。
 	//
 	// On aix/ppc64, this offset allows to keep the heapAddrBits to
 	// 48. Otherwize, it would be 60 in order to handle mmap addresses
 	// (in range 0x0a00000000000000 - 0x0afffffffffffff). But in this
 	// case, the memory reserved in (s *pageAlloc).init for chunks
 	// is causing important slowdowns.
+	// 在aix/ppc64上，此偏移量允许将heapAddrBits保持为48。否则，为了处理mmap地址
+	//（范围为0x0a00000000000000-0x0afffffffffffffff），它将为60。但是在这种情况下，
+	// (s*pageAlloc).init中为块保留的内存会导致严重的速度下降。
 	//
 	// On other platforms, the user address space is contiguous
 	// and starts at 0, so no offset is necessary.
+	// 在其他平台上，用户地址空间是连续的，并且从0开始，因此不需要偏移量。
 	arenaBaseOffset = 0xffff800000000000*sys.GoarchAmd64 + 0x0a00000000000000*sys.GoosAix
 	// A typed version of this constant that will make it into DWARF (for viewcore).
 	arenaBaseOffsetUintptr = uintptr(arenaBaseOffset)
@@ -408,36 +414,50 @@ const (
 	// 2, 3, and 4 are all plausible maximums depending
 	// on the hardware details of the machine. The garbage
 	// collector scales well to 32 cpus.
+	// 运行垃圾回收的最大线程数。2，3，4都是合理的最大值，具体取决于机器的硬件细节。
+	// 垃圾收集器可以很好地扩展到32cpus。
 	_MaxGcproc = 32
 
 	// minLegalPointer is the smallest possible legal pointer.
 	// This is the smallest possible architectural page size,
 	// since we assume that the first page is never mapped.
+	// minLegalPointer是最小的合法指针。这是可能的最小体系架构页面大小，因为我们假设第一页从未映射过。
 	//
 	// This should agree with minZeroPage in the compiler.
+	// 这应该与编译器中的minZeroPage一致
 	minLegalPointer uintptr = 4096
 )
 
 // physPageSize is the size in bytes of the OS's physical pages.
 // Mapping and unmapping operations must be done at multiples of
 // physPageSize.
+// pysPageSize是操作系统物理页面的大小（以字节位单位）。
+// 映射和取消映射操作必须以phyPageSize的倍数完成。
 //
 // This must be set by the OS init code (typically in osinit) before
 // mallocinit.
+// 必须在mallocinit之前通过OS初始化代码（通常在osinit中）进行设置。
 var physPageSize uintptr
 
 // physHugePageSize is the size in bytes of the OS's default physical huge
 // page size whose allocation is opaque to the application. It is assumed
 // and verified to be a power of two.
+// phpsHugePageSize是操作系统默认物理大页面的大小（以字节为单位），
+// 该大小对应用程序是不透明的。假设并验证为2的幂。
 //
 // If set, this must be set by the OS init code (typically in osinit) before
 // mallocinit. However, setting it at all is optional, and leaving the default
 // value is always safe (though potentially less efficient).
+// 如果已设置，则必须在mallocinit之前通过OS初始化代码（通常在osinit中）进行设置。
+// 但是，完全设置是可选的，并且保留默认值始终是安全的（尽管可能是降低效率）。
 //
 // Since physHugePageSize is always assumed to be a power of two,
 // physHugePageShift is defined as physHugePageSize == 1 << physHugePageShift.
 // The purpose of physHugePageShift is to avoid doing divisions in
 // performance critical functions.
+//
+// 由于physHugePageSize始终假定为2的幂，因此physHugePageShift定义为physHugePageSize == 1 << physHugePageShift。
+// physHugePageShift的目的是避免对性能至关重要的功能进行划分。
 var (
 	physHugePageSize  uintptr
 	physHugePageShift uint
@@ -552,54 +572,70 @@ var (
 // 它标记了一个区域，以便在访问时总是会发生故障。仅用于调试运行时。
 
 func mallocinit() {
+	// 检查_TinySizeClass与_TinySize的对应关系
 	if class_to_size[_TinySizeClass] != _TinySize {
 		throw("bad TinySizeClass")
 	}
 
+	// 确保映射到相同defer大小类别的defer arg大小也映射到相同的malloc大小类别。
 	testdefersizes()
 
+	// 判断heapArenaBitmapBytes是否是2的指数次方
 	if heapArenaBitmapBytes&(heapArenaBitmapBytes-1) != 0 {
 		// heapBits expects modular arithmetic on bitmap
 		// addresses to work.
+		// heapBits希望对位图地址进行模块化算术运算。
 		throw("heapArenaBitmapBytes not a power of 2")
 	}
 
 	// Copy class sizes out for statistics table.
+	// 将类别大小拷贝到统计表
 	for i := range class_to_size {
 		memstats.by_size[i].size = uint32(class_to_size[i])
 	}
 
 	// Check physPageSize.
+	// 检查physPageSize。
 	if physPageSize == 0 {
 		// The OS init code failed to fetch the physical page size.
+		// 这个系统初始化代码无法获取物理页面大小。
 		throw("failed to get system page size")
 	}
 	if physPageSize > maxPhysPageSize {
 		print("system page size (", physPageSize, ") is larger than maximum page size (", maxPhysPageSize, ")\n")
 		throw("bad system page size")
 	}
+	// 物理页大小比最大物理页还大
 	if physPageSize < minPhysPageSize {
 		print("system page size (", physPageSize, ") is smaller than minimum page size (", minPhysPageSize, ")\n")
 		throw("bad system page size")
 	}
+	// 物理页大小比最小物理页还小
 	if physPageSize&(physPageSize-1) != 0 {
 		print("system page size (", physPageSize, ") must be a power of 2\n")
 		throw("bad system page size")
 	}
+	// 物理页必须是2的幂次方
 	if physHugePageSize&(physHugePageSize-1) != 0 {
 		print("system huge page size (", physHugePageSize, ") must be a power of 2\n")
 		throw("bad system huge page size")
 	}
+	// 操作系统默认页大小，物理页必须是2的幂次方
 	if physHugePageSize > maxPhysHugePageSize {
 		// physHugePageSize is greater than the maximum supported huge page size.
 		// Don't throw here, like in the other cases, since a system configured
 		// in this way isn't wrong, we just don't have the code to support them.
 		// Instead, silently set the huge page size to zero.
+		// physHugePageSize大于所支持的最大大页面大小。不要像其他情况那样在这里throw错误，
+		// 因为以这种方式配置的系统没有错，所以我们只是没有支持它们的代码。而是将巨大的页面大小静默设置为零。
 		physHugePageSize = 0
 	}
+	// 操作系统默认页大小大于操作系统最大的页大小
 	if physHugePageSize != 0 {
 		// Since physHugePageSize is a power of 2, it suffices to increase
 		// physHugePageShift until 1<<physHugePageShift == physHugePageSize.
+		// physHugePageShift until 1<<physHugePageShift == physHugePageSize.
+		// 由于physHugePageSize为2的幂，因此足以将physHugePageShift增大到1<<physHugePageShift == physHugePageSize。
 		for 1<<physHugePageShift != physHugePageSize {
 			physHugePageShift++
 		}
@@ -614,6 +650,7 @@ func mallocinit() {
 	}
 
 	// Initialize the heap.
+	// 初始化堆
 	mheap_.init()
 	mcache0 = allocmcache()
 	lockInit(&gcBitsArenas.lock, lockRankGcBitsArenas)
