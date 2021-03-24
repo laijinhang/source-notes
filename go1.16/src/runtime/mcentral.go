@@ -14,6 +14,7 @@ package runtime
 
 import "runtime/internal/atomic"
 
+// Central将相同大小级别的span归类在一起。
 // Central list of free objects of a given size.
 //
 //go:notinheap
