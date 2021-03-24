@@ -17,6 +17,13 @@ import (
 // Wait can be used to block until all goroutines have finished.
 //
 // A WaitGroup must not be copied after first use.
+//
+// WaitGroup用于等待一组 Goroutine 执行完毕。
+// 主 Goroutine 调用 Add 来设置需要等待的 Goroutine 的数量
+// 然后每个 Goroutine 运行并调用 Done 来确定已经执行完毕
+// 同时，Wait 可以用来阻塞并等待所有的 Goroutine 完成。
+//
+// WaitGroup 在第一次使用后不能被复制
 type WaitGroup struct {
 	noCopy noCopy
 
@@ -25,11 +32,19 @@ type WaitGroup struct {
 	// compilers do not ensure it. So we allocate 12 bytes and then use
 	// the aligned 8 bytes in them as state, and the other 4 as storage
 	// for the sema.
+	// 64-bit 值：高 32 位用于计数，低 32 位用于等待计数
+	// 64-bit 的原子操作要求 64 位对齐，但 32 位编译器无法保证这个要求
+	// 因此分配 12 字节然后将他们对齐，其中 8 字节作为状态，其他 4 字节用于存储原语
 	state1 [3]uint32
 }
 
 // state returns pointers to the state and sema fields stored within wg.state1.
+// state 返回 wg.state1 中存储的状态和原语字段
 func (wg *WaitGroup) state() (statep *uint64, semap *uint32) {
+	/*
+		在32位机器上 state1[0] 和 state1[1] 分别用于计数和等待计数，而最后一个 state1[2] 用于存储原语。
+		在64位机器上 state1[1] 和 state1[2] 分别用于计数和等待计数，而第一个 state1[0] 用于存储原语。
+	*/
 	if uintptr(unsafe.Pointer(&wg.state1))%8 == 0 {
 		return (*uint64)(unsafe.Pointer(&wg.state1)), &wg.state1[2]
 	} else {
@@ -50,7 +65,17 @@ func (wg *WaitGroup) state() (statep *uint64, semap *uint32) {
 // If a WaitGroup is reused to wait for several independent sets of events,
 // new Add calls must happen after all previous Wait calls have returned.
 // See the WaitGroup example.
+//
+// Add 将 delta（可能为负）加到 WaitGroup 的计数器上
+// 如果计数器归零，则所有阻塞在 Wait 的 Goroutine 被释放
+// 如果计数器为负，则panic
+//
+// 请注意，当计数器为 0 时发生的带有正的 delta 的调用必须在 Wait 之前。
+// 当计数器大于 0 时，带有负 delta 的调用或带有正 delta 调用可能在任何时候发生。
+// 通常，这意味着 Add 调用必须发生在 Goroutine 创建之前或被其他等待事件之前。
+// 如果一个 WaitGroup 被复用于等待几个不同的独立事件集合，必须在前一个 Wait 调用返回后才能调用 Add。
 func (wg *WaitGroup) Add(delta int) {
+	// 首先获取状态指针和存储指针
 	statep, semap := wg.state()
 	if race.Enabled {
 		_ = *statep // trigger nil deref early
@@ -61,8 +86,11 @@ func (wg *WaitGroup) Add(delta int) {
 		race.Disable()
 		defer race.Enable()
 	}
+	// 将 delta 加到 statep 的前 32 位上，即加到计数器上
 	state := atomic.AddUint64(statep, uint64(delta)<<32)
+	// 计数器的值
 	v := int32(state >> 32)
+	// 等待器的值
 	w := uint32(state)
 	if race.Enabled && delta > 0 && v == int32(delta) {
 		// The first increment must be synchronized with Wait.
@@ -70,12 +98,15 @@ func (wg *WaitGroup) Add(delta int) {
 		// several concurrent wg.counter transitions from 0.
 		race.Read(unsafe.Pointer(semap))
 	}
+	// 如果实际计数为负则直接 panic，因此不允许计数为负值的
 	if v < 0 {
 		panic("sync: negative WaitGroup counter")
 	}
+	// 如果等待器不为零，但 delta 是处于增加的状态，而且存储计数与 delta 的值相同，则立即 panic
 	if w != 0 && delta > 0 && v == int32(delta) {
 		panic("sync: WaitGroup misuse: Add called concurrently with Wait")
 	}
+	// 如果计数器 > 0 或等待器为 0 则一切都很好，直接返回
 	if v > 0 || w == 0 {
 		return
 	}
@@ -84,11 +115,18 @@ func (wg *WaitGroup) Add(delta int) {
 	// - Adds must not happen concurrently with Wait,
 	// - Wait does not increment waiters if it sees counter == 0.
 	// Still do a cheap sanity check to detect WaitGroup misuse.
+	// 这时 Goroutine 已经将计数器清零，且等待器大于零（并发调用导致）
+	// 这时不允许出现并发使用导致的状态突变，否则就应该panic
+	// - Add 不能与 Wait 并发调用
+	// - Wait 在计数器已经归零的情况下，不能再继续增加等待器了
+	// 仍然检查来保证 WaitGroup 不会被滥用
 	if *statep != state {
 		panic("sync: WaitGroup misuse: Add called concurrently with Wait")
 	}
 	// Reset waiters count to 0.
+	// 结束后将等待器清零
 	*statep = 0
+	// 等待器大于零，减少 runtime_Semrelease 产生的阻塞
 	for ; w != 0; w-- {
 		runtime_Semrelease(semap, false, 0)
 	}
