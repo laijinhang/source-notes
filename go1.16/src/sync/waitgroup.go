@@ -138,16 +138,22 @@ func (wg *WaitGroup) Done() {
 }
 
 // Wait blocks until the WaitGroup counter is zero.
+// Wait会保持阻塞直到WaitGroup计数器归零
 func (wg *WaitGroup) Wait() {
+	// 先获得计数器和存储原语
 	statep, semap := wg.state()
 	if race.Enabled {
 		_ = *statep // trigger nil deref early
 		race.Disable()
 	}
+	// 只有计数器归零才会结束
 	for {
 		state := atomic.LoadUint64(statep)
+		// 计数
 		v := int32(state >> 32)
+		// 无符号计数
 		w := uint32(state)
+		// 如果计数器已经归零，则直接退出循环
 		if v == 0 {
 			// Counter is 0, no need to wait.
 			if race.Enabled {
@@ -157,6 +163,7 @@ func (wg *WaitGroup) Wait() {
 			return
 		}
 		// Increment waiters count.
+		// 增加等待计数，此处的原语会比较statep和state的值，如果相同则等待计数加1
 		if atomic.CompareAndSwapUint64(statep, state, state+1) {
 			if race.Enabled && w == 0 {
 				// Wait must be synchronized with the first Add.
@@ -165,7 +172,9 @@ func (wg *WaitGroup) Wait() {
 				// otherwise concurrent Waits will race with each other.
 				race.Write(unsafe.Pointer(semap))
 			}
+			// 会阻塞到存储原语是否 > 0（即睡眠），如果 *semp > 0 则会减一，因此最终的 semp 理论为0
 			runtime_Semacquire(semap)
+			// 在这种情况下，如果 *semap 不等于0，则说明使用失误，直接panic
 			if *statep != 0 {
 				panic("sync: WaitGroup is reused before previous Wait has returned")
 			}
