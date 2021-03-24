@@ -711,7 +711,9 @@ func pageIndexOf(p uintptr) (arena *heapArena, pageIdx uintptr, pageMask uint8) 
 }
 
 // Initialize the heap.
+// 堆初始化
 func (h *mheap) init() {
+	// 初始化堆中各个组件的分配器
 	lockInit(&h.lock, lockRankMheap)
 	lockInit(&h.speciallock, lockRankMheapSpecial)
 
@@ -728,10 +730,15 @@ func (h *mheap) init() {
 	// from improperly cas'ing it from 0.
 	//
 	// This is safe because mspan contains no heap pointers.
+	// 不对mspan的分配清零，后台扫描可以通过分配它来并发的检查一个span
+	// 因此span的sweepgen在释放和重新分配时候能存活，从而可以防止后台扫描
+	// 不正确的将其从0进行CAS。
+	//
+	// 因为span不包含堆指针，因此它是安全的
 	h.spanalloc.zero = false
 
 	// h->mapcache needs no init
-
+	// h->mapcache不需要初始化
 	for i := range h.central {
 		h.central[i].mcentral.init(spanClass(i))
 	}

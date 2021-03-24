@@ -4826,6 +4826,7 @@ func procresize(nprocs int32) *p {
 	}
 
 	// initialize new P's
+	// 初始化新的P
 	for i := old; i < nprocs; i++ {
 		pp := allp[i]
 		if pp == nil {

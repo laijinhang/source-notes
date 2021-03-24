@@ -658,6 +658,7 @@ func mallocinit() {
 	lockInit(&globalAlloc.mutex, lockRankGlobalAlloc)
 
 	// Create initial arena growth hints.
+	// 创建初始的 arena 增长 hint
 	if sys.PtrSize == 8 {
 		// On a 64-bit machine, we pick the following hints
 		// because:
@@ -824,6 +825,7 @@ func (h *mheap) sysAlloc(n uintptr) (v unsafe.Pointer, size uintptr) {
 	n = alignUp(n, heapArenaBytes)
 
 	// First, try the arena pre-reservation.
+	// 优先从已经保留的arena中获取。
 	v = h.arena.alloc(n, heapArenaBytes, &memstats.heap_sys)
 	if v != nil {
 		size = n
@@ -831,16 +833,17 @@ func (h *mheap) sysAlloc(n uintptr) (v unsafe.Pointer, size uintptr) {
 	}
 
 	// Try to grow the heap at a hint address.
+	// 如果获取不到，再尝试增长arena hint
 	for h.arenaHints != nil {
 		hint := h.arenaHints
 		p := hint.addr
 		if hint.down {
 			p -= n
 		}
-		if p+n < p {
+		if p+n < p { // 溢出
 			// We can't use this, so don't ask.
 			v = nil
-		} else if arenaIndex(p+n-1) >= 1<<arenaBits {
+		} else if arenaIndex(p+n-1) >= 1<<arenaBits { // 溢出
 			// Outside addressable heap. Can't use.
 			v = nil
 		} else {
@@ -848,6 +851,7 @@ func (h *mheap) sysAlloc(n uintptr) (v unsafe.Pointer, size uintptr) {
 		}
 		if p == uintptr(v) {
 			// Success. Update the hint.
+			// 获取成功，更新 arena hint
 			if !hint.down {
 				p += n
 			}
@@ -861,6 +865,7 @@ func (h *mheap) sysAlloc(n uintptr) (v unsafe.Pointer, size uintptr) {
 		// told to only return the requested address. In
 		// particular, this is already how Windows behaves, so
 		// it would simplify things there.
+		// 失败，丢弃并重新尝试
 		if v != nil {
 			sysFree(v, n, nil)
 		}
@@ -886,6 +891,7 @@ func (h *mheap) sysAlloc(n uintptr) (v unsafe.Pointer, size uintptr) {
 		}
 
 		// Create new hints for extending this region.
+		// 创建新的hint来增长此区域
 		hint := (*arenaHint)(h.arenaHintAlloc.alloc())
 		hint.addr, hint.down = uintptr(v), true
 		hint.next, mheap_.arenaHints = mheap_.arenaHints, hint
@@ -895,6 +901,7 @@ func (h *mheap) sysAlloc(n uintptr) (v unsafe.Pointer, size uintptr) {
 	}
 
 	// Check for bad pointers or pointers we can't use.
+	// 检查不能使用的指针
 	{
 		var bad string
 		p := uintptr(v)
@@ -918,14 +925,17 @@ func (h *mheap) sysAlloc(n uintptr) (v unsafe.Pointer, size uintptr) {
 	}
 
 	// Transition from Reserved to Prepared.
+	// 正式开始使用保留的内存
 	sysMap(v, size, &memstats.heap_sys)
 
 mapped:
 	// Create arena metadata.
+	// 创建 arena 的 metadata
 	for ri := arenaIndex(uintptr(v)); ri <= arenaIndex(uintptr(v)+size-1); ri++ {
 		l2 := h.arenas[ri.l1()]
 		if l2 == nil {
 			// Allocate an L2 arena map.
+			// 分配 L2 arena map
 			l2 = (*[1 << arenaL2Bits]*heapArena)(persistentalloc(unsafe.Sizeof(*l2), sys.PtrSize, nil))
 			if l2 == nil {
 				throw("out of memory allocating heap arena map")
@@ -946,6 +956,7 @@ mapped:
 		}
 
 		// Add the arena to the arenas list.
+		// 将 arena 添加到 arena 列表中
 		if len(h.allArenas) == cap(h.allArenas) {
 			size := 2 * uintptr(cap(h.allArenas)) * sys.PtrSize
 			if size == 0 {
@@ -1413,6 +1424,9 @@ func profilealloc(mp *m, x unsafe.Pointer, size uintptr) {
 // processes, the distance between two samples follows the exponential
 // distribution (exp(MemProfileRate)), so the best return value is a random
 // number taken from an exponential distribution whose mean is MemProfileRate.
+// 由于运行时提供了采样过程堆分析的支持，由于我们的采样的目标是平均每个MemProfileRate字节对分配进行采样，
+// 显然，在整个时间线上的分配情况应该是完全随机分布的，这是一个泊松过程，
+// 因此最佳的采样点应该是服从指数分布exp(MemProfileRate)的随机数，其中MemProfileRate为均值。
 func nextSample() uintptr {
 	if MemProfileRate == 1 {
 		// Callers assign our return value to

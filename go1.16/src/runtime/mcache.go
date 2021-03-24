@@ -16,12 +16,15 @@ import (
 // mcaches are allocated from non-GC'd memory, so any heap pointers
 // must be specially handled.
 //
+// mcache是一个Per-P的缓存，因此每个线程都只访问自身的mache，因此也就不会出现并发，也就省去了对其进行加锁步骤。
 //go:notinheap
 type mcache struct {
 	// The following members are accessed on every malloc,
 	// so they are grouped here for better caching.
-	nextSample uintptr // trigger heap sample after allocating this many bytes
-	scanAlloc  uintptr // bytes of scannable heap allocated
+	// 下面的成员在每次malloc时都会被访问。
+	// 因此将它们放到一起来利用缓存的局部性原理。
+	nextSample uintptr // trigger heap sample after allocating this many bytes，分配这么多字节后触发堆样本
+	scanAlloc  uintptr // bytes of scannable heap allocated，分配的可扫描堆的字节数
 
 	// Allocator cache for tiny objects w/o pointers.
 	// See "Tiny allocator" comment in malloc.go.
@@ -35,12 +38,20 @@ type mcache struct {
 	//
 	// tinyAllocs is the number of tiny allocations performed
 	// by the P that owns this mcache.
+	// 没有指针的微小对象的内存分配器缓存。
+	// 请参考 malloc.go 中的”小型分配器“注释。
+	//
+	// tiny指向当前tiny块的起始位置，或没有tiny块时为nil
+	// tiny是一个堆指针。由于mcache在非GC内存中，我们通常在
+	// make termination期间在releaseAll中清除它来处理它。
 	tiny       uintptr
 	tinyoffset uintptr
 	tinyAllocs uintptr
 
 	// The rest is not accessed on every malloc.
+	// 下面的不在每个malloc时被访问
 
+	// 用来分配的spans，由spanClass索引
 	alloc [numSpanClasses]*mspan // spans to allocate from, indexed by spanClass
 
 	stackcache [_NumStackOrders]stackfreelist
@@ -79,6 +90,7 @@ type stackfreelist struct {
 }
 
 // dummy mspan that contains no free objects.
+// 虚拟的MSpan，不包含任何对象。
 var emptymspan mspan
 
 func allocmcache() *mcache {
@@ -90,8 +102,9 @@ func allocmcache() *mcache {
 		unlock(&mheap_.lock)
 	})
 	for i := range c.alloc {
-		c.alloc[i] = &emptymspan
+		c.alloc[i] = &emptymspan // 暂时指向虚拟内存
 	}
+	// 返回下一个采样点，是服从泊松过程的随机数
 	c.nextSample = nextSample()
 	return c
 }
@@ -104,7 +117,9 @@ func allocmcache() *mcache {
 // a different mcache (the recipient).
 func freemcache(c *mcache) {
 	systemstack(func() {
+		// 归还span
 		c.releaseAll()
+		// 释放stack
 		stackcache_clear(c)
 
 		// NOTE(rsc,rlh): If gcworkbuffree comes back, we need to coordinate
@@ -113,6 +128,7 @@ func freemcache(c *mcache) {
 		// gcworkbuffree(c.gcworkbuf)
 
 		lock(&mheap_.lock)
+		// 将mcache释放
 		mheap_.cachealloc.free(unsafe.Pointer(c))
 		unlock(&mheap_.lock)
 	})
@@ -248,6 +264,9 @@ func (c *mcache) allocLarge(size uintptr, needzero bool, noscan bool) *mspan {
 	return s
 }
 
+// 释放
+// 由于mcache从非GC内存上进行分配，因此出现的任何堆指针都必须进行特殊处理。
+// 所以在释放前，需要调用mcache.releaseAll将堆指针进行处理：
 func (c *mcache) releaseAll() {
 	// Take this opportunity to flush scanAlloc.
 	atomic.Xadd64(&memstats.heap_scan, int64(c.scanAlloc))
@@ -278,6 +297,7 @@ func (c *mcache) releaseAll() {
 		}
 	}
 	// Clear tinyalloc pool.
+	// 清空tinyalloc池
 	c.tiny = 0
 	c.tinyoffset = 0
 	atomic.Xadd64(&memstats.tinyallocs, int64(c.tinyAllocs))

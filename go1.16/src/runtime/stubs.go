@@ -82,6 +82,13 @@ func badsystemstack() {
 //
 // The (CPU-specific) implementations of this function are in memclr_*.s.
 //
+// memclrNoHeapPointers清除从ptr开始的n个字节
+// 通常情况下你应该使用typedmemclr，而memclrNoHeapPointers应该仅在调用方知道*ptr
+// 不包含堆指针的情况下使用，因为*ptr只能是下面两种情况：
+// 1. *ptr是初始化过的内存，且其类型不是指针。
+// 2. *ptr是未初始化的内存（例如刚被新分配时使用的内存），则指包含"junk"垃圾内存
+// 见 memclr_*.s
+//
 //go:noescape
 func memclrNoHeapPointers(ptr unsafe.Pointer, n uintptr)
 

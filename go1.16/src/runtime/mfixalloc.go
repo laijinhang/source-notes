@@ -129,8 +129,11 @@ func (f *fixalloc) alloc() unsafe.Pointer {
 	return v
 }
 
+// 回收
 func (f *fixalloc) free(p unsafe.Pointer) {
+	// 减少使用的字节数
 	f.inuse -= f.size
+	// 将要释放的内存地址作为mlink指针插入到f.list内，完成回收
 	v := (*mlink)(p)
 	v.next = f.list
 	f.list = v
