@@ -67,8 +67,11 @@ func netpollIsPollDescriptor(fd uintptr) bool {
 
 func netpollopen(fd uintptr, pd *pollDesc) int32 {
 	var ev epollevent
+	// 可读，可写，对端断开，边缘触发
 	ev.events = _EPOLLIN | _EPOLLOUT | _EPOLLRDHUP | _EPOLLET
+	// 存放user data，后面读写均会用到pollDesc
 	*(**pollDesc)(unsafe.Pointer(&ev.data)) = pd
+	// 注册epoll事件
 	return -epollctl(epfd, _EPOLL_CTL_ADD, int32(fd), &ev)
 }
 

@@ -10,7 +10,13 @@ type FS interface {
 	Open(name string) (File, error)
 }
 
+// 检查是否有效文件名
+// 1、传入的完全由utf8组成
+// 2、如果存在/，则最后一个/后面必须是一个有效文件名
+// 3、name不能为空，首字符或者/后面不能以 ./，../，.，..，/，出现
+// 如：./，../，a/./，a/../，a//
 func ValidPath(name string) bool {
+	// 检查name是否完全由utf8组成
 	if !utf8.ValidString(name) {
 		return false
 	}
@@ -27,6 +33,7 @@ func ValidPath(name string) bool {
 			i++
 		}
 		elem := name[:i]
+		// 绝对路径，当前路径，上一个目录开始
 		if elem == "" || elem == "." || elem == ".." {
 			return false
 		}
@@ -56,11 +63,11 @@ type ReadDirFile interface {
 }
 
 var (
-	ErrInvalid    = errInvalid()    // "invalid argument"
-	ErrPermission = errPermission() // "permission denied"
-	ErrExist      = errExist()      // "file already exists"
-	ErrNotExist   = errNotExist()   // "file does not exist"
-	ErrClosed     = errClosed()     // "file already closed"
+	ErrInvalid    = errInvalid()    // "invalid argument"，无效参数
+	ErrPermission = errPermission() // "permission denied"，没有权限
+	ErrExist      = errExist()      // "file already exists"，文件已存在
+	ErrNotExist   = errNotExist()   // "file does not exist"，文件不存在
+	ErrClosed     = errClosed()     // "file already closed"，文件已经关闭
 )
 
 func errInvalid() error    { return oserror.ErrInvalid }
