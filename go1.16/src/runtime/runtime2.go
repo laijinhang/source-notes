@@ -483,21 +483,24 @@ type g struct {
 	gcAssistBytes int64
 }
 
+/*
+M的结构，M是OS线程的实体
+*/
 type m struct {
-	g0      *g     // goroutine with scheduling stack
+	g0      *g     // goroutine with scheduling stack，用于执行调度指令的 Goroutine
 	morebuf gobuf  // gobuf arg to morestack
 	divmod  uint32 // div/mod denominator for arm - known to liblink
 
 	// Fields not known to debuggers.
 	procid        uint64       // for debuggers, but offset not hard-coded
-	gsignal       *g           // signal-handling g
+	gsignal       *g           // signal-handling g，处理signal的g
 	goSigStack    gsignalStack // Go-allocated signal handling stack
 	sigmask       sigset       // storage for saved signal mask
-	tls           [6]uintptr   // thread-local storage (for x86 extern register)
+	tls           [6]uintptr   // thread-local storage (for x86 extern register)，线程本地存储
 	mstartfn      func()
-	curg          *g       // current running goroutine
+	curg          *g       // current running goroutine，当前运行的用户 Goroutine
 	caughtsig     guintptr // goroutine running during fatal signal
-	p             puintptr // attached p for executing go code (nil if not executing go code)
+	p             puintptr // attached p for executing go code (nil if not executing go code)，执行go代码时持有的P（如果没有执行则为nil）
 	nextp         puintptr
 	oldp          puintptr // the p that was attached before executing a syscall
 	id            int64
@@ -507,7 +510,7 @@ type m struct {
 	locks         int32
 	dying         int32
 	profilehz     int32
-	spinning      bool // m is out of work and is actively looking for work
+	spinning      bool // m is out of work and is actively looking for work，m当前没有运行的work且正处于work的活跃状态
 	blocked       bool // m is blocked on a note
 	newSigstack   bool // minit on C thread called sigaltstack
 	printlock     int8
@@ -519,10 +522,10 @@ type m struct {
 	ncgocall      uint64      // number of cgo calls in total
 	ncgo          int32       // number of cgo calls currently in progress
 	cgoCallersUse uint32      // if non-zero, cgoCallers in use temporarily
-	cgoCallers    *cgoCallers // cgo traceback if crashing in cgo call
+	cgoCallers    *cgoCallers // cgo traceback if crashing in cgo call，cgo调用崩溃的cgo回溯
 	doesPark      bool        // non-P running threads: sysmon and newmHandoff never use .park
 	park          note
-	alllink       *m // on allm
+	alllink       *m // on allm，在allm上
 	schedlink     muintptr
 	lockedg       guintptr
 	createstack   [32]uintptr // stack that created this thread.
@@ -573,19 +576,28 @@ type m struct {
 	locksHeld    [10]heldLockInfo
 }
 
+/*
+P的结构
+P只是处理器的抽象，而被处理器本身，它存在的意义在于实现工作窃取（work stealing）算法。简单来说，每个P持有一个G的本地队列。
+
+在没有P的情况下，所以G只能放在一个全局队列中，当M执行完而没有G可执行时，虽然仍然会先检查全局队列、网络，
+但这时增加了一个从其他P的队列偷取（steal）一个G来执行的过程。优先级为本地 > 全局 > 网络 > 偷取。
+
+偷取：当有若个P时，其中有P当前维护的本地G队列为空时，而全局队列中存在G，那么本地队列为空的P会去全局队列中偷取。
+*/
 type p struct {
 	id          int32
-	status      uint32 // one of pidle/prunning/...
+	status      uint32 // one of pidle/prunning/...，p的状态 pidle/prunning/...
 	link        puintptr
 	schedtick   uint32     // incremented on every scheduler call
 	syscalltick uint32     // incremented on every system call
 	sysmontick  sysmontick // last tick observed by sysmon
-	m           muintptr   // back-link to associated m (nil if idle)
+	m           muintptr   // back-link to associated m (nil if idle)，反向链接到关联的m（nil则表示idle）
 	mcache      *mcache
 	pcache      pageCache
 	raceprocctx uintptr
 
-	deferpool    [5][]*_defer // pool of available defer structs of different sizes (see panic.go)
+	deferpool    [5][]*_defer // pool of available defer structs of different sizes (see panic.go)，不同大小的可用的defer结构池
 	deferpoolbuf [5][32]*_defer
 
 	// Cache of goroutine ids, amortizes accesses to runtime·sched.goidgen.
@@ -593,7 +605,7 @@ type p struct {
 	goidcacheend uint64
 
 	// Queue of runnable goroutines. Accessed without lock.
-	runqhead uint32
+	runqhead uint32 // 可运行的 Goroutine 队列，可无锁访问
 	runqtail uint32
 	runq     [256]guintptr
 	// runnext, if non-nil, is a runnable G that was ready'd by
@@ -685,11 +697,14 @@ type p struct {
 
 	// Lock for timers. We normally access the timers while running
 	// on this P, but the scheduler can also do it from a different P.
+	// timers 字段的锁。我们通常在 P 运行时访问 timers，但 scheduler 仍可以
+	// 在不同的 P 上进行访问。
 	timersLock mutex
 
 	// Actions to take at some time. This is used to implement the
 	// standard library's time package.
 	// Must hold timersLock to access.
+	// 某段时间需要进行的动作。用于实现 time 包。
 	timers []*timer
 
 	// Number of timers in P's heap.
@@ -700,6 +715,8 @@ type p struct {
 	// This should only be modified while holding timersLock,
 	// or while the timer status is in a transient state
 	// such as timerModifying.
+	// 在 P 堆中 timerModifiedEarlier timers 的数量。
+	// 仅当持有 timersLock 或者当 timer 状态转换为 timerModifying 时才可以修改
 	adjustTimers uint32
 
 	// Number of timerDeleted timers in P's heap.
@@ -716,6 +733,16 @@ type p struct {
 	pad cpu.CacheLinePad
 }
 
+/*
+调度器sched结构
+
+调度器，所有 Goroutine 被调度的核心，存放了调度器持有的全局资源，访问这些资源需要持有锁：
+* 管理了能够将G和M进行绑定的M队列
+* 管理了空闲的P链表（队列）
+* 管理了G的全局队列
+* 管理了可被复用的G的全局缓存
+* 管理了defer池
+*/
 type schedt struct {
 	// accessed atomically. keep at top to ensure alignment on 32-bit systems.
 	goidgen   uint64
@@ -737,11 +764,13 @@ type schedt struct {
 
 	ngsys uint32 // number of system goroutines; updated atomically
 
-	pidle      puintptr // idle p's
-	npidle     uint32
+	pidle  puintptr // idle p's，空闲p链表
+	npidle uint32   // 空闲p数量
+	// 自旋状态的M的数量
 	nmspinning uint32 // See "Worker thread parking/unparking" comment in proc.go.
 
 	// Global runnable queue.
+	// 全局 runnable G 队列
 	runq     gQueue
 	runqsize int32
 
@@ -758,10 +787,11 @@ type schedt struct {
 	}
 
 	// Global cache of dead G's.
+	// 有效 dead G 的全局缓存。
 	gFree struct {
 		lock    mutex
-		stack   gList // Gs with stacks
-		noStack gList // Gs without stacks
+		stack   gList // Gs with stacks，包含栈的Gs
+		noStack gList // Gs without stacks，没有栈的Gs
 		n       int32
 	}
 

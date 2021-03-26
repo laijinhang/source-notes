@@ -17,6 +17,7 @@ type multiReader struct {
 func (mr *multiReader) Read(p []byte) (n int, err error) {
 	for len(mr.readers) > 0 {
 		// Optimization to flatten nested multiReaders (Issue 13558).
+		// 优化以使嵌套的MultiReader扁平化 (Issue 13558).
 		if len(mr.readers) == 1 {
 			if r, ok := mr.readers[0].(*multiReader); ok {
 				mr.readers = r.readers
@@ -27,6 +28,7 @@ func (mr *multiReader) Read(p []byte) (n int, err error) {
 		if err == EOF {
 			// Use eofReader instead of nil to avoid nil panic
 			// after performing flatten (Issue 18232).
+			// //使用eofReader而不是nil来避免扁平化后出现nil恐慌 (Issue 18232).
 			mr.readers[0] = eofReader{} // permit earlier GC
 			mr.readers = mr.readers[1:]
 		}
