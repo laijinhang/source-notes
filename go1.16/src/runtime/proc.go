@@ -2248,6 +2248,8 @@ func templateThread() {
 
 // Stops execution of the current m until new work is available.
 // Returns with acquired P.
+// 停止当前 m 的执行，直到新的 work 有效
+// 在包含要求的 p 下返回
 func stopm() {
 	_g_ := getg()
 
@@ -2261,10 +2263,13 @@ func stopm() {
 		throw("stopm spinning")
 	}
 
+	// 将 m 返回到 空闲列表中，因为马上就要暂停了
 	lock(&sched.lock)
 	mput(_g_.m)
 	unlock(&sched.lock)
 	mPark()
+	// 此时已经被复始，说明有任务要执行
+	// 立即 acquire P
 	acquirep(_g_.m.nextp.ptr())
 	_g_.m.nextp = 0
 }
@@ -2525,6 +2530,10 @@ func gcstopm() {
 // Write barriers are allowed because this is called immediately after
 // acquiring a P in several places.
 //
+// 在当前 M 上调度 gp。
+// 如果 InheritTime为 true，则 gp 继承剩余的时间片。否则从一个新的时间片开始
+// 用不返回
+//
 //go:yeswritebarrierrec
 func execute(gp *g, inheritTime bool) {
 	_g_ := getg()
@@ -2533,7 +2542,9 @@ func execute(gp *g, inheritTime bool) {
 	// M.
 	_g_.m.curg = gp
 	gp.m = _g_.m
+	// 将 g 正式切换为 _Grunning 状态
 	casgstatus(gp, _Grunnable, _Grunning)
+	// 抢占信号
 	gp.waitsince = 0
 	gp.preempt = false
 	gp.stackguard0 = gp.stack.lo + _StackGuard
@@ -2542,6 +2553,7 @@ func execute(gp *g, inheritTime bool) {
 	}
 
 	// Check whether the profiler needs to be turned on or off.
+	// profiling相关
 	hz := sched.profilehz
 	if _g_.m.profilehz != hz {
 		setThreadCPUProfiler(hz)
@@ -3058,6 +3070,7 @@ func injectglist(glist *gList) {
 
 // One round of scheduler: find a runnable goroutine and execute it.
 // Never returns.
+// 调度器的一轮：找到 runnable Goroutine 并进行执行且永不返回
 func schedule() {
 	_g_ := getg()
 
@@ -3065,8 +3078,10 @@ func schedule() {
 		throw("schedule: holding locks")
 	}
 
+	// m.lockedg 会在 LockOSThread 下变为非零
 	if _g_.m.lockedg != 0 {
 		stoplockedm()
+		// 永不返回
 		execute(_g_.m.lockedg.ptr(), false) // Never returns.
 	}
 
@@ -3081,6 +3096,7 @@ top:
 	pp.preempt = false
 
 	if sched.gcwaiting != 0 {
+		// 如果需要 GC，不再进行调度
 		gcstopm()
 		goto top
 	}
@@ -3112,6 +3128,7 @@ top:
 			tryWakeP = true
 		}
 	}
+	// 正在GC，去找GC的g
 	if gp == nil && gcBlackenEnabled != 0 {
 		gp = gcController.findRunnableGCWorker(_g_.m.p.ptr())
 		tryWakeP = tryWakeP || gp != nil
@@ -3120,24 +3137,37 @@ top:
 		// Check the global runnable queue once in a while to ensure fairness.
 		// Otherwise two goroutines can completely occupy the local runqueue
 		// by constantly respawning each other.
+		// 说明不在 gc
+		// 每调度 61 次，就检查一次全局队列，保证公平性
+		// 否则两个 Goroutine 可以通过互相 respawn一直占领本地的 runqueue
 		if _g_.m.p.ptr().schedtick%61 == 0 && sched.runqsize > 0 {
 			lock(&sched.lock)
+			// 从全局队列中偷 g
 			gp = globrunqget(_g_.m.p.ptr(), 1)
 			unlock(&sched.lock)
 		}
 	}
 	if gp == nil {
+		// 说明不在 gc
+		// 两种情况：
+		//	1. 普通取
+		//	2. 全局队列中偷不到的取
+		// 从本地队列中取
 		gp, inheritTime = runqget(_g_.m.p.ptr())
 		// We can see gp != nil here even if the M is spinning,
 		// if checkTimers added a local goroutine via goready.
 	}
 	if gp == nil {
+		// 如果拿不到，则休眠，在此阻塞
 		gp, inheritTime = findrunnable() // blocks until work is available
 	}
 
 	// This thread is going to run a goroutine and is not spinning anymore,
 	// so if it was marked as spinning we need to reset it now and potentially
 	// start a new spinning M.
+	// 如果 m 是自旋状态，则
+	//	1, 从自旋到非自旋
+	//	2. 在没有自旋状态的 m 的情况下，再多创建一个新的自旋状态的 m
 	if _g_.m.spinning {
 		resetspinning()
 	}
@@ -3167,10 +3197,14 @@ top:
 	if gp.lockedm != 0 {
 		// Hands off own p to the locked m,
 		// then blocks waiting for a new p.
+		// 如果 g 需要 lock 到 m 上，则会将当前的p
+		// 给到这个要 lock 的 g
+		// 然后阻塞等待一个新的 p
 		startlockedm(gp)
 		goto top
 	}
 
+	// 开始执行
 	execute(gp, inheritTime)
 }
 
@@ -4971,9 +5005,14 @@ func procresize(nprocs int32) *p {
 // This function is allowed to have write barriers even if the caller
 // isn't because it immediately acquires _p_.
 //
+/*
+M 与 P 的绑定
+M 与 P 的绑定过程只是简单的将P链表中的P，保存到 M 中的P指针上。绑定前，P的状态一定是 _Pidle，绑定后P的状态一定为_Prunning
+*/
 //go:yeswritebarrierrec
 func acquirep(_p_ *p) {
 	// Do the part that isn't allowed to have write barriers.
+	// 此处不允许 write barrier
 	wirep(_p_)
 
 	// Have p; write barriers now allowed.
@@ -4999,6 +5038,7 @@ func wirep(_p_ *p) {
 	if _g_.m.p != 0 {
 		throw("wirep: already in go")
 	}
+	// 检查 m 是否正常，并检查要获取的 p 的状态
 	if _p_.m != 0 || _p_.status != _Pidle {
 		id := int64(0)
 		if _p_.m != 0 {
@@ -5007,8 +5047,10 @@ func wirep(_p_ *p) {
 		print("wirep: p->m=", _p_.m, "(", id, ") p->status=", _p_.status, "\n")
 		throw("wirep: invalid p state")
 	}
-	_g_.m.p.set(_p_)
-	_p_.m.set(_g_.m)
+	// 将 p 绑定到 m，p 和 m 互相引用
+	_g_.m.p.set(_p_) // *_g_.m.p = _p_
+	_p_.m.set(_g_.m) // *_p_.m = _g_.m
+	// 修改 p 的状态
 	_p_.status = _Prunning
 }
 
@@ -5215,6 +5257,7 @@ func sysmon() {
 					unlock(&sched.lock)
 					// Make wake-up period small enough
 					// for the sampling to be correct.
+					// 确保 wake-up 周期足够小从而进行正确的采样
 					sleep := forcegcperiod / 2
 					if next-now < sleep {
 						sleep = next - now
@@ -5246,13 +5289,16 @@ func sysmon() {
 		now = nanotime()
 
 		// trigger libc interceptors if needed
+		// 需要时触发 libc interceptor
 		if *cgo_yield != nil {
 			asmcgocall(*cgo_yield, nil)
 		}
 		// poll network if not polled for more than 10ms
+		// 如果超过10ms没有poll，则 poll 一下网络
 		lastpoll := int64(atomic.Load64(&sched.lastpoll))
 		if netpollinited() && lastpoll != 0 && lastpoll+10*1000*1000 < now {
 			atomic.Cas64(&sched.lastpoll, uint64(lastpoll), uint64(now))
+			// 非阻塞，返回 Goroutine 列表
 			list := netpoll(0) // non-blocking - returns list of goroutines
 			if !list.empty() {
 				// Need to decrement number of idle locked M's
@@ -5262,6 +5308,10 @@ func sysmon() {
 				// another M returns from syscall, finishes running its G,
 				// observes that there is no work to do and no other running M's
 				// and reports deadlock.
+				// 需要在插入 g 列表前减少空闲锁住的 m 的数量（假装有一个正在运行）
+				// 否则会导致这些情况：
+				// injectglist 会绑定所有的 p，但是在它开始 M 运行 P 之前，另一个 M 从 syscall 返回，
+				// 完成运行它的 G，注意这个时候没有 work 要做，且没有其他正在运行 M 的死锁报告。
 				incidlelocked(-1)
 				injectglist(&list)
 				incidlelocked(1)
@@ -5294,12 +5344,14 @@ func sysmon() {
 		}
 		// retake P's blocked in syscalls
 		// and preempt long running G's
+		// 抢夺在 syscall 中阻塞的P运行时间过长的G
 		if retake(now) != 0 {
 			idle = 0
 		} else {
 			idle++
 		}
 		// check if we need to force a GC
+		// 检查是否需要强制触发GC
 		if t := (gcTrigger{kind: gcTriggerTime, now: now}); t.test() && atomic.Load(&forcegc.idle) != 0 {
 			lock(&forcegc.lock)
 			forcegc.idle = 0
