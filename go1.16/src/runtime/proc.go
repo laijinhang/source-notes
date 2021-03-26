@@ -634,6 +634,7 @@ func schedinit() {
 	stackinit()
 	mallocinit()
 	fastrandinit() // must run before mcommoninit
+	// M 初始化
 	mcommoninit(_g_.m, -1)
 	cpuinit()       // must run before alginit
 	alginit()       // maps must not be used before this call
@@ -655,6 +656,7 @@ func schedinit() {
 	if n, ok := atoi32(gogetenv("GOMAXPROCS")); ok && n > 0 {
 		procs = n
 	}
+	// P 初始化
 	if procresize(procs) != nil {
 		throw("unknown runnable goroutine during bootstrap")
 	}
@@ -719,6 +721,10 @@ func mReserveID() int64 {
 }
 
 // Pre-allocated ID may be passed as 'id', or omitted by passing -1.
+/*
+M其实就是OS线程，它只有两个状态：自旋、非自旋。在调度器初始化阶段，只有一个M，那就是主OS线程，因此这里的commoninit仅仅只是对M进行一个初步的初始化，
+该初始化包含对M及用于处理M信号的G的相关运算操作，未涉及工作线程的暂止和复始。
+*/
 func mcommoninit(mp *m, id int64) {
 	_g_ := getg()
 
@@ -748,10 +754,12 @@ func mcommoninit(mp *m, id int64) {
 
 	// Add to allm so garbage collector doesn't free g->m
 	// when it is just in a register or thread-local storage.
+	// 添加到 allm 中，从而当它刚保存到寄存器或本地线程存储时候 GC 不会释放 g.m
 	mp.alllink = allm
 
 	// NumCgoCall() iterates over allm w/o schedlock,
 	// so we need to publish it safely.
+	// NumCgoCall() 会在没有使用 schedlock 时遍历 allm，等价于 allm = mp
 	atomicstorep(unsafe.Pointer(&allm), unsafe.Pointer(mp))
 	unlock(&sched.lock)
 
@@ -4638,15 +4646,20 @@ func setcpuprofilerate(hz int32) {
 
 // init initializes pp, which may be a freshly allocated p or a
 // previously destroyed p, and transitions it to status _Pgcstop.
+// 初始化 pp
 func (pp *p) init(id int32) {
+	// p的id就是它在allp中的索引
 	pp.id = id
+	// 新创建的p处于_Pgcstop状态
 	pp.status = _Pgcstop
 	pp.sudogcache = pp.sudogbuf[:0]
 	for i := range pp.deferpool {
 		pp.deferpool[i] = pp.deferpoolbuf[i][:0]
 	}
 	pp.wbBuf.reset()
+	// 为p分配cache对象
 	if pp.mcache == nil {
+		// 如果old==0且i==0说明
 		if id == 0 {
 			if mcache0 == nil {
 				throw("missing mcache?")
@@ -4777,6 +4790,7 @@ func procresize(nprocs int32) *p {
 	assertLockHeld(&sched.lock)
 	assertWorldStopped()
 
+	// 获取先前的P个数
 	old := gomaxprocs
 	if old < 0 || nprocs <= 0 {
 		throw("procresize: invalid arg")
@@ -4786,6 +4800,7 @@ func procresize(nprocs int32) *p {
 	}
 
 	// update statistics
+	// 更新统计信息，记录此次修改 gomaxprocs 的时间
 	now := nanotime()
 	if sched.procresizetime != 0 {
 		sched.totaltime += int64(old) * (now - sched.procresizetime)
@@ -4795,16 +4810,24 @@ func procresize(nprocs int32) *p {
 	maskWords := (nprocs + 31) / 32
 
 	// Grow allp if necessary.
+	// 必要时增加 allp
+	// 这个时候本质上是检查用户代码是否有被调用过 runtime.MAXGOPROCS 调整 p 的数量
+	// 此时多一步检查是为了避免内部的锁，如果 nprocs 明显小于 allp 的可见数量（因为len）
+	// 则不需要进行加锁
 	if nprocs > int32(len(allp)) {
 		// Synchronize with retake, which could be running
 		// concurrently since it doesn't run on a P.
+		// 此处与 retake 同步，它可以同时运行，因为它不会在 P 上运行。
 		lock(&allpLock)
 		if nprocs <= int32(cap(allp)) {
+			// 如果 nprocs 被调小了，扔掉多余的 p
 			allp = allp[:nprocs]
 		} else {
+			// 否则（调大了）创建更多的 p
 			nallp := make([]*p, nprocs)
 			// Copy everything up to allp's cap so we
 			// never lose old allocated Ps.
+			// 将原有的 p 复制到新创建的 new all p 中，不浪费旧的 p
 			copy(nallp, allp[:cap(allp)])
 			allp = nallp
 		}
@@ -4828,6 +4851,7 @@ func procresize(nprocs int32) *p {
 	// initialize new P's
 	// 初始化新的P
 	for i := old; i < nprocs; i++ {
+		// 如果p是新创建（新创建的p在数组中为nil），则申请新的p对象
 		pp := allp[i]
 		if pp == nil {
 			pp = new(p)
@@ -4837,8 +4861,11 @@ func procresize(nprocs int32) *p {
 	}
 
 	_g_ := getg()
+	// 如果当前正在使用的p应该被释放，则更换为allp[0]
+	// 否则是初始化阶段，没有P绑定当前P allp[0]
 	if _g_.m.p != 0 && _g_.m.p.ptr().id < nprocs {
 		// continue to use the current P
+		// 继续使用当前p
 		_g_.m.p.ptr().status = _Prunning
 		_g_.m.p.ptr().mcache.prepareForSweep()
 	} else {
@@ -4847,6 +4874,7 @@ func procresize(nprocs int32) *p {
 		// We must do this before destroying our current P
 		// because p.destroy itself has write barriers, so we
 		// need to do that from a valid P.
+		// 释放当前p，因为已失效
 		if _g_.m.p != 0 {
 			if trace.enabled {
 				// Pretend that we were descheduled
@@ -4858,10 +4886,11 @@ func procresize(nprocs int32) *p {
 			_g_.m.p.ptr().m = 0
 		}
 		_g_.m.p = 0
+		// 更换到 allp[0]
 		p := allp[0]
 		p.m = 0
 		p.status = _Pidle
-		acquirep(p)
+		acquirep(p) // 直接将allp[0]绑定到当前的M
 		if trace.enabled {
 			traceGoStart()
 		}
@@ -4871,13 +4900,16 @@ func procresize(nprocs int32) *p {
 	mcache0 = nil
 
 	// release resources from unused P's
+	// 从未使用的P释放资源
 	for i := nprocs; i < old; i++ {
 		p := allp[i]
 		p.destroy()
 		// can't free P itself because it can be referenced by an M in syscall
+		// 不能释放p本身，因为他可能在m进入系统调用时被引用
 	}
 
 	// Trim allp.
+	// 清理完毕后，修剪allp，nprocs个数之外的所有p
 	if int32(len(allp)) != nprocs {
 		lock(&allpLock)
 		allp = allp[:nprocs]
@@ -4886,17 +4918,24 @@ func procresize(nprocs int32) *p {
 		unlock(&allpLock)
 	}
 
+	// 将没有本地任务的p放到空闲链表中
 	var runnablePs *p
 	for i := nprocs - 1; i >= 0; i-- {
+		// 挨个检查 p
 		p := allp[i]
+		// 确保不是当前正在使用的p
 		if _g_.m.p.ptr() == p {
 			continue
 		}
+		// 将p设为idel
 		p.status = _Pidle
 		if runqempty(p) {
 			pidleput(p)
 		} else {
+			// 如果有本地任务，则为其绑定一个 M
 			p.m.set(mget())
+			// 第一个循环为nil，后续则为上一个p
+			// 此处即为构建可运行的p链表
 			p.link.set(runnablePs)
 			runnablePs = p
 		}
@@ -4904,7 +4943,7 @@ func procresize(nprocs int32) *p {
 	stealOrder.reset(uint32(nprocs))
 	var int32p *int32 = &gomaxprocs // make compiler check that gomaxprocs is an int32
 	atomic.Store((*uint32)(unsafe.Pointer(int32p)), uint32(nprocs))
-	return runnablePs
+	return runnablePs // 返回所有包含本地任务的p链表
 }
 
 // Associate p and the current m.

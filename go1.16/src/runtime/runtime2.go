@@ -796,10 +796,12 @@ type schedt struct {
 	}
 
 	// Central cache of sudog structs.
+	// sudog 结构中的集中缓存
 	sudoglock  mutex
 	sudogcache *sudog
 
 	// Central pool of available defer structs of different sizes.
+	// 不同大小的有效 defer 结构的池
 	deferlock mutex
 	deferpool [5]*_defer
 
