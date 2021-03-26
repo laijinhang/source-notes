@@ -13,14 +13,19 @@ import (
 // simultaneously and returns the previous setting. It defaults to
 // the value of runtime.NumCPU. If n < 1, it does not change the current setting.
 // This call will go away when the scheduler improves.
+// GOMAXPROCS 设置能够同时执行线程的最大CPU数，并返回原先的设定。
+// 如果 n < 1，则他不会进行任何修改。
+// 机器上的逻辑CPU的个数从NumCPU调用上获取。
+// 该调用会在调度器进行改进后被移除。
 func GOMAXPROCS(n int) int {
 	if GOARCH == "wasm" && n > 1 {
 		n = 1 // WebAssembly has no threads yet, so only one CPU is possible.
 	}
-
+	// 当调整P的数量时，调度器会被锁定
 	lock(&sched.lock)
 	ret := int(gomaxprocs)
 	unlock(&sched.lock)
+	// 返回原有设置
 	if n <= 0 || n == ret {
 		return ret
 	}
@@ -28,8 +33,11 @@ func GOMAXPROCS(n int) int {
 	stopTheWorldGC("GOMAXPROCS")
 
 	// newprocs will be processed by startTheWorld
+	// STW后，修改 P 的数量
 	newprocs = int32(n)
 
+	// 重新恢复
+	// 在这个过程中，startTheWorld会调用procresize进而动态的调整P的数量
 	startTheWorldGC()
 	return ret
 }

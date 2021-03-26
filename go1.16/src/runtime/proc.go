@@ -112,6 +112,7 @@ var runtimeInitTime int64
 var initSigmask sigset
 
 // The main goroutine.
+// 主 Goroutine
 func main() {
 	g := getg()
 
@@ -141,6 +142,7 @@ func main() {
 		// register sysmon is not ready for the world to be
 		// stopped.
 		atomic.Store(&sched.sysmonStarting, 1)
+		// 启动系统后台监控（定期垃圾回收、并发任务调度）
 		systemstack(func() {
 			newm(sysmon, nil, -1)
 		})
@@ -3980,9 +3982,12 @@ func malg(stacksize int32) *g {
 //
 //go:nosplit
 func newproc(siz int32, fn *funcval) {
+	// 从fn的地址增加一个指针的长度，从而获取第一个参数地址
 	argp := add(unsafe.Pointer(&fn), sys.PtrSize)
 	gp := getg()
-	pc := getcallerpc()
+	pc := getcallerpc() // 获取调用方 PC/IP 寄存器
+	// 用 g0 系统栈创建 Goroutine
+	// 传递的参数包括fn函数入口地址，argp参数起始地址，size参数长度，gp（g0），调用方pc（goroutine）
 	systemstack(func() {
 		newg := newproc1(fn, argp, siz, gp, pc)
 
@@ -4004,8 +4009,10 @@ func newproc(siz int32, fn *funcval) {
 // newproc, which cannot split the stack.
 //
 //go:systemstack
+// 创建一个运行fn的新g，具有narg字节大小的参数，从argp开始。
+// callerps 是go语句的起始地址,新创建的g会被放入g队列中等待运行。
 func newproc1(fn *funcval, argp unsafe.Pointer, narg int32, callergp *g, callerpc uintptr) *g {
-	_g_ := getg()
+	_g_ := getg() // 因为是在系统栈运行所以此时的g为g0
 
 	if fn == nil {
 		_g_.m.throwing = -1 // do not dump full stacks
@@ -4066,10 +4073,11 @@ func newproc1(fn *funcval, argp unsafe.Pointer, narg int32, callergp *g, callerp
 			}
 		}
 	}
-
+	// 清理、创建并初始化的g的运行现场
 	memclrNoHeapPointers(unsafe.Pointer(&newg.sched), unsafe.Sizeof(newg.sched))
 	newg.sched.sp = sp
 	newg.stktopsp = sp
+	// +PCQuantum 从前面一个指令还在相同的函数内
 	newg.sched.pc = funcPC(goexit) + sys.PCQuantum // +PCQuantum so that previous instruction is in same function
 	newg.sched.g = guintptr(unsafe.Pointer(newg))
 	gostartcallfn(&newg.sched, fn)
@@ -4082,12 +4090,17 @@ func newproc1(fn *funcval, argp unsafe.Pointer, narg int32, callergp *g, callerp
 	if isSystemGoroutine(newg, false) {
 		atomic.Xadd(&sched.ngsys, +1)
 	}
+	// 现在将g更换为_Grunnable状态
 	casgstatus(newg, _Gdead, _Grunnable)
 
+	// 分配 goid
 	if _p_.goidcache == _p_.goidcacheend {
 		// Sched.goidgen is the last allocated id,
 		// this batch must be [sched.goidgen+1, sched.goidgen+GoidCacheBatch].
 		// At startup sched.goidgen=0, so main goroutine receives goid=1.
+		// Sched.goidgen 为最后一个分配的id，相当于一个全局计数器
+		// 这一批必须为 [sched.goidgen+1, sched.goidgen+GoidCacheBatch].
+		// 启动时 sched.goidgen=0，因此主 Goroutine 的goid为1
 		_p_.goidcache = atomic.Xadd64(&sched.goidgen, _GoidCacheBatch)
 		_p_.goidcache -= _GoidCacheBatch - 1
 		_p_.goidcacheend = _p_.goidcache + _GoidCacheBatch
@@ -4693,16 +4706,20 @@ func (pp *p) init(id int32) {
 // transitions it to status _Pdead.
 //
 // sched.lock must be held and the world must be stopped.
+// 释放未使用的p，一般情况下不会执行这段代码
 func (pp *p) destroy() {
 	assertLockHeld(&sched.lock)
 	assertWorldStopped()
 
 	// Move all runnable goroutines to the global queue
+	// 将所有runnable Goroutine 移动到全局队列
 	for pp.runqhead != pp.runqtail {
 		// Pop from tail of local queue
+		// 从本地队列中 pop
 		pp.runqtail--
 		gp := pp.runq[pp.runqtail%uint32(len(pp.runq))].ptr()
 		// Push onto head of global queue
+		// push到全局队列中
 		globrunqputhead(gp)
 	}
 	if pp.runnext != 0 {
@@ -4753,6 +4770,7 @@ func (pp *p) destroy() {
 	})
 	freemcache(pp.mcache)
 	pp.mcache = nil
+	// 将当前p的空闲G复链到全局
 	gfpurge(pp)
 	traceProcFree(pp)
 	if raceenabled {
@@ -4786,6 +4804,8 @@ func (pp *p) destroy() {
 // code, so the GC must not be running if the number of Ps actually changes.
 //
 // Returns list of Ps with local work, they need to be scheduled by the caller.
+// 调用时已经 STW，记录调整P的时间
+// 按需调整
 func procresize(nprocs int32) *p {
 	assertLockHeld(&sched.lock)
 	assertWorldStopped()
@@ -5135,10 +5155,14 @@ var forcegcperiod int64 = 2 * 60 * 1e9
 
 // Always runs without a P, so write barriers are not allowed.
 //
+// 系统监控在一个独立的m上运行
+// 总是在没有P的情况下运行，因此不能出现写屏障
 //go:nowritebarrierrec
 func sysmon() {
 	lock(&sched.lock)
+	// 不记录死锁的系统 m 的数量
 	sched.nmsys++
+	// 死锁检查
 	checkdead()
 	unlock(&sched.lock)
 
@@ -5147,18 +5171,20 @@ func sysmon() {
 	atomic.Store(&sched.sysmonStarting, 0)
 
 	lasttrace := int64(0)
+	// 没有wokeup的周期数
 	idle := 0 // how many cycles in succession we had not wokeup somebody
 	delay := uint32(0)
 
 	for {
-		if idle == 0 { // start with 20us sleep...
+		if idle == 0 { // start with 20us sleep...，每次启用先休眠 20us
 			delay = 20
-		} else if idle > 50 { // start doubling the sleep after 1ms...
+		} else if idle > 50 { // start doubling the sleep after 1ms...，1ms后就翻倍休眠时间
 			delay *= 2
 		}
-		if delay > 10*1000 { // up to 10ms
+		if delay > 10*1000 { // up to 10ms，增加到 10ms
 			delay = 10 * 1000
 		}
+		// 休眠
 		usleep(delay)
 		mDoFixup()
 
@@ -5178,6 +5204,7 @@ func sysmon() {
 		// from a timer to avoid adding system load to applications that spend
 		// most of their time sleeping.
 		now := nanotime()
+		// 如果在 STW，则暂时休眠
 		if debug.schedtrace <= 0 && (sched.gcwaiting != 0 || atomic.Load(&sched.npidle) == uint32(gomaxprocs)) {
 			lock(&sched.lock)
 			if atomic.Load(&sched.gcwaiting) != 0 || atomic.Load(&sched.npidle) == uint32(gomaxprocs) {
