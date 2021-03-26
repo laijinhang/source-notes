@@ -51,47 +51,45 @@ import (
 	"time"
 )
 
-// Name returns the name of the file as presented to Open.
+// Name 返回通过Open打开的文件名
 func (f *File) Name() string { return f.name }
 
-// Stdin, Stdout, and Stderr are open Files pointing to the standard input,
-// standard output, and standard error file descriptors.
+// Stdin, Stdout, and Stderr 是打开的文件，它们指向标准输入，
+// 标准输出和标准错误文件描述符。
 //
-// Note that the Go runtime writes to standard error for panics and crashes;
-// closing Stderr may cause those messages to go elsewhere, perhaps
-// to a file opened later.
+// 请注意，Go运行时会为恐慌和崩溃写入标准错误；
+// 关闭Stderr可能会使这些消息传到其他地方，甚至可能到达以后打开的文件中。
 var (
-	Stdin  = NewFile(uintptr(syscall.Stdin), "/dev/stdin")
-	Stdout = NewFile(uintptr(syscall.Stdout), "/dev/stdout")
-	Stderr = NewFile(uintptr(syscall.Stderr), "/dev/stderr")
+	Stdin  = NewFile(uintptr(syscall.Stdin), "/dev/stdin")   // 拿到标准输入的文件句柄
+	Stdout = NewFile(uintptr(syscall.Stdout), "/dev/stdout") // 拿到标准输出的文件句柄
+	Stderr = NewFile(uintptr(syscall.Stderr), "/dev/stderr") // 拿到标准错误的文件句柄
 )
 
-// Flags to OpenFile wrapping those of the underlying system. Not all
-// flags may be implemented on a given system.
+// OpenFile的标志，其中包含基础系统的标志。
+// 并非所有标志都可以在给定的系统上实现。
 const (
-	// Exactly one of O_RDONLY, O_WRONLY, or O_RDWR must be specified.
-	O_RDONLY int = syscall.O_RDONLY // open the file read-only.
-	O_WRONLY int = syscall.O_WRONLY // open the file write-only.
-	O_RDWR   int = syscall.O_RDWR   // open the file read-write.
-	// The remaining values may be or'ed in to control behavior.
-	O_APPEND int = syscall.O_APPEND // append data to the file when writing.
-	O_CREATE int = syscall.O_CREAT  // create a new file if none exists.
-	O_EXCL   int = syscall.O_EXCL   // used with O_CREATE, file must not exist.
-	O_SYNC   int = syscall.O_SYNC   // open for synchronous I/O.
-	O_TRUNC  int = syscall.O_TRUNC  // truncate regular writable file when opened.
+	// 必须指定O_RDONLY，O_WRONLY或O_RDWR之一。
+	O_RDONLY int = syscall.O_RDONLY // open the file read-only. 以只读方式打开文件。
+	O_WRONLY int = syscall.O_WRONLY // open the file write-only.打开文件只写。
+	O_RDWR   int = syscall.O_RDWR   // open the file read-write.以读写方式打开文件。
+	// 剩余的值可以被控制或用于控制行为。
+	O_APPEND int = syscall.O_APPEND // append data to the file when writing.写入时将数据追加到文件中。
+	O_CREATE int = syscall.O_CREAT  // create a new file if none exists.如果不存在，请创建一个新文件。
+	O_EXCL   int = syscall.O_EXCL   // used with O_CREATE, file must not exist.与O_CREATE一起使用时，文件必须不存在。
+	O_SYNC   int = syscall.O_SYNC   // open for synchronous I/O.为同步 I/O 打开。
+	O_TRUNC  int = syscall.O_TRUNC  // truncate regular writable file when opened.打开时截断常规可写文件。
 )
 
 // Seek whence values.
 //
-// Deprecated: Use io.SeekStart, io.SeekCurrent, and io.SeekEnd.
+// 不推荐使用：使用io.SeekStart，io.SeekCurrent和io.SeekEnd。
 const (
-	SEEK_SET int = 0 // seek relative to the origin of the file
-	SEEK_CUR int = 1 // seek relative to the current offset
-	SEEK_END int = 2 // seek relative to the end
+	SEEK_SET int = 0 // seek relative to the origin of the file。从文件头位置偏移offset开始
+	SEEK_CUR int = 1 // seek relative to the current offset。从当前位置偏移offset开始
+	SEEK_END int = 2 // seek relative to the end。从末尾开始偏移offset开始
 )
 
-// LinkError records an error during a link or symlink or rename
-// system call and the paths that caused it.
+// LinkError记录链接或符号链接或重命名系统调用期间的错误以及导致该错误的路径。
 type LinkError struct {
 	Op  string
 	Old string
@@ -107,9 +105,9 @@ func (e *LinkError) Unwrap() error {
 	return e.Err
 }
 
-// Read reads up to len(b) bytes from the File.
-// It returns the number of bytes read and any error encountered.
-// At end of file, Read returns 0, io.EOF.
+// 最多从文件读取读取len(b)个字节。
+// 返回读取的字节数和遇到的任何错误。
+// 在文件末尾，Read返回0，即io.EOF。
 func (f *File) Read(b []byte) (n int, err error) {
 	if err := f.checkValid("read"); err != nil {
 		return 0, err
@@ -118,10 +116,10 @@ func (f *File) Read(b []byte) (n int, err error) {
 	return n, f.wrapErr("read", e)
 }
 
-// ReadAt reads len(b) bytes from the File starting at byte offset off.
-// It returns the number of bytes read and the error, if any.
-// ReadAt always returns a non-nil error when n < len(b).
-// At end of file, that error is io.EOF.
+// ReadAt从字节偏移量开始从文件读取len(b)个字节。
+// 返回读取的字节数和错误（如果有）。
+// 当n <len(b)时，ReadAt总是返回非nil错误。
+// 在文件末尾，该错误是io.EOF。
 func (f *File) ReadAt(b []byte, off int64) (n int, err error) {
 	if err := f.checkValid("read"); err != nil {
 		return 0, err
@@ -144,7 +142,7 @@ func (f *File) ReadAt(b []byte, off int64) (n int, err error) {
 	return
 }
 
-// ReadFrom implements io.ReaderFrom.
+// ReadFrom实现io.ReaderFrom。
 func (f *File) ReadFrom(r io.Reader) (n int64, err error) {
 	if err := f.checkValid("write"); err != nil {
 		return 0, err

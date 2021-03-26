@@ -224,8 +224,8 @@ func (f *File) setWriteDeadline(t time.Time) error {
 	return f.pfd.SetWriteDeadline(t)
 }
 
-// checkValid checks whether f is valid for use.
-// If not, it returns an appropriate error, perhaps incorporating the operation name op.
+// checkValid检查f是否有效使用。
+// 如果没有，它将返回一个适当的错误，可能包含操作名称op。
 func (f *File) checkValid(op string) error {
 	if f == nil {
 		return ErrInvalid
