@@ -28,7 +28,7 @@ func (mr *multiReader) Read(p []byte) (n int, err error) {
 		if err == EOF {
 			// Use eofReader instead of nil to avoid nil panic
 			// after performing flatten (Issue 18232).
-			// //使用eofReader而不是nil来避免扁平化后出现nil恐慌 (Issue 18232).
+			//使用eofReader而不是nil来避免扁平化后出现nil恐慌 (Issue 18232).
 			mr.readers[0] = eofReader{} // permit earlier GC
 			mr.readers = mr.readers[1:]
 		}

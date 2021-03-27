@@ -155,7 +155,9 @@ func (c *TCPConn) SetLinger(sec int) error {
 
 // SetKeepAlive sets whether the operating system should send
 // keep-alive messages on the connection.
+// SetKeepAlive设置操作系统是否应在连接上发送保持活动消息。
 func (c *TCPConn) SetKeepAlive(keepalive bool) error {
+	// 如果c == nil 或 c.fd == nil，返回无效
 	if !c.ok() {
 		return syscall.EINVAL
 	}

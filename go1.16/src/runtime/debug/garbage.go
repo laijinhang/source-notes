@@ -11,11 +11,12 @@ import (
 )
 
 // GCStats collect information about recent garbage collections.
+// GCStats收集有关最近的垃圾收集的信息。
 type GCStats struct {
-	LastGC         time.Time       // time of last collection
-	NumGC          int64           // number of garbage collections
-	PauseTotal     time.Duration   // total pause for all collections
-	Pause          []time.Duration // pause history, most recent first
+	LastGC         time.Time       // time of last collection，最近一次垃圾收集的时间
+	NumGC          int64           // number of garbage collections，垃圾收集的次数
+	PauseTotal     time.Duration   // total pause for all collections，所有暂停收集垃圾消耗的总时间
+	Pause          []time.Duration // pause history, most recent first，每次暂停收集垃圾的消耗的时间
 	PauseEnd       []time.Time     // pause end times history, most recent first
 	PauseQuantiles []time.Duration
 }
