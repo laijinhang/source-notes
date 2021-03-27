@@ -327,9 +327,11 @@ func SetFinalizer(obj interface{}, finalizer interface{}) {
 	}
 	e := efaceOf(&obj)
 	etyp := e._type
+	// 第一个参数是nil
 	if etyp == nil {
 		throw("runtime.SetFinalizer: first argument is nil")
 	}
+	// 第一个参数不是一个指针
 	if etyp.kind&kindMask != kindPtr {
 		throw("runtime.SetFinalizer: first argument is " + etyp.string() + ", not pointer")
 	}
@@ -339,6 +341,7 @@ func SetFinalizer(obj interface{}, finalizer interface{}) {
 	}
 
 	// find the containing object
+	// 找到包含的对象
 	base, _, _ := findObject(uintptr(e.data), 0, 0)
 
 	if base == 0 {

@@ -15,6 +15,7 @@ package net
 import "internal/bytealg"
 
 // IP address lengths (bytes).
+// IP地址长度（字节）
 const (
 	IPv4len = 4
 	IPv6len = 16
@@ -29,22 +30,34 @@ const (
 // is a semantic property of the address, not just the
 // length of the byte slice: a 16-byte slice can still
 // be an IPv4 address.
+// IP是一个IP地址，是字节的一部分。
+// 此包中的函数接受4字节（IPv4）
+// 或16字节（IPv6）切片作为输入。
+//
+// 请注意，在本文档中，
+// 将IP地址称为IPv4地址或IPv6地址是该地址的语义属性，
+// 而不仅仅是字节片的长度：16字节片仍然可以是IPv4地址。
 type IP []byte
 
 // An IPMask is a bitmask that can be used to manipulate
 // IP addresses for IP addressing and routing.
 //
 // See type IPNet and func ParseCIDR for details.
+// IPMask是一个位掩码，可用于为IP寻址和路由操作IP地址。
+//
+// 有关详细信息，请参见IPNet和func ParseCIDR类型。
 type IPMask []byte
 
 // An IPNet represents an IP network.
+// IPNet代表IP网络。
 type IPNet struct {
-	IP   IP     // network number
-	Mask IPMask // network mask
+	IP   IP     // 网络号
+	Mask IPMask // 网络掩码
 }
 
 // IPv4 returns the IP address (in 16-byte form) of the
 // IPv4 address a.b.c.d.
+// IPv4返回IPv4地址a.b.c.d的IP地址（16字节格式）。
 func IPv4(a, b, c, d byte) IP {
 	p := make(IP, IPv6len)
 	copy(p, v4InV6Prefix)
@@ -94,14 +107,16 @@ func CIDRMask(ones, bits int) IPMask {
 }
 
 // Well-known IPv4 addresses
+// 知名的IPv4地址
 var (
-	IPv4bcast     = IPv4(255, 255, 255, 255) // limited broadcast
-	IPv4allsys    = IPv4(224, 0, 0, 1)       // all systems
-	IPv4allrouter = IPv4(224, 0, 0, 2)       // all routers
-	IPv4zero      = IPv4(0, 0, 0, 0)         // all zeros
+	IPv4bcast     = IPv4(255, 255, 255, 255) // limited broadcast，有限广播
+	IPv4allsys    = IPv4(224, 0, 0, 1)       // all systems，所有系统
+	IPv4allrouter = IPv4(224, 0, 0, 2)       // all routers，所有路由
+	IPv4zero      = IPv4(0, 0, 0, 0)         // all zeros，全零
 )
 
 // Well-known IPv6 addresses
+// 知名的IPv6地址
 var (
 	IPv6zero                   = IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 	IPv6unspecified            = IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -113,11 +128,13 @@ var (
 
 // IsUnspecified reports whether ip is an unspecified address, either
 // the IPv4 address "0.0.0.0" or the IPv6 address "::".
+// IsUnspecified报告ip是否是未指定的地址，即IPv4地址“ 0.0.0.0”还是IPv6地址“ ::”。
 func (ip IP) IsUnspecified() bool {
 	return ip.Equal(IPv4zero) || ip.Equal(IPv6unspecified)
 }
 
 // IsLoopback reports whether ip is a loopback address.
+// IsLoopback报告ip是否为回送地址。
 func (ip IP) IsLoopback() bool {
 	if ip4 := ip.To4(); ip4 != nil {
 		return ip4[0] == 127
@@ -126,6 +143,7 @@ func (ip IP) IsLoopback() bool {
 }
 
 // IsMulticast reports whether ip is a multicast address.
+// IsMulticast报告ip是否为组播地址。
 func (ip IP) IsMulticast() bool {
 	if ip4 := ip.To4(); ip4 != nil {
 		return ip4[0]&0xf0 == 0xe0
@@ -175,6 +193,7 @@ func (ip IP) IsGlobalUnicast() bool {
 }
 
 // Is p all zeros?
+// p是全零吗？
 func isZeros(p IP) bool {
 	for i := 0; i < len(p); i++ {
 		if p[i] != 0 {
@@ -407,6 +426,8 @@ func (ip *IP) UnmarshalText(text []byte) error {
 // Equal reports whether ip and x are the same IP address.
 // An IPv4 address and that same address in IPv6 form are
 // considered to be equal.
+// Equal报告ip 和 x 是否是相同的 IP 地址。
+// 一个IPv4地址和该IPv6形式的相同地址被认为是相等的。
 func (ip IP) Equal(x IP) bool {
 	if len(ip) == len(x) {
 		return bytealg.Equal(ip, x)

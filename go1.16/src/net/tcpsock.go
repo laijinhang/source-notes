@@ -14,15 +14,19 @@ import (
 
 // BUG(mikio): On JS and Windows, the File method of TCPConn and
 // TCPListener is not implemented.
+// BUG（mikio）：在JS和Windows上，未实现TCPConn和TCPListener的File方法。
 
 // TCPAddr represents the address of a TCP end point.
+// TCPAddr表示TCP的地址。
 type TCPAddr struct {
-	IP   IP
+	IP   IP // type IP []byte
 	Port int
+	// IPv6范围寻址区域
 	Zone string // IPv6 scoped addressing zone
 }
 
 // Network returns the address's network name, "tcp".
+// 网络返回地址的网络名称 "tcp"
 func (a *TCPAddr) Network() string { return "tcp" }
 
 func (a *TCPAddr) String() string {
