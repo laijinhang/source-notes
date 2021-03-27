@@ -203,13 +203,18 @@ func newTCPConn(fd *netFD) *TCPConn {
 }
 
 // DialTCP acts like Dial for TCP networks.
+// DialTCP的作用类似于TCP网络的Dial。
 //
 // The network must be a TCP network name; see func Dial for details.
+// 该网络必须是TCP网络名称。 有关详细信息，请参见func Dial。
 //
 // If laddr is nil, a local address is automatically chosen.
 // If the IP field of raddr is nil or an unspecified IP address, the
 // local system is assumed.
+// 如果laddr为nil，则会自动选择一个本地地址。
+// 如果raddr的IP字段为nil或未指定IP地址，则使用本地系统。
 func DialTCP(network string, laddr, raddr *TCPAddr) (*TCPConn, error) {
+	// network必须为 tcp、tcp4、tcp6中的一种，不然会返回未知网络的错误
 	switch network {
 	case "tcp", "tcp4", "tcp6":
 	default:

@@ -17,8 +17,8 @@ import "internal/bytealg"
 // IP address lengths (bytes).
 // IP地址长度（字节）
 const (
-	IPv4len = 4
-	IPv6len = 16
+	IPv4len = 4  // 4字节，32位
+	IPv6len = 16 // 16字节，128位
 )
 
 // An IP is a single IP address, a slice of bytes.
@@ -153,12 +153,14 @@ func (ip IP) IsMulticast() bool {
 
 // IsInterfaceLocalMulticast reports whether ip is
 // an interface-local multicast address.
+// IsInterfaceLocalMulticast报告ip是否是接口本地多播地址。
 func (ip IP) IsInterfaceLocalMulticast() bool {
 	return len(ip) == IPv6len && ip[0] == 0xff && ip[1]&0x0f == 0x01
 }
 
 // IsLinkLocalMulticast reports whether ip is a link-local
 // multicast address.
+// IsLinkLocalMulticast报告ip是否为链接本地多播地址。
 func (ip IP) IsLinkLocalMulticast() bool {
 	if ip4 := ip.To4(); ip4 != nil {
 		return ip4[0] == 224 && ip4[1] == 0 && ip4[2] == 0
@@ -168,6 +170,7 @@ func (ip IP) IsLinkLocalMulticast() bool {
 
 // IsLinkLocalUnicast reports whether ip is a link-local
 // unicast address.
+// IsLinkLocalUnicast报告ip是否为链接本地单播地址。
 func (ip IP) IsLinkLocalUnicast() bool {
 	if ip4 := ip.To4(); ip4 != nil {
 		return ip4[0] == 169 && ip4[1] == 254
@@ -205,6 +208,8 @@ func isZeros(p IP) bool {
 
 // To4 converts the IPv4 address ip to a 4-byte representation.
 // If ip is not an IPv4 address, To4 returns nil.
+// To4将IPv4地址ip转换为4字节表示。
+// 如果ip不是IPv4地址，则To4返回nil
 func (ip IP) To4() IP {
 	if len(ip) == IPv4len {
 		return ip
@@ -220,6 +225,8 @@ func (ip IP) To4() IP {
 
 // To16 converts the IP address ip to a 16-byte representation.
 // If ip is not an IP address (it is the wrong length), To16 returns nil.
+// To16将IP地址IP转换为16字节的表示形式。
+// 如果ip不是ip地址（长度错误），To16返回nil。
 func (ip IP) To16() IP {
 	if len(ip) == IPv4len {
 		return IPv4(ip[0], ip[1], ip[2], ip[3])
@@ -231,25 +238,28 @@ func (ip IP) To16() IP {
 }
 
 // Default route masks for IPv4.
+// IPv4的默认路由掩码。
 var (
-	classAMask = IPv4Mask(0xff, 0, 0, 0)
-	classBMask = IPv4Mask(0xff, 0xff, 0, 0)
-	classCMask = IPv4Mask(0xff, 0xff, 0xff, 0)
+	classAMask = IPv4Mask(0xff, 0, 0, 0)       // 255.0.0.0
+	classBMask = IPv4Mask(0xff, 0xff, 0, 0)    // 255.255.0.0
+	classCMask = IPv4Mask(0xff, 0xff, 0xff, 0) // 255.255.255.0
 )
 
 // DefaultMask returns the default IP mask for the IP address ip.
 // Only IPv4 addresses have default masks; DefaultMask returns
 // nil if ip is not a valid IPv4 address.
+// DefaultMask返回IP地址ip的默认IP掩码。
+// 只有IPv4地址具有默认掩码；如果ip不是有效的IPv4地址，则DefaultMask返回nil。
 func (ip IP) DefaultMask() IPMask {
 	if ip = ip.To4(); ip == nil {
 		return nil
 	}
 	switch {
-	case ip[0] < 0x80:
+	case ip[0] < 0x80: // A类
 		return classAMask
-	case ip[0] < 0xC0:
+	case ip[0] < 0xC0: // B类
 		return classBMask
-	default:
+	default: // C类
 		return classCMask
 	}
 }
@@ -387,6 +397,7 @@ func hexString(b []byte) string {
 
 // ipEmptyString is like ip.String except that it returns
 // an empty string when ip is unset.
+// ipEmptyString返回IP转换成字符串
 func ipEmptyString(ip IP) string {
 	if len(ip) == 0 {
 		return ""
