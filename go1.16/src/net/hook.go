@@ -11,6 +11,7 @@ import (
 
 var (
 	// if non-nil, overrides dialTCP.
+	// 如果不为null，则覆盖DialTCP。
 	testHookDialTCP func(ctx context.Context, net string, laddr, raddr *TCPAddr) (*TCPConn, error)
 
 	testHookHostsPath = "/etc/hosts"

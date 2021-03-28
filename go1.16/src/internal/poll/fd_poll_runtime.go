@@ -37,20 +37,35 @@ var serverInit sync.Once
 
 // epoll初始化
 func (pd *pollDesc) init(fd *FD) error {
+	// 保证最多只被调用一次，调用runtime_pollServerInit创建一个epollServerInit创建一个epoll句柄，
+	// 实际执行的就是epoll_create
 	serverInit.Do(runtime_pollServerInit)
+	// 调用runtime_pollOpen将文件描述符fd.Sysfd注册到epoll句柄中，实际执行的就是epoll_ctl。
+	// 此处返回的ctx为pollDesc结构体（src/runtime/netpoll.go）
 	ctx, errno := runtime_pollOpen(uintptr(fd.Sysfd))
 	if errno != 0 {
+		// 处理失败需要做如下动作：
+		//	1：unblock阻塞的goroutine
+		//	2：回收pd
+		//	3：close fd，文件描述符在init函数返回失败后close
 		if ctx != 0 {
+			// 在注册epoll事件失败后，需要unblock goroutine，继续执行清理工作
 			runtime_pollUnblock(ctx)
+			// 此处删除注册的事件并回收pd节点
 			runtime_pollClose(ctx)
 		}
 		return errnoErr(syscall.Errno(errno))
 	}
+	// 保存pollDesc
 	pd.runtimeCtx = ctx
 	return nil
 }
 
 func (pd *pollDesc) close() {
+	/*
+		runtimeCtx的类型是uintptr，如果没有初始化，它的值是零值，
+		也就是说，如果是runtimeCtx的值是初始值，则直接返回
+	*/
 	if pd.runtimeCtx == 0 {
 		return
 	}
@@ -59,6 +74,7 @@ func (pd *pollDesc) close() {
 }
 
 // Evict evicts fd from the pending list, unblocking any I/O running on fd.
+// 逐出从挂起列表中逐出fd，解除对fd上运行的任何I/O的阻止。
 func (pd *pollDesc) evict() {
 	if pd.runtimeCtx == 0 {
 		return

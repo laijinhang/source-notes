@@ -248,6 +248,10 @@ func runfinq() {
 // but now without an associated finalizer. Assuming that SetFinalizer
 // is not called again, the next time the garbage collector sees
 // that obj is unreachable, it will free obj.
+// SetFinalizer将与obj关联的终结器设置为提供的终结器函数。
+// 当垃圾收集器找到带有关联的终结器的无法访问的块时，它将清除该关联并在单独的goroutine中运行finalizer（obj）。
+// 这使得obj可以再次访问，但是现在没有关联的终结器。
+// 假设没有再次调用SetFinalizer，则下次垃圾回收器看到obj无法访问时，它将释放obj。
 //
 // SetFinalizer(obj, nil) clears any finalizer associated with obj.
 //
@@ -306,17 +310,28 @@ func runfinq() {
 // A single goroutine runs all finalizers for a program, sequentially.
 // If a finalizer must run for a long time, it should do so by starting
 // a new goroutine.
+// 即使程序正常结束或者发生错误，但是在对象被 gc 选中并被回收之前，
+// SetFinalizer 都不会执行，所以不要在SetFinalizer中执行将内存中的内容flush到磁盘这种操作
+//
+// SetFinalizer 最大的问题是延长了对象生命周期。
+// 在第一次回收时执行 Finalizer 函数，且目标对象重新变成可达状态，直到第二次才真正 “销毁”。
+// 这对于有大量对象分配的高并发算法，可能会造成很大麻烦
+//
+// 指针构成的 "循环引⽤" 加上 runtime.SetFinalizer 会导致内存泄露
 func SetFinalizer(obj interface{}, finalizer interface{}) {
 	if debug.sbrk != 0 {
 		// debug.sbrk never frees memory, so no finalizers run
 		// (and we don't have the data structures to record them).
+		// debug.sbrk永远不会释放内存，因此不会运行终结器（并且我们没有记录它们的数据结构）。
 		return
 	}
 	e := efaceOf(&obj)
 	etyp := e._type
+	// 第一个参数是nil
 	if etyp == nil {
 		throw("runtime.SetFinalizer: first argument is nil")
 	}
+	// 第一个参数不是一个指针
 	if etyp.kind&kindMask != kindPtr {
 		throw("runtime.SetFinalizer: first argument is " + etyp.string() + ", not pointer")
 	}
@@ -326,6 +341,7 @@ func SetFinalizer(obj interface{}, finalizer interface{}) {
 	}
 
 	// find the containing object
+	// 找到包含的对象
 	base, _, _ := findObject(uintptr(e.data), 0, 0)
 
 	if base == 0 {
@@ -443,6 +459,8 @@ okarg:
 // Without the KeepAlive call, the finalizer could run at the start of
 // syscall.Read, closing the file descriptor before syscall.Read makes
 // the actual system call.
+// 保留一个引用只需要产生一个参数传递，而这里针对 cgo 做了特殊处理，
+// 即 产生了一个 println 调用来保证编译器不会将其优化掉。
 func KeepAlive(x interface{}) {
 	// Introduce a use of x that the compiler can't eliminate.
 	// This makes sure x is alive on entry. We need x to be alive

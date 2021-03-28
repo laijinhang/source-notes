@@ -14,21 +14,25 @@ import (
 )
 
 // Network file descriptor.
+// 网络文件描述符
 type netFD struct {
 	pfd poll.FD
 
 	// immutable until Close
+	// 直到关闭都是不可变的
 	family      int
 	sotype      int
-	isConnected bool // handshake completed or use of association with peer
+	isConnected bool // handshake completed or use of association with peer，握手完成或使用与对等方的关联
 	net         string
-	laddr       Addr
-	raddr       Addr
+	laddr       Addr // 本地地址
+	raddr       Addr // 远程地址
 }
 
+// 设置地址
 func (fd *netFD) setAddr(laddr, raddr Addr) {
 	fd.laddr = laddr
 	fd.raddr = raddr
+	// 在fd这个文件描述符被关闭之前，执行(*netFD).Close这个函数
 	runtime.SetFinalizer(fd, (*netFD).Close)
 }
 

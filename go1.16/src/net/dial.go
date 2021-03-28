@@ -594,6 +594,7 @@ func (sd *sysDialer) dialSingle(ctx context.Context, ra Addr) (c Conn, err error
 }
 
 // ListenConfig contains options for listening to an address.
+// ListenConfig包含收听地址的选项。
 type ListenConfig struct {
 	// If Control is not nil, it is called after creating the network
 	// connection but before binding it to the operating system.
@@ -609,6 +610,9 @@ type ListenConfig struct {
 	// and operating system. Network protocols or operating systems
 	// that do not support keep-alives ignore this field.
 	// If negative, keep-alives are disabled.
+	// KeepAlive 指定了此侦听器所接受的网络连接的保留期。
+	// 如果为零，则如果得到协议和操作系统的支持，则启用保持保活。不支持保活的网络协议或操作系统忽略此字段。
+	// 如果为负数，则禁用保活机制。
 	KeepAlive time.Duration
 }
 

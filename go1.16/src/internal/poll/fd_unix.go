@@ -14,31 +14,42 @@ import (
 
 // FD is a file descriptor. The net and os packages use this type as a
 // field of a larger type representing a network connection or OS file.
+// FD是一个文件描述符。
+// net和os包将此类型用作表示网络连接或os文件的较大类型的字段。
 type FD struct {
 	// Lock sysfd and serialize access to Read and Write methods.
+	// 锁定sysfd并序列化对读写方法的访问。
 	fdmu fdMutex
 
 	// System file descriptor. Immutable until Close.
+	// 系统文件描述符。关闭前不变。
 	Sysfd int
 
 	// I/O poller.
+	// I/O轮询器。
 	pd pollDesc
 
 	// Writev cache.
+	// 写缓存。
 	iovecs *[]syscall.Iovec
 
 	// Semaphore signaled when file is closed.
+	// 关闭文件时发出信号。
 	csema uint32
 
 	// Non-zero if this file has been set to blocking mode.
+	// 如果此文件已设置为阻止模式，则为非零。
 	isBlocking uint32
 
 	// Whether this is a streaming descriptor, as opposed to a
 	// packet-based descriptor like a UDP socket. Immutable.
+	// 这是否是流描述符，而不是基于数据包的描述符（如UDP套接字）。不变的。
 	IsStream bool
 
 	// Whether a zero byte read indicates EOF. This is false for a
 	// message based socket connection.
+	// 零字节读取是否表示EOF。
+	// 对于基于消息的套接字连接，这是错误的。
 	ZeroReadIsEOF bool
 
 	// Whether this is a file rather than a network socket.
@@ -50,8 +61,12 @@ type FD struct {
 // The net argument is a network name from the net package (e.g., "tcp"),
 // or "file".
 // Set pollable to true if fd should be managed by runtime netpoll.
+// 初始化FD。应已设置Sysfd字段。这可以在单个FD上调用多次。
+// net参数是来自net包（例如，“tcp”）或“file”的网络名称。
+// 如果fd应由运行时netpoll管理，则将pollable设置为true。
 func (fd *FD) Init(net string, pollable bool) error {
 	// We don't actually care about the various network types.
+	// 我们实际上并不关心各种网络类型。
 	if net == "file" {
 		fd.isFile = true
 	}
@@ -63,6 +78,7 @@ func (fd *FD) Init(net string, pollable bool) error {
 	if err != nil {
 		// If we could not initialize the runtime poller,
 		// assume we are using blocking mode.
+		// 如果我们不能初始化运行时轮询器，假设我们使用的是阻塞模式
 		fd.isBlocking = 1
 	}
 	return err

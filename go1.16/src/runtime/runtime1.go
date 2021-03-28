@@ -299,6 +299,8 @@ type dbgVar struct {
 // except for "memprofilerate" since there is an
 // existing int var for that value, which may
 // already have an initial value.
+// 保存从GODEBUG env var解析的变量，但“ memprofilerate”除外，
+// 因为该值已经存在一个int var，它可能已经具有初始值。
 var debug struct {
 	cgocheck           int32
 	clobberfree        int32

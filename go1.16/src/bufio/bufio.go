@@ -14,21 +14,25 @@ const (
 )
 
 var (
-	ErrInvalidUnreadByte = errors.New("bufio: invalid use of UnreadByte")
-	ErrInvalidUnreadRune = errors.New("bufio: invalid use of UnreadRune")
-	ErrBufferFull        = errors.New("bufio: buffer full")
-	ErrNegativeCount     = errors.New("bufio: negative count")
+	ErrInvalidUnreadByte = errors.New("bufio: invalid use of UnreadByte") // 无效使用UnreadByte
+	ErrInvalidUnreadRune = errors.New("bufio: invalid use of UnreadRune") // 无效使用UnreadRune
+	ErrBufferFull        = errors.New("bufio: buffer full")               // 缓冲区已满
+	ErrNegativeCount     = errors.New("bufio: negative count")            // 负数
 )
 
 // Buffered input.
+// 缓冲输入。
 
 // Reader implements buffering for an io.Reader object.
+// Reader为io.Reader对象实现缓冲。
 type Reader struct {
-	buf          []byte
-	rd           io.Reader // reader provided by the client
-	r, w         int       // buf read and write positions
-	err          error
-	lastByte     int // last byte read for UnreadByte; -1 means invalid
+	buf  []byte    // 缓冲区的数据
+	rd   io.Reader // reader provided by the client，底层的io.Reader
+	r, w int       // buf read and write positions，r ,w分别表示 buf中读和写的指针位置
+	err  error     // r ,w分别表示 buf中读和写的指针位置
+	// 记录读取的最后一个字节（用于撤销）
+	lastByte int // last byte read for UnreadByte; -1 means invalid
+	// 记录读取的最后一个字节（用于撤销）
 	lastRuneSize int // size of last rune read for UnreadRune; -1 means invalid
 }
 
@@ -65,6 +69,7 @@ func (b *Reader) Reset(r io.Reader) {
 	b.reset(b.buf, r)
 }
 
+// 重置
 func (b *Reader) reset(buf []byte, r io.Reader) {
 	*b = Reader{
 		buf:          buf,
