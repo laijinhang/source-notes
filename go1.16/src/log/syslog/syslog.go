@@ -31,6 +31,8 @@ const (
 
 	// From /usr/include/sys/syslog.h.
 	// These are the same on Linux, BSD, and OS X.
+	// 来自 /usr/include/sys/syslog.h。
+	// 这些在Linux，BSD和OS X上是相同的。
 	LOG_EMERG Priority = iota
 	LOG_ALERT
 	LOG_CRIT
@@ -46,6 +48,8 @@ const (
 
 	// From /usr/include/sys/syslog.h.
 	// These are the same up to LOG_FTP on Linux, BSD, and OS X.
+	// 来自 /usr/include/sys/syslog.h。
+	// 这些与Linux，BSD和OS X上的LOG_FTP相同。
 	LOG_KERN Priority = iota << 3
 	LOG_USER
 	LOG_MAIL
@@ -73,6 +77,7 @@ const (
 )
 
 // A Writer is a connection to a syslog server.
+// Writer是与系统日志服务器的连接。
 type Writer struct {
 	priority Priority
 	tag      string
@@ -115,6 +120,8 @@ func New(priority Priority, tag string) (*Writer, error) {
 // If network is empty, Dial will connect to the local syslog server.
 // Otherwise, see the documentation for net.Dial for valid values
 // of network and raddr.
+// Dial 通过连接到指定网络上的地址 raddr 来建立到日志守护程序的连接。
+// 每次写入返回的作者都会发生一条日志消息
 func Dial(network, raddr string, priority Priority, tag string) (*Writer, error) {
 	if priority < 0 || priority > LOG_LOCAL7|LOG_DEBUG {
 		return nil, errors.New("log/syslog: invalid priority")
