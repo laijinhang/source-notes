@@ -6,6 +6,7 @@ package strconv
 
 import "math/bits"
 
+// 对于小整数（小于100的数），启动快速转换方式
 const fastSmalls = true // enable fast path for small integers
 
 // FormatUint returns the string representation of i in the given base,
@@ -56,6 +57,8 @@ func AppendUint(dst []byte, i uint64, base int) []byte {
 }
 
 // small returns the string for an i with 0 <= i < nSmalls.
+// smaill返回i的字符串，其中i满足大于0，小于nSmalls
+// 其时间复杂度达到O(1)
 func small(i int) string {
 	if i < 10 {
 		return digits[i : i+1]
@@ -85,10 +88,10 @@ const digits = "0123456789abcdefghijklmnopqrstuvwxyz"
 // set, the string is appended to dst and the resulting byte slice is
 // returned as the first result value; otherwise the string is returned
 // as the second result value.
-//
+// FormatUint返回给定基数i的字符串表示形式，base为进制数，2 <= base <=36。对于进制数大于10的部分，结果使用小写字母'a'到'z'表示。
 func formatBits(dst []byte, u uint64, base int, neg, append_ bool) (d []byte, s string) {
 	if base < 2 || base > len(digits) {
-		panic("strconv: illegal AppendInt/FormatInt base")
+		panic("strconv: illegal AppendInt/FormatInt base") // 非法的AppendInt / FormatInt基数
 	}
 	// 2 <= base && base <= len(digits)
 
@@ -102,16 +105,20 @@ func formatBits(dst []byte, u uint64, base int, neg, append_ bool) (d []byte, s 
 	// convert bits
 	// We use uint values where we can because those will
 	// fit into a single register even on a 32bit machine.
+	// 转换位我们在可能的地方使用uint值，因为即使在32位计算机上，这些值也可以放入单个寄存器中。
 	if base == 10 {
 		// common case: use constants for / because
 		// the compiler can optimize it into a multiply+shift
+		// 常见情况：对/使用常量，因为编译器可以将其优化为乘法+移位
 
 		if host32bit {
 			// convert the lower digits using 32bit operations
+			// 使用32位运算转换低位数字
 			for u >= 1e9 {
 				// Avoid using r = a%b in addition to q = a/b
 				// since 64bit division and modulo operations
 				// are calculated by runtime functions on 32bit machines.
+				// 避免在q = a / b之外使用r = a％b，因为64位除法和模运算是由32位计算机上的运行时函数计算的。
 				q := u / 1e9
 				us := uint(u - q*1e9) // u % 1e9 fits into a uint
 				for j := 4; j > 0; j-- {
@@ -124,6 +131,7 @@ func formatBits(dst []byte, u uint64, base int, neg, append_ bool) (d []byte, s 
 
 				// us < 10, since it contains the last digit
 				// from the initial 9-digit us.
+				// us <10，因为它包含前9位us的最后一位。
 				i--
 				a[i] = smallsString[us*2+1]
 

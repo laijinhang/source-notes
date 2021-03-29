@@ -44,6 +44,28 @@ var float64info = floatInfo{52, 11, -1023}
 // zeros are removed).
 // The special precision -1 uses the smallest number of digits
 // necessary such that ParseFloat will return f exactly.
+//
+// FormatFloat将浮点数f转换为字符串，
+// 根据格式化fmt和precision prec。它四舍五入
+// 假定原始结果从浮点数获得的结果
+// bitSize位的值（float32为32，float64为64）
+//
+// 格式fmt是以下格式之一
+// 'b'（-ddddp±ddd, 二进制指数），
+// 'e' (-d.dddde±dd, 十进制指数),
+// 'E' (-d.ddddE±dd, 十进制指数),
+// 'f' (-ddd.dddd, 无指数),
+// 'g' ('e' for large exponents, 'f' otherwise),
+// 'G' ('E' for large exponents, 'f' otherwise),
+// 'x' (-0xd.ddddp±ddd, 十六进制分数和二进制指数), 或
+// 'X' (-0Xd.ddddP±ddd, 十六进制分数和二进制指数).
+//
+// precision prec控制位数（不包括指数）
+// 以“e”，“E”，“f”，“g”，“G”，“x”和“X”格式打印。
+// 对于“e”，“E”，“f”，”x“和”X“，它是小数点后的位数。
+// 对于”g“和”G“，它是有效数字的最大值（后跟零）。
+// 特殊精度-1使用最少的位数
+// 以便ParseFloat准确返回f
 func FormatFloat(f float64, fmt byte, prec, bitSize int) string {
 	return string(genericFtoa(make([]byte, 0, max(prec+4, 24)), f, fmt, prec, bitSize))
 }
