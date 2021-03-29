@@ -175,23 +175,41 @@ func (l *Logger) Output(calldepth int, s string) error {
 	var line int
 	l.mu.Lock()
 	defer l.mu.Unlock()
+	// 如果配置了获取文件和行号的话
 	if l.flag&(Lshortfile|Llongfile) != 0 {
 		// Release lock while getting caller info - it's expensive.
+		// 因为runtime.Caller代价比较大，先不加锁
 		l.mu.Unlock()
 		var ok bool
+		// func Caller(skip int) (pc uintptr, file string, line int, ok bool)
+		// 参数skip表示跳过栈帧数，0表示不跳过，也就是runtime.Caller的调用者。
+		// 1的话就是再往上一层，表示调用者的调用者。
+		// log日志包使用的是2，也就是表示从我们在源码带中调用log.Print、log.Fatal和log.Panic这些函数的调用者。
+		/*
+		以main函数调用log.Println为例，是main->log.Println->*Logger.Output->runtime.Caller这么一个方法调用栈，所以这时候，skip的值分别代表：
+
+			0 表示*Logger.Output中调用runtime.Caller的源代码文件和行号
+			1 表示log.Println中调用*Logger.Output的源代码文件和行号
+			2 表示main中调用log.Println的源代码文件和行号
+
+		所以这也是log包里的这个skip的值为什么一直是2的原因。
+		 */
 		_, file, line, ok = runtime.Caller(calldepth)
 		if !ok {
 			file = "???"
 			line = 0
 		}
+		// 获取到行号等信息后，再加锁，保证安全
 		l.mu.Lock()
 	}
+	// 把我们的日志信息和设置的日志进行拼接
 	l.buf = l.buf[:0]
 	l.formatHeader(&l.buf, now, file, line)
 	l.buf = append(l.buf, s...)
 	if len(s) == 0 || s[len(s)-1] != '\n' {
 		l.buf = append(l.buf, '\n')
 	}
+	// 输出拼接好的缓冲buf里的日志信息到目的地
 	_, err := l.out.Write(l.buf)
 	return err
 }
