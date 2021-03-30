@@ -395,6 +395,10 @@ func (b *Buffer) ReadString(delim byte) (line string, err error) {
 // prepare a Buffer to read existing data. It can also be used to set
 // the initial size of the internal buffer for writing. To do that,
 // buf should have the desired capacity but a length of zero.
+// NewBuffer使用buf作为初始内容创建并初始化一个新的缓冲区。
+// 新的缓冲区拥有buf的所有权，调用者在这个调用之后不应该使用buf。
+// NewBuffer的目的是准备一个缓冲区来读取现有的数据。
+// 它还可用于设置用于写入的内部缓冲区的初始大小。要做到这一点，BUF应该具有所需的容量，但长度应为零。
 //
 // In most cases, new(Buffer) (or just declaring a Buffer variable) is
 // sufficient to initialize a Buffer.
