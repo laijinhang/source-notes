@@ -3,8 +3,10 @@
 // license that can be found in the LICENSE file.
 
 // Garbage collector: sweeping
+// 垃圾收集器：清扫
 
 // The sweeper consists of two different algorithms:
+// 垃圾回收由两种不同的算法组成：
 //
 // * The object reclaimer finds and frees unmarked slots in spans. It
 //   can free a whole span if none of the objects are marked, but that

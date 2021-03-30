@@ -8,15 +8,19 @@
 // Can do binary floating point in multiprecision decimal precisely
 // because 2 divides 10; cannot do decimal floating point
 // in multiprecision binary precisely.
+// 多精度十进制数字。仅用于浮点格式；
+// 非通用。仅分配操作和（二进制）左/右移位。
+// 由于2除以10，因此可以精确地执行多精度十进制中的二进制浮点；
+// 不能精确地在多精度二进制中执行十进制浮点运算。
 
 package strconv
 
 type decimal struct {
-	d     [800]byte // digits, big-endian representation
-	nd    int       // number of digits used
-	dp    int       // decimal point
-	neg   bool      // negative flag
-	trunc bool      // discarded nonzero digits beyond d[:nd]
+	d     [800]byte // digits, big-endian representation，数字，大尾数表示
+	nd    int       // number of digits used，使用的位数
+	dp    int       // decimal point，小数点
+	neg   bool      // negative flag，负号
+	trunc bool      // discarded nonzero digits beyond d[:nd]，超过d [：nd]的非零数字
 }
 
 func (a *decimal) String() string {
@@ -36,6 +40,7 @@ func (a *decimal) String() string {
 
 	case a.dp <= 0:
 		// zeros fill space between decimal point and digits
+		// 零填充小数点和数字之间的空间
 		buf[w] = '0'
 		w++
 		buf[w] = '.'
@@ -45,6 +50,7 @@ func (a *decimal) String() string {
 
 	case a.dp < a.nd:
 		// decimal point in middle of digits
+		// 小数点中间的数字
 		w += copy(buf[w:], a.d[0:a.dp])
 		buf[w] = '.'
 		w++
@@ -52,6 +58,7 @@ func (a *decimal) String() string {
 
 	default:
 		// zeros fill space between digits and decimal point
+		// 零填充数字和小数点之间的空间
 		w += copy(buf[w:], a.d[0:a.nd])
 		w += digitZero(buf[w : w+a.dp-a.nd])
 	}

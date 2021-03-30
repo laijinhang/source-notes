@@ -1485,7 +1485,7 @@ const (
 	EADV            = Errno(0x44)
 	EAFNOSUPPORT    = Errno(0x61)
 	EAGAIN          = Errno(0xb)
-	EALREADY        = Errno(0x72)
+	EALREADY        = Errno(0x72)	// Operation already in progress，错误原因：套接字为非阻塞套接字，并且原来的链接请求还未完成
 	EBADE           = Errno(0x34)
 	EBADF           = Errno(0x9)
 	EBADFD          = Errno(0x4d)
@@ -1516,10 +1516,33 @@ const (
 	EHWPOISON       = Errno(0x85)
 	EIDRM           = Errno(0x2b)
 	EILSEQ          = Errno(0x54)
-	EINPROGRESS     = Errno(0x73)
+	EINPROGRESS     = Errno(0x73)	// 当我们以非阻塞的方式来进行连接的时候，返回的结果如果是 -1,这并不代表这次连接发生了错误，如果它的返回结果是 EINPROGRESS，那么就代表连接还在进行中。 后面可以通过poll或者select来判断socket是否可写，如果可以写，说明连接完成了。
+	/*
+	慢系统调用（slow system call）：此术语适用于那些可能永远阻塞的系统调用。永远阻塞的系统调用。
+	永远阻塞的系统调用是指调用有可能永远无法返回，多数网络支持函数都属于这一类。
+	如：如没有客户连接到服务器上，那么服务器的accept调用就没有返回的保证。
+
+	EINTR错误的产生：当阻塞于某个慢系统调用的一个进程捕获某个信号且相应信号处理函数返回时，该系统调用可能返回一个EINTR错误。
+	例如：在socket服务器端，设置了信号捕获机制，有子进程，当在父进程阻塞于慢系统时由父进程捕获到了一个有效信号时，
+	当在父进程会致使accept返回一个EINTR错误（被中断的系统调用）。
+
+	当碰到EINTR错误的时候，可以采取有一些可以重启的系统调用要进行重启，而对于有一些系统调用是不能够重启的。
+	例如：accept、read、write、select、和open之类的函数来说，是可以进行重启的。
+	不过对于套接字编程中的connect函数我们是不能重启的，若connect函数返回一个EINTR错误的时候，
+	我们不能再次调用它，否则将立即返回一个错误。针对connect不能重启的处理方法是，必须调用select来等待连接完成。
+
+	对于socket接口(指connect/send/recv/accept..等等后面不重复，不包括不能设置非阻塞的如select)，
+	在阻塞模式下有可能因为发生信号，返回EINTR错误，由用户做重试或终止。
+	 */
 	EINTR           = Errno(0x4)
+	/*
+	无效的参数，即为 invalid argument ，包括参数值、类型或数目无效等
+	 */
 	EINVAL          = Errno(0x16)
 	EIO             = Errno(0x5)
+	/*
+	套接字已经建立，第一次连接成功之后，在调用一次connect，就会抛出这个错误
+	 */
 	EISCONN         = Errno(0x6a)
 	EISDIR          = Errno(0x15)
 	EISNAM          = Errno(0x78)

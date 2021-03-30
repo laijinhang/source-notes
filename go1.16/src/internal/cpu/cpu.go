@@ -4,6 +4,7 @@
 
 // Package cpu implements processor feature detection
 // used by the Go standard library.
+// cpu包实现Go标准库使用的处理器功能检测。
 package cpu
 
 // DebugOptions is set to true by the runtime if the OS supports reading

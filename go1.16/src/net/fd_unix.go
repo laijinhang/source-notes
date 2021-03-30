@@ -56,9 +56,10 @@ func (fd *netFD) connect(ctx context.Context, la, ra syscall.Sockaddr) (rsa sysc
 	// Do not need to call fd.writeLock here,
 	// because fd is not yet accessible to user,
 	// so no concurrent operations are possible.
+	// 无需在此处调用fd.writeLock，因为用户尚无法访问fd，因此无法进行并发操作。
 	switch err := connectFunc(fd.pfd.Sysfd, ra); err {
 	case syscall.EINPROGRESS, syscall.EALREADY, syscall.EINTR:
-	case nil, syscall.EISCONN:
+	case nil, syscall.EISCONN:	// 第一次连接，或已经连接成功
 		select {
 		case <-ctx.Done():
 			return nil, mapErr(ctx.Err())
@@ -67,6 +68,7 @@ func (fd *netFD) connect(ctx context.Context, la, ra syscall.Sockaddr) (rsa sysc
 		if err := fd.pfd.Init(fd.net, true); err != nil {
 			return nil, err
 		}
+		// 保活
 		runtime.KeepAlive(fd)
 		return nil, nil
 	case syscall.EINVAL:
@@ -75,6 +77,9 @@ func (fd *netFD) connect(ctx context.Context, la, ra syscall.Sockaddr) (rsa sysc
 		// as a successful connection--writes to the socket will see
 		// EOF.  For details and a test case in C see
 		// https://golang.org/issue/6828.
+		//在Solaris和illumos上，如果服务器已经接受并关闭了套接字，我们可以看到EINVAL。
+		//将其视为成功连接-写入套接字将看到EOF。有关C语言中的详细信息和测试用例，
+		//请参见https://golang.org/issue/6828。
 		if runtime.GOOS == "solaris" || runtime.GOOS == "illumos" {
 			return nil, nil
 		}

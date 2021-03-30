@@ -90,6 +90,11 @@ func (pd *pollDesc) prepare(mode int, isFile bool) error {
 	return convertErr(res, isFile)
 }
 
+// fd.pd.prepareRead 检查当前fd是否允许accept，
+// 实际上是检查更底层的 pollDesc 是否可读。
+// 检查完毕之后，尝试调用 accept 获取已连接的socket，注意此待代码在for循环内，
+// 说明 Accept 是阻塞的，直到有连接进来；当遇到 EAGIN 和 ECONNABORTED 错误
+// 会重试，其他错误都抛给更上一层。
 func (pd *pollDesc) prepareRead(isFile bool) error {
 	return pd.prepare('r', isFile)
 }
@@ -106,6 +111,8 @@ func (pd *pollDesc) wait(mode int, isFile bool) error {
 	return convertErr(res, isFile)
 }
 
+// fd.pd.waitRead阻塞等待fd是否可读，即是否有新连接进来，
+// 最终进入到runtime.poll_runtime_pollWait里(runtime/netpoll.go)
 func (pd *pollDesc) waitRead(isFile bool) error {
 	return pd.wait('r', isFile)
 }

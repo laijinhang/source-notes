@@ -121,6 +121,8 @@ func (mu *fdMutex) decref() bool {
 
 // lock adds a reference to mu and locks mu.
 // It reports whether mu is available for reading or writing.
+// lock添加对mu的引用并锁定mu。
+// 报告mu是否可用于读取或写入。
 func (mu *fdMutex) rwlock(read bool) bool {
 	var mutexBit, mutexWait, mutexMask uint64
 	var mutexSema *uint32

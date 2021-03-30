@@ -14,8 +14,9 @@ import (
 
 // FD is a file descriptor. The net and os packages use this type as a
 // field of a larger type representing a network connection or OS file.
-// FD是一个文件描述符。
-// net和os包将此类型用作表示网络连接或os文件的较大类型的字段。
+// FD是GO中通用的文件描述符类型，net包和os包用FD来表示网络连接或者文件，FD提供了
+// 用户接口层到runtime之间逻辑处理。此处的pollDesc是poll.pollDesc而非runtime.pollDesc，
+// poll.pollDesc在internal/poll/fd_poll_runtime.go中实现了runtime交互的接口。
 type FD struct {
 	// Lock sysfd and serialize access to Read and Write methods.
 	// 锁定sysfd并序列化对读写方法的访问。
@@ -30,7 +31,7 @@ type FD struct {
 	pd pollDesc
 
 	// Writev cache.
-	// 写缓存。
+	// 写缓存。在一次函数调用中读、写多个非连续缓冲区，这里主要是写
 	iovecs *[]syscall.Iovec
 
 	// Semaphore signaled when file is closed.
@@ -53,6 +54,7 @@ type FD struct {
 	ZeroReadIsEOF bool
 
 	// Whether this is a file rather than a network socket.
+	// 是否系统中真实文件还是socket连接
 	isFile bool
 }
 
@@ -395,12 +397,19 @@ func (fd *FD) WriteMsg(p []byte, oob []byte, sa syscall.Sockaddr) (int, int, err
 }
 
 // Accept wraps the accept network call.
+// 包装接受网络呼叫。
 func (fd *FD) Accept() (int, syscall.Sockaddr, string, error) {
+	// 获取读锁
 	if err := fd.readLock(); err != nil {
 		return -1, nil, "", err
 	}
 	defer fd.readUnlock()
 
+	// fd.pd.prepareRead 检查当前fd是否允许accept，
+	// 实际上是检查更底层的 pollDesc 是否可读。
+	// 检查完毕之后，尝试调用 accept 获取已连接的socket，注意此待代码在for循环内，
+	// 说明 Accept 是阻塞的，直到有连接进来；当遇到 EAGIN 和 ECONNABORTED 错误
+	// 会重试，其他错误都抛给更上一层。
 	if err := fd.pd.prepareRead(fd.isFile); err != nil {
 		return -1, nil, "", err
 	}
