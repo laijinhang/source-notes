@@ -12,4 +12,7 @@ package sys
 // known GOOS and GOARCH. The constant is 1 on the
 // current system, 0 otherwise; multiplying by them is
 // useful for defining GOOS- or GOARCH-specific constants.
+// 下一行让“go generate”编写zgo*.go文件，其中包含每个OS和每个arch的信息，
+// 包括每个已知的Goos和Goarch的名为Goos$Goos和Goarch$Goarch的常量。
+// 在当前系统中，该常数为1，否则为0；将它们相乘可用于定义GOOS或GOARCH特定的常数。
 //go:generate go run gengoos.go

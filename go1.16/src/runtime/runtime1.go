@@ -16,6 +16,10 @@ import (
 // The cached value is a uint32 in which the low bits
 // are the "crash" and "all" settings and the remaining
 // bits are the traceback value (0 off, 1 on, 2 include system).
+// 保留一个缓存的值以使gotraceback更快，
+// 因为我们每次调用gentraceback时都会调用它。
+// 缓存值是uint32，其中低位是“崩溃”和“全部”设置，
+// 其余位是追溯值(0关闭，1打开，2包括系统)。
 const (
 	tracebackCrash = 1 << iota
 	tracebackAll
@@ -32,6 +36,13 @@ var traceback_env uint32
 // If level is 2, show tracebacks including runtime frames.
 // If all is set, print all goroutine stacks. Otherwise, print just the current goroutine.
 // If crash is set, crash (core dump, etc) after tracebacking.
+//
+// gotraceback返回当前回溯设置。
+// 如果level为0，则取消所有回溯。
+// 如果level为1，则显示回溯，但排除运行时帧。
+// 如果level为2，则显示回溯，包括运行时帧。
+// 如果全部设置，则打印所有goroutine堆栈。
+// 否则，只打印当前的goroutine。如果设置了CRASH，则在回溯之后崩溃(核心转储等)。
 //
 //go:nosplit
 func gotraceback() (level int32, all, crash bool) {
@@ -53,6 +64,7 @@ var (
 )
 
 // nosplit for use in linux startup sysargs
+// 在Linux启动sysargs中使用nosplit
 //go:nosplit
 func argv_index(argv **byte, i int32) *byte {
 	return *(**byte)(add(unsafe.Pointer(argv), uintptr(i)*sys.PtrSize))

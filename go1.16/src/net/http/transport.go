@@ -565,6 +565,8 @@ func (t *Transport) roundTrip(req *Request) (*Response, error) {
 		// host (for http or https), the http proxy, or the http proxy
 		// pre-CONNECTed to https server. In any case, we'll be ready
 		// to send it requests.
+		// 获取到主机（对于http或https）、http代理或预连接到https服务器的http代理
+		// 的缓存连接或新创建的连接。在任何情况下，我们都可以发送请求。
 		pconn, err := t.getConn(treq, cm)
 		if err != nil {
 			t.setReqCanceler(cancelKey, nil)
@@ -575,7 +577,8 @@ func (t *Transport) roundTrip(req *Request) (*Response, error) {
 		var resp *Response
 		if pconn.alt != nil {
 			// HTTP/2 path.
-			t.setReqCanceler(cancelKey, nil) // not cancelable with CancelRequest
+			// HTTP/2路径。
+			t.setReqCanceler(cancelKey, nil) // not cancelable with CancelRequest，不能使用CancelRequest取
 			resp, err = pconn.alt.RoundTrip(req)
 		} else {
 			resp, err = pconn.roundTrip(treq)

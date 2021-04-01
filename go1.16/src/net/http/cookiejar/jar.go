@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Package cookiejar implements an in-memory RFC 6265-compliant http.CookieJar.
+// cookiejar包实现了一个与文档rfc6265兼容的http.CookieJar.
 package cookiejar
 
 import (
@@ -31,8 +32,18 @@ import (
 //
 // A public suffix list implementation is in the package
 // golang.org/x/net/publicsuffix.
+// PublicSuffixList提供域的公共后缀。例如：
+//		- “example.com”的公共后缀是“com”，
+//	 	-“foo1.foo2.foo3.co.uk”的公共后缀是“co.uk”，以及
+//	 	-“bar.pvt.k12.ma.us”的公共后缀是“pvt.k12.ma.us”。
+//
+// PublicSuffixList的实现对于多个Goroutine的并发使用必须是安全的。
+// 总是返回“”的实现是有效的，可能对测试有用，但不安全：
+// 这意味着foo.com的HTTP服务器可以为bar.com设置cookie。
+// 公共后缀列表实现位于包golang.org/x/net/public suffix中。
 type PublicSuffixList interface {
 	// PublicSuffix returns the public suffix of domain.
+	// PublicSuffix返回domain的公共后缀。
 	//
 	// TODO: specify which of the caller and callee is responsible for IP
 	// addresses, for leading and trailing dots, for case sensitivity, and

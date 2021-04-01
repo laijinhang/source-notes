@@ -15,9 +15,11 @@ import (
 )
 
 // A Header represents the key-value pairs in an HTTP header.
+// Header表示HTTP报头中的键-值对。
 //
 // The keys should be in canonical form, as returned by
 // CanonicalHeaderKey.
+// 键应该是规范形式，由CanonicalHeaderKey返回。
 type Header map[string][]string
 
 // Add adds the key, value pair to the header.
@@ -87,12 +89,15 @@ func (h Header) write(w io.Writer, trace *httptrace.ClientTrace) error {
 }
 
 // Clone returns a copy of h or nil if h is nil.
+// Clone返回一个h的拷贝，如果h是零，则返回零。
+// 深度拷贝
 func (h Header) Clone() Header {
 	if h == nil {
 		return nil
 	}
 
 	// Find total number of values.
+	// 查找值的总数
 	nv := 0
 	for _, vv := range h {
 		nv += len(vv)

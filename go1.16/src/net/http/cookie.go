@@ -17,6 +17,8 @@ import (
 // HTTP response or the Cookie header of an HTTP request.
 //
 // See https://tools.ietf.org/html/rfc6265 for details.
+// Cookie表示在HTTP响应的Set-Cookie报头或HTTP请求的Cookie报头中发送的HTTP Cookie。
+// 详情请参见https://tools.ietf.org/html/rfc6265。
 type Cookie struct {
 	Name  string
 	Value string
@@ -24,17 +26,21 @@ type Cookie struct {
 	Path       string    // optional
 	Domain     string    // optional
 	Expires    time.Time // optional
-	RawExpires string    // for reading cookies only
+	RawExpires string    // for reading cookies only，仅用于读取Cookie
 
 	// MaxAge=0 means no 'Max-Age' attribute specified.
 	// MaxAge<0 means delete cookie now, equivalently 'Max-Age: 0'
 	// MaxAge>0 means Max-Age attribute present and given in seconds
+
+	// MaxAge=0 表示未指定“Max-Age”属性。
+	// MaxAge<0 表示立即删除Cookie，相当于‘Max-Age：0’
+	// MaxAge>0 表示存在并以秒为单位给定的Max-Age属性
 	MaxAge   int
 	Secure   bool
 	HttpOnly bool
 	SameSite SameSite
 	Raw      string
-	Unparsed []string // Raw text of unparsed attribute-value pairs
+	Unparsed []string // Raw text of unparsed attribute-value pairs，未解析的属性-值对的原始文本
 }
 
 // SameSite allows a server to define a cookie attribute making it impossible for
@@ -43,6 +49,11 @@ type Cookie struct {
 // some protection against cross-site request forgery attacks.
 //
 // See https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00 for details.
+
+// SameSite允许服务器定义一个cookie属性，使得浏览器不可能在跨站点请求时发送该cookie。
+// 其主要目的是降低跨源信息泄漏的风险，并提供一些防止跨站点请求伪造攻击的保护。
+//
+// 详情请参见https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00。
 type SameSite int
 
 const (
@@ -54,6 +65,8 @@ const (
 
 // readSetCookies parses all "Set-Cookie" values from
 // the header h and returns the successfully parsed Cookies.
+// readSetCookies解析标题h中的所有“set-Cookie”值，
+// 并返回解析成功的Cookie。
 func readSetCookies(h Header) []*Cookie {
 	cookieCount := len(h["Set-Cookie"])
 	if cookieCount == 0 {
@@ -158,6 +171,8 @@ func readSetCookies(h Header) []*Cookie {
 // SetCookie adds a Set-Cookie header to the provided ResponseWriter's headers.
 // The provided cookie must have a valid Name. Invalid cookies may be
 // silently dropped.
+// SetCookie将Set Cookie头添加到提供的ResponseWriter的头中。
+// 提供的cookie必须具有有效名称。无效的cookies可能会被自动删除。
 func SetCookie(w ResponseWriter, cookie *Cookie) {
 	if v := cookie.String(); v != "" {
 		w.Header().Add("Set-Cookie", v)
@@ -168,12 +183,17 @@ func SetCookie(w ResponseWriter, cookie *Cookie) {
 // header (if only Name and Value are set) or a Set-Cookie response
 // header (if other fields are set).
 // If c is nil or c.Name is invalid, the empty string is returned.
+
+// String返回用于Cookie头（如果仅设置了Name和Value）或
+// Set-Cookie响应头（如果设置了其他字段）的cookie的序列化
 func (c *Cookie) String() string {
 	if c == nil || !isCookieNameValid(c.Name) {
 		return ""
 	}
 	// extraCookieLength derived from typical length of cookie attributes
 	// see RFC 6265 Sec 4.1.
+	// extraCookieLength从cookie属性的典型长度导出，
+	// 参见RFC 6265第4.1节。
 	const extraCookieLength = 110
 	var b strings.Builder
 	b.Grow(len(c.Name) + len(c.Value) + len(c.Domain) + len(c.Path) + extraCookieLength)
@@ -191,6 +211,9 @@ func (c *Cookie) String() string {
 			// sanitized but simply dropped which turns the cookie
 			// into a host-only cookie. A leading dot is okay
 			// but won't be sent.
+			// 包含非法字符的c.Domain不会被清除，而只是被丢弃，
+			// 这将使cookie变成一个只供主机使用的cookie。
+			// 前导点可以，但不会被发送。
 			d := c.Domain
 			if d[0] == '.' {
 				d = d[1:]
@@ -233,8 +256,10 @@ func (c *Cookie) String() string {
 
 // readCookies parses all "Cookie" values from the header h and
 // returns the successfully parsed Cookies.
+// readCookies解析标题h中的所有“Cookie”值，并返回解析成功的Cookie。
 //
 // if filter isn't empty, only cookies of that name are returned
+// 如果filter不是空的，则只返回该名称的cookie
 func readCookies(h Header, filter string) []*Cookie {
 	lines := h["Cookie"]
 	if len(lines) == 0 {

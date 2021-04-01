@@ -15,11 +15,13 @@ import (
 
 var ticks struct {
 	lock mutex
-	pad  uint32 // ensure 8-byte alignment of val on 386
-	val  uint64
+	// 确保386上val的8字节对齐
+	pad uint32 // ensure 8-byte alignment of val on 386
+	val uint64
 }
 
 // Note: Called by runtime/pprof in addition to runtime code.
+// 注意:除了运行时代码外，还由runtime/pprof调用。
 func tickspersecond() int64 {
 	r := int64(atomic.Load64(&ticks.val))
 	if r != 0 {
