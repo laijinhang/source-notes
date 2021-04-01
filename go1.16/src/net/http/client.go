@@ -88,6 +88,35 @@ type Client struct {
 	// If nil, DefaultTransport is used.
 	// Transport指定发出单个http请求的机制。
 	// 如果为nil，则使用DefaultTransport。
+	/*
+		理解：就是说，如果Transport为空，就使用默认DefaultTransport的，它实现了一个http请求
+		如果Transport不为空，就使用自定义的，如：
+
+		func main() {
+			jar, _ := cookiejar.New(nil)
+			client := http.Client{
+				Jar:       jar,
+				Transport: t{},
+			}
+			req, _ := http.NewRequest("GET", "http://127.0.0.1:10000/", nil)
+			for i := 0; i < 10; i++ {
+				resp, err := client.Do(req)
+				...
+			}
+		}
+
+		type t struct {
+		}
+
+		func (t) RoundTrip(*http.Request) (*http.Response, error) {
+			fmt.Println("123")
+			return &http.Response{}, nil
+		}
+
+		会输出十次123，不会去请求http://127.0.0.1:10000/这个地址
+
+
+	*/
 	Transport RoundTripper
 
 	// CheckRedirect specifies the policy for handling redirects.
