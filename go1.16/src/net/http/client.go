@@ -141,7 +141,11 @@ type Client struct {
 	// 如果CheckRedirect返回ErrUseLastResponse，则返回最新的响应，
 	// 其主体未关闭，而不是发出req请求，如果CheckRedirect为nil，
 	// 客户端将使用其默认策略，即在连续10个请求后停止。
-
+	/*
+		重定向：
+		1. 如果有设置，就执行设置的
+		2. 如果没有设置，就执行默认（func defaultCheckRedirect(req *Request, via []*Request) error）
+	*/
 	CheckRedirect func(req *Request, via []*Request) error
 
 	// Jar specifies the cookie jar.
@@ -951,6 +955,7 @@ func (c *Client) makeHeadersCopier(ireq *Request) func(*Request) {
 }
 
 func defaultCheckRedirect(req *Request, via []*Request) error {
+	// 最多重定向10次，如果超出，则抛出错误，结束这次请求
 	if len(via) >= 10 {
 		return errors.New("stopped after 10 redirects")
 	}
