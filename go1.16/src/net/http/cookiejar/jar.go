@@ -57,6 +57,7 @@ type PublicSuffixList interface {
 }
 
 // Options are the options for creating a new Jar.
+// Options是用于创建新Jar的选项。
 type Options struct {
 	// PublicSuffixList is the public suffix list that determines whether
 	// an HTTP server can set a cookie for a domain.
@@ -64,27 +65,35 @@ type Options struct {
 	// A nil value is valid and may be useful for testing but it is not
 	// secure: it means that the HTTP server for foo.co.uk can set a cookie
 	// for bar.co.uk.
+	// PublicSuffixList是公共后缀列表，用于确定HTTP服务器是否可以为域设置
+	// Cookie。nil值是有效的，可能对测试有用，但不安全：这意味着foo.co.uk
+	// 的HTTP服务器可以为bar.co.uk设置cookie。
 	PublicSuffixList PublicSuffixList
 }
 
 // Jar implements the http.CookieJar interface from the net/http package.
+// Jar实现net/http包的http.CookieJar接口。
 type Jar struct {
 	psList PublicSuffixList
 
 	// mu locks the remaining fields.
+	// mu锁定其余字段。
 	mu sync.Mutex
 
 	// entries is a set of entries, keyed by their eTLD+1 and subkeyed by
 	// their name/domain/path.
+	// entries是一组条目，由它们的eTLD+1来标识，由它们的名称/域/路径来子标识
 	entries map[string]map[string]entry
 
 	// nextSeqNum is the next sequence number assigned to a new cookie
 	// created SetCookies.
+	// nextSeqNum是分配给新cookie的下一个序列号。
 	nextSeqNum uint64
 }
 
 // New returns a new cookie jar. A nil *Options is equivalent to a zero
 // Options.
+// New返回一个新的cookie jar。nil*选项等同于零选项.
 func New(o *Options) (*Jar, error) {
 	jar := &Jar{
 		entries: make(map[string]map[string]entry),
@@ -99,6 +108,7 @@ func New(o *Options) (*Jar, error) {
 //
 // This struct type is not used outside of this package per se, but the exported
 // fields are those of RFC 6265.
+// 条目是Cookie的内部表示形式。此结构类型本身不在此包的外部使用，但导出的字段是RFC 6265的字段。
 type entry struct {
 	Name       string
 	Value      string
