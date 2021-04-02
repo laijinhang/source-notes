@@ -172,11 +172,15 @@ func hasDotSuffix(s, suffix string) bool {
 // Cookies implements the Cookies method of the http.CookieJar interface.
 //
 // It returns an empty slice if the URL's scheme is not HTTP or HTTPS.
+
+// Cookies实现了http的Cookies方法。
+// CookieJar接口。如果网址的scheme不是超文本传输协议或HTTPS，它将返回一个空切片。
 func (j *Jar) Cookies(u *url.URL) (cookies []*http.Cookie) {
 	return j.cookies(u, time.Now())
 }
 
 // cookies is like Cookies but takes the current time as a parameter.
+// Cookie类似于Cookie，但将当前时间作为参数。
 func (j *Jar) cookies(u *url.URL, now time.Time) (cookies []*http.Cookie) {
 	if u.Scheme != "http" && u.Scheme != "https" {
 		return cookies
@@ -315,6 +319,7 @@ func (j *Jar) setCookies(u *url.URL, cookies []*http.Cookie, now time.Time) {
 
 // canonicalHost strips port from host if present and returns the canonicalized
 // host name.
+// canonicalHost从主机中去掉端口(如果存在)，并返回规范化的主机名。
 func canonicalHost(host string) (string, error) {
 	var err error
 	host = strings.ToLower(host)
