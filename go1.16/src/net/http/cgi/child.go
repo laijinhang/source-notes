@@ -5,6 +5,12 @@
 // This file implements CGI from the perspective of a child
 // process.
 // 这个文件从子进程的角度来实现CGI。
+/*
+核心工作原理：
+1. 启动一个web服务监听某个路由
+2. 当这个路由被触发，拿到请求的路由
+3. 启动一个进程去执行设定好的命令（比如：go run ...）
+*/
 
 package cgi
 
