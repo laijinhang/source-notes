@@ -90,11 +90,14 @@ type Cmd struct {
 	// value in the slice for each duplicate key is used.
 	// As a special case on Windows, SYSTEMROOT is always added if
 	// missing and not explicitly set to the empty string.
+	// Env指定进程的环境变量，如果为nil，则使用当前进程的环境变量，即 os.Environ()，
+	// 一般就是当前系统的环境变量。
 	Env []string
 
 	// Dir specifies the working directory of the command.
 	// If Dir is the empty string, Run runs the command in the
 	// calling process's current directory.
+	// Dir指定命令的工作目录。如为空字符串，会在调用者的进程当前工作目录下执行。
 	Dir string
 
 	// Stdin specifies the process's standard input.
@@ -109,6 +112,12 @@ type Cmd struct {
 	// over a pipe. In this case, Wait does not complete until the goroutine
 	// stops copying, either because it has reached the end of Stdin
 	// (EOF or a read error) or because writing to the pipe returned an error.
+	// Stdin指定进程的标准输入，如果为nil，进程会从空设备读取（os.DevNull）
+	// 如果 Stdin 是 *os.File 的实例，进程的标准输入会直接指向这个文件
+	// 否则，会在一个单独的 goroutine 中从 Stdin 中读取数据，然后将数据通过管道传递
+	// 到该命令中（也就是从Stdin读到数据后，写入管道，该命令可以从管道读到这个数据）。
+	// 在 goroutine 停止数据拷贝之前（停止的原因如遇到 EOF 或其他错误，或管道的 write 端错误），
+	// Wait 方法会一直堵塞。
 	Stdin io.Reader
 
 	// Stdout and Stderr specify the process's standard output and error.
@@ -126,6 +135,9 @@ type Cmd struct {
 	//
 	// If Stdout and Stderr are the same writer, and have a type that can
 	// be compared with ==, at most one goroutine at a time will call Write.
+	// Stdout和Stderr指定进程的标准输出和标准错误输出。
+	// 如果任一个为nil，Run方法会将对应的文件描述符关联到空设备（os.DevNull）
+	// 如果两个字段相同，同一时间最多一个线程可以写入。
 	Stdout io.Writer
 	Stderr io.Writer
 
@@ -134,17 +146,25 @@ type Cmd struct {
 	// standard error. If non-nil, entry i becomes file descriptor 3+i.
 	//
 	// ExtraFiles is not supported on Windows.
+	// ExtraFiles指定额外被新进程继承的已被打开文件，不包括标准输入、标准输出、标准错误。
+	// 如果本字段非nil，其中的元素i会变成文件描述符3+i
+	//
+	// ExtraFiles在Windows上不被支持。
 	ExtraFiles []*os.File
 
 	// SysProcAttr holds optional, operating system-specific attributes.
 	// Run passes it to os.StartProcess as the os.ProcAttr's Sys field.
+	// SysProcAttr提供可选的、各操作系统特定的sys熟悉。
+	// Run方法会它作为os.ProcAttr的Sys字段传递给os.StartProcess函数
 	SysProcAttr *syscall.SysProcAttr
 
 	// Process is the underlying process, once started.
+	// Process是底层的，只执行一次的进程。
 	Process *os.Process
 
 	// ProcessState contains information about an exited process,
 	// available after a call to Wait or Run.
+	// ProcessState包含一个已存在的进程的信息，只有在调用 Wait 和 Run后才可用。
 	ProcessState *os.ProcessState
 
 	ctx             context.Context // nil means none
