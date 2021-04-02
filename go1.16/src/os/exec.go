@@ -44,22 +44,33 @@ func (p *Process) done() bool {
 type ProcAttr struct {
 	// If Dir is non-empty, the child changes into the directory before
 	// creating the process.
+	// 如果Dir非空，子进程会在创建Process实例前先进入该目录。（即设为子进程的当前目录）
 	Dir string
 	// If Env is non-nil, it gives the environment variables for the
 	// new process in the form returned by Environ.
 	// If it is nil, the result of Environ will be used.
+	// 如果Env非空，它会作为新进程的环境变量。必须采样Environ返回值的格式。
+	// 如果Env为nil，将使用Environ函数的返回值。
 	Env []string
 	// Files specifies the open files inherited by the new process. The
 	// first three entries correspond to standard input, standard output, and
 	// standard error. An implementation may support additional entries,
 	// depending on the underlying operating system. A nil entry corresponds
 	// to that file being closed when the process starts.
+	// Files指定被新进程继承的打开文件对象。
+	// 前三个绑定为标准输入、标准输出、标准错误输出。
+	// 依赖底层操作系统的实现可能会支持额外的文件对象。
+	// nil相当于在进程开始时关闭的文件对象。
 	Files []*File
 
 	// Operating system-specific process creation attributes.
 	// Note that setting this field means that your program
 	// may not execute properly or even compile on some
 	// operating systems.
+	// 操作系统特定的创建属性。
+	// 注意设置本字段意味着你的程序可能会执行异常甚至在某些操作系统中无法通过编译。
+	// 这时候可以通过为特定系统设置。
+	// 看 syscall.SysProcAttr 的定义，可以知道用于控制进程的相关属性。
 	Sys *syscall.SysProcAttr
 }
 
@@ -84,6 +95,8 @@ func Getppid() int { return syscall.Getppid() }
 //
 // On Unix systems, FindProcess always succeeds and returns a Process
 // for the given pid, regardless of whether the process exists.
+// FindProcess可以通过pid查找一个运行中的进程。该函数返回的Process对象可以用于获取
+// 关于底层操作系统进程的信息。在Uinx系统中，此函数总是成功，即使pid对应的进程不存在。
 func FindProcess(pid int) (*Process, error) {
 	return findProcess(pid)
 }
@@ -106,6 +119,13 @@ func StartProcess(name string, argv []string, attr *ProcAttr) (*Process, error) 
 	return startProcess(name, argv, attr)
 }
 
+/*
+	Process 提供了四个方法：Kill、Signal、Wait和Release。
+	1. Kill和Signal与信号有关，Kill是调用Signal，发送了 SIGKILL 信号，强制进程退出。
+	2. Process方法用于释放Process对象相关的资源，以便将来可以被再使用。该方法只有在没有调用Wait时才需要调用。
+		Unix中，该方法的内部实现只是将Process的pid置为-1.
+*/
+
 // Release releases any resources associated with the Process p,
 // rendering it unusable in the future.
 // Release only needs to be called if Wait is not.
@@ -125,6 +145,9 @@ func (p *Process) Kill() error {
 // Wait releases any resources associated with the Process.
 // On most operating systems, the Process must be a child
 // of the current process or an error will be returned.
+// Wait方法阻塞直到进程退出，然后返回一个ProcessState描述进程的状态和可能的错误。
+// Wait方法会释放绑定到Process的所有资源。
+// 在大多数操作系统中，Process必须是当前进程的子进程，否则会返回错误。
 func (p *Process) Wait() (*ProcessState, error) {
 	return p.wait()
 }
@@ -146,6 +169,7 @@ func (p *ProcessState) SystemTime() time.Duration {
 }
 
 // Exited reports whether the program has exited.
+// 是否正常退出
 func (p *ProcessState) Exited() bool {
 	return p.exited()
 }

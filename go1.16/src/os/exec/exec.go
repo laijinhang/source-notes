@@ -5,6 +5,8 @@
 // Package exec runs external commands. It wraps os.StartProcess to make it
 // easier to remap stdin and stdout, connect I/O with pipes, and do other
 // adjustments.
+// Package exec运行外部命令。它包裹着操作系统启动进程为了更容易地重新映射stdin和stdout，
+// 请使用管道连接I/O，并进行其他调整。
 //
 // Unlike the "system" library call from C and other languages, the
 // os/exec package intentionally does not invoke the system shell and
@@ -14,10 +16,17 @@
 // patterns, either call the shell directly, taking care to escape any
 // dangerous input, or use the path/filepath package's Glob function.
 // To expand environment variables, use package os's ExpandEnv.
+// 与来自C和其他语言的“system”库调用不同，os/exec包故意不调用系统shell，
+// 也不扩展任何glob模式或处理通常由shell完成的其他扩展、管道或重定向。这个
+// 包的行为更像C的“exec”函数族。要扩展glob模式，可以直接调用shell，注意避
+// 开任何危险的输入，也可以使用path/filepath包的glob函数。要扩展环境变量，
+// 请使用package os的ExpandEnv。
 //
 // Note that the examples in this package assume a Unix system.
 // They may not run on Windows, and they do not run in the Go Playground
 // used by golang.org and godoc.org.
+// 请注意，此软件包中的示例假定使用Unix系统。它们可能不能在Windows上运行，
+// 也不能在golang.org和godoc.org使用的Go Playround上运行。
 package exec
 
 import (
@@ -53,18 +62,24 @@ func (e *Error) Unwrap() error { return e.Err }
 //
 // A Cmd cannot be reused after calling its Run, Output or CombinedOutput
 // methods.
+// Cmd表示正在准备或运行的外部命令。Cmd在调用其Run、
+// Output或CombinedOutput方法后不能被重用。
 type Cmd struct {
 	// Path is the path of the command to run.
 	//
 	// This is the only field that must be set to a non-zero
 	// value. If Path is relative, it is evaluated relative
 	// to Dir.
+	// Path是要运行的命令的路径。这是唯一必须设置为非零值的字段。
+	// 如果是相对路径，则相对于Dir进行计算。
 	Path string
 
 	// Args holds command line arguments, including the command as Args[0].
 	// If the Args field is empty or nil, Run uses {Path}.
 	//
 	// In typical use, both Path and Args are set by calling Command.
+	// args保存命令行参数，包括args[0]形式的命令。如果args字段为空或为空，
+	// 则run使用{path}。通常情况下，PATH和ARGS都是通过调用Command来设置的
 	Args []string
 
 	// Env specifies the environment of the process.
