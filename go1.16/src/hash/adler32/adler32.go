@@ -19,18 +19,24 @@ import (
 
 const (
 	// mod is the largest prime that is less than 65536.
+	// mod是小于65536的最大素数。
 	mod = 65521
 	// nmax is the largest n such that
 	// 255 * n * (n+1) / 2 + (n+1) * (mod-1) <= 2^32-1.
 	// It is mentioned in RFC 1950 (search for "5552").
+	// nmax是最大的n，因此
+	// 255*n*（n+1）/2+（n+1）*（mod-1）<=2^32-1。
+	// RFC1950中提到了它（搜索“5552”）
 	nmax = 5552
 )
 
 // The size of an Adler-32 checksum in bytes.
+// Adler-32校验和的大小(以字节为单位)。
 const Size = 4
 
 // digest represents the partial evaluation of a checksum.
 // The low 16 bits are s1, the high 16 bits are s2.
+// 摘要表示校验和的部分计算。低16位是S1，高16位是S2。
 type digest uint32
 
 func (d *digest) Reset() { *d = 1 }
@@ -40,6 +46,8 @@ func (d *digest) Reset() { *d = 1 }
 // returned Hash32 also implements encoding.BinaryMarshaler and
 // encoding.BinaryUnmarshaler to marshal and unmarshal the internal
 // state of the hash.
+// New返回一个新的哈希。Hash32计算Adler-32校验和。它的Sum方法将按大端字节顺序排列值。
+// 返回的Hash32也实现了编码。二进制编码和编码。BinaryUnmarshaler来封送和解封哈希的内部状态。
 func New() hash.Hash32 {
 	d := new(digest)
 	d.Reset()

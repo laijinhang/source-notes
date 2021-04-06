@@ -7,75 +7,105 @@
 	The items documented here are not actually in package builtin
 	but their descriptions here allow godoc to present documentation
 	for the language's special identifiers.
+
+	包内置为Go的预声明标识符提供了文档。这里记录的条目实际上并不是包内置的，
+	但它们在这里的描述允许godoc为语言的特殊标识符提供文档。
 */
 package builtin
 
 // bool is the set of boolean values, true and false.
+// bool是布尔值true和false的集合。
 type bool bool
 
 // true and false are the two untyped boolean values.
+// true和false是两个无类型的布尔值。
 const (
-	true  = 0 == 0 // Untyped bool.
-	false = 0 != 0 // Untyped bool.
+	true  = 0 == 0 // Untyped bool.，无类型的布尔值。
+	false = 0 != 0 // Untyped bool.，无类型的布尔值。
 )
 
 // uint8 is the set of all unsigned 8-bit integers.
 // Range: 0 through 255.
+// uint8是所有无符号8位整数的集合。
+// 取值范围:0 ~ 255。
 type uint8 uint8
 
 // uint16 is the set of all unsigned 16-bit integers.
 // Range: 0 through 65535.
+// uint16是所有16位无符号整数的集合。
+// 取值范围:0 ~ 65535。
 type uint16 uint16
 
 // uint32 is the set of all unsigned 32-bit integers.
 // Range: 0 through 4294967295.
+// uint32是所有无符号32位整数的集合。
+// 范围:0到4294967295。
 type uint32 uint32
 
 // uint64 is the set of all unsigned 64-bit integers.
 // Range: 0 through 18446744073709551615.
+// uint64是所有无符号64位整数的集合。
+// 范围:0 ~ 18446744073709551615。
 type uint64 uint64
 
 // int8 is the set of all signed 8-bit integers.
 // Range: -128 through 127.
+// int8是所有带符号8位整数的集合。
+// 范围:-128到127。
 type int8 int8
 
 // int16 is the set of all signed 16-bit integers.
 // Range: -32768 through 32767.
+// int16是所有16位有符号整数的集合。
+// 范围:-32768到32767。
 type int16 int16
 
 // int32 is the set of all signed 32-bit integers.
 // Range: -2147483648 through 2147483647.
+// int32是所有带符号32位整数的集合。
+// 范围: -2147483648~2147483647。
 type int32 int32
 
 // int64 is the set of all signed 64-bit integers.
 // Range: -9223372036854775808 through 9223372036854775807.
+// int64是所有有符号的64位整数的集合。
+// 范围: -9223372036854775808~9223372036854775807.
 type int64 int64
 
 // float32 is the set of all IEEE-754 32-bit floating-point numbers.
 type float32 float32
 
 // float64 is the set of all IEEE-754 64-bit floating-point numbers.
+// float64是所有IEEE-754 64位浮点数的集合。
 type float64 float64
 
 // complex64 is the set of all complex numbers with float32 real and
 // imaginary parts.
+// complex64是所有实部和虚部为float32的复数的集合。
 type complex64 complex64
 
 // complex128 is the set of all complex numbers with float64 real and
 // imaginary parts.
+// complex128是所有实部和虚部为float64的复数的集合。
 type complex128 complex128
 
 // string is the set of all strings of 8-bit bytes, conventionally but not
 // necessarily representing UTF-8-encoded text. A string may be empty, but
 // not nil. Values of string type are immutable.
+// string是所有8位字节字符串的集合，通常但不一定代表UTF8编码文本。
+// 字符串可以为空，但不能为零。字符串类型的值是不可变的。
 type string string
 
 // int is a signed integer type that is at least 32 bits in size. It is a
 // distinct type, however, and not an alias for, say, int32.
+// int是一种有符号整数类型，其大小至少为32位。
+// 但是，它是一个不同的类型，而不是int32的别名
 type int int
 
 // uint is an unsigned integer type that is at least 32 bits in size. It is a
 // distinct type, however, and not an alias for, say, uint32.
+// uint是大小至少为32位的无符号整数类型。但是，
+// 它是一种不同的类型，而不是uint32的别名。
 type uint uint
 
 // uintptr is an integer type that is large enough to hold the bit pattern of

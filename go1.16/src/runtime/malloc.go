@@ -2,6 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+/*
+1. 类似于TC malloc的思想
+2. 使用span机制来减少内存碎片，每个span至少为一个页(go中的一个page为8KB)，且大小为页的整数倍，每一种span用于一个范围的内存分配需求.
+	比如16-32byte使用分配32byte的span, 112-128使用分配128byte的span.
+3. 一共有67个size范围, 8byte-32KB；每个size有两种类型(scan和noscan, 表示分配的对象是否会包含指针，不包含指针的就不用GC scan)
+4. 多层次Cache来减少分配的冲突。 per-P无锁的mcache，全局67*2个对应不同size的span的后备mcentral, 全局1个的mheap.
+5. mheap中以 treap 的结构维护空闲连续page. 归还内存到heap时, 连续地址会进行合并.
+6. stack分配也是多层次和多class的.
+7. 对象由GC进行回收. sysmon会定时把空余的内存归还给操作系统
+ */
+
 // 说明这个文件里的中文翻译很大一部分来自：https://blog.csdn.net/DERRANTCM/article/details/105480764，这篇大佬的博文
 // Memory allocator.
 // 内存分配器。

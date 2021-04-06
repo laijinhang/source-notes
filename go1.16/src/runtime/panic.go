@@ -881,6 +881,20 @@ func reflectcallSave(p *_panic, fn, arg unsafe.Pointer, argsize uint32) {
 	}
 }
 
+/*
+gopanic函数的操作：
+1. 获取指向当前 Goroutine 的指针
+2. 初始化一个 panic 的基本单位 _panic，并将这个panic头插入到goroutine的panic链表中
+3. 获取当前Goroutine上挂载的 _defer
+4. 若当前存在defer调用，则调用reflectcall方法去指向先前defer中延迟执行的代码。
+refectcall方法若在执行过程中需要运行 recover 将会调用 gorecover 方法。
+5. 结束前，使用preprintpanics方法打印所涉及的 panic 消息
+6. 最后调用 fatalpanic 中止应用程序，实际是执行 exit(2) 进行最终退出行为。
+
+也就是处理当前 Gorougine(g) 上所挂载的 ._panic 链表（所以无法对其 Goroutine 的异常事件响应），
+然后对其所属的defer链表和recover进行检测并处理，最后调用退出命名中止应用程序。
+ */
+
 // The implementation of the predeclared function panic.
 func gopanic(e interface{}) {
 	gp := getg()
@@ -1051,6 +1065,13 @@ func gopanic(e interface{}) {
 			// Pass information about recovering frame to recovery.
 			gp.sigcode0 = uintptr(sp)
 			gp.sigcode1 = pc
+			/*
+			recovery完成恢复职责：
+			1. 判断当前 _panic 中recover是否已被标注为处理
+			2. 从 _panic 链表中删除已标注中止的panic事件，也就是删除已被恢复的panic事件
+			3. 将相关需要恢复的栈帧信息传递给recovery方法的gp参数（每个栈帧对应着一个未运行完的函数。栈帧中保存了该函数的返回地址和局部变量）
+			4. 执行recovery进行恢复动作
+			 */
 			mcall(recovery)
 			throw("recovery failed") // mcall should not return
 		}
@@ -1060,10 +1081,13 @@ func gopanic(e interface{}) {
 	// Because it is unsafe to call arbitrary user code after freezing
 	// the world, we call preprintpanics to invoke all necessary Error
 	// and String methods to prepare the panic strings before startpanic.
+	// 消耗完所以的defer调用，保守地进行panic
+	// 因为在冻结之后调用任意用户代码是不安全的，所以我们调用preprintpanics来调用
+	// 所以必要的Error和String方法来在startpanic之前准备panic字符串。
 	preprintpanics(gp._panic)
 
-	fatalpanic(gp._panic) // should not return
-	*(*int)(nil) = 0      // not reached
+	fatalpanic(gp._panic) // should not return，不应该返回
+	*(*int)(nil) = 0      // not reached，无法触及
 }
 
 // getargp returns the location where the caller
@@ -1075,6 +1099,9 @@ func getargp(x int) uintptr {
 	return uintptr(noescape(unsafe.Pointer(&x)))
 }
 
+/*
+gopanic方法会遍历调用当前 Goroutine 下的defer链表，若refectcall执行中遇到recover就会调用gorecover进行处理：
+ */
 // The implementation of the predeclared function recover.
 // Cannot split the stack because it needs to reliably
 // find the stack segment of its caller.

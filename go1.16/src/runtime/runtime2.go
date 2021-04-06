@@ -971,6 +971,16 @@ type _defer struct {
 // handling during stack growth: because they are pointer-typed and
 // _panic values only live on the stack, regular stack pointer
 // adjustment takes care of them.
+/*
+在panic中使用 _panic 作为其基础单元，每执行一次 panic 语句，都会创建一个 _panic 对象。
+它包含了一些基础的字段用于存储当前的panic调用情况，涉及的字段如下：
+
+1. argp：指向 defer 延迟调用的参数的指针
+2. arg：panic的原因，也就是调用 panic 时传入的参数
+3. link：指向上一个调用的 _panic，这里说明panci也是一个链表
+4. recovered：panic是否已经被处理过，也就是是否被recover接收掉了
+5. aborted：panic是否被终止
+ */
 type _panic struct {
 	argp      unsafe.Pointer // pointer to arguments of deferred call run during panic; cannot move - known to liblink
 	arg       interface{}    // argument to panic

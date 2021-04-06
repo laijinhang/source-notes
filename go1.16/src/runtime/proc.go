@@ -318,6 +318,16 @@ func goschedguarded() {
 // Reason explains why the goroutine has been parked. It is displayed in stack
 // traces and heap dumps. Reasons should be unique and descriptive. Do not
 // re-use reasons, add new ones.
+/*
+gopack用于协程的切换，协程切换的原因一般有以下几种情况：
+1. 系统调用
+2. channel读写条件不满足
+3. 抢占式调度时间片结束
+
+gopack函数做的主要事情分为两点：
+1. 解除当前goroutine与m的绑定关闭，将当前goroutine状态机切换为等待状态；
+2. 调用一次schedule()函数，在局部调度器P发起一轮新的调度。
+ */
 func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason waitReason, traceEv byte, traceskip int) {
 	if reason != waitReasonSleep {
 		checkTimeouts() // timeouts may expire while two goroutines keep the scheduler busy
@@ -335,6 +345,17 @@ func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason w
 	mp.waittraceskip = traceskip
 	releasem(mp)
 	// can't do anything that might move the G between Ms here.
+	/*
+	协程切换工作：
+	1. 切换当前线程的堆栈从g的堆栈切换到g0的堆栈；
+	2. 并在g0的堆栈上执行新的函数fn(g)；
+	3. 保存当前协程的信息（PC/SP存储到g->sched)，当后续对当前协程调用Goready函数时候能够恢复现场；
+
+	mcall函数是通过汇编实现的，64位机的实现代码在 asm_amd64.s
+	它将当前正在执行的协程状态保存起来，然后在m->g0的堆栈上调用新的函数。在新的函数内会将之前运行的协程放弃，
+	然后调用一次schedule()来挑选新的协程运行（也就是在传入的函数中调用一次schedule()函数进行一次schedule的重新调度，
+	让m去运行其余的goroutine）。
+	 */
 	mcall(park_m)
 }
 
@@ -344,7 +365,11 @@ func goparkunlock(lock *mutex, reason waitReason, traceEv byte, traceskip int) {
 	gopark(parkunlock_c, unsafe.Pointer(lock), reason, traceEv, traceskip)
 }
 
+/*
+goready函数的功能是唤醒某个goroutine，该协程转换到runnable的状态，并将其放入P的local queue，等待调度。
+ */
 func goready(gp *g, traceskip int) {
+	// 切换到g0的栈
 	systemstack(func() {
 		ready(gp, traceskip, true)
 	})
@@ -795,6 +820,7 @@ func ready(gp *g, traceskip int, next bool) {
 	}
 
 	// status is Gwaiting or Gscanwaiting, make Grunnable and put on runq
+	// 设置gp状态为runnable，然后加入到到P的可运行local queue
 	casgstatus(gp, _Gwaiting, _Grunnable)
 	runqput(_g_.m.p.ptr(), gp, next)
 	wakep()
@@ -3292,15 +3318,25 @@ func parkunlock_c(gp *g, lock unsafe.Pointer) bool {
 	return true
 }
 
+/*
+pack_m函数主要做的几件事情：
+1. 线程安全更新goroutine的状态，置为 _Gwaiting 等待状态；
+2. 解除goroutine与OS thread的绑定关系；
+3. 调用schedule()函数，调度器会重新选择一个goroutine去运行；
+
+schedule函数的调度主要路径：schedule() -> execute() -> gogo()
+ */
 // park continuation on g0.
 func park_m(gp *g) {
+	// g0
 	_g_ := getg()
 
 	if trace.enabled {
 		traceGoPark(_g_.m.waittraceev, _g_.m.waittraceskip)
 	}
-
+	// 线程安全更新gp的状态，置为_Gwaiting
 	casgstatus(gp, _Grunning, _Gwaiting)
+	// 移除gp与m的绑定关系
 	dropg()
 
 	if fn := _g_.m.waitunlockf; fn != nil {
@@ -3315,6 +3351,7 @@ func park_m(gp *g) {
 			execute(gp, true) // Schedule it back, never returns.
 		}
 	}
+	// 重新进行一次调度
 	schedule()
 }
 

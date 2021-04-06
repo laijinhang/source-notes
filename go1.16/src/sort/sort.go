@@ -5,12 +5,16 @@
 //go:generate go run genzfunc.go
 
 // Package sort provides primitives for sorting slices and user-defined collections.
+// sort包提供了对切片和用户定义的集合进行排序的原语。
 package sort
 
 // An implementation of Interface can be sorted by the routines in this package.
 // The methods refer to elements of the underlying collection by integer index.
+// Interface的实现可以按这个包中的例程排序。
+// 这些方法通过整数索引引用基础集合的元素。
 type Interface interface {
 	// Len is the number of elements in the collection.
+	// Len是集合中元素的数量。
 	Len() int
 
 	// Less reports whether the element with index i
@@ -28,13 +32,16 @@ type Interface interface {
 	// Note that floating-point comparison (the < operator on float32 or float64 values)
 	// is not a transitive ordering when not-a-number (NaN) values are involved.
 	// See Float64Slice.Less for a correct implementation for floating-point values.
+	// Less函数判断下标i的元素是否应该放在下标j的前面
 	Less(i, j int) bool
 
 	// Swap swaps the elements with indexes i and j.
+	// 交换下标 i j 对应的元素
 	Swap(i, j int)
 }
 
 // insertionSort sorts data[a:b] using insertion sort.
+// 对data[a:b]使用插入排序
 func insertionSort(data Interface, a, b int) {
 	for i := a + 1; i < b; i++ {
 		for j := i; j > a && data.Less(j, j-1); j-- {
@@ -45,31 +52,40 @@ func insertionSort(data Interface, a, b int) {
 
 // siftDown implements the heap property on data[lo:hi].
 // first is an offset into the array where the root of the heap lies.
+// 向下堆化
 func siftDown(data Interface, lo, hi, first int) {
-	root := lo
+	root := lo	// 当前根节点
 	for {
-		child := 2*root + 1
-		if child >= hi {
+		child := 2*root + 1	// 左节点
+		if child >= hi {	// 没有左节点，退出
 			break
 		}
+		// 有右节点，左节点小于右节点
 		if child+1 < hi && data.Less(first+child, first+child+1) {
+			// child 变为 右节点
 			child++
 		}
+		// 如果当前跟节点比左右节点都大，那么完成堆化
 		if !data.Less(first+root, first+child) {
 			return
 		}
+		// 交换 根节点和子节点
 		data.Swap(first+root, first+child)
+		// 子节点作为新的根节点，重复上面操作
 		root = child
 	}
 }
 
 func heapSort(data Interface, a, b int) {
+	// lo和hi都是相对位置，first相当于相对位置的锚点
 	first := a
 	lo := 0
 	hi := b - a
 
 	// Build heap with greatest element at top.
+	// 从最后一个满叶子的节点开始构建最大顶堆
 	for i := (hi - 1) / 2; i >= 0; i-- {
+		// 当前节点向下堆化
 		siftDown(data, i, hi, first)
 	}
 
@@ -192,10 +208,17 @@ func doPivot(data Interface, lo, hi int) (midlo, midhi int) {
 	data.Swap(pivot, b-1)
 	return b - 1, c
 }
-
+/*
+1、当数据集元素小于等于12的时候
+	1.当数据集大于6的时候，先做一次数据间隔为6的希尔排序
+	2.之后再做一次插入排序
+2、当数据集元素大于12的时候
+	1.使用快速排序
+	2.当快排递归深度大于最大深度时，转为堆排序
+ */
 func quickSort(data Interface, a, b, maxDepth int) {
-	for b-a > 12 { // Use ShellSort for slices <= 12 elements
-		if maxDepth == 0 {
+	for b-a > 12 { // Use ShellSort for slices <= 12 elements，大于12个元素，使用快排
+		if maxDepth == 0 {	// 快排达到最大深度，使用堆排序
 			heapSort(data, a, b)
 			return
 		}
@@ -211,14 +234,20 @@ func quickSort(data Interface, a, b, maxDepth int) {
 			b = mlo // i.e., quickSort(data, a, mlo)
 		}
 	}
-	if b-a > 1 {
+	/*
+	如果元素的个数小于12个，就先使用希尔排序，然后再调用插入排序
+	 */
+	if b-a > 1 {	// 元素 <= 12 个
 		// Do ShellSort pass with gap 6
 		// It could be written in this simplified form cause b-a <= 12
+		// 间隔为6的希尔排序
 		for i := a + 6; i < b; i++ {
 			if data.Less(i, i-6) {
+				// 将小的放在前面
 				data.Swap(i, i-6)
 			}
 		}
+		// 插入排序
 		insertionSort(data, a, b)
 	}
 }
@@ -226,6 +255,12 @@ func quickSort(data Interface, a, b, maxDepth int) {
 // Sort sorts data.
 // It makes one call to data.Len to determine n and O(n*log(n)) calls to
 // data.Less and data.Swap. The sort is not guaranteed to be stable.
+
+/*
+Sort方法实现的不稳定排序（也就是可能会交换元素的位置，稳定排序算法只交换值）
+最坏的情况下进行O(nlogn)次比较（也就是时间复杂度），其中n是要排序的元素数。
+大多数功能是使用quicksort的优化版本实现的。
+ */
 func Sort(data Interface) {
 	n := data.Len()
 	quickSort(data, 0, n, maxDepth(n))
@@ -233,6 +268,7 @@ func Sort(data Interface) {
 
 // maxDepth returns a threshold at which quicksort should switch
 // to heapsort. It returns 2*ceil(lg(n+1)).
+// maxDepth返回快排快排递归的最大深度，返回的值为2*ceil(lg(n+1))
 func maxDepth(n int) int {
 	var depth int
 	for i := n; i > 0; i >>= 1 {
