@@ -327,7 +327,7 @@ gopack用于协程的切换，协程切换的原因一般有以下几种情况�
 gopack函数做的主要事情分为两点：
 1. 解除当前goroutine与m的绑定关闭，将当前goroutine状态机切换为等待状态；
 2. 调用一次schedule()函数，在局部调度器P发起一轮新的调度。
- */
+*/
 func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason waitReason, traceEv byte, traceskip int) {
 	if reason != waitReasonSleep {
 		checkTimeouts() // timeouts may expire while two goroutines keep the scheduler busy
@@ -346,16 +346,16 @@ func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason w
 	releasem(mp)
 	// can't do anything that might move the G between Ms here.
 	/*
-	协程切换工作：
-	1. 切换当前线程的堆栈从g的堆栈切换到g0的堆栈；
-	2. 并在g0的堆栈上执行新的函数fn(g)；
-	3. 保存当前协程的信息（PC/SP存储到g->sched)，当后续对当前协程调用Goready函数时候能够恢复现场；
+		协程切换工作：
+		1. 切换当前线程的堆栈从g的堆栈切换到g0的堆栈；
+		2. 并在g0的堆栈上执行新的函数fn(g)；
+		3. 保存当前协程的信息（PC/SP存储到g->sched)，当后续对当前协程调用Goready函数时候能够恢复现场；
 
-	mcall函数是通过汇编实现的，64位机的实现代码在 asm_amd64.s
-	它将当前正在执行的协程状态保存起来，然后在m->g0的堆栈上调用新的函数。在新的函数内会将之前运行的协程放弃，
-	然后调用一次schedule()来挑选新的协程运行（也就是在传入的函数中调用一次schedule()函数进行一次schedule的重新调度，
-	让m去运行其余的goroutine）。
-	 */
+		mcall函数是通过汇编实现的，64位机的实现代码在 asm_amd64.s
+		它将当前正在执行的协程状态保存起来，然后在m->g0的堆栈上调用新的函数。在新的函数内会将之前运行的协程放弃，
+		然后调用一次schedule()来挑选新的协程运行（也就是在传入的函数中调用一次schedule()函数进行一次schedule的重新调度，
+		让m去运行其余的goroutine）。
+	*/
 	mcall(park_m)
 }
 
@@ -367,7 +367,7 @@ func goparkunlock(lock *mutex, reason waitReason, traceEv byte, traceskip int) {
 
 /*
 goready函数的功能是唤醒某个goroutine，该协程转换到runnable的状态，并将其放入P的local queue，等待调度。
- */
+*/
 func goready(gp *g, traceskip int) {
 	// 切换到g0的栈
 	systemstack(func() {
@@ -624,6 +624,15 @@ func cpuinit() {
 //	call runtime·mstart
 //
 // The new G calls runtime·main.
+
+// 引导顺序为：
+//
+// 调用osinit
+// 调用schedinit
+// 创建一个G
+// 调用 runtime.mstart
+//
+// 这个新的G调用runtime.main
 func schedinit() {
 	lockInit(&sched.lock, lockRankSched)
 	lockInit(&sched.sysmonlock, lockRankSysmon)
@@ -651,15 +660,15 @@ func schedinit() {
 	if raceenabled {
 		_g_.racectx, raceprocctx0 = raceinit()
 	}
-
+	// M（线程）最大数量限制
 	sched.maxmcount = 10000
 
 	// The world starts stopped.
 	worldStopped()
 
 	moduledataverify()
-	stackinit()
-	mallocinit()
+	stackinit()    // 栈初始化
+	mallocinit()   // 内存初始化
 	fastrandinit() // must run before mcommoninit
 	// M 初始化
 	mcommoninit(_g_.m, -1)
@@ -679,6 +688,7 @@ func schedinit() {
 
 	lock(&sched.lock)
 	sched.lastpoll = uint64(nanotime())
+	// 设置GOMAXPROCS
 	procs := ncpu
 	if n, ok := atoi32(gogetenv("GOMAXPROCS")); ok && n > 0 {
 		procs = n
@@ -3325,7 +3335,7 @@ pack_m函数主要做的几件事情：
 3. 调用schedule()函数，调度器会重新选择一个goroutine去运行；
 
 schedule函数的调度主要路径：schedule() -> execute() -> gogo()
- */
+*/
 // park continuation on g0.
 func park_m(gp *g) {
 	// g0
