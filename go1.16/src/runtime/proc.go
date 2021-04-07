@@ -118,8 +118,8 @@ func main() {
 
 	// Racectx of m0->g0 is used only as the parent of the main goroutine.
 	// It must not be used for anything else.
+	// m0->g0的Racectx仅用作main goroutine的父级。不得用于其他用途。
 	g.m.g0.racectx = 0
-
 	// Max stack size is 1 GB on 64-bit, 250 MB on 32-bit.
 	// Using decimal instead of binary GB and MB because
 	// they look nicer in the stack overflow failure message.
@@ -135,6 +135,7 @@ func main() {
 	maxstackceiling = 2 * maxstacksize
 
 	// Allow newproc to start new Ms.
+	// 允许newproc启动新的Ms。
 	mainStarted = true
 
 	if GOARCH != "wasm" { // no threads on wasm yet, so no sysmon
@@ -335,6 +336,16 @@ func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason w
 	mp := acquirem()
 	gp := mp.curg
 	status := readgstatus(gp)
+
+	//println("m.id：", mp.id, "，当前协程编号：", mp.curg.goid, "，协程当前状态：", status)
+	//{
+	//	curp := mp.p
+	//	println("当前p：", curp.ptr().id)
+	//	for i := curp.ptr().runqhead; i < curp.ptr().runqtail; i++ {
+	//		println("p：", curp.ptr().id, "，gid：", curp.ptr().runq[i].ptr().goid)
+	//	}
+	//}
+
 	if status != _Grunning && status != _Gscanrunning {
 		throw("gopark: bad g status")
 	}
@@ -633,6 +644,10 @@ func cpuinit() {
 // 调用 runtime.mstart
 //
 // 这个新的G调用runtime.main
+/*
+运行go代码的时候，会先进入到这个引导函数：
+可以在这个函数里加println打印内容，会发现运行go代码的时候确实先执行了这边
+*/
 func schedinit() {
 	lockInit(&sched.lock, lockRankSched)
 	lockInit(&sched.sysmonlock, lockRankSysmon)

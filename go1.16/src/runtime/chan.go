@@ -40,13 +40,13 @@ const (
 	closed
 
 互斥锁：保证并发安全
- */
+*/
 type hchan struct {
 	qcount   uint           // total data in the queue，buffer中已放入的元素个数
 	dataqsiz uint           // size of the circular queue，用户构造 channel 时指定的 buf 大小，可以理解成类似数组中初始分配的长度
 	buf      unsafe.Pointer // points to an array of dataqsiz elements
 	elemsize uint16
-	closed   uint32	// 是否关闭，值为0表示未关闭
+	closed   uint32 // 是否关闭，值为0表示未关闭
 	elemtype *_type // element type，元素的类型信息
 	sendx    uint   // send index，已发送的索引位置
 	recvx    uint   // receive index，已接收的索引位置
