@@ -15,6 +15,8 @@ func add(p unsafe.Pointer, x uintptr) unsafe.Pointer {
 // getg returns the pointer to the current g.
 // The compiler rewrites calls to this function into instructions
 // that fetch the g directly (from TLS or from the dedicated register).
+// getg返回指向当前g的指针。也就是当前执行的协程
+// 编译器将对此函数的调用重写为直接（从TLS或专用寄存器）获取g的指令。
 func getg() *g
 
 // mcall switches from the g to the g0 stack and invokes fn(g),
@@ -257,7 +259,7 @@ func publicationBarrier()
 func getcallerpc() uintptr
 
 //go:noescape
-func getcallersp() uintptr // implemented as an intrinsic on all platforms
+func getcallersp() uintptr // implemented as an intrinsic on all platforms，在所有平台上作为内部函数实现
 
 // getclosureptr returns the pointer to the current closure.
 // getclosureptr can only be used in an assignment statement

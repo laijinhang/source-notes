@@ -801,13 +801,17 @@ func saveg(pc, sp uintptr, gp *g, r *StackRecord) {
 // and returns the number of bytes written to buf.
 // If all is true, Stack formats stack traces of all other goroutines
 // into buf after the trace for the current goroutine.
+// Stack将调用goroutine的堆栈跟踪格式化为buf，并返回写入buf的字节数。
+// 如果all为true，则Stack格式将所有其他goroutine的跟踪堆叠到当前goroutine跟踪之后的buf中。
 func Stack(buf []byte, all bool) int {
+	// 如果是获取全部协程栈信息，先暂停全部协程的工作
 	if all {
 		stopTheWorld("stack trace")
 	}
 
 	n := 0
 	if len(buf) > 0 {
+		// 获取当前协程
 		gp := getg()
 		sp := getcallersp()
 		pc := getcallerpc()
@@ -829,6 +833,7 @@ func Stack(buf []byte, all bool) int {
 		})
 	}
 
+	// 如果是获取全部协程栈信息，获取完，则继续工作
 	if all {
 		startTheWorld()
 	}
