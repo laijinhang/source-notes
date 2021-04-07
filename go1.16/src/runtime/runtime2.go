@@ -12,16 +12,21 @@ import (
 )
 
 // defined constants
+// 定义常量
 const (
 	// G status
+	// G状态
 	//
 	// Beyond indicating the general state of a G, the G status
 	// acts like a lock on the goroutine's stack (and hence its
 	// ability to execute user code).
+	// 除了指示G的一般状态外，G状态还充当goroutine堆栈上的锁(因此它具有执行用户代码的能力)。
 	//
 	// If you add to this list, add to the list
 	// of "okay during garbage collection" status
 	// in mgcmark.go too.
+	// 如果您添加到此列表中，请同时添加到mgcmark.go中
+	// 的“垃圾收集期间正常”状态列表中。
 	//
 	// TODO(austin): The _Gscan bit could be much lighter-weight.
 	// For example, we could choose not to run _Gscanrunnable
@@ -32,20 +37,26 @@ const (
 
 	// _Gidle means this goroutine was just allocated and has not
 	// yet been initialized.
+	// 刚刚被分配并且还没有被初始化，值为0，为创建goroutine后的默认值
 	_Gidle = iota // 0
 
 	// _Grunnable means this goroutine is on a run queue. It is
 	// not currently executing user code. The stack is not owned.
+	// _Grunnable表示这个goroutine在运行队列上。它当前不是执行用户代码，没有栈的所有权
 	_Grunnable // 1
 
 	// _Grunning means this goroutine may execute user code. The
 	// stack is owned by this goroutine. It is not on a run queue.
 	// It is assigned an M and a P (g.m and g.m.p are valid).
+	// Grunning意味着这个goroutine可以执行用户代码。堆栈属于此goroutine。
+	//它不在运行队列中。它被分配了一个M和一个P（g.M和g.M.P是有效的）。
 	_Grunning // 2
 
 	// _Gsyscall means this goroutine is executing a system call.
 	// It is not executing user code. The stack is owned by this
 	// goroutine. It is not on a run queue. It is assigned an M.
+	// _Gsyscall表示这个goroutine正在执行一个系统调用。它不是在执行用户代码。
+	// 栈属于这个goroutine。它不在运行队列上。它被某个M绑定。
 	_Gsyscall // 3
 
 	// _Gwaiting means this goroutine is blocked in the runtime.
@@ -56,6 +67,13 @@ const (
 	// write parts of the stack under the appropriate channel
 	// lock. Otherwise, it is not safe to access the stack after a
 	// goroutine enters _Gwaiting (e.g., it may get moved).
+	// _Gwaiting表示此goroutine在运行时被阻止。它没有执行用户代码。
+	// 它不在运行队列中，但应该记录在某个地方(例如，通道等待队列)，以
+	// 便在必要时准备就绪。栈是不被拥有的，除非一个通道操作可以在适当的
+	// 通道锁下读或写栈的一部分。否则，在goroutine进入_Gwaiting后
+	// 访问堆栈是不安全的(例如，它可能被移动)。
+
+	/* 被阻塞的goroutine，阻塞在某个channel的发送或者接收队列 */
 	_Gwaiting // 4
 
 	// _Gmoribund_unused is currently unused, but hardcoded in gdb
@@ -68,6 +86,11 @@ const (
 	// allocated. The G and its stack (if any) are owned by the M
 	// that is exiting the G or that obtained the G from the free
 	// list.
+
+	/*
+		当前goroutine未被使用，没有执行代码，金额能有分配的栈，分布在空闲队列gFree，
+		可能是一个刚刚初始化的goroutine，也可能是执行了goexit退出的goroutine。
+	*/
 	_Gdead // 6
 
 	// _Genqueue_unused is currently unused.
@@ -76,6 +99,8 @@ const (
 	// _Gcopystack means this goroutine's stack is being moved. It
 	// is not executing user code and is not on a run queue. The
 	// stack is owned by the goroutine that put it in _Gcopystack.
+
+	/* 栈正在被拷贝，没有执行代码，不在运行队列， */
 	_Gcopystack // 8
 
 	// _Gpreempted means this goroutine stopped itself for a
@@ -96,6 +121,7 @@ const (
 	//
 	// atomicstatus&~Gscan gives the state the goroutine will
 	// return to when the scan completes.
+	/* GC正在扫描栈空间，没有执行代码，可以与其他状态同时存在 */
 	_Gscan          = 0x1000
 	_Gscanrunnable  = _Gscan + _Grunnable  // 0x1001
 	_Gscanrunning   = _Gscan + _Grunning   // 0x1002
@@ -106,6 +132,7 @@ const (
 
 const (
 	// P status
+	// P的状态
 
 	// _Pidle means a P is not being used to run user code or the
 	// scheduler. Typically, it's on the idle P list and available
@@ -114,6 +141,8 @@ const (
 	//
 	// The P is owned by the idle list or by whatever is
 	// transitioning its state. Its run queue is empty.
+
+	/* 处理器没有运行蝇虎代码或者调度器，被空闲队列或者改变其状态的结构持有，运行队列为空 */
 	_Pidle = iota
 
 	// _Prunning means a P is owned by an M and is being used to
@@ -123,6 +152,7 @@ const (
 	// do), _Psyscall (when entering a syscall), or _Pgcstop (to
 	// halt for the GC). The M may also hand ownership of the P
 	// off directly to another M (e.g., to schedule a locked G).
+	/* 被线程M持有，并且正在执行用户代码或者调度器 */
 	_Prunning
 
 	// _Psyscall means a P is not running user code. It has
@@ -135,6 +165,8 @@ const (
 	// an M successfully CASes its original P back to _Prunning
 	// after a syscall, it must understand the P may have been
 	// used by another M in the interim.
+
+	/* 没有执行用户代码，当前线程陷入系统调用 */
 	_Psyscall
 
 	// _Pgcstop means a P is halted for STW and owned by the M
@@ -145,12 +177,16 @@ const (
 	//
 	// The P retains its run queue and startTheWorld will restart
 	// the scheduler on Ps with non-empty run queues.
+
+	/* 被线程M持有，当前处理器由于垃圾回收被停止 */
 	_Pgcstop
 
 	// _Pdead means a P is no longer used (GOMAXPROCS shrank). We
 	// reuse Ps if GOMAXPROCS increases. A dead P is mostly
 	// stripped of its resources, though a few things remain
 	// (e.g., trace buffers).
+
+	/* 当前处理器已经不被处理 */
 	_Pdead
 )
 
@@ -980,7 +1016,7 @@ type _defer struct {
 3. link：指向上一个调用的 _panic，这里说明panci也是一个链表
 4. recovered：panic是否已经被处理过，也就是是否被recover接收掉了
 5. aborted：panic是否被终止
- */
+*/
 type _panic struct {
 	argp      unsafe.Pointer // pointer to arguments of deferred call run during panic; cannot move - known to liblink
 	arg       interface{}    // argument to panic
