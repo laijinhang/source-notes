@@ -232,11 +232,15 @@ func goexit(neverCallThisFunction)
 func publicationBarrier()
 
 // getcallerpc returns the program counter (PC) of its caller's caller.
+// Getcallerpc返回其调用方的程序计数器(PC)。
 // getcallersp returns the stack pointer (SP) of its caller's caller.
+// Getcallersp返回其调用方调用方的堆栈指针(SP)。
 // The implementation may be a compiler intrinsic; there is not
 // necessarily code implementing this on every platform.
+// 该实现可以是编译器固有的；不一定在每个平台上都有实现它的代码。
 //
 // For example:
+// 例如：
 //
 //	func f(arg1, arg2, arg3 int) {
 //		pc := getcallerpc()
@@ -245,15 +249,20 @@ func publicationBarrier()
 //
 // These two lines find the PC and SP immediately following
 // the call to f (where f will return).
+// 这两行代码在调用f之后立即查找PC和SP(其中f将返回)。
 //
 // The call to getcallerpc and getcallersp must be done in the
 // frame being asked about.
+// 对getcallerpc和getcallersp的调用必须在被询问的帧中完成。
 //
 // The result of getcallersp is correct at the time of the return,
 // but it may be invalidated by any subsequent call to a function
 // that might relocate the stack in order to grow or shrink it.
+// Getcallersp的结果在返回时是正确的，但它可能会被任何后续调用失效，
+// 该函数可能会重新定位堆栈以增大或缩小堆栈。
 // A general rule is that the result of getcallersp should be used
 // immediately and can only be passed to nosplit functions.
+// 一般规则是，getcallersp的结果应该立即使用，并且只能传递给noplit函数。
 
 //go:noescape
 func getcallerpc() uintptr
@@ -262,10 +271,14 @@ func getcallerpc() uintptr
 func getcallersp() uintptr // implemented as an intrinsic on all platforms，在所有平台上作为内部函数实现
 
 // getclosureptr returns the pointer to the current closure.
+// Getclosureptr返回指向当前闭包的指针。
 // getclosureptr can only be used in an assignment statement
 // at the entry of a function. Moreover, go:nosplit directive
 // must be specified at the declaration of caller function,
 // so that the function prolog does not clobber the closure register.
+// Getclosureptr只能在函数入口处的赋值语句中使用。
+// 此外，GO：NOSPLIT指令必须在调用者函数的声明中指定，
+// 这样函数Prolog就不会破坏闭包寄存器。
 // for example:
 //
 //	//go:nosplit
@@ -275,6 +288,7 @@ func getcallersp() uintptr // implemented as an intrinsic on all platforms，在
 //
 // The compiler rewrites calls to this function into instructions that fetch the
 // pointer from a well-known register (DX on x86 architecture, etc.) directly.
+// 编译器将对此函数的调用重写为直接从已知寄存器（x86体系结构上的DX等）获取指针的指令。
 func getclosureptr() uintptr
 
 //go:noescape
@@ -289,10 +303,13 @@ func rt0_go()
 // the calling Go function that it should not jump
 // to deferreturn.
 // in asm_*.s
+// rereturn 0是用于从deferproc返回0的存根。它在deferproc的最后被调用，
+// 以通知调用GO函数它不应该跳到延迟返回。在ASM_*.s中
 func return0()
 
 // in asm_*.s
 // not called directly; definitions here supply type information for traceback.
+// 在asm _ *。s中不直接调用；此处的定义提供了用于回溯的类型信息。
 func call16(typ, fn, arg unsafe.Pointer, n, retoffset uint32)
 func call32(typ, fn, arg unsafe.Pointer, n, retoffset uint32)
 func call64(typ, fn, arg unsafe.Pointer, n, retoffset uint32)

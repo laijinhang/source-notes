@@ -1060,14 +1060,16 @@ const _TracebackMaxFrames = 100
 
 // A waitReason explains why a goroutine has been stopped.
 // See gopark. Do not re-use waitReasons, add new ones.
+// 一个waitReason解释一个goroutine被阻塞的原因。
+// 详情见gopark。不要重复使用waitReasons，而是添加新的。
 type waitReason uint8
 
 const (
 	waitReasonZero                  waitReason = iota // ""
-	waitReasonGCAssistMarking                         // "GC assist marking"
-	waitReasonIOWait                                  // "IO wait"
-	waitReasonChanReceiveNilChan                      // "chan receive (nil chan)"
-	waitReasonChanSendNilChan                         // "chan send (nil chan)"
+	waitReasonGCAssistMarking                         // "GC assist marking"，GC协助标记
+	waitReasonIOWait                                  // "IO wait"，IO等待
+	waitReasonChanReceiveNilChan                      // "chan receive (nil chan)"，chan读阻塞
+	waitReasonChanSendNilChan                         // "chan send (nil chan)"，chan写阻塞
 	waitReasonDumpingHeap                             // "dumping heap"
 	waitReasonGarbageCollection                       // "garbage collection"
 	waitReasonGarbageCollectionScan                   // "garbage collection scan"
@@ -1082,7 +1084,7 @@ const (
 	waitReasonFinalizerWait                           // "finalizer wait"
 	waitReasonForceGCIdle                             // "force gc (idle)"
 	waitReasonSemacquire                              // "semacquire"
-	waitReasonSleep                                   // "sleep"
+	waitReasonSleep                                   // "sleep"，睡眠
 	waitReasonSyncCondWait                            // "sync.Cond.Wait"
 	waitReasonTimerGoroutineIdle                      // "timer goroutine (idle)"
 	waitReasonTraceReaderBlocked                      // "trace reader (blocked)"

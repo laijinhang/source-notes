@@ -877,16 +877,20 @@ var gStatusStrings = [...]string{
 }
 
 func goroutineheader(gp *g) {
+	// 读取协程gp的当前状态
 	gpstatus := readgstatus(gp)
 
+	// 是否正在执行GC扫描
 	isScan := gpstatus&_Gscan != 0
-	gpstatus &^= _Gscan // drop the scan bit
+	gpstatus &^= _Gscan // drop the scan bit，丢弃扫描位，也就是说打印出来的栈信息不需要正在扫描这个信息
 
 	// Basic string status
+	// 协程状态值对应的字符串形式
 	var status string
 	if 0 <= gpstatus && gpstatus < uint32(len(gStatusStrings)) {
 		status = gStatusStrings[gpstatus]
 	} else {
+		// 不能识别的协程状态，超出已定义的协程状态
 		status = "???"
 	}
 

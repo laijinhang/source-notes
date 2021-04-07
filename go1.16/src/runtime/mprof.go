@@ -820,6 +820,10 @@ func Stack(buf []byte, all bool) int {
 			// Force traceback=1 to override GOTRACEBACK setting,
 			// so that Stack's results are consistent.
 			// GOTRACEBACK is only about crash dumps.
+
+			// 强制 traceback=1 以覆盖GOTRACEBACK设置，
+			// 这样Stack的结果是一致的。
+			// GOTRACEBACK仅用于崩溃转储。
 			g0.m.traceback = 1
 			g0.writebuf = buf[0:0:len(buf)]
 			goroutineheader(gp)

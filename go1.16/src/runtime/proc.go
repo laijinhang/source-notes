@@ -340,11 +340,13 @@ func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason w
 	//println("m.id：", mp.id, "，当前协程编号：", mp.curg.goid, "，协程当前状态：", status)
 	//{
 	//	curp := mp.p
-	//	println("当前p：", curp.ptr().id)
+	//	println("当前p：", curp.ptr().id, "，p的长度：", curp.ptr().runqtail - curp.ptr().runqhead)
 	//	for i := curp.ptr().runqhead; i < curp.ptr().runqtail; i++ {
 	//		println("p：", curp.ptr().id, "，gid：", curp.ptr().runq[i].ptr().goid)
 	//	}
 	//}
+	//println("----------------------------------------------------------")
+	//println("")
 
 	if status != _Grunning && status != _Gscanrunning {
 		throw("gopark: bad g status")
