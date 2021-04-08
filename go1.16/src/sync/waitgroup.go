@@ -65,7 +65,6 @@ func (wg *WaitGroup) state() (statep *uint64, semap *uint32) {
 	1. https://www.cnblogs.com/luozhiyun/p/14289034.html
 	2. https://zhuanlan.zhihu.com/p/106933470
 	*/
-	println(unsafe.Pointer(&wg.state1), uintptr(unsafe.Pointer(&wg.state1)) % 8)
 	if uintptr(unsafe.Pointer(&wg.state1))%8 == 0 {
 		// 如果地址是64位对齐的，wg.state1前两个合并做state，第三个做信号量
 		return (*uint64)(unsafe.Pointer(&wg.state1)), &wg.state1[2]
