@@ -42,12 +42,35 @@ type WaitGroup struct {
 // state 返回 wg.state1 中存储的状态和原语字段
 func (wg *WaitGroup) state() (statep *uint64, semap *uint32) {
 	/*
-		在32位机器上 state1[0] 和 state1[1] 分别用于计数和等待计数，而最后一个 state1[2] 用于存储原语。
-		在64位机器上 state1[1] 和 state1[2] 分别用于计数和等待计数，而第一个 state1[0] 用于存储原语。
+		在32位机器上 state1[1] 和 state1[2] 分别用于计数和等待计数，而第一个 state1[0] 用于存储原语。
+		在64位机器上 state1[0] 和 state1[1] 分别用于计数和等待计数，而最后一个 state1[2] 用于存储原语。
+
+	个人理解：
+	1. 内存对齐
+
+	一、32位架构中，一个字长是4bytes，要操作64位的数据，需要从 两个数据块 中操作，而每次只能操作一块，需要操作两次，
+	在这两次操作中可能有其他操作修改，不能保证原子性。
+
+	假设起始位置为0:
+	第一个位置被某个变量占用（因为是32位机器，可以假设这个变量是占用四个字节），之后从第四个字节开始，此时uintptr(unsafe.Pointer(&wg.state1))%8会等于4,这时为了返回8字节的statep，
+	拿state1[0]来填充
+
+	二、对于64位架构中，一个字长是8bytes，是8字节对齐的，会自动把wg.state1[0]和wg.state1[1]合并成8字节的uint64，wg.state1[2]虽然占4个字节，但是会操作的时候，会自动填充4字节起到8字节
+	对齐
+
+	如果wg.state1[0]用于存储原语，wg.state1[1]和wg.state1[2]用于statep，因为64位机器每次操作8字节，wg.state1[0]和wg.state1[1]在操作的时候被合并了，state跨两个8字节块了，因此
+	会进行两次操作，不能保证到原子操作
+
+	内存对齐知识可以看这个博客：
+	1. https://www.cnblogs.com/luozhiyun/p/14289034.html
+	2. https://zhuanlan.zhihu.com/p/106933470
 	*/
+	println(unsafe.Pointer(&wg.state1), uintptr(unsafe.Pointer(&wg.state1)) % 8)
 	if uintptr(unsafe.Pointer(&wg.state1))%8 == 0 {
+		// 如果地址是64位对齐的，wg.state1前两个合并做state，第三个做信号量
 		return (*uint64)(unsafe.Pointer(&wg.state1)), &wg.state1[2]
 	} else {
+		// 如果当前地址是32位对齐，则第一个做信号量，后面两个合并做state
 		return (*uint64)(unsafe.Pointer(&wg.state1[1])), &wg.state1[0]
 	}
 }
