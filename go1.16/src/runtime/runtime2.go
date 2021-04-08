@@ -461,7 +461,7 @@ type g struct {
 	stackLock    uint32 // sigprof/scang lock; TODO: fold in to atomicstatus
 	goid         int64
 	schedlink    guintptr
-	waitsince    int64      // approx time when the g become blocked
+	waitsince    int64      // approx time when the g become blocked，g被阻塞的大约时间
 	waitreason   waitReason // if status==Gwaiting
 
 	preempt       bool // preemption signal, duplicates stackguard0 = stackpreempt
@@ -625,9 +625,9 @@ type p struct {
 	id          int32
 	status      uint32 // one of pidle/prunning/...，p的状态 pidle/prunning/...
 	link        puintptr
-	schedtick   uint32     // incremented on every scheduler call
-	syscalltick uint32     // incremented on every system call
-	sysmontick  sysmontick // last tick observed by sysmon
+	schedtick   uint32     // incremented on every scheduler call，每次调度程序调用时递增
+	syscalltick uint32     // incremented on every system call，每次系统调用时递增
+	sysmontick  sysmontick // last tick observed by sysmon，sysmon观察到的最后一个刻度
 	m           muintptr   // back-link to associated m (nil if idle)，反向链接到关联的m（nil则表示idle）
 	mcache      *mcache
 	pcache      pageCache
@@ -637,6 +637,7 @@ type p struct {
 	deferpoolbuf [5][32]*_defer
 
 	// Cache of goroutine ids, amortizes accesses to runtime·sched.goidgen.
+	// goroutine ID的缓存将分摊对runtime.sched.goidgen的访问。
 	goidcache    uint64
 	goidcacheend uint64
 
@@ -653,9 +654,15 @@ type p struct {
 	// unit and eliminates the (potentially large) scheduling
 	// latency that otherwise arises from adding the ready'd
 	// goroutines to the end of the run queue.
+
+	// runnext，如果不是nil，则是一个可运行的G，它由当前G准备好，如果运行G的时间片中还有剩余时间，
+	// 则应该运行next而不是runq中的内容。它将继承当前时间片中剩余的时间。如果一组goroutine被锁定
+	// 在一个communicate and wait模式中，那么这会将其作为一个单元进行调度，并消除由于将准备好的
+	// goroutine添加到运行队列末尾而产生的（可能较大的）调度延迟。
 	runnext guintptr
 
 	// Available G's (status == Gdead)
+	// 可用G's (status == Gdead)
 	gFree struct {
 		gList
 		n int32
@@ -665,6 +672,7 @@ type p struct {
 	sudogbuf   [128]*sudog
 
 	// Cache of mspan objects from the heap.
+	// 从堆中缓存mspan对象。
 	mspancache struct {
 		// We need an explicit length here because this field is used
 		// in allocation codepaths where write barriers are not allowed,
@@ -874,9 +882,10 @@ type schedt struct {
 }
 
 // Values for the flags field of a sigTabT.
+// sigTabT的flags字段的值。
 const (
-	_SigNotify   = 1 << iota // let signal.Notify have signal, even if from kernel
-	_SigKill                 // if signal.Notify doesn't take it, exit quietly
+	_SigNotify   = 1 << iota // let signal.Notify have signal, even if from kernel，让signal.Notify有信号，即使来自内核
+	_SigKill                 // if signal.Notify doesn't take it, exit quietly，如果signal.Notify不接受，请安静地退出
 	_SigThrow                // if signal.Notify doesn't take it, exit loudly
 	_SigPanic                // if the signal is from the kernel, panic
 	_SigDefault              // if the signal isn't explicitly requested, don't monitor it
@@ -1029,6 +1038,7 @@ type _panic struct {
 }
 
 // stack traces
+// 栈追踪
 type stkframe struct {
 	fn       funcInfo   // function being run
 	pc       uintptr    // program counter within fn

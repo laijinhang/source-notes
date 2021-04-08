@@ -1032,6 +1032,10 @@ func casGFromPreempted(gp *g, old, new uint32) bool {
 // stopTheWorld must not be called from a system stack and the caller
 // must not hold worldsema. The caller must call startTheWorld when
 // other P's should resume execution.
+// stopTheWorld停止所有P执行goroutine，在GC安全点中断所有goroutine，
+// 并将原因记录为停止原因。返回时，仅当前goroutine的P正在运行。不得从系统
+// 堆栈中调用stopTheWorld，并且调用者不得持有worldsema。当其他P恢复执行
+// 时，调用者必须调用startTheWorld。
 //
 // stopTheWorld is safe for multiple goroutines to call at the
 // same time. Each will execute its own stop, and the stops will

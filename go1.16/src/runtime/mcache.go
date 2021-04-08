@@ -75,18 +75,21 @@ type gclink struct {
 
 // A gclinkptr is a pointer to a gclink, but it is opaque
 // to the garbage collector.
+// gclinkptr是指向gclink的指针，但对垃圾收集器不透明。
 type gclinkptr uintptr
 
 // ptr returns the *gclink form of p.
 // The result should be used for accessing fields, not stored
 // in other data structures.
+// ptr返回p的*gclink形式。结果应该用于访问字段，
+// 而不是存储在其他数据结构中。
 func (p gclinkptr) ptr() *gclink {
 	return (*gclink)(unsafe.Pointer(p))
 }
 
 type stackfreelist struct {
-	list gclinkptr // linked list of free stacks
-	size uintptr   // total size of stacks in list
+	list gclinkptr // linked list of free stacks.空闲堆栈的链表
+	size uintptr   // total size of stacks in list，链表中的堆栈大小
 }
 
 // dummy mspan that contains no free objects.

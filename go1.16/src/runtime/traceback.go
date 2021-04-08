@@ -705,6 +705,7 @@ func tracebacktrap(pc, sp, lr uintptr, gp *g) {
 
 func traceback1(pc, sp, lr uintptr, gp *g, flags uint) {
 	// If the goroutine is in cgo, and we have a cgo traceback, print that.
+	// 如果goroutine在CGO中，并且我们有cgo traceback，则将其打印出来。
 	if iscgo && gp.m != nil && gp.m.ncgo > 0 && gp.syscallsp != 0 && gp.m.cgoCallers != nil && gp.m.cgoCallers[0] != 0 {
 		// Lock cgoCallers so that a signal handler won't
 		// change it, copy the array, reset it, unlock it.
@@ -723,6 +724,7 @@ func traceback1(pc, sp, lr uintptr, gp *g, flags uint) {
 	var n int
 	if readgstatus(gp)&^_Gscan == _Gsyscall {
 		// Override registers if blocked in system call.
+		// 如果在系统调用中被阻止，则重写寄存器。
 		pc = gp.syscallpc
 		sp = gp.syscallsp
 		flags &^= _TraceTrap
@@ -895,12 +897,15 @@ func goroutineheader(gp *g) {
 	}
 
 	// Override.
+	// 如果是g被阻塞且存在阻塞原因，则将其原因转换成字符串并赋值给status
 	if gpstatus == _Gwaiting && gp.waitreason != waitReasonZero {
 		status = gp.waitreason.String()
 	}
 
 	// approx time the G is blocked, in minutes
+	// G被阻塞的大约时间，以分钟为单位
 	var waitfor int64
+	// g的状态是阻塞或者是系统调用 并且阻塞时间 > 0，则计算出G被阻塞的时间
 	if (gpstatus == _Gwaiting || gpstatus == _Gsyscall) && gp.waitsince != 0 {
 		waitfor = (nanotime() - gp.waitsince) / 60e9
 	}

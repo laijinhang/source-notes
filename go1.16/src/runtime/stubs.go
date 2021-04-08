@@ -36,15 +36,22 @@ func getg() *g
 func mcall(fn func(*g))
 
 // systemstack runs fn on a system stack.
+// systemstack在系统堆栈上运行fn。
 // If systemstack is called from the per-OS-thread (g0) stack, or
 // if systemstack is called from the signal handling (gsignal) stack,
 // systemstack calls fn directly and returns.
+// 如果从每个操作系统线程(G0)堆栈调用systemstack，
+// 或者从信号处理(Gignal)堆栈调用systemstack，
+// 则systemstack直接调用fn并返回。
 // Otherwise, systemstack is being called from the limited stack
 // of an ordinary goroutine. In this case, systemstack switches
 // to the per-OS-thread stack, calls fn, and switches back.
 // It is common to use a func literal as the argument, in order
 // to share inputs and outputs with the code around the call
 // to system stack:
+// 否则，将从普通goroutine的有限堆栈调用systemstack。在这种情况下，
+// systemstack切换到每操作系统线程堆栈，调用fn，然后切换回。通常使用
+// func literal作为参数，以便在调用系统堆栈时与代码共享输入和输出：
 //
 //	... set up y ...
 //	systemstack(func() {

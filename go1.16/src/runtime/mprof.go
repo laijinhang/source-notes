@@ -815,6 +815,7 @@ func Stack(buf []byte, all bool) int {
 		gp := getg()
 		sp := getcallersp()
 		pc := getcallerpc()
+		// 在系统栈上运行
 		systemstack(func() {
 			g0 := getg()
 			// Force traceback=1 to override GOTRACEBACK setting,
@@ -825,6 +826,7 @@ func Stack(buf []byte, all bool) int {
 			// 这样Stack的结果是一致的。
 			// GOTRACEBACK仅用于崩溃转储。
 			g0.m.traceback = 1
+			// 分配cap大小为len(buf)的写缓冲区
 			g0.writebuf = buf[0:0:len(buf)]
 			goroutineheader(gp)
 			traceback(pc, sp, 0, gp)
