@@ -120,7 +120,7 @@ func (wg *WaitGroup) Add(delta int) {
 		// several concurrent wg.counter transitions from 0.
 		race.Read(unsafe.Pointer(semap))
 	}
-	// 如果实际计数为负则直接 panic，因此不允许计数为负值的
+	// 如果实际计数为负则直接 panic，因为不允许计数为负值的
 	if v < 0 {
 		panic("sync: negative WaitGroup counter")
 	}

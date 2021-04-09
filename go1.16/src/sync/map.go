@@ -9,13 +9,30 @@ import (
 	"unsafe"
 )
 
+/*
+适用场景：
+1. 读多写少：读多写少的环境下，都是从read的map中读取，不需要加锁，而写多读少的情况下，需要加锁，其次，存在将read数据同步到dirty操作的可能性，大量的拷贝操作会大大的降低性能。
+2. 读写不同的key：sync.Map是针对key值的原子操作，相当于加锁加载key上，多个key的读写可以同时并发的
+
+sync.Map和自己实现并发安全map的区别：
+1. 空间换时间：通过冗余两个数据结构（read、dirty），减少加锁对性能的影响。
+2. map只保存key和对于的value的指针，这样可以并发的读写map，实际更新指向value的指针再通过CAS的无锁atomic。
+3. 使用只读数据（read），减少读写冲突
+4. 动态调整，miss次数多了之后，将dirty数据提升为read，其实就是把dirty指针赋值给read，dirty置为nil，且把amended==false
+5. 延迟删除。删除一个键值只是打标记（cas），只有在提升dirty的时候才清理删除数据
+6. 优先从read读取、更新、删除，因为对read的读取不需要锁。
+ */
+
 // Map is like a Go map[interface{}]interface{} but is safe for concurrent use
 // by multiple goroutines without additional locking or coordination.
 // Loads, stores, and deletes run in amortized constant time.
+// Map类似Go Map[interface{}]interface{}，但对于多个goroutine并发使用是安全的，不需要额外的锁定或协调。
+// 加载、存储和删除在摊销在常数时间内运行。
 //
 // The Map type is specialized. Most code should use a plain Go map instead,
 // with separate locking or coordination, for better type safety and to make it
 // easier to maintain other invariants along with the map content.
+// 这个Map类型是专门设计的，大多数代码应该使用Go中的map，带有单独的
 //
 // The Map type is optimized for two common use cases: (1) when the entry for a given
 // key is only ever written once but read many times, as in caches that only grow,
@@ -24,6 +41,7 @@ import (
 // contention compared to a Go map paired with a separate Mutex or RWMutex.
 //
 // The zero Map is empty and ready for use. A Map must not be copied after first use.
+// 这个零值map是空的，可以直接使用。一个在第一次使用后，不能进行复制
 type Map struct {
 	mu Mutex // 互斥锁
 
@@ -36,6 +54,12 @@ type Map struct {
 	// Entries stored in read may be updated concurrently without mu, but updating
 	// a previously-expunged entry requires that the entry be copied to the dirty
 	// map and unexpunged with mu held.
+	/*
+	实际上是readOnly这个结果
+	一个只读的数据结构，因为只读，所以不会有读写冲突。
+	readOnly包含了map的一部分数据，用于并发安全的访问。（冗余，内存换性能）
+	访问这一部分不需要锁。
+	 */
 	read atomic.Value // readOnly
 
 	// dirty contains the portion of the map's contents that require mu to be
@@ -48,6 +72,13 @@ type Map struct {
 	//
 	// If the dirty map is nil, the next write to the map will initialize it by
 	// making a shallow copy of the clean map, omitting stale entries.
+	/*
+	dirty数据包含当前的map包含的entries，它包含最新的entries（包括read中未删除的数据，虽有冗余，
+	但是提升dirty字段为read的时候非常快，不用一个一个的复制，而是直接将这个数据结构作为read字段的
+	一部分），有些数据还可能没有移动到read字段中。
+	对于dirty的操作需要加锁，因为对它的操作可能会有读写竞争。
+	当dirty为空的时候，比如初始化或者刚提升完，下一次的写操作会复制read字段中未删除的数据到这个数据中。
+	 */
 	dirty map[interface{}]*entry
 
 	// misses counts the number of loads since the read map was last updated that
@@ -56,12 +87,18 @@ type Map struct {
 	// Once enough misses have occurred to cover the cost of copying the dirty
 	// map, the dirty map will be promoted to the read map (in the unamended
 	// state) and the next store to the map will make a new dirty copy.
+	/*
+	当从Map中读取entry的时候，如果read中不包含这个entry，会尝试从dirty中读取，这个时候会将misses加一，
+	当misses累积到dirty的长度的时候，就会将dirty提升到read，避免dirty中miss太多次。因为操作dirty需要加锁。
+	 */
 	misses int
 }
 
 // readOnly is an immutable struct stored atomically in the Map.read field.
 type readOnly struct {
 	m       map[interface{}]*entry
+	// 如果Map.dirty有些数据不在m中，则为true。
+	// 读取时从Map.read找不到数据的话，要进一步到Map.dirty中查找。
 	amended bool // true if the dirty map contains some key not in m.
 }
 
