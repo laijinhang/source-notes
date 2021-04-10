@@ -10,6 +10,12 @@
 // This library accepts either size of byte slice but always
 // returns 16-byte addresses.
 
+// IP地址操作
+//
+// IPv4地址为4个字节；IPv6地址为16个字节。一个IPv4地址可以通过添加一个
+// 规范的前缀（10个0，2个0xFFs）转换为IPv6地址，这个库接受任何大小的字
+// 节片，但总是返回16字节的地址。
+
 package net
 
 import "internal/bytealg"
@@ -707,6 +713,9 @@ func parseIPv6(s string) (ip IP) {
 // ("2001:db8::68"), or IPv4-mapped IPv6 ("::ffff:192.0.2.1") form.
 // If s is not a valid textual representation of an IP address,
 // ParseIP returns nil.
+// ParseIP 将 s 解析为 IP 地址，返回结果。
+// 字符串s可以是IPv4点阵十进制("192.0.2.1")、IPv6("2001:db8::68")或
+//IPv4映射IPv6("::fffff:192.0.2.1")形式。如果s不是IP地址的有效文本表示，ParseIP返回nil。
 func ParseIP(s string) IP {
 	for i := 0; i < len(s); i++ {
 		switch s[i] {
@@ -721,6 +730,7 @@ func ParseIP(s string) IP {
 
 // parseIPZone parses s as an IP address, return it and its associated zone
 // identifier (IPv6 only).
+// parseIPZone 将 s 解析为一个 IP 地址，返回它和相关的区域标识符（仅 IPv6）。
 func parseIPZone(s string) (IP, string) {
 	for i := 0; i < len(s); i++ {
 		switch s[i] {
@@ -741,6 +751,11 @@ func parseIPZone(s string) (IP, string) {
 // prefix length.
 // For example, ParseCIDR("192.0.2.1/24") returns the IP address
 // 192.0.2.1 and the network 192.0.2.0/24.
+
+// ParseCIDR将s解析为CIDR符号的IP地址和前缀长度，如 "192.0.2.0/24 "或
+// "2001:db8::/32"，定义在RFC 4632和RFC 4291中。
+//
+//  例如，ParseCIDR("192.0.2.0/24")返回IP地址192.0.2.1和网络192.0.2.0/24。
 func ParseCIDR(s string) (IP, *IPNet, error) {
 	i := bytealg.IndexByteString(s, '/')
 	if i < 0 {

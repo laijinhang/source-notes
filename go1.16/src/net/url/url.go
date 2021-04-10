@@ -3,12 +3,23 @@
 // license that can be found in the LICENSE file.
 
 // Package url parses URLs and implements query escaping.
+// 包url解析URL并实现查询转义。
+
+/*
+一、URL编解码
+* QueryEscape：编码，对传入的字符串进行转码，使之能够安全的用在URL查询里
+* QueryUnescape：解码，还原转换码后的URl
+
+*/
 package url
 
 // See RFC 3986. This package generally follows RFC 3986, except where
 // it deviates for compatibility reasons. When sending changes, first
 // search old issues for history on decisions. Unit tests should also
 // contain references to issue numbers with details.
+
+// 参见RFC 3986。这个软件包一般遵循 RFC 3986，除非因为兼容性的原因而有所偏离。
+// 当发送更改时，首先搜索旧问题的历史决定。单元测试也应该包含对问题号的引用和细节。
 
 import (
 	"errors"
@@ -71,12 +82,13 @@ func unhex(c byte) byte {
 
 type encoding int
 
+// 编码模式
 const (
-	encodePath encoding = 1 + iota
-	encodePathSegment
-	encodeHost
-	encodeZone
-	encodeUserPassword
+	encodePath         encoding = 1 + iota // 编码path
+	encodePathSegment                      // 编码path段
+	encodeHost                             // 编码host
+	encodeZone                             // 编码zone
+	encodeUserPassword                     // 编码用户密码
 	encodeQueryComponent
 	encodeFragment
 )
@@ -95,11 +107,15 @@ func (e InvalidHostError) Error() string {
 
 // Return true if the specified character should be escaped when
 // appearing in a URL string, according to RFC 3986.
+// 根据RFC 3986的规定，如果指定的字符出现在URL字符串中时应该被转义，则返回true。
 //
 // Please be informed that for now shouldEscape does not check all
 // reserved characters correctly. See golang.org/issue/5684.
+// 请注意，目前 shouldEscape 并没有正确地检查所有保留字符，
+// 请参见 golang.org/issue/5684。
 func shouldEscape(c byte, mode encoding) bool {
 	// §2.3 Unreserved characters (alphanum)
+	// §2.3 未保留的字符(英文字母)
 	if 'a' <= c && c <= 'z' || 'A' <= c && c <= 'Z' || '0' <= c && c <= '9' {
 		return false
 	}
@@ -149,6 +165,7 @@ func shouldEscape(c byte, mode encoding) bool {
 
 		case encodeQueryComponent: // §3.4
 			// The RFC reserves (so we must escape) everything.
+			// RFC保留（所以我们必须避开）这些。
 			return true
 
 		case encodeFragment: // §4.1
@@ -180,6 +197,8 @@ func shouldEscape(c byte, mode encoding) bool {
 // hex-decoded byte 0xAB.
 // It returns an error if any % is not followed by two hexadecimal
 // digits.
+// QueryUnescape对QueryEscape转码的字符串进行还原，将每个3字节编码的"%AB "形式的子串转换
+// 为十六进制解码的字节0xAB.如果任何%后面没有两个十六进制数字，它将返回一个错误。
 func QueryUnescape(s string) (string, error) {
 	return unescape(s, encodeQueryComponent)
 }
@@ -197,6 +216,12 @@ func PathUnescape(s string) (string, error) {
 
 // unescape unescapes a string; the mode specifies
 // which section of the URL string is being unescaped.
+// unescape解压缩一个字符串；模式指定URL字符串的哪一部分被解压缩。
+/*
+对于encodeQueryComponent模式：
+1. 将 + 转换成 空格
+2. 将 %十六进制数，先把%去掉，十六进制转成十进制的ASCII字符
+*/
 func unescape(s string, mode encoding) (string, error) {
 	// Count %, check that they're well-formed.
 	n := 0
@@ -285,8 +310,10 @@ func PathEscape(s string) string {
 
 func escape(s string, mode encoding) string {
 	spaceCount, hexCount := 0, 0
+	// 计算空格数和 非字母、数字和空格的字符数
 	for i := 0; i < len(s); i++ {
 		c := s[i]
+		// 对于encodeQueryComponent模式，如果c是大小写字母、数字的话返回false，其他都返回true
 		if shouldEscape(c, mode) {
 			if c == ' ' && mode == encodeQueryComponent {
 				spaceCount++
@@ -296,10 +323,16 @@ func escape(s string, mode encoding) string {
 		}
 	}
 
+	// 如果没有需要转换的，则直接返回
 	if spaceCount == 0 && hexCount == 0 {
 		return s
 	}
 
+	/*
+		下面的内容是：
+		1、将所有的空格变成+
+		2、将 非大小写字母、数字、空格 的字符转成 %对应的大写十六进制，如果 / 字符 =》 %3A
+	*/
 	var buf [64]byte
 	var t []byte
 

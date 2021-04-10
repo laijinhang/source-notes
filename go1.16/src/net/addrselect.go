@@ -5,6 +5,7 @@
 // +build aix darwin dragonfly freebsd linux netbsd openbsd solaris
 
 // Minimal RFC 6724 address selection.
+// 最小的RFC 6724地址选择。
 
 package net
 
@@ -38,6 +39,8 @@ func sortByRFC6724withSrcs(addrs []IPAddr, srcs []IP) {
 // srcsAddrs tries to UDP-connect to each address to see if it has a
 // route. (This doesn't send any packets). The destination port
 // number is irrelevant.
+// srcsAddrs 试图用 UDP 连接到每个地址，看看它是否有一条路由。
+// 这不会发送任何数据包）。目标端口号无关紧要。
 func srcAddrs(addrs []IPAddr) []IP {
 	srcs := make([]IP, len(addrs))
 	dst := UDPAddr{Port: 9}
