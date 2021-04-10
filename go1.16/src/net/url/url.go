@@ -137,18 +137,22 @@ func shouldEscape(c byte, mode encoding) bool {
 	}
 
 	switch c {
+	// §2.3 无保留字符(标记)
 	case '-', '_', '.', '~': // §2.3 Unreserved characters (mark)
 		return false
-
+		// §2.2 保留字符(保留)
 	case '$', '&', '+', ',', '/', ':', ';', '=', '?', '@': // §2.2 Reserved characters (reserved)
 		// Different sections of the URL allow a few of
 		// the reserved characters to appear unescaped.
+		// URL的不同部分允许一些保留字符不加封存地出现。
 		switch mode {
 		case encodePath: // §3.3
 			// The RFC allows : @ & = + $ but saves / ; , for assigning
 			// meaning to individual path segments. This package
 			// only manipulates the path as a whole, so we allow those
 			// last three as well. That leaves only ? to escape.
+			// RFC允许: @ & = + $，但保留了 / ; ，用于给各个路径段赋予意义。
+			// 这个包只对路径进行整体操作，所以我们也允许使用最后三个。那就只剩下？
 			return c == '?'
 
 		case encodePathSegment: // §3.3
@@ -210,6 +214,12 @@ func QueryUnescape(s string) (string, error) {
 //
 // PathUnescape is identical to QueryUnescape except that it does not
 // unescape '+' to ' ' (space).
+
+// PathUnescape进行PathEscape的逆向转换，将每个3字节编码的"%AB "形式
+// 的子串转换为十六进制解码的字节0xAB。如果任何%后面没有两个十六进制数字，
+// 它将返回一个错误。
+//
+// PathUnescape与QueryUnescape相同，只是它不会将'+'去掉''（空格）。
 func PathUnescape(s string) (string, error) {
 	return unescape(s, encodePathSegment)
 }
@@ -218,6 +228,7 @@ func PathUnescape(s string) (string, error) {
 // which section of the URL string is being unescaped.
 // unescape解压缩一个字符串；模式指定URL字符串的哪一部分被解压缩。
 /*
+对于encodeQueryComponent模式：
 对于encodeQueryComponent模式：
 1. 将 + 转换成 空格
 2. 将 %十六进制数，先把%去掉，十六进制转成十进制的ASCII字符
@@ -304,16 +315,22 @@ func QueryEscape(s string) string {
 
 // PathEscape escapes the string so it can be safely placed inside a URL path segment,
 // replacing special characters (including /) with %XX sequences as needed.
+// PathEscape可以将字符串安全地放置在URL路径段中，根据需要用%XX序列替换特殊字符（包括/）。
 func PathEscape(s string) string {
 	return escape(s, encodePathSegment)
 }
 
 func escape(s string, mode encoding) string {
 	spaceCount, hexCount := 0, 0
-	// 计算空格数和 非字母、数字和空格的字符数
+	// 对于encodeQueryComponent模式，计算空格数和 非字母、数字、'-'、'_'、'.'、'~'和空格的字符数
+	// 对于encodePathSegment模式，计算空格数和 非字母、数字、'-'、'_'、'.'、'~'和空格的
 	for i := 0; i < len(s); i++ {
 		c := s[i]
-		// 对于encodeQueryComponent模式，如果c是大小写字母、数字的话返回false，其他都返回true
+		// 对于encodeQueryComponent模式，如果c是大小写字母、数字、'-', '_', '.', '~'、'$'、
+		// '&', '+', ',', '/', ':', ';', '=', '@'的字符数
+
+		// 对于encodePathSegment模式，如果c是大小写字母、数字、'-', '_', '.', '~'、'$'、
+		// '&', '+', ',', '/', ':', ';', '=', '@'的话返回false，其他都返回true
 		if shouldEscape(c, mode) {
 			if c == ' ' && mode == encodeQueryComponent {
 				spaceCount++
@@ -330,8 +347,8 @@ func escape(s string, mode encoding) string {
 
 	/*
 		下面的内容是：
-		1、将所有的空格变成+
-		2、将 非大小写字母、数字、空格 的字符转成 %对应的大写十六进制，如果 / 字符 =》 %3A
+		1、对于encodeQueryComponent模式，将所有的空格变成+
+		2、将 对于模式 的字符转成 %对应的大写十六进制，如果 / 字符 =》 %3A
 	*/
 	var buf [64]byte
 	var t []byte
