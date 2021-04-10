@@ -56,6 +56,8 @@ func (e *Error) Temporary() bool {
 
 const upperhex = "0123456789ABCDEF"
 
+// 是否是十六进制中的字符
+// 0~9，a~f，A~F
 func ishex(c byte) bool {
 	switch {
 	case '0' <= c && c <= '9':
@@ -68,6 +70,7 @@ func ishex(c byte) bool {
 	return false
 }
 
+// 解析十六进制ASCII字符 => 十六进制数值
 func unhex(c byte) byte {
 	switch {
 	case '0' <= c && c <= '9':
@@ -84,24 +87,26 @@ type encoding int
 
 // 编码模式
 const (
-	encodePath         encoding = 1 + iota // 编码path
-	encodePathSegment                      // 编码path段
-	encodeHost                             // 编码host
-	encodeZone                             // 编码zone
-	encodeUserPassword                     // 编码用户密码
-	encodeQueryComponent
+	encodePath           encoding = 1 + iota // 编码path
+	encodePathSegment                        // 编码path段
+	encodeHost                               // 编码host
+	encodeZone                               // 编码zone
+	encodeUserPassword                       // 编码用户密码
+	encodeQueryComponent                     // 编码URL
 	encodeFragment
 )
 
 type EscapeError string
 
 func (e EscapeError) Error() string {
+	// 无效的URL转义
 	return "invalid URL escape " + strconv.Quote(string(e))
 }
 
 type InvalidHostError string
 
 func (e InvalidHostError) Error() string {
+	// 无效字符 strconv.Quote(string(e)) 在主机名中
 	return "invalid character " + strconv.Quote(string(e)) + " in host name"
 }
 
@@ -390,12 +395,15 @@ func escape(s string, mode encoding) string {
 }
 
 // A URL represents a parsed URL (technically, a URI reference).
+// 一个URL代表一个解析后的URL（技术上讲，是URI引用）。
 //
 // The general form represented is:
+// 一般代表的形式是：
 //
 //	[scheme:][//[userinfo@]host][/]path[?query][#fragment]
 //
 // URLs that do not start with a slash after the scheme are interpreted as:
+// 方案后不以斜杠开头的URL会被解释为。
 //
 //	scheme:opaque[?query][#fragment]
 //
@@ -404,36 +412,45 @@ func escape(s string, mode encoding) string {
 // slashes in the raw URL and which were %2f. This distinction is rarely important,
 // but when it is, the code should use RawPath, an optional field which only gets
 // set if the default encoding is different from Path.
+// 请注意，Path字段是以解码形式存储的，/%47%6f%2f变成了/Go/。
+// /其结果是无法区分Path中哪些是原始URL中的斜线，哪些是%2f。
+// 这种区分很少是重要的，但是当它是重要的时候，代码应该使用
+// RawPath，这是一个可选的字段，只有当默认编码与Path不同时才会被设置。
 //
 // URL's String method uses the EscapedPath method to obtain the path. See the
 // EscapedPath method for more details.
+// URL的String方法使用EscapedPath方法来获取路径。更多细节请参见EscapedPath方法。
 type URL struct {
 	Scheme      string
-	Opaque      string    // encoded opaque data
-	User        *Userinfo // username and password information
-	Host        string    // host or host:port
-	Path        string    // path (relative paths may omit leading slash)
-	RawPath     string    // encoded path hint (see EscapedPath method)
-	ForceQuery  bool      // append a query ('?') even if RawQuery is empty
-	RawQuery    string    // encoded query values, without '?'
-	Fragment    string    // fragment for references, without '#'
-	RawFragment string    // encoded fragment hint (see EscapedFragment method)
+	Opaque      string    // encoded opaque data，不编码的不透明数据
+	User        *Userinfo // username and password information，用户名和密码信息
+	Host        string    // host or host:port，主机或主机:端口
+	Path        string    // path (relative paths may omit leading slash)，路径(相对路径可省去前导斜线)
+	RawPath     string    // encoded path hint (see EscapedPath method)，编码后的路径提示(参见EscapedPath方法)
+	ForceQuery  bool      // append a query ('?') even if RawQuery is empty，即使RawQuery为空，也会附加一个查询（'?'）
+	RawQuery    string    // encoded query values, without '?'，编码的查询值，不含'?
+	Fragment    string    // fragment for references, without '#'，参考文献的片段，不含 "#"。
+	RawFragment string    // encoded fragment hint (see EscapedFragment method)，编码后的片段提示(见EscapedFragment方法)
 }
 
 // User returns a Userinfo containing the provided username
 // and no password set.
+// User返回一个Userinfo，其中包含提供的用户名，没有设置密码。
 func User(username string) *Userinfo {
 	return &Userinfo{username, "", false}
 }
 
 // UserPassword returns a Userinfo containing the provided username
 // and password.
+// UserPassword返回一个包含所提供的用户名和密码的Userinfo。
 //
 // This functionality should only be used with legacy web sites.
 // RFC 2396 warns that interpreting Userinfo this way
 // ``is NOT RECOMMENDED, because the passing of authentication
 // information in clear text (such as URI) has proven to be a
 // security risk in almost every case where it has been used.''
+// RFC 2396警告说，不建议以这种方式解释Userinfo，因为事实证明，
+// 在几乎所有使用这种方式的情况下，以明文方式(如URI)传递认证信息都有安全风险。
 func UserPassword(username, password string) *Userinfo {
 	return &Userinfo{username, password, true}
 }
@@ -442,6 +459,9 @@ func UserPassword(username, password string) *Userinfo {
 // password details for a URL. An existing Userinfo value is guaranteed
 // to have a username set (potentially empty, as allowed by RFC 2396),
 // and optionally a password.
+// Userinfo类型是URL的用户名和密码细节的不可改变的封装。
+// 一个现有的Userinfo值保证有一个用户名设置（可能是空的，
+// 如RFC 2396所允许的），还有一个可选的密码。
 type Userinfo struct {
 	username    string
 	password    string
@@ -449,6 +469,7 @@ type Userinfo struct {
 }
 
 // Username returns the username.
+// Username 返回用户名。
 func (u *Userinfo) Username() string {
 	if u == nil {
 		return ""
@@ -457,6 +478,7 @@ func (u *Userinfo) Username() string {
 }
 
 // Password returns the password in case it is set, and whether it is set.
+// 密码在设置的情况下返回密码，是否设置。
 func (u *Userinfo) Password() (string, bool) {
 	if u == nil {
 		return "", false
@@ -466,6 +488,7 @@ func (u *Userinfo) Password() (string, bool) {
 
 // String returns the encoded userinfo information in the standard form
 // of "username[:password]".
+// 字符串返回标准格式为 "username[:password]"的编码用户信息。
 func (u *Userinfo) String() string {
 	if u == nil {
 		return ""
@@ -480,6 +503,8 @@ func (u *Userinfo) String() string {
 // Maybe rawurl is of the form scheme:path.
 // (Scheme must be [a-zA-Z][a-zA-Z0-9+-.]*)
 // If so, return scheme, path; else return "", rawurl.
+// 也许rawurl的形式是scheme:path.(scheme必须是[a-zA-Z][a-zA-Z0-9+-.]*)
+// 如果是，返回scheme，path；否则返回""，rawurl。
 func getscheme(rawurl string) (scheme, path string, err error) {
 	for i := 0; i < len(rawurl); i++ {
 		c := rawurl[i]
@@ -498,6 +523,7 @@ func getscheme(rawurl string) (scheme, path string, err error) {
 		default:
 			// we have encountered an invalid character,
 			// so there is no valid scheme
+			// 我们遇到了一个无效的字符，所以没有有效的方案。
 			return "", rawurl, nil
 		}
 	}
@@ -507,6 +533,8 @@ func getscheme(rawurl string) (scheme, path string, err error) {
 // split slices s into two substrings separated by the first occurrence of
 // sep. If cutc is true then sep is excluded from the second substring.
 // If sep does not occur in s then s and the empty string is returned.
+// 将s片分割成两个子串，由sep的第一次出现分开，如果cutc为真，
+// 那么sep将从第二个子串中排除，如果sep在s中没有出现，那么返回s和空字符串。
 func split(s string, sep byte, cutc bool) (string, string) {
 	i := strings.IndexByte(s, sep)
 	if i < 0 {
@@ -519,13 +547,18 @@ func split(s string, sep byte, cutc bool) (string, string) {
 }
 
 // Parse parses rawurl into a URL structure.
+// Parse将rawurl解析成一个URL结构。
 //
 // The rawurl may be relative (a path, without a host) or absolute
 // (starting with a scheme). Trying to parse a hostname and path
 // without a scheme is invalid but may not necessarily return an
 // error, due to parsing ambiguities.
+// rawurl可以是相对的（一个路径，不含主机）或绝对的（以方案开始）。
+// 试图解析一个没有方案的主机名和路径是无效的，但由于解析的模糊性，
+// 不一定会返回一个错误。
 func Parse(rawurl string) (*URL, error) {
 	// Cut off #frag
+	// 切断#frag
 	u, frag := split(rawurl, '#', true)
 	url, err := parse(u, false)
 	if err != nil {
@@ -545,6 +578,9 @@ func Parse(rawurl string) (*URL, error) {
 // only as an absolute URI or an absolute path.
 // The string rawurl is assumed not to have a #fragment suffix.
 // (Web browsers strip #fragment before sending the URL to a web server.)
+// ParseRequestURI将rawurl解析成一个URL结构。
+// 它假设rawurl是在HTTP请求中接收到的，所以
+// rawurl只被解释为一个绝对URI或绝对路径。
 func ParseRequestURI(rawurl string) (*URL, error) {
 	url, err := parse(rawurl, true)
 	if err != nil {
@@ -557,6 +593,10 @@ func ParseRequestURI(rawurl string) (*URL, error) {
 // viaRequest is true, the URL is assumed to have arrived via an HTTP request,
 // in which case only absolute URLs or path-absolute relative URLs are allowed.
 // If viaRequest is false, all forms of relative URLs are allowed.
+// parse在两种上下文中的一种情况下从一个字符串中解析一个URL。
+// 如果viaRequest为真，则假设URL是通过HTTP请求到达的，
+// 在这种情况下，只允许使用绝对URL或路径绝对的相对URL，
+// 如果viaRequest为假，则允许使用所有形式的相对URL。
 func parse(rawurl string, viaRequest bool) (*URL, error) {
 	var rest string
 	var err error
@@ -577,6 +617,7 @@ func parse(rawurl string, viaRequest bool) (*URL, error) {
 
 	// Split off possible leading "http:", "mailto:", etc.
 	// Cannot contain escaped characters.
+	// 分割掉可能的前导 "http:"、"mailto: "等，不能包含转义字符。
 	if url.Scheme, rest, err = getscheme(rawurl); err != nil {
 		return nil, err
 	}
@@ -605,10 +646,14 @@ func parse(rawurl string, viaRequest bool) (*URL, error) {
 		// RFC 3986, §3.3:
 		// In addition, a URI reference (Section 4.1) may be a relative-path reference,
 		// in which case the first path segment cannot contain a colon (":") character.
+		// 避免与malformed schemes混淆，比如cache_object:foo/bar.
+		// 参见golang.org/issue/16822.RFC 3986，§3.3。此外，URI
+		// 引用(第4.1节)可能是一个相对路径引用，在这种情况下，第一个路径段不能包含冒号(":")字符。
 		colon := strings.Index(rest, ":")
 		slash := strings.Index(rest, "/")
 		if colon >= 0 && (slash < 0 || colon < slash) {
 			// First path segment has colon. Not allowed in relative URL.
+			// 第一个路径段有冒号。不允许在相对URL中使用。
 			return nil, errors.New("first path segment in URL cannot contain colon")
 		}
 	}
@@ -668,10 +713,12 @@ func parseAuthority(authority string) (user *Userinfo, host string, err error) {
 
 // parseHost parses host as an authority without user
 // information. That is, as host[:port].
+// parseHost将host解析为不含用户信息的权限。也就是说，作为host[:port]。
 func parseHost(host string) (string, error) {
 	if strings.HasPrefix(host, "[") {
 		// Parse an IP-Literal in RFC 3986 and RFC 6874.
 		// E.g., "[fe80::1]", "[fe80::1%25en0]", "[fe80::1]:80".
+		// 解析RFC 3986和RFC 6874中的IP-Literal.E.g.，"[fe80::1]"，"[fe80::1%25en0]"，"[fe80::1]:80"。
 		i := strings.LastIndex(host, "]")
 		if i < 0 {
 			return "", errors.New("missing ']' in host")
@@ -725,6 +772,12 @@ func parseHost(host string) (string, error) {
 // - setPath("/foo%2fbar") will set Path="/foo/bar" and RawPath="/foo%2fbar"
 // setPath will return an error only if the provided path contains an invalid
 // escaping.
+// setPath根据提供的转义路径p设置URL的Path和RawPath字段，它保持了一个不变的原则，
+// 即只有当RawPath与路径的默认编码不同时才会被指定。
+// 例如： - setPath("/")
+// - setPath("/foo/bar")将设置Path="/foo/bar "和RawPath=""
+// - setPath("/foo%2fbar")将设置Path="/foo/bar"，RawPath="/foo%2fbar"
+// setPath只有在提供的路径包含无效的转义时才会返回错误。
 func (u *URL) setPath(p string) error {
 	path, err := unescape(p, encodePath)
 	if err != nil {
@@ -733,6 +786,7 @@ func (u *URL) setPath(p string) error {
 	u.Path = path
 	if escp := escape(path, encodePath); p == escp {
 		// Default encoding is fine.
+		// 默认编码就可以了。
 		u.RawPath = ""
 	} else {
 		u.RawPath = p
@@ -789,6 +843,7 @@ func validEncoded(s string, mode encoding) bool {
 }
 
 // setFragment is like setPath but for Fragment/RawFragment.
+// setFragment和setPath一样，但是对于Fragment/RawFragment来说。
 func (u *URL) setFragment(f string) error {
 	frag, err := unescape(f, encodeFragment)
 	if err != nil {
@@ -797,6 +852,7 @@ func (u *URL) setFragment(f string) error {
 	u.Fragment = frag
 	if escf := escape(frag, encodeFragment); f == escf {
 		// Default encoding is fine.
+		// 默认编码就可以了。
 		u.RawFragment = ""
 	} else {
 		u.RawFragment = f
@@ -812,6 +868,10 @@ func (u *URL) setFragment(f string) error {
 // The String method uses EscapedFragment to construct its result.
 // In general, code should call EscapedFragment instead of
 // reading u.RawFragment directly.
+// EscapedFragment返回u.Fragment的转义形式。一般来说，任何一个片段都有多种可能的转义形式。
+// 当u.Fragment是有效的转义形式时，EscapedFragment会返回u.RawFragment。
+// 否则EscapedFragment会忽略u.RawFragment，并自行计算一个转义形式。String方法使用
+// EscapedFragment来构造它的结果。一般来说，代码应该调用EscapedFragment而不是直接读取u.RawFragment。
 func (u *URL) EscapedFragment() string {
 	if u.RawFragment != "" && validEncoded(u.RawFragment, encodeFragment) {
 		f, err := unescape(u.RawFragment, encodeFragment)
@@ -824,6 +884,7 @@ func (u *URL) EscapedFragment() string {
 
 // validOptionalPort reports whether port is either an empty string
 // or matches /^:\d*$/
+// validOptionalPort报告端口是否为空字符串或匹配/^:\d*$/。
 func validOptionalPort(port string) bool {
 	if port == "" {
 		return true
@@ -911,6 +972,7 @@ func (u *URL) String() string {
 
 // Redacted is like String but replaces any password with "xxxxx".
 // Only the password in u.URL is redacted.
+// Redacted和String一样，但用 "xxxx "代替任何密码。只有u.URL中的密码才会被删节。
 func (u *URL) Redacted() string {
 	if u == nil {
 		return ""
@@ -927,12 +989,16 @@ func (u *URL) Redacted() string {
 // It is typically used for query parameters and form values.
 // Unlike in the http.Header map, the keys in a Values map
 // are case-sensitive.
+// Values将一个字符串键映射到一个值列表中，它通常用于查询参数和表单值。
+// 与http.Header映射不同，Values映射中的键是区分大小写的。
 type Values map[string][]string
 
 // Get gets the first value associated with the given key.
 // If there are no values associated with the key, Get returns
 // the empty string. To access multiple values, use the map
 // directly.
+// 获取与给定键相关联的第一个值。如果没有与键相关联的值，
+// Get返回空字符串。要访问多个值，直接使用map。
 func (v Values) Get(key string) string {
 	if v == nil {
 		return ""
@@ -946,17 +1012,20 @@ func (v Values) Get(key string) string {
 
 // Set sets the key to value. It replaces any existing
 // values.
+// 设置键值。它替换任何现有的值。
 func (v Values) Set(key, value string) {
 	v[key] = []string{value}
 }
 
 // Add adds the value to key. It appends to any existing
 // values associated with key.
+// 将值添加到key中。它附加到与key相关联的任何现有值上。
 func (v Values) Add(key, value string) {
 	v[key] = append(v[key], value)
 }
 
 // Del deletes the values associated with key.
+// Del删除与键相关联的值。
 func (v Values) Del(key string) {
 	delete(v, key)
 }
@@ -966,10 +1035,14 @@ func (v Values) Del(key string) {
 // ParseQuery always returns a non-nil map containing all the
 // valid query parameters found; err describes the first decoding error
 // encountered, if any.
+// ParseQuery解析URL编码的查询字符串，并返回一个列出每个键所指定值的映射。
+// ParseQuery总是返回一个非零的映射，包含所有找到的有效查询参数；err描述了遇到的第一个解码错误（如果有的话）。
 //
 // Query is expected to be a list of key=value settings separated by
 // ampersands or semicolons. A setting without an equals sign is
 // interpreted as a key set to an empty value.
+// 查询应该是一个由ampersands或分号分隔的key=value设置的列表。
+// 没有等号的设置被解释为键设置为空值。
 func ParseQuery(query string) (Values, error) {
 	m := make(Values)
 	err := parseQuery(m, query)
@@ -1012,6 +1085,7 @@ func parseQuery(m Values, query string) (err error) {
 
 // Encode encodes the values into ``URL encoded'' form
 // ("bar=baz&foo=quux") sorted by key.
+// Encode将数值编码成 "URL编码 "形式("bar=baz&foo=quux")，按键排序。
 func (v Values) Encode() string {
 	if v == nil {
 		return ""
@@ -1039,6 +1113,7 @@ func (v Values) Encode() string {
 
 // resolvePath applies special path segments from refs and applies
 // them to base, per RFC 3986.
+// resolvePath 应用来自 refs 的特殊路径段，并根据 RFC 3986 将其应用于 base。
 func resolvePath(base, ref string) string {
 	var full string
 	if ref == "" {
@@ -1109,6 +1184,8 @@ func (u *URL) IsAbs() bool {
 // Parse parses a URL in the context of the receiver. The provided URL
 // may be relative or absolute. Parse returns nil, err on parse
 // failure, otherwise its return value is the same as ResolveReference.
+// Parse在接收者的上下文中解析一个URL。所提供的URL可以是相对或绝对的。
+// Parse返回nil，解析失败则返回err，否则其返回值与ResolveReference相同。
 func (u *URL) Parse(ref string) (*URL, error) {
 	refurl, err := Parse(ref)
 	if err != nil {
@@ -1149,6 +1226,7 @@ func (u *URL) ResolveReference(ref *URL) *URL {
 		}
 	}
 	// The "abs_path" or "rel_path" cases.
+	// abs_path "或 "rel_path "的情况。
 	url.Host = u.Host
 	url.User = u.User
 	url.setPath(resolvePath(u.EscapedPath(), ref.EscapedPath()))
@@ -1158,6 +1236,9 @@ func (u *URL) ResolveReference(ref *URL) *URL {
 // Query parses RawQuery and returns the corresponding values.
 // It silently discards malformed value pairs.
 // To check errors use ParseQuery.
+// Query解析RawQuery并返回相应的值。
+// 它默默地丢弃错误的值对。
+// 要检查错误，请使用ParseQuery。
 func (u *URL) Query() Values {
 	v, _ := ParseQuery(u.RawQuery)
 	return v
@@ -1165,6 +1246,7 @@ func (u *URL) Query() Values {
 
 // RequestURI returns the encoded path?query or opaque?query
 // string that would be used in an HTTP request for u.
+// RequestURI返回编码的路径?query或不透明的?query字符串，该字符串将用于对u的HTTP请求。
 func (u *URL) RequestURI() string {
 	result := u.Opaque
 	if result == "" {
@@ -1187,6 +1269,10 @@ func (u *URL) RequestURI() string {
 //
 // If the result is enclosed in square brackets, as literal IPv6 addresses are,
 // the square brackets are removed from the result.
+
+// Hostname 返回 u.Host，如果存在，则去除任何有效的端口号。
+//
+// 如果结果包含在方括号中，就像IPv6地址一样，方括号会从结果中删除。
 func (u *URL) Hostname() string {
 	host, _ := splitHostPort(u.Host)
 	return host
@@ -1195,6 +1281,9 @@ func (u *URL) Hostname() string {
 // Port returns the port part of u.Host, without the leading colon.
 //
 // If u.Host doesn't contain a valid numeric port, Port returns an empty string.
+// Port 返回 u.Host 的端口部分，不含前面的冒号。
+//
+// 如果u.Host不包含有效的数字端口，Port返回一个空字符串。
 func (u *URL) Port() string {
 	_, port := splitHostPort(u.Host)
 	return port
@@ -1203,6 +1292,8 @@ func (u *URL) Port() string {
 // splitHostPort separates host and port. If the port is not valid, it returns
 // the entire input as host, and it doesn't check the validity of the host.
 // Unlike net.SplitHostPort, but per RFC 3986, it requires ports to be numeric.
+// splitHostPort分离主机和端口。如果端口无效，它将整个输入作为host返回，并且不检查host的有效性。
+// 与net.splitHostPort不同，但根据RFC 3986的规定，它要求端口为数字。
 func splitHostPort(hostport string) (host, port string) {
 	host = hostport
 
@@ -1220,7 +1311,8 @@ func splitHostPort(hostport string) (host, port string) {
 
 // Marshaling interface implementations.
 // Would like to implement MarshalText/UnmarshalText but that will change the JSON representation of URLs.
-
+// Marshaling接口的实现。
+// 想实现MarshalText/UnmarshalText，但这将改变URL的JSON表示方式。
 func (u *URL) MarshalBinary() (text []byte, err error) {
 	return []byte(u.String()), nil
 }
@@ -1235,21 +1327,27 @@ func (u *URL) UnmarshalBinary(text []byte) error {
 }
 
 // validUserinfo reports whether s is a valid userinfo string per RFC 3986
+// validUserinfo根据RFC 3986报告s是否是一个有效的用户信息字符串。
 // Section 3.2.1:
+// 第3.2.1节：
 //     userinfo    = *( unreserved / pct-encoded / sub-delims / ":" )
 //     unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
 //     sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
 //                   / "*" / "+" / "," / ";" / "="
 //
 // It doesn't validate pct-encoded. The caller does that via func unescape.
+// 它不会验证pct-encoded。调用者通过func unescape进行验证。
 func validUserinfo(s string) bool {
 	for _, r := range s {
+		// 满足大写字母，跳过
 		if 'A' <= r && r <= 'Z' {
 			continue
 		}
+		// 满足小写字母，跳过
 		if 'a' <= r && r <= 'z' {
 			continue
 		}
+		// 0 ~ 9，跳过
 		if '0' <= r && r <= '9' {
 			continue
 		}
@@ -1265,9 +1363,11 @@ func validUserinfo(s string) bool {
 }
 
 // stringContainsCTLByte reports whether s contains any ASCII control character.
+// stringContainsCTLByte报告s是否包含任何ASCII控制字符。
 func stringContainsCTLByte(s string) bool {
 	for i := 0; i < len(s); i++ {
 		b := s[i]
+		// ASCII码 小于32 或 ASCII码 等于 127
 		if b < ' ' || b == 0x7f {
 			return true
 		}
