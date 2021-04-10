@@ -11,9 +11,14 @@ import "unsafe"
 // Approximation of notifyList in runtime/sema.go. Size and alignment must
 // agree.
 type notifyList struct {
-	wait   uint32
+	// 等待数量
+	wait uint32
+	// 通知数量
 	notify uint32
-	lock   uintptr // key field of the mutex
-	head   unsafe.Pointer
-	tail   unsafe.Pointer
+	// 锁
+	lock uintptr // key field of the mutex
+	// 链表头
+	head unsafe.Pointer
+	// 链表尾
+	tail unsafe.Pointer
 }
