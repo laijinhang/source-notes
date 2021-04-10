@@ -27,15 +27,21 @@ type SysProcAttr struct {
 	// Ptrace tells the child to call ptrace(PTRACE_TRACEME).
 	// Call runtime.LockOSThread before starting a process with this set,
 	// and don't call UnlockOSThread until done with PtraceSyscall calls.
+	// Ptrace告诉子程序调用ptrace(PTRACE_TRACEME)。在用这个集合启动进程之前，
+	// 调用runtime.LockOSThread，在完成PtraceSyscall调用之前，不要调用UnlockOSThread。
 	Ptrace bool
-	Setsid bool // Create session.
+	Setsid bool // Create session.，创建会话。
 	// Setpgid sets the process group ID of the child to Pgid,
 	// or, if Pgid == 0, to the new child's process ID.
+	// Setpgid将子进程的进程组ID设置为Pgid，如果Pgid==0，则设置为新子进程的ID。
 	Setpgid bool
 	// Setctty sets the controlling terminal of the child to
 	// file descriptor Ctty. Ctty must be a descriptor number
 	// in the child process: an index into ProcAttr.Files.
 	// This is only meaningful if Setsid is true.
+	// Setctty将子系统的控制终端设置为文件描述符Ctty。
+	// Ctty必须是子进程中的描述符编号：ProcAttr.Files
+	// 的索引。这只有在Setsid为真时才有意义。
 	Setctty bool
 	Noctty  bool // Detach fd 0 from controlling terminal
 	Ctty    int  // Controlling TTY fd
@@ -44,19 +50,25 @@ type SysProcAttr struct {
 	// the descriptor of the controlling TTY.
 	// Unlike Setctty, in this case Ctty must be a descriptor
 	// number in the parent process.
+	// Foreground将子进程组置于前景。这意味着Setpgid。
+	// Ctty 字段必须设置为控制 TTY 的描述符。与Setctty不同，
+	// 在这种情况下，Ctty必须是父进程中的描述符编号。
 	Foreground   bool
-	Pgid         int            // Child's process group ID if Setpgid.
-	Pdeathsig    Signal         // Signal that the process will get when its parent dies (Linux only)
-	Cloneflags   uintptr        // Flags for clone calls (Linux only)
-	Unshareflags uintptr        // Flags for unshare calls (Linux only)
-	UidMappings  []SysProcIDMap // User ID mappings for user namespaces.
-	GidMappings  []SysProcIDMap // Group ID mappings for user namespaces.
+	Pgid         int            // Child's process group ID if Setpgid.，子程序组ID，如果Setpgid。
+	Pdeathsig    Signal         // Signal that the process will get when its parent dies (Linux only)，当父进程死亡时，该进程将得到的信号（仅Linux）。
+	Cloneflags   uintptr        // Flags for clone calls (Linux only)，克隆调用的标志(仅Linux)
+	Unshareflags uintptr        // Flags for unshare calls (Linux only)，未共享调用的标志（仅限Linux）。
+	UidMappings  []SysProcIDMap // User ID mappings for user namespaces.，用户名称空间的用户ID映射。
+	GidMappings  []SysProcIDMap // Group ID mappings for user namespaces.，用户名称空间的组ID映射。
 	// GidMappingsEnableSetgroups enabling setgroups syscall.
 	// If false, then setgroups syscall will be disabled for the child process.
 	// This parameter is no-op if GidMappings == nil. Otherwise for unprivileged
 	// users this should be set to false for mappings work.
+	// GidMappingsEnableSetgroups启用setgroups syscall。 如果为false，则子进程的
+	// setgroups系统调用将被禁用。如果GidMappings == nil，这个参数是no-op。否则，对于
+	// 非特权用户来说，这个参数应该设置为false，以保证映射工作。
 	GidMappingsEnableSetgroups bool
-	AmbientCaps                []uintptr // Ambient capabilities (Linux only)
+	AmbientCaps                []uintptr // Ambient capabilities (Linux only)，环境功能（仅限Linux）
 }
 
 var (
@@ -129,9 +141,11 @@ type caps struct {
 }
 
 // See CAP_TO_INDEX in linux/capability.h:
+// 参见linux/capability.h中的CAP_TO_INDEX。
 func capToIndex(cap uintptr) uintptr { return cap >> 5 }
 
 // See CAP_TO_MASK in linux/capability.h:
+// 参见linux/capability.h中的CAP_TO_MASK。
 func capToMask(cap uintptr) uint32 { return 1 << uint(cap&31) }
 
 // forkAndExecInChild1 implements the body of forkAndExecInChild up to
@@ -146,6 +160,7 @@ func capToMask(cap uintptr) uint32 { return 1 << uint(cap&31) }
 //go:norace
 func forkAndExecInChild1(argv0 *byte, argv, envv []*byte, chroot, dir *byte, attr *ProcAttr, sys *SysProcAttr, pipe int) (r1 uintptr, err1 Errno, p [2]int, locked bool) {
 	// Defined in linux/prctl.h starting with Linux 4.3.
+	// 从Linux 4.3开始在linux/prctl.h中定义。
 	const (
 		PR_CAP_AMBIENT       = 0x2f
 		PR_CAP_AMBIENT_RAISE = 0x2
