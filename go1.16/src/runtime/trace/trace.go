@@ -117,6 +117,9 @@ import (
 // Start enables tracing for the current program.
 // While tracing, the trace will be buffered and written to w.
 // Start returns an error if tracing is already enabled.
+// Start启动当前程序的跟踪。
+// 在跟踪过程中，跟踪结果将被缓冲并写入w中。
+// 如果已经启用了跟踪，Start会返回一个错误。
 func Start(w io.Writer) error {
 	tracing.Lock()
 	defer tracing.Unlock()
@@ -139,6 +142,8 @@ func Start(w io.Writer) error {
 
 // Stop stops the current tracing, if any.
 // Stop only returns after all the writes for the trace have completed.
+// Stop 停止当前的跟踪，如果有的话。
+// Stop 只有在跟踪的所有写入完成后才返回。
 func Stop() {
 	tracing.Lock()
 	defer tracing.Unlock()
@@ -149,5 +154,5 @@ func Stop() {
 
 var tracing struct {
 	sync.Mutex       // gate mutators (Start, Stop)
-	enabled    int32 // accessed via atomic
+	enabled    int32 // accessed via atomic，通过原子访问
 }

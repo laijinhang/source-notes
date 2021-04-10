@@ -13,10 +13,12 @@ import (
 
 // SysProcIDMap holds Container ID to Host ID mappings used for User Namespaces in Linux.
 // See user_namespaces(7).
+// SysProcIDMap 保存了 Linux 中用于用户命名空间的容器 ID 到主机 ID 的映射。
+// 参见 user_namespaces(7)。
 type SysProcIDMap struct {
-	ContainerID int // Container ID.
-	HostID      int // Host ID.
-	Size        int // Size.
+	ContainerID int // Container ID. 容器ID
+	HostID      int // Host ID. 主机ID
+	Size        int // Size. 大小
 }
 
 type SysProcAttr struct {
@@ -63,6 +65,7 @@ var (
 )
 
 // Implemented in runtime package.
+// 在运行时包中实现。
 func runtime_BeforeFork()
 func runtime_AfterFork()
 func runtime_AfterForkInChild()

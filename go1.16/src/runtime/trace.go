@@ -180,15 +180,22 @@ func traceBufPtrOf(b *traceBuf) traceBufPtr {
 // StartTrace returns an error if tracing is already enabled.
 // Most clients should use the runtime/trace package or the testing package's
 // -test.trace flag instead of calling StartTrace directly.
+// StartTrace 支持跟踪当前进程。在追踪时，数据将通过 ReadTrace 进行缓冲并提供。
+// 如果跟踪已启用，则 StartTrace 将返回错误。大多数客户端应该使用 runtime/trace package
+// 或测试包的 -test.trace 标志，而不是直接调用 StartTrace 。
 func StartTrace() error {
 	// Stop the world so that we can take a consistent snapshot
 	// of all goroutines at the beginning of the trace.
 	// Do not stop the world during GC so we ensure we always see
 	// a consistent view of GC-related events (e.g. a start is always
 	// paired with an end).
+	// Stop the world，这样我们就可以在跟踪开始时对所有goroutine进行一致的快照。
+	// 在GC过程中不要Stop the world，这样我们就可以确保我们总是看到与GC相关的事件
+	// 的一致视图（例如，一个开始总是与一个结束配对）。
 	stopTheWorldGC("start tracing")
 
 	// Prevent sysmon from running any code that could generate events.
+	// 防止sysmon运行任何可能产生事件的代码。
 	lock(&sched.sysmonlock)
 
 	// We are in stop-the-world, but syscalls can finish and write to trace concurrently.

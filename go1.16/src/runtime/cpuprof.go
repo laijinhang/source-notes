@@ -23,7 +23,7 @@ const maxCPUProfStack = 64
 type cpuProfile struct {
 	lock mutex
 	on   bool     // profiling is on
-	log  *profBuf // profile events written here
+	log  *profBuf // profile events written here，事件简介
 
 	// extra holds extra stacks accumulated in addNonGo
 	// corresponding to profiling signals arriving on
