@@ -64,10 +64,12 @@ const (
 	// Maximum number of key/elem pairs a bucket can hold.
 	// 一个桶可以容纳的最大数量的键/元素对。
 	bucketCntBits = 3
-	bucketCnt     = 1 << bucketCntBits
+	bucketCnt     = 1 << bucketCntBits // 表示一个桶最多存储8个key-value对
 
 	// Maximum average load of a bucket that triggers growth is 6.5.
 	// Represent as loadFactorNum/loadFactorDen, to allow integer math.
+	// 表示装载因子为 6.5，即元素数量超过（桶数量*6.5）时将触发 map 扩容。
+	// 用两个整数表示装载因子，原因是可用于整数表达式
 	loadFactorNum = 13
 	loadFactorDen = 2
 
@@ -90,18 +92,26 @@ const (
 	// Each bucket (including its overflow buckets, if any) will have either all or none of its
 	// entries in the evacuated* states (except during the evacuate() method, which only happens
 	// during map writes and thus no one else can observe the map during that time).
-	emptyRest      = 0 // this cell is empty, and there are no more non-empty cells at higher indexes or overflows.
-	emptyOne       = 1 // this cell is empty
-	evacuatedX     = 2 // key/elem is valid.  Entry has been evacuated to first half of larger table.
-	evacuatedY     = 3 // same as above, but evacuated to second half of larger table.
+	// 以下为元素 tophash 的可能取值，表示元素的状态
+
+	// 当前元素已被删除且桶链表上的更高下标的元素均不可用，这个说明当前元素的位置可以被重新使用
+	emptyRest = 0 // this cell is empty, and there are no more non-empty cells at higher indexes or overflows.
+	// 当前元素已被删除但是位置不可被使用
+	emptyOne = 1 // this cell is empty
+	// 当前元素将搬迁到新hash数组的左半部分
+	evacuatedX = 2 // key/elem is valid.  Entry has been evacuated to first half of larger table.
+	// 当前元素将搬迁到新hash数组的右半部分
+	evacuatedY = 3 // same as above, but evacuated to second half of larger table.
+	// 当前元素已搬迁到新扩容的桶
 	evacuatedEmpty = 4 // cell is empty, bucket is evacuated.
-	minTopHash     = 5 // minimum tophash for a normal filled cell.
+	// 元素 tophash 最小值
+	minTopHash = 5 // minimum tophash for a normal filled cell.
 
 	// flags，标志
-	iterator     = 1 // there may be an iterator using buckets，可能有一个使用桶的迭代器。
-	oldIterator  = 2 // there may be an iterator using oldbuckets，可能有一个使用oldbuckets的迭代器。
+	iterator     = 1 // there may be an iterator using buckets，可能有一个迭代器使用桶
+	oldIterator  = 2 // there may be an iterator using oldbuckets，可能有一个迭代器使用旧桶
 	hashWriting  = 4 // a goroutine is writing to the map，一个goroutine正在往map写数据
-	sameSizeGrow = 8 // the current map growth is to a new map of the same size
+	sameSizeGrow = 8 // the current map growth is to a new map of the same size，正在向同大小的 map 做扩容
 
 	// sentinel bucket ID for iterator checks
 	noCheck = 1<<(8*sys.PtrSize) - 1
@@ -119,6 +129,15 @@ type hmap struct {
 	// 注意：hmap的格式也在cmd/compile/internal/gc/reflect.go中进行了编码。
 	// 确保这与编译器的定义保持同步。
 	count int // # live cells == size of map.  Must be first (used by len() builtin)
+	/*
+		uint8 => 0b00000000
+
+		从左到右-》
+		第一位：iterator，可能有一个迭代器使用桶
+		第二位：oldIterator，可能有一个迭代器使用旧桶
+		第三位：hashWriting，往map写值的标识位
+		第四位：sameSizeGrow，正在向同大小的 map 做扩容
+	*/
 	flags uint8
 	// B 表示当前哈希表持有的 buckets 数量（第一个桶是0），但是因为哈希表中桶的数量都 2 的倍数，所以该字段会存储对数，也就是 len(buckets) == 2^B；
 	B         uint8  // log_2 of # of buckets (can hold up to loadFactor * 2^B items)
@@ -156,6 +175,10 @@ type bmap struct {
 	// tophash generally contains the top byte of the hash value
 	// for each key in this bucket. If tophash[0] < minTopHash,
 	// tophash[0] is a bucket evacuation state instead.
+	/*
+		存储桶内 8 个key的hash值的高字节。
+		tophash[0] < minTopHash 表示桶处于扩容迁移状态
+	*/
 	tophash [bucketCnt]uint8
 	// Followed by bucketCnt keys and then bucketCnt elems.
 	// NOTE: packing all the keys together and then all the elems together makes the
