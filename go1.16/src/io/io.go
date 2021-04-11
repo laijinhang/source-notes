@@ -140,6 +140,7 @@ type WriteCloser interface {
 }
 
 // ReadWriteCloser is the interface that groups the basic Read, Write and Close methods.
+// ReadWriteCloser是将基本的读、写和关闭方法分组的接口。
 type ReadWriteCloser interface {
 	Reader
 	Writer

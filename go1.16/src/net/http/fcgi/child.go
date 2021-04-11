@@ -5,6 +5,7 @@
 package fcgi
 
 // This file implements FastCGI from the perspective of a child process.
+// 这个文件从子进程的角度实现了FastCGI。
 
 import (
 	"context"
@@ -22,6 +23,7 @@ import (
 
 // request holds the state for an in-progress request. As soon as it's complete,
 // it's converted to an http.Request.
+// request保存一个正在进行中的请求的状态。一旦完成，它就会被转换为http.Request。
 type request struct {
 	pw        *io.PipeWriter
 	reqId     uint16
@@ -33,6 +35,7 @@ type request struct {
 
 // envVarsContextKey uniquely identifies a mapping of CGI
 // environment variables to their values in a request context
+// envVarsContextKey唯一地标识了CGI环境变量与其在请求上下文中的值的映射。
 type envVarsContextKey struct{}
 
 func newRequest(reqId uint16, flags uint8) *request {
@@ -46,6 +49,7 @@ func newRequest(reqId uint16, flags uint8) *request {
 }
 
 // parseParams reads an encoded []byte into Params.
+// parseParams将一个编码的[]字节读入Params。
 func (r *request) parseParams() {
 	text := r.rawParams
 	r.rawParams = nil
@@ -72,6 +76,7 @@ func (r *request) parseParams() {
 }
 
 // response implements http.ResponseWriter.
+// response实现了http.ResponseWriter。
 type response struct {
 	req            *request
 	header         http.Header
@@ -124,6 +129,8 @@ func (r *response) WriteHeader(code int) {
 // p is not written by writeHeader, but is the first chunk of the body
 // that will be written. It is sniffed for a Content-Type if none is
 // set explicitly.
+// writeCGIHeader将发送至客户端的头文件最终确定下来，并将其写入输出。
+// 如果没有明确设置Content-Type，则会对其进行嗅探。
 func (r *response) writeCGIHeader(p []byte) {
 	if r.wroteCGIHeader {
 		return
@@ -154,8 +161,8 @@ type child struct {
 	conn    *conn
 	handler http.Handler
 
-	mu       sync.Mutex          // protects requests:
-	requests map[uint16]*request // keyed by request ID
+	mu       sync.Mutex          // protects requests:,保护请求。
+	requests map[uint16]*request // keyed by request ID，请求Id作为key
 }
 
 func newChild(rwc io.ReadWriteCloser, handler http.Handler) *child {
