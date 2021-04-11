@@ -78,6 +78,7 @@ var v4InV6Prefix = []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff}
 
 // IPv4Mask returns the IP mask (in 4-byte form) of the
 // IPv4 mask a.b.c.d.
+// IPv4Mask 返回 IPv4 掩码 a.b.c.d 的 IP 掩码（4 字节形式）。
 func IPv4Mask(a, b, c, d byte) IPMask {
 	p := make(IPMask, IPv4len)
 	p[0] = a
@@ -90,6 +91,8 @@ func IPv4Mask(a, b, c, d byte) IPMask {
 // CIDRMask returns an IPMask consisting of 'ones' 1 bits
 // followed by 0s up to a total length of 'bits' bits.
 // For a mask of this form, CIDRMask is the inverse of IPMask.Size.
+// CIDRMask返回一个由'1'1位和0位组成的IPMask，总长度为'bits'位。
+// 对于这种形式的掩码，CIDRMask是IPMask.Size的倒数。
 func CIDRMask(ones, bits int) IPMask {
 	if bits != 8*IPv4len && bits != 8*IPv6len {
 		return nil
@@ -186,6 +189,7 @@ func (ip IP) IsLinkLocalUnicast() bool {
 
 // IsGlobalUnicast reports whether ip is a global unicast
 // address.
+// IsGlobalUnicast报告ip是否为全局单播地址。
 //
 // The identification of global unicast addresses uses address type
 // identification as defined in RFC 1122, RFC 4632 and RFC 4291 with
@@ -261,9 +265,9 @@ func (ip IP) DefaultMask() IPMask {
 		return nil
 	}
 	switch {
-	case ip[0] < 0x80: // A类
+	case ip[0] < 0x80: // A类，0x80 = 0b10000000
 		return classAMask
-	case ip[0] < 0xC0: // B类
+	case ip[0] < 0xC0: // B类，0xC0 = ob11000000
 		return classBMask
 	default: // C类
 		return classCMask
@@ -272,6 +276,7 @@ func (ip IP) DefaultMask() IPMask {
 
 func allFF(b []byte) bool {
 	for _, c := range b {
+		// 0xff = 0b11111111
 		if c != 0xff {
 			return false
 		}
@@ -302,6 +307,7 @@ func (ip IP) Mask(mask IPMask) IP {
 // returns the number of bytes written to dst. The caller must ensure
 // that dst has sufficient length.
 func ubtoa(dst []byte, start int, v byte) int {
+	// 将v里的十进制数，转成十进制字符串 => []byte里，并返回转换的个数，总共三种情况（1，2，3）
 	if v < 10 {
 		dst[start] = v + '0'
 		return 1
@@ -323,6 +329,13 @@ func ubtoa(dst []byte, start int, v byte) int {
 //   - dotted decimal ("192.0.2.1"), if ip is an IPv4 or IP4-mapped IPv6 address
 //   - IPv6 ("2001:db8::1"), if ip is a valid IPv6 address
 //   - the hexadecimal form of ip, without punctuation, if no other cases apply
+
+// String 返回 IP 地址 ip 的字符串形式。
+// 它返回4种形式之一。
+// - "<nil>"，如果ip长度为0，则返回"<nil>"。
+// - 点阵小数("192.0.2.1")，如果ip是一个IPv4或IP4映射的IPv6地址。
+// - IPv6 ("2001:db8::1")，如果ip是一个有效的IPv6地址。
+// - 十六进制形式的ip，没有标点符号，如果没有其他情况适用的话
 func (ip IP) String() string {
 	p := ip
 
@@ -331,6 +344,7 @@ func (ip IP) String() string {
 	}
 
 	// If IPv4, use dotted notation.
+	// 如果是IPv4，使用点号。
 	if p4 := p.To4(); len(p4) == IPv4len {
 		const maxIPv4StringLen = len("255.255.255.255")
 		b := make([]byte, maxIPv4StringLen)
@@ -393,6 +407,7 @@ func (ip IP) String() string {
 	return string(b)
 }
 
+// 转成小写十六进制
 func hexString(b []byte) string {
 	s := make([]byte, len(b)*2)
 	for i, tn := range b {
@@ -464,6 +479,7 @@ func (ip IP) matchAddrFamily(x IP) bool {
 
 // If mask is a sequence of 1 bits followed by 0 bits,
 // return the number of 1 bits.
+// 计算合法掩码（从头连续若干个1）中1的个数
 func simpleMaskLength(mask IPMask) int {
 	var n int
 	for i, v := range mask {
@@ -473,15 +489,18 @@ func simpleMaskLength(mask IPMask) int {
 		}
 		// found non-ff byte
 		// count 1 bits
+		// 0x80 = 0b10000000，如果v（byte是8bit）中最前面一位是1
 		for v&0x80 != 0 {
-			n++
+			n++ // 个数0
 			v <<= 1
 		}
 		// rest must be 0 bits
+		// 通过上面一个for之后，合法的mask走到这一步的值是0
 		if v != 0 {
 			return -1
 		}
 		for i++; i < len(mask); i++ {
+			// 通过上面流程，合法的mask走到这一步后面的mask[i]都是0
 			if mask[i] != 0 {
 				return -1
 			}
@@ -494,8 +513,10 @@ func simpleMaskLength(mask IPMask) int {
 // Size returns the number of leading ones and total bits in the mask.
 // If the mask is not in the canonical form--ones followed by zeros--then
 // Size returns 0, 0.
+// Size 返回掩码中的前导一和总位数。
 func (m IPMask) Size() (ones, bits int) {
 	ones, bits = simpleMaskLength(m), len(m)*8
+	// 如果这个掩码是非法（前面不是连续n个1+m个连续的0组成）的，返回0，0
 	if ones == -1 {
 		return 0, 0
 	}
@@ -503,6 +524,7 @@ func (m IPMask) Size() (ones, bits int) {
 }
 
 // String returns the hexadecimal form of m, with no punctuation.
+// 字符串返回m的十六进制形式，不含标点符号。
 func (m IPMask) String() string {
 	if len(m) == 0 {
 		return "<nil>"
@@ -534,6 +556,7 @@ func networkNumberAndMask(n *IPNet) (ip IP, m IPMask) {
 }
 
 // Contains reports whether the network includes ip.
+// 包含报告网络是否包括ip。
 func (n *IPNet) Contains(ip IP) bool {
 	nn, m := networkNumberAndMask(n)
 	if x := ip.To4(); x != nil {
@@ -552,6 +575,7 @@ func (n *IPNet) Contains(ip IP) bool {
 }
 
 // Network returns the address's network name, "ip+net".
+// Network返回地址的网络名 "ip+net"。
 func (n *IPNet) Network() string { return "ip+net" }
 
 // String returns the CIDR notation of n like "192.0.2.0/24"
@@ -573,8 +597,10 @@ func (n *IPNet) String() string {
 }
 
 // Parse IPv4 address (d.d.d.d).
+// 解析IPv4地址（d.d.d.d）。
 func parseIPv4(s string) IP {
 	var p [IPv4len]byte
+	// 下面一个for将ipv4字符串转到 [4]byte
 	for i := 0; i < IPv4len; i++ {
 		if len(s) == 0 {
 			// Missing octets.
@@ -601,6 +627,7 @@ func parseIPv4(s string) IP {
 
 // parseIPv6Zone parses s as a literal IPv6 address and its associated zone
 // identifier which is described in RFC 4007.
+// parseIPv6Zone 将 s 解析为 IPv6 字面地址及其相关的区域标识符，这在 RFC 4007 中有描述。
 func parseIPv6Zone(s string) (IP, string) {
 	s, zone := splitHostZone(s)
 	return parseIPv6(s), zone
@@ -608,21 +635,25 @@ func parseIPv6Zone(s string) (IP, string) {
 
 // parseIPv6 parses s as a literal IPv6 address described in RFC 4291
 // and RFC 5952.
+// parseIPv6 将 s 解析为 RFC 4291 和 RFC 5952 中描述的 IPv6 字面地址。
 func parseIPv6(s string) (ip IP) {
 	ip = make(IP, IPv6len)
-	ellipsis := -1 // position of ellipsis in ip
+	ellipsis := -1 // position of ellipsis in ip， 省略号的位置
 
 	// Might have leading ellipsis
+	// 可能有前导省略号
 	if len(s) >= 2 && s[0] == ':' && s[1] == ':' {
 		ellipsis = 0
 		s = s[2:]
 		// Might be only ellipsis
+		// 可能只是省略号
 		if len(s) == 0 {
 			return ip
 		}
 	}
 
 	// Loop, parsing hex numbers followed by colon.
+	// 循环，解析冒号后的十六进制数字。
 	i := 0
 	for i < IPv6len {
 		// Hex number.
@@ -632,6 +663,7 @@ func parseIPv6(s string) (ip IP) {
 		}
 
 		// If followed by dot, might be in trailing IPv4.
+		// 如果后面是点，可能是在IPv4后面。
 		if c < len(s) && s[c] == '.' {
 			if ellipsis < 0 && i != IPv6len-IPv4len {
 				// Not the right place.
@@ -655,41 +687,47 @@ func parseIPv6(s string) (ip IP) {
 		}
 
 		// Save this 16-bit chunk.
+		// 保存这个16位的块。
 		ip[i] = byte(n >> 8)
 		ip[i+1] = byte(n)
 		i += 2
 
 		// Stop at end of string.
+		// 停止在字符串的末端。
 		s = s[c:]
 		if len(s) == 0 {
 			break
 		}
 
 		// Otherwise must be followed by colon and more.
+		// 否则必须在后面加冒号或更多。
 		if s[0] != ':' || len(s) == 1 {
 			return nil
 		}
 		s = s[1:]
 
 		// Look for ellipsis.
+		//寻找省略号。
 		if s[0] == ':' {
 			if ellipsis >= 0 { // already have one
 				return nil
 			}
 			ellipsis = i
 			s = s[1:]
-			if len(s) == 0 { // can be at end
+			if len(s) == 0 { // can be at end，可在最后
 				break
 			}
 		}
 	}
 
 	// Must have used entire string.
+	// 必须使用整个字符串。
 	if len(s) != 0 {
 		return nil
 	}
 
 	// If didn't parse enough, expand ellipsis.
+	// 如果不够解析，就展开省略号。
 	if i < IPv6len {
 		if ellipsis < 0 {
 			return nil

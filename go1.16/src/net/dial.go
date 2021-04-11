@@ -25,6 +25,11 @@ const (
 // is therefore equivalent to just calling the Dial function.
 //
 // It is safe to call Dialer's methods concurrently.
+// 一个拨号器包含连接到地址的选项。
+//
+// 每个字段的零值相当于没有该选项的拨号。因此，使用Dialer的零值进行拨号相当于只调用Dial函数。
+//
+// 同时调用Dialer的方法是安全的。
 type Dialer struct {
 	// Timeout是拨号等待连接成功的最长时间。
 	// 如果设置了超时时间，则它可能会更早时间。
@@ -115,6 +120,12 @@ func minNonzeroTime(a, b time.Time) time.Time {
 //   - d.Deadline
 //   - the context's deadline
 // Or zero, if none of Timeout, Deadline, or context's deadline is set.
+
+// deadline 返回以下日期中最早的一个。
+// - now+Timeout
+// - d.截止日期
+// - 上下文的截止日期
+// 如果没有设置Timeout、Deadline或context的deadline，则为0。
 func (d *Dialer) deadline(ctx context.Context, now time.Time) (earliest time.Time) {
 	// 如果设置了超时时间
 	if d.Timeout != 0 { // including negative, for historical reasons
@@ -200,6 +211,7 @@ func parseNetwork(ctx context.Context, network string, needsProto bool) (afnet s
 // resolveAddrList resolves addr using hint and returns a list of
 // addresses. The result contains at least one address when error is
 // nil.
+// resolveAddrList使用提示解析addr并返回一个地址列表。当错误为nil时，结果至少包含一个地址。
 func (r *Resolver) resolveAddrList(ctx context.Context, op, network, addr string, hint Addr) (addrList, error) {
 	afnet, _, err := parseNetwork(ctx, network, true)
 	if err != nil {
