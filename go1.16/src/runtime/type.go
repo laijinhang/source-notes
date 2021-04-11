@@ -375,6 +375,7 @@ type maptype struct {
 	elem   *_type
 	bucket *_type // internal type representing a hash bucket
 	// function for hashing keys (ptr to key, seed) -> hash
+	// 用于散列键的函数 (ptr to key, seed) -> hash
 	hasher     func(unsafe.Pointer, uintptr) uintptr
 	keysize    uint8  // size of key slot
 	elemsize   uint8  // size of elem slot

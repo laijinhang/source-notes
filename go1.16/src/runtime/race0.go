@@ -12,6 +12,7 @@ import (
 	"unsafe"
 )
 
+// 是否启用竞态检测器，默认是不启动
 const raceenabled = false
 
 // Because raceenabled is false, none of these functions should be called.

@@ -62,6 +62,7 @@ import (
 
 const (
 	// Maximum number of key/elem pairs a bucket can hold.
+	// 一个桶可以容纳的最大数量的键/元素对。
 	bucketCntBits = 3
 	bucketCnt     = 1 << bucketCntBits
 
@@ -96,10 +97,10 @@ const (
 	evacuatedEmpty = 4 // cell is empty, bucket is evacuated.
 	minTopHash     = 5 // minimum tophash for a normal filled cell.
 
-	// flags
-	iterator     = 1 // there may be an iterator using buckets
-	oldIterator  = 2 // there may be an iterator using oldbuckets
-	hashWriting  = 4 // a goroutine is writing to the map
+	// flags，标志
+	iterator     = 1 // there may be an iterator using buckets，可能有一个使用桶的迭代器。
+	oldIterator  = 2 // there may be an iterator using oldbuckets，可能有一个使用oldbuckets的迭代器。
+	hashWriting  = 4 // a goroutine is writing to the map，一个goroutine正在往map写数据
 	sameSizeGrow = 8 // the current map growth is to a new map of the same size
 
 	// sentinel bucket ID for iterator checks
@@ -115,13 +116,16 @@ func isEmpty(x uint8) bool {
 type hmap struct {
 	// Note: the format of the hmap is also encoded in cmd/compile/internal/gc/reflect.go.
 	// Make sure this stays in sync with the compiler's definition.
-	count     int // # live cells == size of map.  Must be first (used by len() builtin)
-	flags     uint8
+	// 注意：hmap的格式也在cmd/compile/internal/gc/reflect.go中进行了编码。
+	// 确保这与编译器的定义保持同步。
+	count int // # live cells == size of map.  Must be first (used by len() builtin)
+	flags uint8
+	// B 表示当前哈希表持有的 buckets 数量（第一个桶是0），但是因为哈希表中桶的数量都 2 的倍数，所以该字段会存储对数，也就是 len(buckets) == 2^B；
 	B         uint8  // log_2 of # of buckets (can hold up to loadFactor * 2^B items)
 	noverflow uint16 // approximate number of overflow buckets; see incrnoverflow for details
-	hash0     uint32 // hash seed
+	hash0     uint32 // hash seed，散列种子
 
-	buckets    unsafe.Pointer // array of 2^B Buckets. may be nil if count==0.
+	buckets    unsafe.Pointer // array of 2^B Buckets. may be nil if count==0. 2^B Buckets的数组，如果count==0，可能为零。
 	oldbuckets unsafe.Pointer // previous bucket array of half the size, non-nil only when growing
 	nevacuate  uintptr        // progress counter for evacuation (buckets less than this have been evacuated)
 
@@ -129,6 +133,7 @@ type hmap struct {
 }
 
 // mapextra holds fields that are not present on all maps.
+// mapextra 保留了并非所有map都有的字段。
 type mapextra struct {
 	// If both key and elem do not contain pointers and are inline, then we mark bucket
 	// type as containing no pointers. This avoids scanning such maps.
@@ -142,6 +147,7 @@ type mapextra struct {
 	oldoverflow *[]*bmap
 
 	// nextOverflow holds a pointer to a free overflow bucket.
+	// nextOverflow持有一个指向自由溢流桶的指针。
 	nextOverflow *bmap
 }
 
@@ -180,8 +186,10 @@ type hiter struct {
 }
 
 // bucketShift returns 1<<b, optimized for code generation.
+// bucketShift返回1<<b，优化代码生成。
 func bucketShift(b uint8) uintptr {
 	// Masking the shift amount allows overflow checks to be elided.
+	// 屏蔽移位量，可以省略溢出检查。
 	return uintptr(1) << (b & (sys.PtrSize*8 - 1))
 }
 
