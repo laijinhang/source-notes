@@ -106,6 +106,8 @@ func (mu *fdMutex) increfAndClose() bool {
 
 // decref removes a reference from mu.
 // It reports whether there is no remaining reference.
+// decref 从 mu 中删除一个引用。
+// 它返回是否有剩余的引用。
 func (mu *fdMutex) decref() bool {
 	for {
 		old := atomic.LoadUint64(&mu.state)

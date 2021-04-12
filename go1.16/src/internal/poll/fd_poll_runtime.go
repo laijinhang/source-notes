@@ -159,6 +159,7 @@ func convertErr(res int, isFile bool) error {
 }
 
 // SetDeadline sets the read and write deadlines associated with fd.
+// SetDeadline设置与fd相关的读写截止时间。
 func (fd *FD) SetDeadline(t time.Time) error {
 	return setDeadlineImpl(fd, t, 'r'+'w')
 }
@@ -178,7 +179,7 @@ func setDeadlineImpl(fd *FD, t time.Time, mode int) error {
 	if !t.IsZero() {
 		d = int64(time.Until(t))
 		if d == 0 {
-			d = -1 // don't confuse deadline right now with no deadline
+			d = -1 // don't confuse deadline right now with no deadline，不要把现在的期限和没期限混为一谈
 		}
 	}
 	if err := fd.incref(); err != nil {

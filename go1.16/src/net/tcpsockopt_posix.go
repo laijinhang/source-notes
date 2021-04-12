@@ -11,6 +11,11 @@ import (
 	"syscall"
 )
 
+/*
+在go中，TCP_NODELAY默认是开启的
+
+TCP_NODELAY：如果开启 TCP_NODELAY 可以禁用Nagle算法，禁用Nagle算法后，数据将尽可能快的将数据发送出去
+*/
 func setNoDelay(fd *netFD, noDelay bool) error {
 	err := fd.pfd.SetsockoptInt(syscall.IPPROTO_TCP, syscall.TCP_NODELAY, boolint(noDelay))
 	runtime.KeepAlive(fd)

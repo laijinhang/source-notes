@@ -273,6 +273,7 @@ func poll_runtime_pollWaitCanceled(pd *pollDesc, mode int) {
 //go:linkname poll_runtime_pollSetDeadline internal/poll.runtime_pollSetDeadline
 func poll_runtime_pollSetDeadline(pd *pollDesc, d int64, mode int) {
 	lock(&pd.lock)
+	// 如果已经关闭，则直接解锁，返回
 	if pd.closing {
 		unlock(&pd.lock)
 		return
@@ -334,6 +335,7 @@ func poll_runtime_pollSetDeadline(pd *pollDesc, d int64, mode int) {
 		}
 	}
 	// If we set the new deadline in the past, unblock currently pending IO if any.
+	// 如果我们在过去设置了新的截止日期，如果有的话，就解除当前待处理的IO。
 	var rg, wg *g
 	if pd.rd < 0 || pd.wd < 0 {
 		atomic.StorepNoWB(noescape(unsafe.Pointer(&wg)), nil) // full memory barrier between stores to rd/wd and load of rg/wg in netpollunblock

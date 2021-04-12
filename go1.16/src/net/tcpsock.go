@@ -199,6 +199,7 @@ func (c *TCPConn) SetNoDelay(noDelay bool) error {
 
 func newTCPConn(fd *netFD) *TCPConn {
 	c := &TCPConn{conn{fd}}
+	// 禁用Nagle算法
 	setNoDelay(c.fd, true)
 	return c
 }
@@ -266,6 +267,7 @@ func (l *TCPListener) AcceptTCP() (*TCPConn, error) {
 
 // Accept implements the Accept method in the Listener interface; it
 // waits for the next call and returns a generic Conn.
+// Accept实现了Listener接口中的Accept方法；它等待下一次调用并返回一个通用的Conn。
 func (l *TCPListener) Accept() (Conn, error) {
 	if !l.ok() {
 		return nil, syscall.EINVAL
