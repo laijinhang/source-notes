@@ -275,6 +275,7 @@ func (fd *FD) ReadMsg(p []byte, oob []byte) (int, int, int, syscall.Sockaddr, er
 }
 
 // Write implements io.Writer.
+// Write 实现 io.Writer.
 func (fd *FD) Write(p []byte) (int, error) {
 	if err := fd.writeLock(); err != nil {
 		return 0, err
@@ -311,10 +312,13 @@ func (fd *FD) Write(p []byte) (int, error) {
 }
 
 // Pwrite wraps the pwrite system call.
+// Pwrite封装了pwrite系统调用。
 func (fd *FD) Pwrite(p []byte, off int64) (int, error) {
 	// Call incref, not writeLock, because since pwrite specifies the
 	// offset it is independent from other writes.
 	// Similarly, using the poller doesn't make sense for pwrite.
+	// 调用incref，而不是writeLock，因为既然pwrite指定了偏移量，
+	// 那么它就独立于其他写法。同样，使用轮询器对pwrite也没有意义。
 	if err := fd.incref(); err != nil {
 		return 0, err
 	}
@@ -601,6 +605,7 @@ func (fd *FD) RawWrite(f func(uintptr) bool) error {
 }
 
 // ignoringEINTRIO is like ignoringEINTR, but just for IO calls.
+// ignoringEINTRIO和ignoringEINTR一样，但只是针对IO调用。
 func ignoringEINTRIO(fn func(fd int, p []byte) (int, error), fd int, p []byte) (int, error) {
 	for {
 		n, err := fn(fd, p)

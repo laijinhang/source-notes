@@ -188,7 +188,9 @@ func (c *conn) Read(b []byte) (int, error) {
 }
 
 // Write implements the Conn Write method.
+// Write实现Conn Write方法。
 func (c *conn) Write(b []byte) (int, error) {
+	// !(c != nil && c.fd != nil)
 	if !c.ok() {
 		return 0, syscall.EINVAL
 	}

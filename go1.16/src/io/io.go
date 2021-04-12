@@ -23,9 +23,11 @@ const (
 var ErrShortWrite = errors.New("short write")
 
 // errInvalidWrite means that a write returned an impossible count.
+// errInvalidWrite 意味着写返回了一个不可能的计数。
 var errInvalidWrite = errors.New("invalid write result")
 
 // ErrShortBuffer means that a read required a longer buffer than was provided.
+// ErrShortBuffer 意味着读取时需要的缓冲区比提供的长。
 var ErrShortBuffer = errors.New("short buffer")
 
 // EOF is the error returned by Read when no more input is available.
@@ -39,11 +41,14 @@ var EOF = errors.New("EOF")
 
 // ErrUnexpectedEOF means that EOF was encountered in the
 // middle of reading a fixed-size block or data structure.
+// ErrUnexpectedEOF表示在读取一个固定大小的块或数据结构的过程中遇到了EOF。
 var ErrUnexpectedEOF = errors.New("unexpected EOF")
 
 // ErrNoProgress is returned by some clients of an Reader when
 // many calls to Read have failed to return any data or error,
 // usually the sign of a broken Reader implementation.
+// ErrNoProgress是由Reader的一些客户端返回的，
+// 当多次调用Read都未能返回任何数据或错误时，通常是Reader执行失败的标志。
 var ErrNoProgress = errors.New("multiple Read calls return no data or error")
 
 // Reader is the interface that wraps the basic Read method.
@@ -122,18 +127,21 @@ type Seeker interface {
 }
 
 // ReadWriter is the interface that groups the basic Read and Write methods.
+// ReadWriter是对基本的读和写方法进行分组的接口。
 type ReadWriter interface {
 	Reader
 	Writer
 }
 
 // ReadCloser is the interface that groups the basic Read and Close methods.
+// ReadCloser是将基本的读取和关闭方法分组的接口。
 type ReadCloser interface {
 	Reader
 	Closer
 }
 
 // WriteCloser is the interface that groups the basic Write and Close methods.
+// WriteCloser是一个接口，它将基本的写入和关闭方法分组。
 type WriteCloser interface {
 	Writer
 	Closer
@@ -148,6 +156,7 @@ type ReadWriteCloser interface {
 }
 
 // ReadSeeker is the interface that groups the basic Read and Seek methods.
+// ReadSeeker是将基本的Read和Seek方法分组的接口。
 type ReadSeeker interface {
 	Reader
 	Seeker
@@ -155,6 +164,7 @@ type ReadSeeker interface {
 
 // ReadSeekCloser is the interface that groups the basic Read, Seek and Close
 // methods.
+// ReadSeekCloser是一个接口，它将基本的Read、Seek和Close方法分组。
 type ReadSeekCloser interface {
 	Reader
 	Seeker
@@ -162,12 +172,14 @@ type ReadSeekCloser interface {
 }
 
 // WriteSeeker is the interface that groups the basic Write and Seek methods.
+// WriteSeeker是对基本的Write和Seek方法进行分组的接口。
 type WriteSeeker interface {
 	Writer
 	Seeker
 }
 
 // ReadWriteSeeker is the interface that groups the basic Read, Write and Seek methods.
+// ReadWriteSeeker是将基本的Read、Write和Seek方法分组的接口。
 type ReadWriteSeeker interface {
 	Reader
 	Writer
@@ -181,6 +193,13 @@ type ReadWriteSeeker interface {
 // Any error except EOF encountered during the read is also returned.
 //
 // The Copy function uses ReaderFrom if available.
+// ReaderFrom是封装ReadFrom方法的接口。
+//
+// ReadFrom从r中读取数据，直到出现EOF或错误。
+// 返回值n是读取的字节数。
+// 读取过程中除了EOF之外遇到的任何错误也会被返回。
+//
+// 复制函数使用ReaderFrom（如果有的话）。
 type ReaderFrom interface {
 	ReadFrom(r Reader) (n int64, err error)
 }
@@ -192,6 +211,13 @@ type ReaderFrom interface {
 // written. Any error encountered during the write is also returned.
 //
 // The Copy function uses WriterTo if available.
+// WriterTo是封装WriteTo方法的接口。
+//
+// WriteTo将数据写入w，直到没有更多的数据可写或
+//当发生错误时，返回值n。返回值n是字节数。
+//写入。在写入过程中遇到的任何错误也会被返回。
+//
+// 如果有的话，复制函数使用WriterTo。
 type WriterTo interface {
 	WriteTo(w Writer) (n int64, err error)
 }

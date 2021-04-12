@@ -218,6 +218,10 @@ func (c *pollCache) free(pd *pollDesc) {
 // poll_runtime_pollReset, which is internal/poll.runtime_pollReset,
 // prepares a descriptor for polling in mode, which is 'r' or 'w'.
 // This returns an error code; the codes are defined above.
+/*
+poll_runtime_pollReset，即内部/poll.runtime_pollReset，为模式下的轮询准备一个描述符，
+这个描述符是'r'或'w'。这将返回一个错误代码，代码的定义在上面。
+*/
 //go:linkname poll_runtime_pollReset internal/poll.runtime_pollReset
 func poll_runtime_pollReset(pd *pollDesc, mode int) int {
 	errcode := netpollcheckerr(pd, int32(mode))

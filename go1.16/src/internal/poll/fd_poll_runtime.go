@@ -134,11 +134,13 @@ func (pd *pollDesc) pollable() bool {
 
 // Error values returned by runtime_pollReset and runtime_pollWait.
 // These must match the values in runtime/netpoll.go.
+// runtime_pollReset和runtime_pollWait返回的错误值。
+// 这些值必须与runtime/netpoll.go中的值相匹配。
 const (
-	pollNoError        = 0
-	pollErrClosing     = 1
-	pollErrTimeout     = 2
-	pollErrNotPollable = 3
+	pollNoError        = 0 // 没有错误
+	pollErrClosing     = 1 // 文件描述符已关闭
+	pollErrTimeout     = 2 // 超时
+	pollErrNotPollable = 3 // 一般错误轮询描述符
 )
 
 func convertErr(res int, isFile bool) error {

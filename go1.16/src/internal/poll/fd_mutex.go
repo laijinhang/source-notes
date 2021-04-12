@@ -30,10 +30,10 @@ type fdMutex struct {
 // 20 bits - read waiter的数量
 // 20 bits - write waiter的数量
 const (
-	mutexClosed  = 1 << 0
-	mutexRLock   = 1 << 1
-	mutexWLock   = 1 << 2
-	mutexRef     = 1 << 3
+	mutexClosed  = 1 << 0 // 是否关闭FD，如果置位，则所有后续锁定操作将失败
+	mutexRLock   = 1 << 1 // 锁定读取操作
+	mutexWLock   = 1 << 2 // 锁定写入操作
+	mutexRef     = 1 << 3 //  引用总数（读+写+杂项）。
 	mutexRefMask = (1<<20 - 1) << 3
 	mutexRWait   = 1 << 23
 	mutexRMask   = (1<<20 - 1) << 23
@@ -126,25 +126,28 @@ func (mu *fdMutex) decref() bool {
 func (mu *fdMutex) rwlock(read bool) bool {
 	var mutexBit, mutexWait, mutexMask uint64
 	var mutexSema *uint32
-	if read {
-		mutexBit = mutexRLock
+	if read { // 获取读锁操作
+		mutexBit = mutexRLock // 0b10
 		mutexWait = mutexRWait
 		mutexMask = mutexRMask
 		mutexSema = &mu.rsema
-	} else {
-		mutexBit = mutexWLock
-		mutexWait = mutexWWait
+	} else { // 获取写锁操作
+		mutexBit = mutexWLock  // 加写锁，0b100
+		mutexWait = mutexWWait // 设置写等待
 		mutexMask = mutexWMask
 		mutexSema = &mu.wsema
 	}
 	for {
 		old := atomic.LoadUint64(&mu.state)
+		// 如果已经关闭，则读写都会失败
 		if old&mutexClosed != 0 {
 			return false
 		}
 		var new uint64
+		// 如果没有关闭
 		if old&mutexBit == 0 {
 			// Lock is free, acquire it.
+			// 锁定是免费的，获得它。
 			new = (old | mutexBit) + mutexRef
 			if new&mutexRefMask == 0 {
 				panic(overflowMsg)
@@ -202,11 +205,14 @@ func (mu *fdMutex) rwunlock(read bool) bool {
 }
 
 // Implemented in runtime package.
+// 在运行时包中实现。
 func runtime_Semacquire(sema *uint32)
 func runtime_Semrelease(sema *uint32)
 
 // incref adds a reference to fd.
 // It returns an error when fd cannot be used.
+// incref添加对fd的引用。
+// 当fd不能使用时，它会返回一个错误。
 func (fd *FD) incref() error {
 	if !fd.fdmu.incref() {
 		return errClosing(fd.isFile)
@@ -217,6 +223,8 @@ func (fd *FD) incref() error {
 // decref removes a reference from fd.
 // It also closes fd when the state of fd is set to closed and there
 // is no remaining reference.
+// decref从fd中删除一个引用。
+// 当fd的状态被设置为closed且没有剩余的引用时，它也会关闭fd。
 func (fd *FD) decref() error {
 	if fd.fdmu.decref() {
 		return fd.destroy()
@@ -226,6 +234,8 @@ func (fd *FD) decref() error {
 
 // readLock adds a reference to fd and locks fd for reading.
 // It returns an error when fd cannot be used for reading.
+// readLock添加一个对fd的引用，并锁定fd以便读取。
+// 当fd不能用于读取时，它会返回一个错误。
 func (fd *FD) readLock() error {
 	if !fd.fdmu.rwlock(true) {
 		return errClosing(fd.isFile)
@@ -244,6 +254,7 @@ func (fd *FD) readUnlock() {
 
 // writeLock adds a reference to fd and locks fd for writing.
 // It returns an error when fd cannot be used for writing.
+// writeLock添加一个对fd的引用，并锁定fd用于写入。当fd不能用于写入时，它会返回一个错误。
 func (fd *FD) writeLock() error {
 	if !fd.fdmu.rwlock(false) {
 		return errClosing(fd.isFile)
