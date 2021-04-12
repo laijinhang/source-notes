@@ -15,6 +15,7 @@ import (
 
 // socket returns a network file descriptor that is ready for
 // asynchronous I/O using the network poller.
+// socket返回一个网络文件描述符，该描述符已准备好使用网络轮询器进行异步I/O。
 func socket(ctx context.Context, net string, family, sotype, proto int, ipv6only bool, laddr, raddr sockaddr, ctrlFn func(string, string, syscall.RawConn) error) (fd *netFD, err error) {
 	// 调用当前平台对应的socket api创建socket
 	s, err := sysSocket(family, sotype, proto)

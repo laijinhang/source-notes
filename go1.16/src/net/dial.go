@@ -68,6 +68,10 @@ type Dialer struct {
 	//
 	// If zero, a default delay of 300ms is used.
 	// A negative value disables Fast Fallback support.
+	// FallbackDelay指定了在生成RFC 6555快速回退连接之前等待的时间长度。
+	// 也就是说，在假设IPv6配置错误并回退到IPv4之前，等待IPv6成功的时间长度。
+	//
+	// 如果为零，则使用默认的300ms延迟。 如果是负值，则不支持快速回退。
 	FallbackDelay time.Duration
 
 	// KeepAlive specifies the interval between keep-alive
@@ -102,7 +106,7 @@ type Dialer struct {
 
 func (d *Dialer) dualStack() bool { return d.FallbackDelay >= 0 }
 
-// 获取a，b时间中比较小的那个
+// 获取a，b时间中不为零值（默认时间）比较小的那个
 func minNonzeroTime(a, b time.Time) time.Time {
 	// 如果a为零值（默认值），则返回b
 	if a.IsZero() {
@@ -131,6 +135,7 @@ func (d *Dialer) deadline(ctx context.Context, now time.Time) (earliest time.Tim
 	if d.Timeout != 0 { // including negative, for historical reasons
 		earliest = now.Add(d.Timeout)
 	}
+	// emptyCtx的Deadline()返回时间默认值和false
 	if d, ok := ctx.Deadline(); ok {
 		earliest = minNonzeroTime(earliest, d)
 	}
@@ -375,10 +380,10 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 	if ctx == nil {
 		panic("nil context")
 	}
-	// 获取超时时间
+	// 获取超时时间，如果ctx是context.Background()，则超时时间是d.Deadline，也就是零值（默认值）
 	deadline := d.deadline(ctx, time.Now())
 	if !deadline.IsZero() {
-		// 如果ctx没有设置超时时间，或则ctx里面的超时时间大于deadline，则重新设置为比较小的
+		// 如果ctx没有设置超时时间，或者ctx里面的超时时间大于deadline，则重新设置为比较小的
 		if d, ok := ctx.Deadline(); !ok || deadline.Before(d) {
 			subCtx, cancel := context.WithDeadline(ctx, deadline)
 			defer cancel()
@@ -407,6 +412,7 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 		resolveCtx = context.WithValue(resolveCtx, nettrace.TraceKey{}, &shadow)
 	}
 
+	// 这一步如果能成功连接到所指定的网络，则可以拿到域名对应的ip地址
 	addrs, err := d.resolver().resolveAddrList(resolveCtx, "dial", network, address, d.LocalAddr)
 	if err != nil {
 		return nil, &OpError{Op: "dial", Net: network, Source: nil, Addr: nil, Err: err}
@@ -527,11 +533,13 @@ func (sd *sysDialer) dialParallel(ctx context.Context, primaries, fallbacks addr
 
 // dialSerial connects to a list of addresses in sequence, returning
 // either the first successful connection, or the first error.
+// dialSerial按顺序连接到一个地址列表，返回第一个成功连接，或者第一个错误。
 func (sd *sysDialer) dialSerial(ctx context.Context, ras addrList) (Conn, error) {
-	var firstErr error // The error from the first address is most relevant.
+	var firstErr error // The error from the first address is most relevant. 第一个地址的错误是最相关的。
 
 	for i, ra := range ras {
 		select {
+		// 超时退出
 		case <-ctx.Done():
 			return nil, &OpError{Op: "dial", Net: sd.network, Source: sd.LocalAddr, Addr: ra, Err: mapErr(ctx.Err())}
 		default:
@@ -539,6 +547,7 @@ func (sd *sysDialer) dialSerial(ctx context.Context, ras addrList) (Conn, error)
 
 		dialCtx := ctx
 		if deadline, hasDeadline := ctx.Deadline(); hasDeadline {
+			// 超时
 			partialDeadline, err := partialDeadline(time.Now(), deadline, len(ras)-i)
 			if err != nil {
 				// Ran out of time.
@@ -571,6 +580,7 @@ func (sd *sysDialer) dialSerial(ctx context.Context, ras addrList) (Conn, error)
 
 // dialSingle attempts to establish and returns a single connection to
 // the destination address.
+// dialSingle尝试建立并返回一个连接到目的地址。
 func (sd *sysDialer) dialSingle(ctx context.Context, ra Addr) (c Conn, err error) {
 	trace, _ := ctx.Value(nettrace.TraceKey{}).(*nettrace.Trace)
 	if trace != nil {

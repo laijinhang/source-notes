@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Package socktest provides utilities for socket testing.
+// 软件包socktest提供插座测试的实用工具。
 package socktest
 
 import (
