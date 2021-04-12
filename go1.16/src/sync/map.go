@@ -137,20 +137,27 @@ func newEntry(i interface{}) *entry {
 // value is present.
 // The ok result indicates whether value was found in the map.
 func (m *Map) Load(key interface{}) (value interface{}, ok bool) {
+	// 1、首先从m.read中得到只读readOnly，从它的map中查找，不需要加锁
 	read, _ := m.read.Load().(readOnly)
 	e, ok := read.m[key]
+	// 2、如果没找到，并且m.dirty中有新数据，需要从m.dirty查找，这个时候加锁
 	if !ok && read.amended {
 		m.mu.Lock()
 		// Avoid reporting a spurious miss if m.dirty got promoted while we were
 		// blocked on m.mu. (If further loads of the same key will not miss, it's
 		// not worth copying the dirty map for this key.)
+		// 双检查，避免加锁的时候m.dirty提升为m.read，这个时候m.read可能被替换了。
 		read, _ = m.read.Load().(readOnly)
 		e, ok = read.m[key]
+		// 如果m.read中还是不存在，并且m.dirty中有新数据
 		if !ok && read.amended {
+			// 从m.dirty查找
 			e, ok = m.dirty[key]
 			// Regardless of whether the entry was present, record a miss: this key
 			// will take the slow path until the dirty map is promoted to the read
 			// map.
+			// 不管m.dirty中存不存在，都将misses计数加一
+			// missLocked()中满足条件后就会提升m.dirty
 			m.missLocked()
 		}
 		m.mu.Unlock()
@@ -171,29 +178,36 @@ func (e *entry) load() (value interface{}, ok bool) {
 
 // Store sets the value for a key.
 func (m *Map) Store(key, value interface{}) {
+	// 如果m.read存在这个键，并且这个entry没有被标记删除，尝试直接存储。
+	// 因为m.dirty也指向这个entry，所以m.dirty也保持最新的entry。
 	read, _ := m.read.Load().(readOnly)
 	if e, ok := read.m[key]; ok && e.tryStore(&value) {
 		return
 	}
 
+	// 如果`m.read`不存在或者已经被标记删除
 	m.mu.Lock()
 	read, _ = m.read.Load().(readOnly)
 	if e, ok := read.m[key]; ok {
-		if e.unexpungeLocked() {
+		if e.unexpungeLocked() {	// 标记成未被删除
 			// The entry was previously expunged, which implies that there is a
 			// non-nil dirty map and this entry is not in it.
+			// m.dirty不存在这个键，所以加入m.dirty
 			m.dirty[key] = e
 		}
+		e.storeLocked(&value)	// 更新
+	} else if e, ok := m.dirty[key]; ok {	// m.dirty存在这个键，更新
 		e.storeLocked(&value)
-	} else if e, ok := m.dirty[key]; ok {
-		e.storeLocked(&value)
-	} else {
+	} else {	// 新键值
+		// m.dirty中没有新的数据，往m.dirty中增加第一个新键
 		if !read.amended {
 			// We're adding the first new key to the dirty map.
 			// Make sure it is allocated and mark the read-only map as incomplete.
+			// 从m.read中复制未删除的数据
 			m.dirtyLocked()
 			m.read.Store(readOnly{m: read.m, amended: true})
 		}
+		// 将这个entry加入到m.dirty
 		m.dirty[key] = newEntry(value)
 	}
 	m.mu.Unlock()
@@ -358,13 +372,16 @@ func (m *Map) Range(f func(key, value interface{}) bool) {
 	// If read.amended is false, then read.m satisfies that property without
 	// requiring us to hold m.mu for a long time.
 	read, _ := m.read.Load().(readOnly)
+
+	// 如果m.dirty中有新数据，则提升m.dirty，然后再遍历
 	if read.amended {
 		// m.dirty contains keys not in read.m. Fortunately, Range is already O(N)
 		// (assuming the caller does not break out early), so a call to Range
 		// amortizes an entire copy of the map: we can promote the dirty copy
 		// immediately!
+		// 提升m.dirty
 		m.mu.Lock()
-		read, _ = m.read.Load().(readOnly)
+		read, _ = m.read.Load().(readOnly)	// 双检查
 		if read.amended {
 			read = readOnly{m: m.dirty}
 			m.read.Store(read)
@@ -374,6 +391,7 @@ func (m *Map) Range(f func(key, value interface{}) bool) {
 		m.mu.Unlock()
 	}
 
+	// 遍历，for range是安全的
 	for k, e := range read.m {
 		v, ok := e.load()
 		if !ok {
@@ -390,8 +408,11 @@ func (m *Map) missLocked() {
 	if m.misses < len(m.dirty) {
 		return
 	}
+	// 将m.dirty作为readOnly的m字段，原子更新m.read
 	m.read.Store(readOnly{m: m.dirty})
+	// 重置m.dirty
 	m.dirty = nil
+	// 重置m.misses
 	m.misses = 0
 }
 
