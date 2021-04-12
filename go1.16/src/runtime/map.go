@@ -213,6 +213,9 @@ type hiter struct {
 func bucketShift(b uint8) uintptr {
 	// Masking the shift amount allows overflow checks to be elided.
 	// 屏蔽移位量，可以省略溢出检查。
+	// sys.PtrSize*8 - 1 => 8 * 8 - 1 =>
+	// 63 => 0b00111111
+	// 1 ~ 1 << 255
 	return uintptr(1) << (b & (sys.PtrSize*8 - 1))
 }
 
@@ -331,20 +334,33 @@ func makemap_small() *hmap {
 // can be created on the stack, h and/or bucket may be non-nil.
 // If h != nil, the map can be created directly in h.
 // If h.buckets != nil, bucket pointed to can be used as the first bucket.
+
+// makemap为make(map[k]v, hint)实现了Go map创建。如果编译器确定可以在栈上
+// 创建map或第一个bucket，那么h和/或bucket可以是非nil。 如果h != nil，map
+// 可以直接在h中创建。如果h.buckets != nil，指向的bucket可以作为第一个bucket。
+/*
+make(map[type1]type2, n)，当n大于0的时候，会触发这个函数
+*/
 func makemap(t *maptype, hint int, h *hmap) *hmap {
+	// 检查经过预分配大小的是否会越界
 	mem, overflow := math.MulUintptr(uintptr(hint), t.bucket.size)
 	if overflow || mem > maxAlloc {
 		hint = 0
 	}
 
 	// initialize Hmap
+	// 初始化Hmap
 	if h == nil {
 		h = new(hmap)
 	}
+	// 快速获取随机数并赋值给h.hash0
 	h.hash0 = fastrand()
 
 	// Find the size parameter B which will hold the requested # of elements.
 	// For hint < 0 overLoadFactor returns false since hint < bucketCnt.
+
+	// 找出能容纳所要求的元素数量的大小参数B。
+	// 对于hint < 0，overLoadFactor返回false，因为hint < bucketCnt。
 	B := uint8(0)
 	for overLoadFactor(hint, B) {
 		B++
@@ -354,6 +370,10 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {
 	// allocate initial hash table
 	// if B == 0, the buckets field is allocated lazily later (in mapassign)
 	// If hint is large zeroing this memory could take a while.
+
+	// 分配初始哈希表
+	// 如果B == 0，buckets字段将在稍后懒惰地分配（在mapassign中）。
+	// 如果提示很大，将这个内存清零可能需要一段时间。
 	if h.B != 0 {
 		var nextOverflow *bmap
 		h.buckets, nextOverflow = makeBucketArray(t, h.B, nil)
@@ -377,10 +397,13 @@ func makeBucketArray(t *maptype, b uint8, dirtyalloc unsafe.Pointer) (buckets un
 	nbuckets := base
 	// For small b, overflow buckets are unlikely.
 	// Avoid the overhead of the calculation.
+	// 对于小b，溢桶的可能性不大。
+	// 避免计算的开销。
 	if b >= 4 {
 		// Add on the estimated number of overflow buckets
 		// required to insert the median number of elements
 		// used with this value of b.
+		// 加上估计所需的溢出桶的数量，以插入使用b这个值的元素的中位数。
 		nbuckets += bucketShift(b - 4)
 		sz := t.bucket.size * nbuckets
 		up := roundupsize(sz)
@@ -1098,6 +1121,7 @@ func hashGrow(t *maptype, h *hmap) {
 }
 
 // overLoadFactor reports whether count items placed in 1<<B buckets is over loadFactor.
+// overLoadFactor报告放在1<<B桶中的计数项是否超过了loadFactor。
 func overLoadFactor(count int, B uint8) bool {
 	return count > bucketCnt && uintptr(count) > loadFactorNum*(bucketShift(B)/loadFactorDen)
 }
