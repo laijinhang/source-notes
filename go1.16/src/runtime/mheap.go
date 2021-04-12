@@ -6,6 +6,10 @@
 //
 // See malloc.go for overview.
 
+// Page heap.
+//
+// 参见 malloc.go 了解详情。
+
 package runtime
 
 import (
@@ -19,13 +23,19 @@ const (
 	// minPhysPageSize is a lower-bound on the physical page size. The
 	// true physical page size may be larger than this. In contrast,
 	// sys.PhysPageSize is an upper-bound on the physical page size.
+
+	// minPhysPageSize是物理页面大小的下限。
+	// 真正的物理页面大小可能会大于这个值。
+	// 相反，sys.PhysPageSize是物理页面大小的上界。
 	minPhysPageSize = 4096
 
 	// maxPhysPageSize is the maximum page size the runtime supports.
+	// maxPhysPageSize是运行时支持的最大页面大小。
 	maxPhysPageSize = 512 << 10
 
 	// maxPhysHugePageSize sets an upper-bound on the maximum huge page size
 	// that the runtime supports.
+	// maxPhysHugePageSize设置了运行时支持的最大huge页面大小的上限。
 	maxPhysHugePageSize = pallocChunkBytes
 
 	// pagesPerReclaimerChunk indicates how many pages to scan from the
