@@ -19,13 +19,15 @@ import (
 // implemented.
 
 // UDPAddr represents the address of a UDP end point.
+// UDPAddr表示UDP端点的地址。
 type UDPAddr struct {
 	IP   IP
 	Port int
-	Zone string // IPv6 scoped addressing zone
+	Zone string // IPv6 scoped addressing zone，IPv6范围内寻址区
 }
 
 // Network returns the address's network name, "udp".
+// Network 返回地址的网络名称 "udp"。
 func (a *UDPAddr) Network() string { return "udp" }
 
 func (a *UDPAddr) String() string {
@@ -91,6 +93,8 @@ type UDPConn struct {
 
 // SyscallConn returns a raw network connection.
 // This implements the syscall.Conn interface.
+// SyscallConn返回一个原始网络连接。
+// 这实现了syscall.Conn接口。
 func (c *UDPConn) SyscallConn() (syscall.RawConn, error) {
 	if !c.ok() {
 		return nil, syscall.EINVAL
@@ -99,6 +103,7 @@ func (c *UDPConn) SyscallConn() (syscall.RawConn, error) {
 }
 
 // ReadFromUDP acts like ReadFrom but returns a UDPAddr.
+// ReadFromUDP的作用类似于ReadFrom，但返回一个UDPAddr。
 func (c *UDPConn) ReadFromUDP(b []byte) (int, *UDPAddr, error) {
 	if !c.ok() {
 		return 0, nil, syscall.EINVAL
@@ -111,6 +116,7 @@ func (c *UDPConn) ReadFromUDP(b []byte) (int, *UDPAddr, error) {
 }
 
 // ReadFrom implements the PacketConn ReadFrom method.
+// ReadFrom实现PacketConn ReadFrom方法。
 func (c *UDPConn) ReadFrom(b []byte) (int, Addr, error) {
 	if !c.ok() {
 		return 0, nil, syscall.EINVAL
@@ -132,6 +138,11 @@ func (c *UDPConn) ReadFrom(b []byte) (int, Addr, error) {
 //
 // The packages golang.org/x/net/ipv4 and golang.org/x/net/ipv6 can be
 // used to manipulate IP-level socket options in oob.
+
+// ReadMsgUDP从c中读取一条消息，将有效载荷复制到b中，将相关的带外数据复制到oob中。
+// 它返回复制到b中的字节数、复制到ob中的字节数、在消息上设置的标志和消息的源地址。
+//
+// golang.org/x/net/ipv4和golang.org/x/net/ipv6这两个包可以用来操作oob中的IP级socket选项。
 func (c *UDPConn) ReadMsgUDP(b, oob []byte) (n, oobn, flags int, addr *UDPAddr, err error) {
 	if !c.ok() {
 		return 0, 0, 0, nil, syscall.EINVAL
