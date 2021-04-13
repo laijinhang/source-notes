@@ -18,6 +18,10 @@ import (
 // BUG(mikio): On JS, methods and functions related to UDPConn are not
 // implemented.
 
+// BUG(mikio)：在Plan 9上，UDPConn的ReadMsgUDP和WriteMsgUDP方法没有实现。
+// BUG(mikio)：在Windows下，UDPConn的File方法没有实现。在Windows上，UDPConn的File方法没有实现。
+// BUG(mikio)：在 JS 上，没有实现 UDPConn 的相关方法和函数。
+
 // UDPAddr represents the address of a UDP end point.
 // UDPAddr表示UDP端点的地址。
 type UDPAddr struct {
@@ -30,6 +34,7 @@ type UDPAddr struct {
 // Network 返回地址的网络名称 "udp"。
 func (a *UDPAddr) Network() string { return "udp" }
 
+// 返回网络地址字符串形式
 func (a *UDPAddr) String() string {
 	if a == nil {
 		return "<nil>"
@@ -74,6 +79,7 @@ func ResolveUDPAddr(network, address string) (*UDPAddr, error) {
 	switch network {
 	case "udp", "udp4", "udp6":
 	case "": // a hint wildcard for Go 1.0 undocumented behavior
+		// 一个提示通配符，用于Go 1.0未被记录的行为。
 		network = "udp"
 	default:
 		return nil, UnknownNetworkError(network)
@@ -87,6 +93,7 @@ func ResolveUDPAddr(network, address string) (*UDPAddr, error) {
 
 // UDPConn is the implementation of the Conn and PacketConn interfaces
 // for UDP network connections.
+// UDPConn是Conn和PacketConn接口在UDP网络连接中的实现。
 type UDPConn struct {
 	conn
 }

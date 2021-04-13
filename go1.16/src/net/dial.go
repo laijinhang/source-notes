@@ -624,6 +624,10 @@ type ListenConfig struct {
 	// Network and address parameters passed to Control method are not
 	// necessarily the ones passed to Listen. For example, passing "tcp" to
 	// Listen will cause the Control function to be called with "tcp4" or "tcp6".
+	// 如果Control不是nil，则在创建网络连接后，但在将其绑定到操作系统之前调用它。
+	//
+	// 传递给Control方法的网络和地址参数不一定是传递给Listen的。例如，
+	// 向Listen传递 "tcp "会导致Control函数被调用 "tcp4 "或 "tcp6"。
 	Control func(network, address string, c syscall.RawConn) error
 
 	// KeepAlive specifies the keep-alive period for network
@@ -642,6 +646,9 @@ type ListenConfig struct {
 //
 // See func Listen for a description of the network and address
 // parameters.
+// 听取本地网络地址的广播。
+//
+// 关于网络和地址参数的描述，请参见 func Listen。
 func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Listener, error) {
 	// 根据协议名称和地址取得Internet协议族地址列表
 	addrs, err := DefaultResolver.resolveAddrList(ctx, "listen", network, address, nil)
@@ -673,6 +680,9 @@ func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Li
 //
 // See func ListenPacket for a description of the network and address
 // parameters.
+// ListenPacket在本地网络地址上宣布。
+//
+// 关于网络和地址参数的描述，请参见 func ListenPacket。
 func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address string) (PacketConn, error) {
 	addrs, err := DefaultResolver.resolveAddrList(ctx, "listen", network, address, nil)
 	if err != nil {
@@ -702,6 +712,7 @@ func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address strin
 }
 
 // sysListener contains a Listen's parameters and configuration.
+// sysListener包含一个Listen的参数和配置。
 type sysListener struct {
 	ListenConfig
 	network, address string

@@ -224,6 +224,7 @@ func (ip IP) To4() IP {
 	if len(ip) == IPv4len {
 		return ip
 	}
+	// 0xff => 255
 	if len(ip) == IPv6len &&
 		isZeros(ip[0:10]) &&
 		ip[10] == 0xff &&
@@ -369,6 +370,7 @@ func (ip IP) String() string {
 	}
 
 	// Find longest run of zeros.
+	// 找出零的最长运行时间。
 	e0 := -1
 	e1 := -1
 	for i := 0; i < IPv6len; i += 2 {
@@ -383,6 +385,7 @@ func (ip IP) String() string {
 		}
 	}
 	// The symbol "::" MUST NOT be used to shorten just one 16 bit 0 field.
+	// 符号":: "不能只用来缩短一个16位0字段。
 	if e1-e0 <= 2 {
 		e0 = -1
 		e1 = -1
@@ -392,6 +395,7 @@ func (ip IP) String() string {
 	b := make([]byte, 0, maxLen)
 
 	// Print with possible :: in place of run of zeros
+	// 用可能的::代替零点打印。
 	for i := 0; i < IPv6len; i += 2 {
 		if i == e0 {
 			b = append(b, ':', ':')
@@ -429,6 +433,9 @@ func ipEmptyString(ip IP) string {
 // MarshalText implements the encoding.TextMarshaler interface.
 // The encoding is the same as returned by String, with one exception:
 // When len(ip) is zero, it returns an empty slice.
+// MarshalText 实现 encoding.TextMarshaler 接口。
+// 编码与String返回的编码相同， 但有一个例外。
+// 当len(ip)为零时，它返回一个空片。
 func (ip IP) MarshalText() ([]byte, error) {
 	if len(ip) == 0 {
 		return []byte(""), nil
