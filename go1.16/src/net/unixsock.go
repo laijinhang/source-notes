@@ -14,11 +14,15 @@ import (
 
 // BUG(mikio): On JS and Plan 9, methods and functions related
 // to UnixConn and UnixListener are not implemented.
+// BUG(mikio)。在JS和Plan 9上，与UnixConn和UnixListener有关的方法和功能没有实现。
 
 // BUG(mikio): On Windows, methods and functions related to UnixConn
 // and UnixListener don't work for "unixgram" and "unixpacket".
+// BUG(mikio)。在Windows上，与UnixConn和UnixListener相关的方法和函数
+// 对 "unixgram "和 "unixpacket "不起作用。
 
 // UnixAddr represents the address of a Unix domain socket end point.
+// UnixAddr表示Unix域套接字端点的地址。
 type UnixAddr struct {
 	Name string
 	Net  string
@@ -26,6 +30,7 @@ type UnixAddr struct {
 
 // Network returns the address's network name, "unix", "unixgram" or
 // "unixpacket".
+// Network 返回地址的网络名，"unix"、"unixgram "或 "unixpacket"。
 func (a *UnixAddr) Network() string {
 	return a.Net
 }
@@ -54,6 +59,12 @@ func (a *UnixAddr) opAddr() Addr {
 //
 // See func Dial for a description of the network and address
 // parameters.
+
+// ResolveUnixAddr返回Unix域套接字端点的地址。
+//
+// 网络必须是Unix网络名。
+//
+// 关于网络和地址参数的描述，请参见 func Dial。
 func ResolveUnixAddr(network, address string) (*UnixAddr, error) {
 	switch network {
 	case "unix", "unixgram", "unixpacket":
@@ -65,12 +76,15 @@ func ResolveUnixAddr(network, address string) (*UnixAddr, error) {
 
 // UnixConn is an implementation of the Conn interface for connections
 // to Unix domain sockets.
+// UnixConn是Conn接口的一个实现，用于连接到Unix域套接字。
 type UnixConn struct {
 	conn
 }
 
 // SyscallConn returns a raw network connection.
 // This implements the syscall.Conn interface.
+// SyscallConn返回一个原始网络连接。
+// 这实现了syscall.Conn接口。
 func (c *UnixConn) SyscallConn() (syscall.RawConn, error) {
 	if !c.ok() {
 		return nil, syscall.EINVAL
@@ -80,6 +94,8 @@ func (c *UnixConn) SyscallConn() (syscall.RawConn, error) {
 
 // CloseRead shuts down the reading side of the Unix domain connection.
 // Most callers should just use Close.
+// CloseRead关闭了Unix域连接的读取端。
+// 大多数调用者应该只使用Close。
 func (c *UnixConn) CloseRead() error {
 	if !c.ok() {
 		return syscall.EINVAL
@@ -92,6 +108,8 @@ func (c *UnixConn) CloseRead() error {
 
 // CloseWrite shuts down the writing side of the Unix domain connection.
 // Most callers should just use Close.
+// CloseWrite关闭了Unix域连接的写入端。
+// 大多数调用者应该只使用Close。
 func (c *UnixConn) CloseWrite() error {
 	if !c.ok() {
 		return syscall.EINVAL
@@ -103,6 +121,7 @@ func (c *UnixConn) CloseWrite() error {
 }
 
 // ReadFromUnix acts like ReadFrom but returns a UnixAddr.
+// ReadFromUnix的行为与ReadFrom类似，但返回一个UnixAddr。
 func (c *UnixConn) ReadFromUnix(b []byte) (int, *UnixAddr, error) {
 	if !c.ok() {
 		return 0, nil, syscall.EINVAL
@@ -115,6 +134,7 @@ func (c *UnixConn) ReadFromUnix(b []byte) (int, *UnixAddr, error) {
 }
 
 // ReadFrom implements the PacketConn ReadFrom method.
+// ReadFrom实现PacketConn ReadFrom方法。
 func (c *UnixConn) ReadFrom(b []byte) (int, Addr, error) {
 	if !c.ok() {
 		return 0, nil, syscall.EINVAL
@@ -148,6 +168,7 @@ func (c *UnixConn) ReadMsgUnix(b, oob []byte) (n, oobn, flags int, addr *UnixAdd
 }
 
 // WriteToUnix acts like WriteTo but takes a UnixAddr.
+// WriteToUnix的作用类似于WriteTo，但需要一个UnixAddr。
 func (c *UnixConn) WriteToUnix(b []byte, addr *UnixAddr) (int, error) {
 	if !c.ok() {
 		return 0, syscall.EINVAL

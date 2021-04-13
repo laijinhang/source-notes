@@ -7,6 +7,7 @@ package net
 const hexDigit = "0123456789abcdef"
 
 // A HardwareAddr represents a physical hardware address.
+// HardwareAddr代表一个物理硬件地址。
 type HardwareAddr []byte
 
 func (a HardwareAddr) String() string {
@@ -18,7 +19,12 @@ func (a HardwareAddr) String() string {
 		if i > 0 {
 			buf = append(buf, ':')
 		}
+		// byte => 0~255 => 0b00000000 ~ 0b11111111 =>
+		// 0b00000000 ~ 0b00001111 => 0 ~ 15
+		// byte的高四位
 		buf = append(buf, hexDigit[b>>4])
+		// b & 0xF => b & 0b1111
+		// byte的低四位
 		buf = append(buf, hexDigit[b&0xF])
 	}
 	return string(buf)
@@ -26,6 +32,8 @@ func (a HardwareAddr) String() string {
 
 // ParseMAC parses s as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet
 // IP over InfiniBand link-layer address using one of the following formats:
+// ParseMAC使用以下格式之一将s解析为IEEE 802 MAC-48、EUI-48、EUI-64或20字节的
+// IP over InfiniBand链路层地址。
 //	00:00:5e:00:53:01
 //	02:00:5e:10:00:00:00:01
 //	00:00:00:00:fe:80:00:00:00:00:00:00:02:00:5e:10:00:00:00:01
@@ -36,6 +44,7 @@ func (a HardwareAddr) String() string {
 //	0200.5e10.0000.0001
 //	0000.0000.fe80.0000.0000.0000.0200.5e10.0000.0001
 func ParseMAC(s string) (hw HardwareAddr, err error) {
+	// 长度小于14的话，格式错误
 	if len(s) < 14 {
 		goto error
 	}

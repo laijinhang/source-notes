@@ -21,9 +21,10 @@ import (
 var listenersMu sync.Mutex
 var listeners = make(map[string]*netFD)
 
-var portCounterMu sync.Mutex
-var portCounter = 0
+var portCounterMu sync.Mutex // 端口锁
+var portCounter = 0          // 端口号
 
+// 获取下一个端口
 func nextPort() int {
 	portCounterMu.Lock()
 	defer portCounterMu.Unlock()
@@ -32,6 +33,7 @@ func nextPort() int {
 }
 
 // Network file descriptor.
+// 网络文件描述符。
 type netFD struct {
 	r        *bufferedPipe
 	w        *bufferedPipe
@@ -41,6 +43,7 @@ type netFD struct {
 	closed   bool
 
 	// immutable until Close
+	// 在关闭之前不可更改
 	listener bool
 	family   int
 	sotype   int
@@ -49,7 +52,9 @@ type netFD struct {
 	raddr    Addr
 
 	// unused
-	pfd         poll.FD
+	// 未使用
+	pfd poll.FD
+	//完成握手或使用与同行的联系。
 	isConnected bool // handshake completed or use of association with peer
 }
 

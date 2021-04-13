@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Package hex implements hexadecimal encoding and decoding.
+// hex包实现了十六进制的编码和解码。
 package hex
 
 import (
@@ -16,14 +17,19 @@ const hextable = "0123456789abcdef"
 
 // EncodedLen returns the length of an encoding of n source bytes.
 // Specifically, it returns n * 2.
+// EncodedLen 返回 n 个源字节的编码长度。具体来说，它返回n*2。
 func EncodedLen(n int) int { return n * 2 }
 
 // Encode encodes src into EncodedLen(len(src))
 // bytes of dst. As a convenience, it returns the number
 // of bytes written to dst, but this value is always EncodedLen(len(src)).
 // Encode implements hexadecimal encoding.
+// Encode 将 src 编码成 dst 的 EncodedLen(len(src))字节。
+// 为了方便起见，它返回写入 dst 的字节数，但这个值总是 EncodedLen(len(src))。
+// Encode 实现十六进制编码。
 func Encode(dst, src []byte) int {
 	j := 0
+	// 把每一个v转化成十六进制
 	for _, v := range src {
 		dst[j] = hextable[v>>4]
 		dst[j+1] = hextable[v&0x0f]
@@ -35,9 +41,12 @@ func Encode(dst, src []byte) int {
 // ErrLength reports an attempt to decode an odd-length input
 // using Decode or DecodeString.
 // The stream-based Decoder returns io.ErrUnexpectedEOF instead of ErrLength.
+// ErrLength报告对奇数长度的输入Decode或DecodeString的解码尝试。
+// 基于流的Decoder返回io.ErrUnexpectedEOF而不是ErrLength。
 var ErrLength = errors.New("encoding/hex: odd length hex string")
 
 // InvalidByteError values describe errors resulting from an invalid byte in a hex string.
+// InvalidByteError值描述的是十六进制字符串中的无效字节导致的错误。
 type InvalidByteError byte
 
 func (e InvalidByteError) Error() string {
@@ -46,6 +55,8 @@ func (e InvalidByteError) Error() string {
 
 // DecodedLen returns the length of a decoding of x source bytes.
 // Specifically, it returns x / 2.
+// DecodedLen 返回 x 个源字节的解码长度。
+// 具体来说，它返回x / 2。
 func DecodedLen(x int) int { return x / 2 }
 
 // Decode decodes src into DecodedLen(len(src)) bytes,
@@ -55,6 +66,10 @@ func DecodedLen(x int) int { return x / 2 }
 // characters and that src has even length.
 // If the input is malformed, Decode returns the number
 // of bytes decoded before the error.
+// Decode将src解码成DecodedLen(len(src))字节，返回写入dst的实际字节数。
+//
+// Decode期望src只包含十六进制字符，并且src的长度是偶数。
+// 如果输入是错误的，Decode将返回错误前解码的字节数。
 func Decode(dst, src []byte) (int, error) {
 	i, j := 0, 1
 	for ; j < len(src); j += 2 {
@@ -72,6 +87,8 @@ func Decode(dst, src []byte) (int, error) {
 	if len(src)%2 == 1 {
 		// Check for invalid char before reporting bad length,
 		// since the invalid char (if present) is an earlier problem.
+		// 在报告不良长度之前，先检查是否有无效的字符。
+		// 因为无效字符（如果存在）是一个早期的问题。
 		if _, ok := fromHexChar(src[j-1]); !ok {
 			return i, InvalidByteError(src[j-1])
 		}
@@ -81,6 +98,7 @@ func Decode(dst, src []byte) (int, error) {
 }
 
 // fromHexChar converts a hex character into its value and a success flag.
+// fromHexChar将一个十六进制字符转换为其值和一个成功标志。
 func fromHexChar(c byte) (byte, bool) {
 	switch {
 	case '0' <= c && c <= '9':
@@ -95,6 +113,7 @@ func fromHexChar(c byte) (byte, bool) {
 }
 
 // EncodeToString returns the hexadecimal encoding of src.
+// EncodeToString 返回 src 的十六进制编码。
 func EncodeToString(src []byte) string {
 	dst := make([]byte, EncodedLen(len(src)))
 	Encode(dst, src)
@@ -107,16 +126,22 @@ func EncodeToString(src []byte) string {
 // characters and that src has even length.
 // If the input is malformed, DecodeString returns
 // the bytes decoded before the error.
+// DecodeString返回十六进制字符串s所代表的字节。
+//
+// DecodeString期望src只包含十六进制字符，并且src的长度是偶数。
+// 如果输入是非法的，DecodeString会返回错误前的解码字节。
 func DecodeString(s string) ([]byte, error) {
 	src := []byte(s)
 	// We can use the source slice itself as the destination
 	// because the decode loop increments by one and then the 'seen' byte is not used anymore.
+	// 我们可以使用源片本身作为目标，因为解码循环会递增1，然后 "所见 "字节就不再使用了。
 	n, err := Decode(src, src)
 	return src[:n], err
 }
 
 // Dump returns a string that contains a hex dump of the given data. The format
 // of the hex dump matches the output of `hexdump -C` on the command line.
+// Dump 返回一个包含给定数据的十六进制转储的字符串。十六进制转储的格式与命令行中`hexdump -C`的输出相匹配。
 func Dump(data []byte) string {
 	if len(data) == 0 {
 		return ""
