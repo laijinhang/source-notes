@@ -82,8 +82,10 @@ func (b *Reader) reset(buf []byte, r io.Reader) {
 var errNegativeRead = errors.New("bufio: reader returned negative count from Read")
 
 // fill reads a new chunk into the buffer.
+// fill将一个新的块读入缓冲区。
 func (b *Reader) fill() {
 	// Slide existing data to beginning.
+	// 将现有的数据滑到开头。
 	if b.r > 0 {
 		copy(b.buf, b.buf[b.r:b.w])
 		b.w -= b.r
@@ -95,6 +97,7 @@ func (b *Reader) fill() {
 	}
 
 	// Read new data: try a limited number of times.
+	// 读取新数据：尝试次数有限。
 	for i := maxConsecutiveEmptyReads; i > 0; i-- {
 		n, err := b.rd.Read(b.buf[b.w:])
 		if n < 0 {
@@ -125,6 +128,10 @@ func (b *Reader) readErr() error {
 //
 // Calling Peek prevents a UnreadByte or UnreadRune call from succeeding
 // until the next read operation.
+// Peek返回下一个n个字节，而不推进阅读器。这些字节在下一次读取调用时停止有效。如果Peek返回的
+// 字节数少于n个，它还会返回一个错误，解释为什么读短了。如果n大于b的缓冲区大小，则错误为ErrBufferFull。
+//
+// 调用Peek可以防止UnreadByte或UnreadRune调用成功，直到下一次读取操作。
 func (b *Reader) Peek(n int) ([]byte, error) {
 	if n < 0 {
 		return nil, ErrNegativeCount

@@ -160,15 +160,17 @@ func Dump(data []byte) string {
 }
 
 // bufferSize is the number of hexadecimal characters to buffer in encoder and decoder.
+// bufferSize是编码器和解码器中要缓冲的十六进制字符数。
 const bufferSize = 1024
 
 type encoder struct {
 	w   io.Writer
 	err error
-	out [bufferSize]byte // output buffer
+	out [bufferSize]byte // output buffer，输出缓冲区
 }
 
 // NewEncoder returns an io.Writer that writes lowercase hexadecimal characters to w.
+// NewEncoder返回一个io.Writer，将小写的十六进制字符写入w。
 func NewEncoder(w io.Writer) io.Writer {
 	return &encoder{w: w}
 }

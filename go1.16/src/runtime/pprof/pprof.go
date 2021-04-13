@@ -230,6 +230,7 @@ func Lookup(name string) *Profile {
 }
 
 // Profiles returns a slice of all the known profiles, sorted by name.
+// Profiles（配置文件）返回按名称排序的所有已知配置文件的切片。
 func Profiles() []*Profile {
 	lockProfiles()
 	defer unlockProfiles()

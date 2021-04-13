@@ -4,13 +4,19 @@
 
 // Package pprof serves via its HTTP server runtime profiling data
 // in the format expected by the pprof visualization tool.
+// 包pprof通过其HTTP服务器运行时以pprof可视化工具所期望的格式提供剖析数据。
 //
 // The package is typically only imported for the side effect of
 // registering its HTTP handlers.
 // The handled paths all begin with /debug/pprof/.
+// 这个包通常只是为了注册它的HTTP处理程序而导入的。
+// 处理的路径都是以/debug/pprof/开头。
 //
 // To use pprof, link this package into your program:
 //	import _ "net/http/pprof"
+
+// 要使用pprof，请将这个包引入到你的程序中。
+// import _ "net/http/pprof"
 //
 // If your application is not already running an http server, you
 // need to start one. Add "net/http" and "log" to your imports and
@@ -20,40 +26,55 @@
 // 		log.Println(http.ListenAndServe("localhost:6060", nil))
 // 	}()
 //
+// 如果你的应用程序还没有运行http服务器，你需要启动一个。将 "net/http "和 "log "添加到你的导入中，并在你的主函数中添加以下代码。
+//
+// go func() {
+// 		log.Println(http.ListenAndServe("localhost:6060", nil))
+// }()
+//
 // If you are not using DefaultServeMux, you will have to register handlers
 // with the mux you are using.
+// 如果你没有使用DefaultServeMux，你将不得不在你使用的mux中注册处理程序。
 //
 // Then use the pprof tool to look at the heap profile:
+// 然后使用pprof工具查看堆配置文件。
 //
 //	go tool pprof http://localhost:6060/debug/pprof/heap
 //
 // Or to look at a 30-second CPU profile:
+// 或者看一下30秒的CPU曲线。
 //
 //	go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
 //
 // Or to look at the goroutine blocking profile, after calling
 // runtime.SetBlockProfileRate in your program:
+// 或者在程序中调用runtime.SetBlockProfileRate后，查看goroutine阻塞配置文件。
 //
 //	go tool pprof http://localhost:6060/debug/pprof/block
 //
 // Or to look at the holders of contended mutexes, after calling
 // runtime.SetMutexProfileFraction in your program:
+// 或者在程序中调用runtime.SetMutexProfileFraction后，查看争用的mutexes的持有者。
 //
 //	go tool pprof http://localhost:6060/debug/pprof/mutex
 //
 // The package also exports a handler that serves execution trace data
 // for the "go tool trace" command. To collect a 5-second execution trace:
+// 该软件包还输出了一个处理程序，为 "go tool trace "命令提供执行跟踪数据。收集5秒的执行跟踪。
 //
 //	wget -O trace.out http://localhost:6060/debug/pprof/trace?seconds=5
 //	go tool trace trace.out
 //
 // To view all available profiles, open http://localhost:6060/debug/pprof/
 // in your browser.
+// 要查看所有可用的资料，请在浏览器中打开http://localhost:6060/debug/pprof/。
 //
 // For a study of the facility in action, visit
+// 如需了解该设施的运行情况，请访问
 //
 //	https://blog.golang.org/2011/06/profiling-go-programs.html
 //
+
 package pprof
 
 import (
@@ -77,6 +98,12 @@ import (
 	"time"
 )
 
+/*
+该包和runtime/pprof命令方式获取到分析结果是一样的，只不过这个包先
+把runtime的那个pprof包装了一层之后以http方式呈现结果
+
+如果代码里引入 import _ "net/http/pprof"，则会自动注册以下路由
+*/
 func init() {
 	http.HandleFunc("/debug/pprof/", Index)
 	http.HandleFunc("/debug/pprof/cmdline", Cmdline)
@@ -88,6 +115,8 @@ func init() {
 // Cmdline responds with the running program's
 // command line, with arguments separated by NUL bytes.
 // The package initialization registers it as /debug/pprof/cmdline.
+// Cmdline用正在运行的程序的命令行进行响应，参数用NUL字节分隔。
+// 包的初始化将其注册为/debug/pprof/cmdline。
 func Cmdline(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
@@ -222,6 +251,7 @@ func Symbol(w http.ResponseWriter, r *http.Request) {
 }
 
 // Handler returns an HTTP handler that serves the named profile.
+// 处理程序返回一个HTTP处理程序，为指定的配置文件服务。
 func Handler(name string) http.Handler {
 	return handler(name)
 }
