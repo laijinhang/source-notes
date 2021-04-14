@@ -146,6 +146,7 @@ var profiles struct {
 }
 
 // 协程信息
+// 报告 goroutines 的使用情况，有哪些goroutine，他们的调用关系是怎么样的
 var goroutineProfile = &Profile{
 	name:  "goroutine",
 	count: countGoroutine,
@@ -172,7 +173,7 @@ var allocsProfile = &Profile{
 	write: writeAlloc,
 }
 
-// 块信息
+// 报告 goroutines 不在运行状态的情况，可以用来分析和查找死锁等性能瓶颈
 var blockProfile = &Profile{
 	name:  "block",
 	count: countBlock,
@@ -552,6 +553,7 @@ func printStackRecord(w io.Writer, stk []uintptr, allFrames bool) {
 // WriteHeapProfile是Lookup("heap").WriteTo(w, 0)的简写。
 // 为了向后兼容，它被保留下来。
 func WriteHeapProfile(w io.Writer) error {
+	// 记录程序的堆栈信息
 	return writeHeap(w, 0)
 }
 
@@ -580,6 +582,7 @@ func writeHeapInternal(w io.Writer, debug int, defaultSampleType string) error {
 	if debug != 0 {
 		// Read mem stats first, so that our other allocations
 		// do not appear in the statistics.
+		// 先读取mem统计，这样我们的其他分配就不会出现在统计中。
 		memStats = new(runtime.MemStats)
 		runtime.ReadMemStats(memStats)
 	}
@@ -603,6 +606,7 @@ func writeHeapInternal(w io.Writer, debug int, defaultSampleType string) error {
 			break
 		}
 		// Profile grew; try again.
+		// Profile增长；再试一次。
 	}
 
 	if debug == 0 {
@@ -815,11 +819,14 @@ func StartCPUProfile(w io.Writer) error {
 		cpu.done = make(chan bool)
 	}
 	// Double-check.
+	// 仔细检查。
 	if cpu.profiling {
+		// cpu profiling正在使用中
 		return fmt.Errorf("cpu profiling already in use")
 	}
 	cpu.profiling = true
 	runtime.SetCPUProfileRate(hz)
+	// 往w中写入数据
 	go profileWriter(w)
 	return nil
 }
@@ -829,12 +836,16 @@ func StartCPUProfile(w io.Writer) error {
 // If profiling is turned off and all the profile data accumulated while it was
 // on has been returned, readProfile returns eof=true.
 // The caller must save the returned data and tags before calling readProfile again.
+// readProfile，由运行时提供，返回下一个二进制CPU剖析堆栈跟踪数据的块，阻塞直到数据可用。
+// 如果剖析被关闭，并且在开启时积累的所有剖析数据都已返回，则readProfile返回eof=true。
+// 调用者必须在再次调用readProfile之前保存返回的数据和标记。
 func readProfile() (data []uint64, tags []unsafe.Pointer, eof bool)
 
 func profileWriter(w io.Writer) {
 	b := newProfileBuilder(w)
 	var err error
 	for {
+		// 100毫秒，0.1秒
 		time.Sleep(100 * time.Millisecond)
 		data, tags, eof := readProfile()
 		if e := b.addCPUData(data, tags); e != nil && err == nil {

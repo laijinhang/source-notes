@@ -53,6 +53,7 @@ var cpuprof cpuProfile
 // SetCPUProfileRate directly.
 func SetCPUProfileRate(hz int) {
 	// Clamp hz to something reasonable.
+	// 将hz设置到合理的位置。
 	if hz < 0 {
 		hz = 0
 	}
