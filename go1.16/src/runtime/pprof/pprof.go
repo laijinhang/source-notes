@@ -139,23 +139,27 @@ type Profile struct {
 }
 
 // profiles records all registered profiles.
+// profiles 记录所有注册的profiles。
 var profiles struct {
 	mu sync.Mutex
 	m  map[string]*Profile
 }
 
+// 协程信息
 var goroutineProfile = &Profile{
 	name:  "goroutine",
 	count: countGoroutine,
 	write: writeGoroutine,
 }
 
+// 线程信息
 var threadcreateProfile = &Profile{
 	name:  "threadcreate",
 	count: countThreadCreate,
 	write: writeThreadCreate,
 }
 
+// 堆信息
 var heapProfile = &Profile{
 	name:  "heap",
 	count: countHeap,
@@ -168,6 +172,7 @@ var allocsProfile = &Profile{
 	write: writeAlloc,
 }
 
+// 块信息
 var blockProfile = &Profile{
 	name:  "block",
 	count: countBlock,
@@ -205,6 +210,12 @@ func unlockProfiles() {
 // separate name spaces for each package.
 // For compatibility with various tools that read pprof data,
 // profile names should not contain spaces.
+// NewProfile用给定的名称创建一个新的配置文件。
+// 如果已经存在一个具有该名称的配置文件，NewProfile就会panic。
+// 传统的做法是使用 "import/path. "前缀来创建。
+// 每一个包都有单独的名称空间。
+// 为了与各种读取pprof数据的工具兼容。
+// 配置文件名称不应包含空格。
 func NewProfile(name string) *Profile {
 	lockProfiles()
 	defer unlockProfiles()
@@ -223,6 +234,7 @@ func NewProfile(name string) *Profile {
 }
 
 // Lookup returns the profile with the given name, or nil if no such profile exists.
+// Lookup返回给定名称的配置文件，如果不存在这样的配置文件，则返回nil。
 func Lookup(name string) *Profile {
 	lockProfiles()
 	defer unlockProfiles()
@@ -245,11 +257,13 @@ func Profiles() []*Profile {
 }
 
 // Name returns this profile's name, which can be passed to Lookup to reobtain the profile.
+// Name 返回这个配置文件的名称，它可以被传递给Lookup来重新获取这个配置文件。
 func (p *Profile) Name() string {
 	return p.name
 }
 
 // Count returns the number of execution stacks currently in the profile.
+// Count 返回当前配置文件中的执行堆栈数量。
 func (p *Profile) Count() int {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -303,6 +317,8 @@ func (p *Profile) Add(value interface{}, skip int) {
 
 // Remove removes the execution stack associated with value from the profile.
 // It is a no-op if the value is not in the profile.
+// Remove从配置文件中删除与value相关联的执行栈。
+// 如果该值不在配置文件中，则为no-op。
 func (p *Profile) Remove(value interface{}) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -402,8 +418,11 @@ func printCountCycleProfile(w io.Writer, countName, cycleName string, scaler fun
 
 // printCountProfile prints a countProfile at the specified debug level.
 // The profile will be in compressed proto format unless debug is nonzero.
+// printCountProfile在指定的debug级别打印一个countProfile。
+// 除非debug为非零，否则配置文件将以压缩的proto格式显示。
 func printCountProfile(w io.Writer, debug int, name string, p countProfile) error {
 	// Build count of each stack.
+	// 建立每个堆栈的计数。
 	var buf bytes.Buffer
 	key := func(stk []uintptr, lbls *labelMap) string {
 		buf.Reset()
@@ -434,6 +453,7 @@ func printCountProfile(w io.Writer, debug int, name string, p countProfile) erro
 
 	if debug > 0 {
 		// Print debug profile in legacy format
+		// 以传统格式打印调试配置文件
 		tw := tabwriter.NewWriter(w, 1, 8, 1, '\t', 0)
 		fmt.Fprintf(tw, "%s profile: total %d\n", name, p.Len())
 		for _, k := range keys {
@@ -444,6 +464,7 @@ func printCountProfile(w io.Writer, debug int, name string, p countProfile) erro
 	}
 
 	// Output profile in protobuf form.
+	// 以protobuf形式输出配置文件。
 	b := newProfileBuilder(w)
 	b.pbValueType(tagProfile_PeriodType, name, "count")
 	b.pb.int64Opt(tagProfile_Period, 1)
@@ -472,6 +493,7 @@ func printCountProfile(w io.Writer, debug int, name string, p countProfile) erro
 }
 
 // keysByCount sorts keys with higher counts first, breaking ties by key string order.
+// keysByCount对计数较高的键进行排序，按键串顺序打通关系。
 type keysByCount struct {
 	keys  []string
 	count map[string]int
@@ -482,14 +504,17 @@ func (x *keysByCount) Swap(i, j int) { x.keys[i], x.keys[j] = x.keys[j], x.keys[
 func (x *keysByCount) Less(i, j int) bool {
 	ki, kj := x.keys[i], x.keys[j]
 	ci, cj := x.count[ki], x.count[kj]
+	// 计数不同，则按计数
 	if ci != cj {
 		return ci > cj
 	}
+	// 计数相同，则按key大小
 	return ki < kj
 }
 
 // printStackRecord prints the function + source line information
 // for a single stack trace.
+// printStackRecord 打印单个堆栈跟踪的函数+源行信息。
 func printStackRecord(w io.Writer, stk []uintptr, allFrames bool) {
 	show := allFrames
 	frames := runtime.CallersFrames(stk)
@@ -522,23 +547,30 @@ func printStackRecord(w io.Writer, stk []uintptr, allFrames bool) {
 
 // WriteHeapProfile is shorthand for Lookup("heap").WriteTo(w, 0).
 // It is preserved for backwards compatibility.
+// 系统配置文件的接口。
+
+// WriteHeapProfile是Lookup("heap").WriteTo(w, 0)的简写。
+// 为了向后兼容，它被保留下来。
 func WriteHeapProfile(w io.Writer) error {
 	return writeHeap(w, 0)
 }
 
 // countHeap returns the number of records in the heap profile.
+// countHeap 返回堆配置文件中的记录数。
 func countHeap() int {
 	n, _ := runtime.MemProfile(nil, true)
 	return n
 }
 
 // writeHeap writes the current runtime heap profile to w.
+// writeHeap将当前运行时的堆配置文件写入w。
 func writeHeap(w io.Writer, debug int) error {
 	return writeHeapInternal(w, debug, "")
 }
 
 // writeAlloc writes the current runtime heap profile to w
 // with the total allocation space as the default sample type.
+// writeAlloc将当前运行时的堆配置文件写入w，总分配空间为默认样本类型。
 func writeAlloc(w io.Writer, debug int) error {
 	return writeHeapInternal(w, debug, "alloc_space")
 }
@@ -654,12 +686,14 @@ func writeHeapInternal(w io.Writer, debug int, defaultSampleType string) error {
 }
 
 // countThreadCreate returns the size of the current ThreadCreateProfile.
+// countThreadCreate返回当前ThreadCreateProfile的大小。
 func countThreadCreate() int {
 	n, _ := runtime.ThreadCreateProfile(nil)
 	return n
 }
 
 // writeThreadCreate writes the current runtime ThreadCreateProfile to w.
+// writeThreadCreate将当前运行时的ThreadCreateProfile写入w。
 func writeThreadCreate(w io.Writer, debug int) error {
 	// Until https://golang.org/issues/6104 is addressed, wrap
 	// ThreadCreateProfile because there's no point in tracking labels when we
@@ -670,14 +704,17 @@ func writeThreadCreate(w io.Writer, debug int) error {
 }
 
 // countGoroutine returns the number of goroutines.
+// countGoroutine 返回 goroutine 的数量。
 func countGoroutine() int {
 	return runtime.NumGoroutine()
 }
 
 // runtime_goroutineProfileWithLabels is defined in runtime/mprof.go
+// runtime_goroutineProfileWithLabels定义在runtime/mprof.go中。
 func runtime_goroutineProfileWithLabels(p []runtime.StackRecord, labels []unsafe.Pointer) (n int, ok bool)
 
 // writeGoroutine writes the current runtime GoroutineProfile to w.
+// writeGoroutine将当前运行时的GoroutineProfile写入w。
 func writeGoroutine(w io.Writer, debug int) error {
 	if debug >= 2 {
 		return writeGoroutineStacks(w)
@@ -698,6 +735,7 @@ func writeGoroutineStacks(w io.Writer) error {
 		}
 		if len(buf) >= 64<<20 {
 			// Filled 64 MB - stop there.
+			// 填满64MB--在这边停止。
 			break
 		}
 		buf = make([]byte, 2*len(buf))
