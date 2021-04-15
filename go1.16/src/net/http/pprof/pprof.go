@@ -434,6 +434,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// 将profiles结果写入到w中
 func indexTmplExecute(w io.Writer, profiles []profileEntry) error {
 	var b bytes.Buffer
 	b.WriteString(`<html>

@@ -147,6 +147,7 @@ var profiles struct {
 
 // 协程信息
 // 报告 goroutines 的使用情况，有哪些goroutine，他们的调用关系是怎么样的
+// 当前协程的所有堆栈信息
 var goroutineProfile = &Profile{
 	name:  "goroutine",
 	count: countGoroutine,
@@ -154,6 +155,7 @@ var goroutineProfile = &Profile{
 }
 
 // 线程信息
+// 系统线程创建情况的采样信息
 var threadcreateProfile = &Profile{
 	name:  "threadcreate",
 	count: countThreadCreate,
@@ -161,25 +163,28 @@ var threadcreateProfile = &Profile{
 }
 
 // 堆信息
+// 堆上内存使用情况的采样信息
 var heapProfile = &Profile{
 	name:  "heap",
 	count: countHeap,
 	write: writeHeap,
 }
 
+// 内存分配情况的采样信息
 var allocsProfile = &Profile{
 	name:  "allocs",
 	count: countHeap, // identical to heap profile
 	write: writeAlloc,
 }
 
-// 报告 goroutines 不在运行状态的情况，可以用来分析和查找死锁等性能瓶颈
+// 报告 goroutines 不在运行状态（阻塞）的情况，可以用来分析和查找死锁等性能瓶颈
 var blockProfile = &Profile{
 	name:  "block",
 	count: countBlock,
 	write: writeBlock,
 }
 
+// 锁争用情况的采样信息
 var mutexProfile = &Profile{
 	name:  "mutex",
 	count: countMutex,
@@ -793,6 +798,9 @@ var cpu struct {
 // StartCPUProfile enables CPU profiling for the current process.
 // While profiling, the profile will be buffered and written to w.
 // StartCPUProfile returns an error if profiling is already enabled.
+// StartCPUProfile 启用当前进程的CPU剖析。
+// 在profiling过程中，配置文件将被缓冲并写入w。
+// 如果profiling已经启用，StartCPUProfile将返回一个错误。
 //
 // On Unix-like systems, StartCPUProfile does not work by default for
 // Go code built with -buildmode=c-archive or -buildmode=c-shared.
@@ -801,6 +809,10 @@ var cpu struct {
 // not to the one used by Go. To make it work, call os/signal.Notify
 // for syscall.SIGPROF, but note that doing so may break any profiling
 // being done by the main program.
+// 在类似Unix的系统中，对于使用-buildmode=c-archive或-buildmode=c-shared构建的Go代码，StartCPUProfile默认不工作。
+// StartCPUProfile依赖于SIGPROF信号，但该信号将被传递给主程序的SIGPROF信号处理程序（如果有的话），
+// 而不是Go使用的信号处理程序。为了使它工作，调用os/signal.Notify来获取syscall.SIGPROF，但是要注意，
+// 这样做可能会破坏主程序正在进行的任何分析。
 func StartCPUProfile(w io.Writer) error {
 	// The runtime routines allow a variable profiling rate,
 	// but in practice operating systems cannot trigger signals
