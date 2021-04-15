@@ -14,18 +14,29 @@ import (
 
 var buildVersion = sys.TheVersion
 
+/*
+说明：这边有一部分源码分析是直接参考这位大佬的博客文章https://www.luozhiyun.com/archives/448
+*/
+
 // set using cmd/go/internal/modload.ModInfoProg
+// 使用cmd/go/internal/modload.ModInfoProg 设置
 var modinfo string
 
 // Goroutine scheduler
+// Goroutine调度器
 // The scheduler's job is to distribute ready-to-run goroutines over worker threads.
+// 调度器的工作是将准备运行的goroutine分配到工作线程上。
 //
 // The main concepts are:
+// 主要概念是：
 // G - goroutine.
+// G - 协程。
 // M - worker thread, or machine.
+// M - 工作线程或machine。
 // P - processor, a resource that is required to execute Go code.
 //     M must have an associated P to execute Go code, however it can be
 //     blocked or in a syscall w/o an associated P.
+// P - processor，负责执行Go代码，每个M必须有一个关联的P取执行Go代码
 //
 // Design doc at https://golang.org/s/go11sched.
 
