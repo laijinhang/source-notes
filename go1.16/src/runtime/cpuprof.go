@@ -36,9 +36,16 @@ type cpuProfile struct {
 	// 300 words per second.
 	// Hopefully a normal Go thread will get the profiling
 	// signal at least once every few seconds.
+	// extra保存了addNonGo中积累的额外堆栈，这些堆栈与非Go创建的线程
+	// 上到达的profiling信号相对应。这些堆栈会在下一次正常的线程获取信号
+	// 处理程序时写入日志。假设堆栈每个字是2个字（我们不会从这些线程中得
+	// 到完整的回溯），再加上一个字大小的帧，100赫兹的profiling将每秒产生300个
+	// 字。希望一个正常的线程至少每隔几秒就能得到一次profiling信号。
 	extra      [1000]uintptr
 	numExtra   int
+	// 额外空间满了而损失的帧数
 	lostExtra  uint64 // count of frames lost because extra is full
+	// 因为在mips/arm上的atomic64而丢失的帧数；以racily方式更新。
 	lostAtomic uint64 // count of frames lost because of being in atomic64 on mips/arm; updated racily
 }
 
@@ -47,6 +54,9 @@ var cpuprof cpuProfile
 // SetCPUProfileRate sets the CPU profiling rate to hz samples per second.
 // If hz <= 0, SetCPUProfileRate turns off profiling.
 // If the profiler is on, the rate cannot be changed without first turning it off.
+// SetCPUProfileRate将CPU profiling率设置为hz每秒的采样率。
+// 如果hz <= 0，SetCPUProfileRate将关闭profiling。
+// 如果profiling开启，如果不先关闭profiling，就不能改变速率。
 //
 // Most clients should use the runtime/pprof package or
 // the testing package's -test.cpuprofile flag instead of calling

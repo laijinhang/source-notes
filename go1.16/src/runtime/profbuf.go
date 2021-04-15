@@ -13,6 +13,9 @@ import (
 // safe for concurrent use by one reader and one writer.
 // The writer may be a signal handler running without a user g.
 // The reader is assumed to be a user g.
+// profBuf是一个用于profiling事件的无锁缓冲区，可供一个读取器和
+// 一个写入器同时使用。写入者可以是一个不需要用户g就能运行的信号处
+// 理程序，读取者被假定为用户g。
 //
 // Each logged event corresponds to a fixed size header, a list of
 // uintptrs (typically a stack), and exactly one unsafe.Pointer tag.
@@ -22,6 +25,11 @@ import (
 // words: the value 2+hdrsize+len(stk), then the time of the event, then
 // hdrsize words giving the fixed-size header, and then len(stk) words
 // for the stack.
+// 每个记录的事件对应一个固定大小的头、一个uintptrs列表（通常是一个堆栈）和正好一个
+// unsafe.Pointer标签。 头和uintptrs存储在循环缓冲区数据中，标签存储在循环缓冲区
+// 标签中，并行运行。在循环缓冲区数据中，每个事件需要2+hdrsize+len(stk)字：值
+// 2+hdrsize+len(stk)，然后是事件的时间，然后是给出固定大小的头的hdrsize字，
+// 然后是堆栈的len(stk)字。
 //
 // The current effective offsets into the tags and data circular buffers
 // for reading and writing are stored in the high 30 and low 32 bits of r and w.
@@ -87,26 +95,31 @@ import (
 //
 type profBuf struct {
 	// accessed atomically
+	// 原子访问
 	r, w         profAtomic
 	overflow     uint64
 	overflowTime uint64
 	eof          uint32
 
 	// immutable (excluding slice content)
+	// 不可变
 	hdrsize uintptr
 	data    []uint64
 	tags    []unsafe.Pointer
 
 	// owned by reader
+	//由读者拥有
 	rNext       profIndex
-	overflowBuf []uint64 // for use by reader to return overflow record
+	overflowBuf []uint64 // for use by reader to return overflow record，供读取器使用，返回溢出记录
 	wait        note
 }
 
 // A profAtomic is the atomically-accessed word holding a profIndex.
+// profAtomic是指持有profIndex的原子访问字。
 type profAtomic uint64
 
 // A profIndex is the packet tag and data counts and flags bits, described above.
+// profIndex就是上面所说的数据包标签和数据计数及标志位。
 type profIndex uint64
 
 const (
@@ -205,6 +218,7 @@ func (b *profBuf) incrementOverflow(now int64) {
 
 // newProfBuf returns a new profiling buffer with room for
 // a header of hdrsize words and a buffer of at least bufwords words.
+// newProfBuf返回一个新的profiling缓冲区，该缓冲区有hdrsize字头和至少bufwords字头的空间。
 func newProfBuf(hdrsize, bufwords, tags int) *profBuf {
 	if min := 2 + hdrsize + 1; bufwords < min {
 		bufwords = min
@@ -214,13 +228,18 @@ func newProfBuf(hdrsize, bufwords, tags int) *profBuf {
 	// worry about uint32 wraparound changing the effective position
 	// within the buffers. We store 30 bits of count; limiting to 28
 	// gives us some room for intermediate calculations.
+	// 缓冲区大小必须是2的幂次方，这样我们就不用担心uint32 wraparound会改变缓冲区内
+	// 的有效位置。我们存储了30位的count，限制在28位可以给我们一些中间计算的空间。
 	if bufwords >= 1<<28 || tags >= 1<<28 {
+		// newProfBuf：缓冲区太大。
 		throw("newProfBuf: buffer too large")
 	}
+	// 下面4行代码是将bufwords值转换成 >= bufwords的 2的幂次方
 	var i int
 	for i = 1; i < bufwords; i <<= 1 {
 	}
 	bufwords = i
+	// 下面3行代码是将tags值转换成 >= tags的 2的幂次方
 	for i = 1; i < tags; i <<= 1 {
 	}
 	tags = i

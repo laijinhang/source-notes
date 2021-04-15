@@ -138,11 +138,14 @@ func freemcache(c *mcache) {
 }
 
 // getMCache is a convenience function which tries to obtain an mcache.
+// getMCache是一个尝试获取mcache的方便函数。
 //
 // Returns nil if we're not bootstrapping or we don't have a P. The caller's
 // P must not change, so we must be in a non-preemptible state.
+// 如果我们没有进行引导或者没有P，则返回nil。调用者的P不能改变，所以我们必须处于不可抢占的状态。
 func getMCache() *mcache {
 	// Grab the mcache, since that's where stats live.
+	// 抓住mcache，因为那是统计的地方。
 	pp := getg().m.p.ptr()
 	var c *mcache
 	if pp == nil {
@@ -150,6 +153,9 @@ func getMCache() *mcache {
 		// in which case we use mcache0, which is set in mallocinit.
 		// mcache0 is cleared when bootstrapping is complete,
 		// by procresize.
+		// 我们在bootstrapping的时候会在没有P的情况下被调用，这种情况下我们使用
+		// mcache0，mcache0是在mallocinit中设置的，当bootstrapping完成后，
+		// mcache0会被procresize清空。
 		c = mcache0
 	} else {
 		c = pp.mcache
