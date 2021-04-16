@@ -138,6 +138,7 @@ const (
 // Stacks are assigned an order according to size.
 //     order = log_2(size/FixedStack)
 // There is a free list for each order.
+// 全局的栈缓存，分配 32KB 以下内存
 var stackpool [_NumStackOrders]struct {
 	item stackpoolItem
 	_    [cpu.CacheLinePadSize - unsafe.Sizeof(stackpoolItem{})%cpu.CacheLinePadSize]byte
@@ -150,11 +151,16 @@ type stackpoolItem struct {
 }
 
 // Global pool of large stack spans.
+// 全局的栈缓存，分配 32KB 以上内存
 var stackLarge struct {
 	lock mutex
 	free [heapAddrBits - pageShift]mSpanList // free lists by log_2(s.npages)
 }
 
+// 初始化 stackpool/stackLarge 全局变量
+/*
+stackinit在调用 runtime.schedinit 中被初始化，在运行 runtime.newproc 前执行
+ */
 func stackinit() {
 	if _StackCacheSize&_PageMask != 0 {
 		throw("cache size must be a multiple of page size")
@@ -318,6 +324,12 @@ func stackcache_clear(c *mcache) {
 	}
 }
 
+/*
+stackalloc 会根据传入的参数 n 的大小进行分配，在 Linux 上如果 n 小于 32768 bytes，也就是 32KB ，那么会进入到小栈的分配逻辑中。
+
+小栈指大小为 2K/4K/8K/16K 的栈，在分配的时候，会根据大小计算不同的 order 值，如果栈大小是 2K，那么 order 就是 0，4K 对应 order
+就是 1，以此类推。这样一方面可以减少不同 Goroutine 获取不同栈大小的锁冲突，另一方面可以预先缓存对应大小的 span ，以便快速获取。
+ */
 // stackalloc allocates an n byte stack.
 //
 // stackalloc must run on the system stack because it uses per-P
@@ -332,6 +344,7 @@ func stackalloc(n uint32) stack {
 	if thisg != thisg.m.g0 {
 		throw("stackalloc not on scheduler stack")
 	}
+	// 如果n不是2的幂次方，则n&(n-1) != 0
 	if n&(n-1) != 0 {
 		throw("stack size not a power of 2")
 	}
@@ -352,32 +365,43 @@ func stackalloc(n uint32) stack {
 	// If we need a stack of a bigger size, we fall back on allocating
 	// a dedicated span.
 	var v unsafe.Pointer
+	// 在 Linux 上，_FixedStack = 2048、_NumStackOrders = 4、_StackCacheSize = 32768
+	// 如果申请的栈空间小于 32KB
 	if n < _FixedStack<<_NumStackOrders && n < _StackCacheSize {
 		order := uint8(0)
 		n2 := n
+		// 大于 2048，那么 for 循环 将 n2 除于 2，直到 n 小于等于 2048
 		for n2 > _FixedStack {
+			// order 表示除了多少次
 			order++
 			n2 >>= 1
 		}
 		var x gclinkptr
+		// preemptoff != "", 在 GC 的时候会进行设置,表示如果在 GC 那么从 stackpool 分配
+		// thisg.m.p = 0 会在系统调用和 改变 P 的个数的时候调用,如果发生,那么也从 stackpool 分配
 		if stackNoCache != 0 || thisg.m.p == 0 || thisg.m.preemptoff != "" {
 			// thisg.m.p == 0 can happen in the guts of exitsyscall
 			// or procresize. Just get a stack from the global pool.
 			// Also don't touch stackcache during gc
 			// as it's flushed concurrently.
 			lock(&stackpool[order].item.mu)
+			// 从 stackpool 分配
 			x = stackpoolalloc(order)
 			unlock(&stackpool[order].item.mu)
 		} else {
+			// 从 P 的 mcache 分配内存
 			c := thisg.m.p.ptr().mcache
 			x = c.stackcache[order].list
 			if x.ptr() == nil {
+				// 从堆上申请一片内存空间填充到stackcache中
 				stackcacherefill(c, order)
 				x = c.stackcache[order].list
 			}
+			// 移除链表的头节点
 			c.stackcache[order].list = x.ptr().next
 			c.stackcache[order].size -= uintptr(n)
 		}
+		// 获取到分配的span内存块
 		v = unsafe.Pointer(x)
 	} else {
 		var s *mspan
@@ -915,6 +939,10 @@ func copystack(gp *g, newsize uintptr) {
 }
 
 // round x up to a power of 2.
+// 四舍五入到2的幂次方。
+/*
+传入一个x，返回一个大于x的值（2^n，n为整数）
+ */
 func round2(x int32) int32 {
 	s := uint(0)
 	for 1<<s < x {

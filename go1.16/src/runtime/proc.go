@@ -4144,17 +4144,30 @@ func syscall_runtime_AfterExec() {
 }
 
 // Allocate a new g, with a stack big enough for stacksize bytes.
+// 分配一个新的g，堆栈足够大，足够堆栈大小的字节。
+/*
+在调用 malg的时候会将传入的stacksize（内存大小）加上一个 _StackSystem值 预留给系统调用使用，
+round2函数会将传入的值转化成大于传入值的2的指数。然后会切换到 G0 执行 stackalloc函数进行栈内存分配。
+
+分配完毕之后会设置stackguard0为 stack.lo + _StackGuard，作为判断是否需要进行栈扩容使用
+ */
 func malg(stacksize int32) *g {
+	// 创建 G
 	newg := new(g)
 	if stacksize >= 0 {
+		// 这里会在 stacksize 的基础上为每个栈预留系统调用所需的内存大小 _StackSystem
+		// 在 Linux/Darwin 上（ _StackSystem == 0 ）本行不改变 stacksize 的大小
 		stacksize = round2(_StackSystem + stacksize)
+		// 切换到 G0 为 newg 初始化栈内存
 		systemstack(func() {
 			newg.stack = stackalloc(uint32(stacksize))
 		})
+		// 设置 stackguard0，用来判断是否要进行栈扩容
 		newg.stackguard0 = newg.stack.lo + _StackGuard
 		newg.stackguard1 = ^uintptr(0)
 		// Clear the bottom word of the stack. We record g
 		// there on gsignal stack during VDSO on ARM and ARM64.
+		// 清理堆栈的底部字。在ARM和ARM64上的VDSO期间，我们将g记录在gsignal栈中。
 		*(*uintptr)(unsafe.Pointer(newg.stack.lo)) = 0
 	}
 	return newg
