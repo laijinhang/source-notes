@@ -367,6 +367,12 @@ func stackalloc(n uint32) stack {
 	var v unsafe.Pointer
 	// 在 Linux 上，_FixedStack = 2048、_NumStackOrders = 4、_StackCacheSize = 32768
 	// 如果申请的栈空间小于 32KB
+	/*
+	_FixedStack：2048 => 2KB
+	_NumStackOrders：4
+	_FixedStack << _NumStackOrders：32768 => 32KB
+	_StackCacheSize：32768 => 32KB
+	 */
 	if n < _FixedStack<<_NumStackOrders && n < _StackCacheSize {
 		order := uint8(0)
 		n2 := n
