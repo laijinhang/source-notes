@@ -11,11 +11,13 @@ import (
 
 // ReadDirFS is the interface implemented by a file system
 // that provides an optimized implementation of ReadDir.
+// ReadDirFS是由一个文件系统实现的接口，它提供了ReadDir的优化实现。
 type ReadDirFS interface {
 	FS
 
 	// ReadDir reads the named directory
 	// and returns a list of directory entries sorted by filename.
+	// ReadDir 读取命名的目录，并返回一个按文件名排序的目录条目列表。
 	ReadDir(name string) ([]DirEntry, error)
 }
 
@@ -25,6 +27,13 @@ type ReadDirFS interface {
 // If fs implements ReadDirFS, ReadDir calls fs.ReadDir.
 // Otherwise ReadDir calls fs.Open and uses ReadDir and Close
 // on the returned file.
+
+// ReadDir 读取命名的目录，并返回一个按文件名排序的目录条目列表。
+//
+// 如果fs实现了ReadDirFS，ReadDir调用fs.ReadDir。 否则ReadDir调用fs.Open并对返回的文件使用ReadDir和Close。
+/*
+这个ReadDirFS和GlobFS看着很类似，一样实现方式的两种不同功能的内容
+*/
 func ReadDir(fsys FS, name string) ([]DirEntry, error) {
 	if fsys, ok := fsys.(ReadDirFS); ok {
 		return fsys.ReadDir(name)
