@@ -35,6 +35,10 @@ type ReadDirFS interface {
 这个ReadDirFS和GlobFS看着很类似，一样实现方式的两种不同功能的内容
 */
 func ReadDir(fsys FS, name string) ([]DirEntry, error) {
+	/*
+		如果fsys实现了ReadDirFS，则直接调用实现了的ReadDir方法
+		如果fsys没有实现ReadDirFS，则使用该方法里面设置的内容进行
+	*/
 	if fsys, ok := fsys.(ReadDirFS); ok {
 		return fsys.ReadDir(name)
 	}
@@ -50,6 +54,7 @@ func ReadDir(fsys FS, name string) ([]DirEntry, error) {
 		return nil, &PathError{Op: "readdir", Path: name, Err: errors.New("not implemented")}
 	}
 
+	// 读取全部目录
 	list, err := dir.ReadDir(-1)
 	sort.Slice(list, func(i, j int) bool { return list[i].Name() < list[j].Name() })
 	return list, err
