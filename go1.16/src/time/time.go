@@ -1048,9 +1048,11 @@ func daysSinceEpoch(year int) uint64 {
 }
 
 // Provided by package runtime.
+//由包runtime提供。
 func now() (sec int64, nsec int32, mono int64)
 
 // runtimeNano returns the current value of the runtime clock in nanoseconds.
+// runtimeNano 返回运行时时钟的当前值，单位为纳秒。
 //go:linkname runtimeNano runtime.nanotime
 func runtimeNano() int64
 
@@ -1063,6 +1065,7 @@ func runtimeNano() int64
 var startNano int64 = runtimeNano() - 1
 
 // Now returns the current local time.
+// 现在返回当前的本地时间。
 func Now() Time {
 	sec, nsec, mono := now()
 	mono -= startNano

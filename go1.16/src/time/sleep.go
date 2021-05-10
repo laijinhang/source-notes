@@ -6,15 +6,19 @@ package time
 
 // Sleep pauses the current goroutine for at least the duration d.
 // A negative or zero duration causes Sleep to return immediately.
+// Sleep会让当前的goroutine暂停，至少持续时间为d。
+// 一个负的或零的持续时间会使Sleep立即返回。
 func Sleep(d Duration)
 
 // Interface to timers implemented in package runtime.
 // Must be in sync with ../runtime/time.go:/^type timer
+// 在包runtime中实现的定时器的接口。
+// 必须与./runtime/time.go:/^type timer同步。
 type runtimeTimer struct {
 	pp       uintptr
 	when     int64
 	period   int64
-	f        func(interface{}, uintptr) // NOTE: must not be closure
+	f        func(interface{}, uintptr) // NOTE: must not be closure，注意：不得关闭
 	arg      interface{}
 	seq      uintptr
 	nextwhen int64
@@ -25,6 +29,9 @@ type runtimeTimer struct {
 // It returns what the time will be, in nanoseconds, Duration d in the future.
 // If d is negative, it is ignored. If the returned value would be less than
 // zero because of an overflow, MaxInt64 is returned.
+// when是一个辅助函数，用于设置运行时间定时器的'when'字段。
+// 它返回未来的时间，以纳秒为单位，时间为d。如果d为负数，则被忽略。
+// 如果由于溢出，返回值将小于0，则返回MaxInt64。
 func when(d Duration) int64 {
 	if d <= 0 {
 		return runtimeNano()
@@ -47,6 +54,10 @@ func modTimer(t *runtimeTimer, when, period int64, f func(interface{}, uintptr),
 // When the Timer expires, the current time will be sent on C,
 // unless the Timer was created by AfterFunc.
 // A Timer must be created with NewTimer or AfterFunc.
+// 定时器类型代表一个单一的事件。
+// 当定时器过期时，当前时间将被发送到C上，
+// 除非该定时器是由AfterFunc创建的。
+// 定时器必须用NewTimer或AfterFunc创建。
 type Timer struct {
 	C <-chan Time
 	r runtimeTimer
@@ -57,6 +68,9 @@ type Timer struct {
 // expired or been stopped.
 // Stop does not close the channel, to prevent a read from the channel succeeding
 // incorrectly.
+// 如果调用停止定时器，则返回true；
+// 如果定时器已经过期或被停止，则返回false。
+// 不关闭通道，以防止从通道中的读取错误地成功。
 //
 // To ensure the channel is empty after a call to Stop, check the
 // return value and drain the channel.
@@ -83,6 +97,7 @@ func (t *Timer) Stop() bool {
 
 // NewTimer creates a new Timer that will send
 // the current time on its channel after at least duration d.
+// NewTimer创建一个新的Timer，它将在至少持续时间d之后在其通道上发送当前时间。
 func NewTimer(d Duration) *Timer {
 	c := make(chan Time, 1)
 	t := &Timer{

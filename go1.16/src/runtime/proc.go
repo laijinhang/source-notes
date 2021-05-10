@@ -848,16 +848,21 @@ func fastrandinit() {
 }
 
 // Mark gp ready to run.
+// 标记gp准备运行。
 func ready(gp *g, traceskip int, next bool) {
 	if trace.enabled {
 		traceGoUnpark(gp, traceskip)
 	}
 
+	// 读取协程的状态
 	status := readgstatus(gp)
 
 	// Mark runnable.
+	// 标记可运行。
 	_g_ := getg()
+	// 禁用抢占，因为它可以在本地var中持有p
 	mp := acquirem() // disable preemption because it can be holding p in a local var
+	// 如果协程的状态不是阻塞状态
 	if status&^_Gscan != _Gwaiting {
 		dumpgstatus(gp)
 		throw("bad g->status in ready")
@@ -4150,7 +4155,7 @@ func syscall_runtime_AfterExec() {
 round2函数会将传入的值转化成大于传入值的2的指数。然后会切换到 G0 执行 stackalloc函数进行栈内存分配。
 
 分配完毕之后会设置stackguard0为 stack.lo + _StackGuard，作为判断是否需要进行栈扩容使用
- */
+*/
 func malg(stacksize int32) *g {
 	// 创建 G
 	newg := new(g)
@@ -6014,6 +6019,7 @@ func pidleget() *p {
 	_p_ := sched.pidle.ptr()
 	if _p_ != nil {
 		// Timer may get added at any time now.
+		// 计时器可以在任何时候被添加到现在。
 		timerpMask.set(_p_.id)
 		idlepMask.clear(_p_.id)
 		sched.pidle = _p_.link
@@ -6024,6 +6030,8 @@ func pidleget() *p {
 
 // runqempty reports whether _p_ has no Gs on its local run queue.
 // It never returns true spuriously.
+// runqempty报告_p_在其本地运行队列中是否没有G。
+// 它不会虚假地返回true。
 func runqempty(_p_ *p) bool {
 	// Defend against a race where 1) _p_ has G1 in runqnext but runqhead == runqtail,
 	// 2) runqput on _p_ kicks G1 to the runq, 3) runqget on _p_ empties runqnext.
@@ -6055,6 +6063,11 @@ const randomizeScheduler = raceenabled
 // If next is true, runqput puts g in the _p_.runnext slot.
 // If the run queue is full, runnext puts g on the global queue.
 // Executed only by the owner P.
+// runqput试图把g放到本地可运行队列中。
+// 如果next为false，runqput将g添加到可运行队列的尾部。
+// 如果next为真，runqput将g放入_p_.runnext槽中。
+// 如果运行队列已满，runnext将g放到全局队列中。
+// 只由所有者P执行。
 func runqput(_p_ *p, gp *g, next bool) {
 	if randomizeScheduler && next && fastrand()%2 == 0 {
 		next = false
