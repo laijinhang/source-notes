@@ -99,7 +99,7 @@ type Rlimit struct {
 type _Gid_t uint32
 
 type Stat_t struct {
-	Dev       uint64
+	Dev       uint64 // 记录磁盘/设备ID
 	Ino       uint64
 	Nlink     uint64
 	Mode      uint32

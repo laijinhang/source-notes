@@ -516,6 +516,8 @@ func loadTzinfo(name string, source string) ([]byte, error) {
 // the specified sources. See loadTzinfo for a list of supported sources.
 // The first timezone data matching the given name that is successfully loaded
 // and parsed is returned as a Location.
+// loadLocation从指定的来源之一返回具有给定名称的Location。参见loadTzinfo获取支持的来源列表。
+// 匹配给定名称的第一个时区数据被成功加载和解析，并作为一个Location返回。
 func loadLocation(name string, sources []string) (z *Location, firstErr error) {
 	for _, source := range sources {
 		var zoneData, err = loadTzinfo(name, source)

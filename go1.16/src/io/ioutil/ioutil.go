@@ -53,8 +53,13 @@ func ReadFile(filename string) ([]byte, error) {
 // WriteFile writes data to a file named by filename.
 // If the file does not exist, WriteFile creates it with permissions perm
 // (before umask); otherwise WriteFile truncates it before writing, without changing permissions.
+// WriteFile 将数据写入一个以文件名命名的文件。
+// 如果该文件不存在，WriteFile 将以权限 perm
+// (在 umask 之前) 创建它；否则 WriteFile
+// 将在写入前截断它，而不改变权限。
 //
 // As of Go 1.16, this function simply calls os.WriteFile.
+// 从 Go 1.16 开始，这个函数只是调用 os.WriteFile。
 func WriteFile(filename string, data []byte, perm fs.FileMode) error {
 	return os.WriteFile(filename, data, perm)
 }
