@@ -6037,6 +6037,11 @@ func runqempty(_p_ *p) bool {
 	// 2) runqput on _p_ kicks G1 to the runq, 3) runqget on _p_ empties runqnext.
 	// Simply observing that runqhead == runqtail and then observing that runqnext == nil
 	// does not mean the queue is empty.
+	// 抵御这样的race：
+	// 1）_p_在runqnext中有G1，但runqhead == runqtail，
+	// 2）_p_上的runqput将G1踢到runq中，
+	// 3）_p_上的runqget清空runqnext。
+	// 仅仅观察到runqhead == runqtail，然后观察到runqnext == nil并不意味着队列是空的。
 	for {
 		head := atomic.Load(&_p_.runqhead)
 		tail := atomic.Load(&_p_.runqtail)
@@ -6073,6 +6078,8 @@ func runqput(_p_ *p, gp *g, next bool) {
 		next = false
 	}
 
+	// 判断是否将新增的G放入到当前P的runnext
+	// 后续将被替换出来的G放到本地G队列的尾部
 	if next {
 	retryNext:
 		// 将 G 放入到 runnext 中作为下一个处理器执行的任务
@@ -6089,6 +6096,7 @@ func runqput(_p_ *p, gp *g, next bool) {
 	}
 
 retry:
+	// atomic.LoadAcq 获取上次 atomic.CaSRel 的 _p_.runqhead 的值
 	h := atomic.LoadAcq(&_p_.runqhead) // load-acquire, synchronize with consumers
 	t := _p_.runqtail
 	// 放入到 P 本地运行队列中
@@ -6097,20 +6105,24 @@ retry:
 		atomic.StoreRel(&_p_.runqtail, t+1) // store-release, makes the item available for consumption
 		return
 	}
-	// P 本地列表放不了，放入全局的运行队列中
+	// P 本地列表放不了，则将当前P本地可运行队列的一半放入全局的运行队列中
 	if runqputslow(_p_, gp, h, t) {
 		return
 	}
 	// the queue is not full, now the put above must succeed
+	// 队列没有满，现在上面的put必须成功。
 	goto retry
 }
 
 // Put g and a batch of work from local runnable queue on global queue.
 // Executed only by the owner P.
+// 把g和本地可运行队列中的一批工作放到全局队列中。只由所有者P执行。
 func runqputslow(_p_ *p, gp *g, h, t uint32) bool {
+	// 这里的长度取的是p本地可运行队列总长的一半 +1，即 256/2+1
 	var batch [len(_p_.runq)/2 + 1]*g
 
 	// First, grab a batch from local queue.
+	// 首先，从本地队列中抓取一个批次。
 	n := t - h
 	n = n / 2
 	if n != uint32(len(_p_.runq)/2) {
