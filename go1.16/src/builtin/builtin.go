@@ -185,6 +185,14 @@ func delete(m map[Type]Type1, key Type)
 // For some arguments, such as a string literal or a simple array expression, the
 // result can be a constant. See the Go language specification's "Length and
 // capacity" section for details.
+// len内置函数根据v的类型，返回v的长度
+// 数组：v中元素的数量
+// 指向数组的指针：*v中的元素数（即使v为nil）
+// 切片或map：v中的元素数；如果v为nil，len(v)为零
+// 通道：通道缓冲区中未读的元素的个数；如果v为nil，len(v)为零
+//
+// 对于某些参数，如字符串字面意义或简单的数组表达式，其结果可以是一个常数。
+// 详见Go语言规范的 "长度和容量 "部分。
 func len(v Type) int
 
 // The cap built-in function returns the capacity of v, according to its type:

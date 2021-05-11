@@ -32,9 +32,9 @@ type timer struct {
 	//
 	// when must be positive on an active timer.
 	// 当在一个活动的定时器when必须是正数。
-	when   int64
+	when   int64 // timer触发的绝对时间。计算方式是把当前时间加上延迟时间
 	period int64
-	f      func(interface{}, uintptr)
+	f      func(interface{}, uintptr) // f是timer触发时，调用的callback
 	arg    interface{}
 	seq    uintptr
 
@@ -266,14 +266,18 @@ func startTimer(t *timer) {
 
 // stopTimer stops a timer.
 // It reports whether t was stopped before being run.
+// stopTimer 停止一个定时器。
+// 它报告t在被运行之前是否被停止。
 //go:linkname stopTimer time.stopTimer
 func stopTimer(t *timer) bool {
 	return deltimer(t)
 }
 
 // resetTimer resets an inactive timer, adding it to the heap.
+// resetTimer重置一个不活动的定时器，将其加入堆中。
 //go:linkname resetTimer time.resetTimer
 // Reports whether the timer was modified before it was run.
+// 报告定时器在运行前是否被修改。
 func resetTimer(t *timer, when int64) bool {
 	if raceenabled {
 		racerelease(unsafe.Pointer(t))
@@ -282,6 +286,7 @@ func resetTimer(t *timer, when int64) bool {
 }
 
 // modTimer modifies an existing timer.
+// modTimer修改了一个现有的定时器。
 //go:linkname modTimer time.modTimer
 func modTimer(t *timer, when, period int64, f func(interface{}, uintptr), arg interface{}, seq uintptr) {
 	modtimer(t, when, period, f, arg, seq)
@@ -335,9 +340,12 @@ func addtimer(t *timer) {
 
 // doaddtimer adds t to the current P's heap.
 // The caller must have locked the timers for pp.
+// doaddtimer将t添加到当前P的堆中。
+// 调用者必须已经锁定了pp的定时器。
 func doaddtimer(pp *p, t *timer) {
 	// Timers rely on the network poller, so make sure the poller
 	// has started.
+	// 计时器依赖于网络投票器，所以要确保投票器已经启动。
 	if netpollInited == 0 {
 		netpollGenericInit()
 	}
@@ -402,18 +410,22 @@ func deltimer(t *timer) bool {
 			}
 		case timerDeleted, timerRemoving, timerRemoved:
 			// Timer was already run.
+			// 计时器已经运行了。
 			return false
 		case timerRunning, timerMoving:
 			// The timer is being run or moved, by a different P.
 			// Wait for it to complete.
+			// 计时器正在运行或移动，由不同的P来完成，等待它完成。
 			osyield()
 		case timerNoStatus:
 			// Removing timer that was never added or
 			// has already been run. Also see issue 21874.
+			// 删除从未添加过或已经运行过的计时器。也请看问题21874。
 			return false
 		case timerModifying:
 			// Simultaneous calls to deltimer and modtimer.
 			// Wait for the other call to complete.
+			// 同时调用deltimer和modtimer。 等待另一个调用完成。
 			osyield()
 		default:
 			badTimer()

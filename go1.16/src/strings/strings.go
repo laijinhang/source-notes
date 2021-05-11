@@ -38,8 +38,11 @@ func explode(s string, n int) []string {
 
 // Count counts the number of non-overlapping instances of substr in s.
 // If substr is an empty string, Count returns 1 + the number of Unicode code points in s.
+// Count计算s中substr的非重叠实例的数量。
+// 如果substr是一个空字符串，Count返回1 + s中Unicode代码点的数量。
 func Count(s, substr string) int {
 	// special case
+	// 特殊情况
 	if len(substr) == 0 {
 		return utf8.RuneCountInString(s) + 1
 	}
@@ -1021,6 +1024,7 @@ func EqualFold(s, t string) bool {
 }
 
 // Index returns the index of the first instance of substr in s, or -1 if substr is not present in s.
+// Index返回s中substr的第一个实例的索引，如果s中不存在substr，则返回-1。
 func Index(s, substr string) int {
 	n := len(substr)
 	switch {
