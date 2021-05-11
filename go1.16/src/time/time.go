@@ -238,6 +238,7 @@ func (t *Time) mono() int64 {
 }
 
 // After reports whether the time instant t is after u.
+// After报告时间点t是否在u之后。
 func (t Time) After(u Time) bool {
 	if t.wall&u.wall&hasMonotonic != 0 {
 		return t.ext > u.ext
@@ -248,6 +249,7 @@ func (t Time) After(u Time) bool {
 }
 
 // Before reports whether the time instant t is before u.
+// Before报告时间点t是否在u之前。
 func (t Time) Before(u Time) bool {
 	if t.wall&u.wall&hasMonotonic != 0 {
 		return t.ext < u.ext
