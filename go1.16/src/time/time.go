@@ -2,6 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+/*
+Go的Time包里包括三个时间：
+1、internal（公元元年）
+2、wall（1885年）：因为 Go 是可以表示超过 int32 的 unixtimestamp 的时间的，1885 应该是扩展出来的能表示的最小值。
+3、unix（1970年）
+ */
 // Package time provides functionality for measuring and displaying time.
 //
 // The calendrical calculations always assume a Gregorian calendar, with
@@ -411,6 +417,9 @@ const (
 
 	// The year of the zero Time.
 	// Assumed by the unixToInternal computation below.
+	// 公元元年
+	// 零点时间的年份。
+	// 由下面的unixToInternal计算所假定。
 	internalYear = 1
 
 	// Offsets to convert between internal and absolute or Unix times.
@@ -418,11 +427,19 @@ const (
 	internalToAbsolute       = -absoluteToInternal
 
 	/*
-		unixToInternal表示
+		unixToInternal是将unix时间转化为内部的绝对时间，即计算从公元元年到unix起始时间所经历的秒数
+		(1969*365 + 1969/4 - 1969/100 + 1969/400) * secondsPerDay
+		1969*365：表示将所有年份都按平年计算
+		1969/4：表示可能是闰年多出的天数，但并不是能被4整除的都是闰年，也就是再减去1969/100加上1969/400就是闰年的天数了
+		1969/4 - 1969/100 + 1969/400：表示闰年的天数
+		secondsPerDay：一天的秒数
 	*/
 	unixToInternal int64 = (1969*365 + 1969/4 - 1969/100 + 1969/400) * secondsPerDay
 	internalToUnix int64 = -unixToInternal
 
+	/*
+		如unixToInternal类似，wallToInternal是将wall时间转化为公元元年的绝对时间，即公元元年到1885年所经历的秒数
+	 */
 	wallToInternal int64 = (1884*365 + 1884/4 - 1884/100 + 1884/400) * secondsPerDay
 	internalToWall int64 = -wallToInternal
 )
@@ -435,9 +452,12 @@ func (t Time) IsZero() bool {
 
 // abs returns the time t as an absolute time, adjusted by the zone offset.
 // It is called when computing a presentation property like Month or Hour.
+// abs将时间t作为绝对时间返回，并通过区域偏移进行调整。
+// 在计算月或小时这样的演示属性时，它被调用。
 func (t Time) abs() uint64 {
 	l := t.loc
 	// Avoid function calls when possible.
+	// 尽可能避免函数调用。
 	if l == nil || l == &localLoc {
 		l = l.get()
 	}
@@ -605,12 +625,12 @@ const (
 //	fmt.Print(time.Duration(seconds)*time.Second) // prints 10s
 //
 const (
-	Nanosecond  Duration = 1
-	Microsecond          = 1000 * Nanosecond
-	Millisecond          = 1000 * Microsecond
-	Second               = 1000 * Millisecond
-	Minute               = 60 * Second
-	Hour                 = 60 * Minute
+	Nanosecond  Duration = 1	// 纳秒
+	Microsecond          = 1000 * Nanosecond	// 微秒
+	Millisecond          = 1000 * Microsecond	// 毫秒
+	Second               = 1000 * Millisecond	// 秒
+	Minute               = 60 * Second	// 分
+	Hour                 = 60 * Minute	// 时
 )
 
 // String returns a string representing the duration in the form "72h3m0.5s".
@@ -921,13 +941,16 @@ const (
 
 // date computes the year, day of year, and when full=true,
 // the month and day in which t occurs.
+// date计算年、日，当full=true时，计算t发生的月份和日期。
 func (t Time) date(full bool) (year int, month Month, day int, yday int) {
 	return absDate(t.abs(), full)
 }
 
 // absDate is like date but operates on an absolute time.
+// absDate与date类似，但对绝对时间进行操作。
 func absDate(abs uint64, full bool) (year int, month Month, day int, yday int) {
 	// Split into time and day.
+	// 分为时间和日期。
 	d := abs / secondsPerDay
 
 	// Account for 400 year cycles.
