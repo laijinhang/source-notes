@@ -5,6 +5,9 @@
 // Package strings implements simple functions to manipulate UTF-8 encoded strings.
 //
 // For information about UTF-8 strings in Go, see https://blog.golang.org/strings.
+// 软件包strings实现了简单的函数来处理UTF-8编码的字符串。
+//
+// 有关Go中UTF-8字符串的信息，请参见https://blog.golang.org/strings。
 package strings
 
 import (
@@ -61,11 +64,13 @@ func Count(s, substr string) int {
 }
 
 // Contains reports whether substr is within s.
+// 包含报告substr是否在s内。
 func Contains(s, substr string) bool {
 	return Index(s, substr) >= 0
 }
 
 // ContainsAny reports whether any Unicode code points in chars are within s.
+// ContainsAny报告是否有任何Unicode代码点的字符在s内。
 func ContainsAny(s, chars string) bool {
 	return IndexAny(s, chars) >= 0
 }
@@ -1041,6 +1046,7 @@ func Index(s, substr string) int {
 		return -1
 	case n <= bytealg.MaxLen:
 		// Use brute force when s and substr both are small
+		// 当s和substr都很小的时候，使用暴力求解
 		if len(s) <= bytealg.MaxBruteForce {
 			return bytealg.IndexString(s, substr)
 		}
