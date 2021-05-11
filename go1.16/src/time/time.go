@@ -136,15 +136,15 @@ type Time struct {
 	// If the hasMonotonic bit is 1, then the 33-bit field holds a 33-bit
 	// unsigned wall seconds since Jan 1 year 1885, and ext holds a
 	// signed 64-bit monotonic clock reading, nanoseconds since process start.
-	wall uint64
-	ext  int64
+	wall uint64 // 表示距离公元 1 年 1 月 1 日 00:00:00UTC 的秒数
+	ext  int64  // 表示纳秒
 
 	// loc specifies the Location that should be used to
 	// determine the minute, hour, month, day, and year
 	// that correspond to this Time.
 	// The nil location means UTC.
 	// All UTC times are represented with loc==nil, never loc==&utcLoc.
-	loc *Location
+	loc *Location // 代表时区，主要处理偏移量，不同的时区，对应的时间不一样
 }
 
 const (
@@ -173,6 +173,7 @@ func (t *Time) sec() int64 {
 }
 
 // unixSec returns the time's seconds since Jan 1 1970 (Unix time).
+// unixSec返回从1970/1/1到Time这个秒数
 func (t *Time) unixSec() int64 { return t.sec() + internalToUnix }
 
 // addSec adds d seconds to the time.
@@ -416,6 +417,9 @@ const (
 	absoluteToInternal int64 = (absoluteZeroYear - internalYear) * 365.2425 * secondsPerDay
 	internalToAbsolute       = -absoluteToInternal
 
+	/*
+		unixToInternal表示
+	*/
 	unixToInternal int64 = (1969*365 + 1969/4 - 1969/100 + 1969/400) * secondsPerDay
 	internalToUnix int64 = -unixToInternal
 
@@ -906,13 +910,13 @@ func (t Time) AddDate(years int, months int, days int) Time {
 }
 
 const (
-	secondsPerMinute = 60
-	secondsPerHour   = 60 * secondsPerMinute
-	secondsPerDay    = 24 * secondsPerHour
-	secondsPerWeek   = 7 * secondsPerDay
-	daysPer400Years  = 365*400 + 97
-	daysPer100Years  = 365*100 + 24
-	daysPer4Years    = 365*4 + 1
+	secondsPerMinute = 60                    // 1分钟的秒数
+	secondsPerHour   = 60 * secondsPerMinute // 1小时的秒数
+	secondsPerDay    = 24 * secondsPerHour   // 1天的秒数
+	secondsPerWeek   = 7 * secondsPerDay     // 1周的秒数
+	daysPer400Years  = 365*400 + 97          // 每400年的天数，365（普通年份一年天数）*400（四百年）+97（这四百年里有97年是闰年）
+	daysPer100Years  = 365*100 + 24          // 每100年的天数，365（普通年份一年天数）*100（一百年）+24（这一百年里有24年是闰年）
+	daysPer4Years    = 365*4 + 1             // 每4年的天数，365（普通年份一年天数）*4（四年）+1（每四年会有一年闰年）
 )
 
 // date computes the year, day of year, and when full=true,
