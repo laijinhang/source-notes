@@ -479,12 +479,14 @@ func (t Time) abs() uint64 {
 
 // locabs is a combination of the Zone and abs methods,
 // extracting both return values from a single zone lookup.
+// locabs是Zone和abs方法的组合，从一个区的查询中提取两个返回值。
 func (t Time) locabs() (name string, offset int, abs uint64) {
 	l := t.loc
 	if l == nil || l == &localLoc {
 		l = l.get()
 	}
 	// Avoid function call if we hit the local time cache.
+	// 如果我们击中了本地时间缓存，则避免函数调用。
 	sec := t.unixSec()
 	if l != &utcLoc {
 		if l.cacheZone != nil && l.cacheStart <= sec && sec < l.cacheEnd {
