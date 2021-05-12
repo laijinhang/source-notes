@@ -91,29 +91,29 @@ const (
 
 const (
 	_                        = iota
-	stdLongMonth             = iota + stdNeedDate  // "January"
-	stdMonth                                       // "Jan"
-	stdNumMonth                                    // "1"
-	stdZeroMonth                                   // "01"
-	stdLongWeekDay                                 // "Monday"
-	stdWeekDay                                     // "Mon"
-	stdDay                                         // "2"
-	stdUnderDay                                    // "_2"
-	stdZeroDay                                     // "02"
-	stdUnderYearDay                                // "__2"
-	stdZeroYearDay                                 // "002"
-	stdHour                  = iota + stdNeedClock // "15"
-	stdHour12                                      // "3"
-	stdZeroHour12                                  // "03"
-	stdMinute                                      // "4"
-	stdZeroMinute                                  // "04"
-	stdSecond                                      // "5"
-	stdZeroSecond                                  // "05"
-	stdLongYear              = iota + stdNeedDate  // "2006"
-	stdYear                                        // "06"
-	stdPM                    = iota + stdNeedClock // "PM"
-	stdpm                                          // "pm"
-	stdTZ                    = iota                // "MST"
+	stdLongMonth             = iota + stdNeedDate  // "January"	// 标准格式的月 英文表示
+	stdMonth                                       // "Jan"		// 标准格式的月 英文缩写
+	stdNumMonth                                    // "1"		// 标准格式的月 数字表示，不补0
+	stdZeroMonth                                   // "01"		// 标准格式的月 数字表示，不足两位，最前面补0
+	stdLongWeekDay                                 // "Monday"	// 标准格式的星期 英文表示
+	stdWeekDay                                     // "Mon"		// 标准格式的星期 英文缩写
+	stdDay                                         // "2"		// 标准格式的日 数字表示，不补0
+	stdUnderDay                                    // "_2"		// 标准格式的日 数字表示，不足两位，最前面补空格
+	stdZeroDay                                     // "02"		// 标准格式的日 数字表示，不足两位，最前面补0
+	stdUnderYearDay                                // "__2"		// 标准格式的已过天数 数字表示，不足三位，最前面补空格
+	stdZeroYearDay                                 // "002"		// 标准格式的已过天数 数字表示，不足三位，最前面补0
+	stdHour                  = iota + stdNeedClock // "15"		// 24小制
+	stdHour12                                      // "3"		// 12小时制
+	stdZeroHour12                                  // "03"		// 12小时制，不足2位补0
+	stdMinute                                      // "4"		// 分钟
+	stdZeroMinute                                  // "04"		// 分钟，不足2位补0
+	stdSecond                                      // "5"		// 秒数
+	stdZeroSecond                                  // "05"		// 秒数，不足2位补0
+	stdLongYear              = iota + stdNeedDate  // "2006"	// 年份
+	stdYear                                        // "06"		// 年份，只显示最后两位
+	stdPM                    = iota + stdNeedClock // "PM"		// 显示上午还是下午，大写表示
+	stdpm                                          // "pm"		// 显示上午还是下午，小写表示
+	stdTZ                    = iota                // "MST"		//
 	stdISO8601TZ                                   // "Z0700"  // prints Z for UTC
 	stdISO8601SecondsTZ                            // "Z070000"
 	stdISO8601ShortTZ                              // "Z07"

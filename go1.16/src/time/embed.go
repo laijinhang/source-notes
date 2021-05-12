@@ -4,6 +4,7 @@
 
 // This file is used with build tag timetzdata to embed tzdata into
 // the binary.
+// 这个文件与build标签timetzdata一起使用，将tzdata嵌入二进制文件中。
 
 // +build timetzdata
 
