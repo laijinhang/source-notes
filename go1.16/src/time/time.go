@@ -504,37 +504,44 @@ func (t Time) locabs() (name string, offset int, abs uint64) {
 }
 
 // Date returns the year, month, and day in which t occurs.
+// Date返回t发生的年、月、日。
 func (t Time) Date() (year int, month Month, day int) {
 	year, month, day, _ = t.date(true)
 	return
 }
 
 // Year returns the year in which t occurs.
+// 年份返回t发生的年份。
 func (t Time) Year() int {
 	year, _, _, _ := t.date(false)
 	return year
 }
 
 // Month returns the month of the year specified by t.
+// Month返回t指定的年份的月份。
 func (t Time) Month() Month {
 	_, month, _, _ := t.date(true)
 	return month
 }
 
 // Day returns the day of the month specified by t.
+// Day返回t所指定的月份的日期。
 func (t Time) Day() int {
 	_, _, day, _ := t.date(true)
 	return day
 }
 
 // Weekday returns the day of the week specified by t.
+// Weekday 返回由t指定的一周中的一天。
 func (t Time) Weekday() Weekday {
 	return absWeekday(t.abs())
 }
 
+// absWeekday与Weekday类似，但对绝对时间进行操作。
 // absWeekday is like Weekday but operates on an absolute time.
 func absWeekday(abs uint64) Weekday {
 	// January 1 of the absolute year, like January 1 of 2001, was a Monday.
+	// 绝对年份的1月1日，如2001年的1月1日，是一个星期一。
 	sec := (abs + uint64(Monday)*secondsPerDay) % secondsPerWeek
 	return Weekday(int(sec) / secondsPerDay)
 }
@@ -543,6 +550,9 @@ func absWeekday(abs uint64) Weekday {
 // Week ranges from 1 to 53. Jan 01 to Jan 03 of year n might belong to
 // week 52 or 53 of year n-1, and Dec 29 to Dec 31 might belong to week 1
 // of year n+1.
+// ISOWeek返回t发生的ISO 8601年和周的编号。周数范围从1到53。
+// n年的1月1日至1月3日可能属于n-1年的第52或53周，
+// 12月29日至12月31日可能属于n+1年的第1周。
 func (t Time) ISOWeek() (year, week int) {
 	// According to the rule that the first calendar week of a calendar year is
 	// the week including the first Thursday of that year, and that the last one is
@@ -567,11 +577,13 @@ func (t Time) ISOWeek() (year, week int) {
 }
 
 // Clock returns the hour, minute, and second within the day specified by t.
+// 时钟返回t指定的一天中的时、分、秒。
 func (t Time) Clock() (hour, min, sec int) {
 	return absClock(t.abs())
 }
 
 // absClock is like clock but operates on an absolute time.
+// absClock就像时钟一样，但在绝对时间上操作。
 func absClock(abs uint64) (hour, min, sec int) {
 	sec = int(abs % secondsPerDay)
 	hour = sec / secondsPerHour
@@ -971,10 +983,13 @@ func Until(t Time) Duration {
 // given number of years, months, and days to t.
 // For example, AddDate(-1, 2, 3) applied to January 1, 2011
 // returns March 4, 2010.
+// 例如，AddDate(-1, 2, 3)应用于2011年1月1日，返回2010年3月4日的时间。
 //
 // AddDate normalizes its result in the same way that Date does,
 // so, for example, adding one month to October 31 yields
 // December 1, the normalized form for November 31.
+// AddDate以与Date相同的方式对其结果进行规范化处理，因此，举例来说，
+// 在10月31日的基础上增加一个月，得到12月1日，即11月31日的规范化形式。
 func (t Time) AddDate(years int, months int, days int) Time {
 	year, month, day := t.Date()
 	hour, min, sec := t.Clock()
@@ -1411,10 +1426,12 @@ func norm(hi, lo, base int) (nhi, nlo int) {
 // Date returns the Time corresponding to
 //	yyyy-mm-dd hh:mm:ss + nsec nanoseconds
 // in the appropriate zone for that time in the given location.
+// Date 返回与yyyy-mm-dd hh:mm:ss + nsec nanoseconds相对应的时间，在给定的地点，该时间的适当区域。
 //
 // The month, day, hour, min, sec, and nsec values may be outside
 // their usual ranges and will be normalized during the conversion.
 // For example, October 32 converts to November 1.
+// 月、日、时、分、秒和nsec值可能超出其通常的范围，在转换过程中会被归一化。例如，10月32日转换为11月1日。
 //
 // A daylight savings time transition skips or repeats times.
 // For example, in the United States, March 13, 2011 2:15am never occurred,
@@ -1422,37 +1439,47 @@ func norm(hi, lo, base int) (nhi, nlo int) {
 // choice of time zone, and therefore the time, is not well-defined.
 // Date returns a time that is correct in one of the two zones involved
 // in the transition, but it does not guarantee which.
+// 夏令时的转换会跳过或重复时间。例如，在美国，2011年3月13日凌晨2:15从未发生过，
+// 而2011年11月6日凌晨1:15发生过两次。在这种情况下，时区的选择，也就是时间的选择，
+// 并不是很明确的。Date返回的时间在过渡中涉及的两个时区中的一个是正确的，但它不保证是哪一个。
 //
 // Date panics if loc is nil.
+// 如果loc为nil，Date会panic。
 func Date(year int, month Month, day, hour, min, sec, nsec int, loc *Location) Time {
 	if loc == nil {
 		panic("time: missing Location in call to Date")
 	}
 
 	// Normalize month, overflowing into year.
+	// 将月份规范化，溢出到年份。
 	m := int(month) - 1
 	year, m = norm(year, m, 12)
 	month = Month(m) + 1
 
 	// Normalize nsec, sec, min, hour, overflowing into day.
+	//将nsec、sec、min、hour规范化，溢出到day。
 	sec, nsec = norm(sec, nsec, 1e9)
 	min, sec = norm(min, sec, 60)
 	hour, min = norm(hour, min, 60)
 	day, hour = norm(day, hour, 24)
 
 	// Compute days since the absolute epoch.
+	// 计算自绝对纪元以来的天数。
 	d := daysSinceEpoch(year)
 
 	// Add in days before this month.
+	// 加入本月之前的日子。
 	d += uint64(daysBefore[month-1])
 	if isLeap(year) && month >= March {
-		d++ // February 29
+		d++ // February 29，2月29日
 	}
 
 	// Add in days before today.
+	// 加入今天之前的日子。
 	d += uint64(day - 1)
 
 	// Add in time elapsed today.
+	// 加入今天所经过的时间。
 	abs := d * secondsPerDay
 	abs += uint64(hour*secondsPerHour + min*secondsPerMinute + sec)
 
@@ -1462,6 +1489,8 @@ func Date(year int, month Month, day, hour, min, sec, nsec int, loc *Location) T
 	// The lookup function expects UTC, so we pass t in the
 	// hope that it will not be too close to a zone transition,
 	// and then adjust if it is.
+	// 寻找t的区域偏移，这样我们就可以调整为UTC。查找函数希望是UTC，所以我们传递t，
+	// 希望它不会太接近区域转换，如果是的话再调整。
 	_, offset, start, end := loc.lookup(unix)
 	if offset != 0 {
 		switch utc := unix - int64(offset); {
@@ -1480,11 +1509,14 @@ func Date(year int, month Month, day, hour, min, sec, nsec int, loc *Location) T
 
 // Truncate returns the result of rounding t down to a multiple of d (since the zero time).
 // If d <= 0, Truncate returns t stripped of any monotonic clock reading but otherwise unchanged.
+// Truncate返回将t四舍五入到d的倍数的结果（从零时间开始）。 如果d<=0，Truncate返回t，去掉任何单调的时钟读数，但其他方面没有变化。
 //
 // Truncate operates on the time as an absolute duration since the
 // zero time; it does not operate on the presentation form of the
 // time. Thus, Truncate(Hour) may return a time with a non-zero
 // minute, depending on the time's Location.
+// Truncate将时间作为自零点以来的绝对持续时间进行操作；它不对时间的表现形式进行操作。
+// 因此，Truncate(Hour)可能会返回一个非零分钟的时间，这取决于时间的位置。
 func (t Time) Truncate(d Duration) Time {
 	t.stripMono()
 	if d <= 0 {
@@ -1497,11 +1529,15 @@ func (t Time) Truncate(d Duration) Time {
 // Round returns the result of rounding t to the nearest multiple of d (since the zero time).
 // The rounding behavior for halfway values is to round up.
 // If d <= 0, Round returns t stripped of any monotonic clock reading but otherwise unchanged.
+// Round返回将t四舍五入到最接近的d的倍数的结果（从零时间开始）。半途值的取舍行为是向上取舍。
+// 如果d<=0，Round返回的t扣除了任何单调的时钟读数，但其他方面没有变化。
 //
 // Round operates on the time as an absolute duration since the
 // zero time; it does not operate on the presentation form of the
 // time. Thus, Round(Hour) may return a time with a non-zero
 // minute, depending on the time's Location.
+// Round操作的是自零点以来的绝对持续时间；它不对时间的表现形式进行操作。
+// 因此，Round(Hour)可能返回一个具有非零分钟的时间，这取决于时间的位置。
 func (t Time) Round(d Duration) Time {
 	t.stripMono()
 	if d <= 0 {
@@ -1523,6 +1559,7 @@ func div(t Time, d Duration) (qmod2 int, r Duration) {
 	sec := t.sec()
 	if sec < 0 {
 		// Operate on absolute value.
+		// 对绝对值进行操作。
 		neg = true
 		sec = -sec
 		nsec = -nsec
