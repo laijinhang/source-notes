@@ -226,6 +226,10 @@ func (b *Buffer) WriteByte(c byte) error {
 // buffer, returning its length and an error, which is always nil but is
 // included to match bufio.Writer's WriteRune. The buffer is grown as needed;
 // if it becomes too large, WriteRune will panic with ErrTooLarge.
+
+// WriteRune将Unicode代码点r的UTF-8编码附加到缓冲区，返回其长度和一个错误，
+// 这个错误总是为零，但被包括在内以匹配bufio.Writer的WriteRune。
+// 缓冲区根据需要增长；如果它变得太大，WriteRune将以ErrTooLarge panic失措。
 func (b *Buffer) WriteRune(r rune) (n int, err error) {
 	if r < utf8.RuneSelf {
 		b.WriteByte(byte(r))
@@ -245,10 +249,13 @@ func (b *Buffer) WriteRune(r rune) (n int, err error) {
 // is drained. The return value n is the number of bytes read. If the
 // buffer has no data to return, err is io.EOF (unless len(p) is zero);
 // otherwise it is nil.
+// Read从缓冲区中读取下一个len(p)字节或直到缓冲区被耗尽。返回值n是读取的字节数。
+// 如果缓冲区没有数据返回，err为io.EOF（除非len(p)为零）；否则为nil。
 func (b *Buffer) Read(p []byte) (n int, err error) {
 	b.lastRead = opInvalid
 	if b.empty() {
 		// Buffer is empty, reset to recover space.
+		// 缓冲区是空的，重置为恢复空间。
 		b.Reset()
 		if len(p) == 0 {
 			return 0, nil
@@ -267,6 +274,8 @@ func (b *Buffer) Read(p []byte) (n int, err error) {
 // advancing the buffer as if the bytes had been returned by Read.
 // If there are fewer than n bytes in the buffer, Next returns the entire buffer.
 // The slice is only valid until the next call to a read or write method.
+// Next返回一个包含缓冲区下一个n个字节的片断，推进缓冲区，就像这些字节是由Read返回的一样。
+// 如果缓冲区中的字节数少于n，Next将返回整个缓冲区。这个片断只在下次调用读或写方法之前有效。
 func (b *Buffer) Next(n int) []byte {
 	b.lastRead = opInvalid
 	m := b.Len()
@@ -283,9 +292,11 @@ func (b *Buffer) Next(n int) []byte {
 
 // ReadByte reads and returns the next byte from the buffer.
 // If no byte is available, it returns error io.EOF.
+// ReadByte 读取并返回缓冲区的下一个字节。如果没有可用的字节，它会返回错误io.EOF。
 func (b *Buffer) ReadByte() (byte, error) {
 	if b.empty() {
 		// Buffer is empty, reset to recover space.
+		// 缓冲区是空的，重置为恢复空间。
 		b.Reset()
 		return 0, io.EOF
 	}
@@ -300,9 +311,13 @@ func (b *Buffer) ReadByte() (byte, error) {
 // If no bytes are available, the error returned is io.EOF.
 // If the bytes are an erroneous UTF-8 encoding, it
 // consumes one byte and returns U+FFFD, 1.
+// ReadRune从缓冲区中读取并返回下一个UTF-8编码的Unicode码位。
+// 如果没有可用的字节，返回的错误是io.EOF。如果字节是错误的UTF-8编码，
+// 它将消耗一个字节并返回U+FFFD，1。
 func (b *Buffer) ReadRune() (r rune, size int, err error) {
 	if b.empty() {
 		// Buffer is empty, reset to recover space.
+		// 缓冲区是空的，重置为恢复空间。
 		b.Reset()
 		return 0, 0, io.EOF
 	}
@@ -366,6 +381,7 @@ func (b *Buffer) ReadBytes(delim byte) (line []byte, err error) {
 }
 
 // readSlice is like ReadBytes but returns a reference to internal buffer data.
+// readSlice与ReadBytes类似，但返回一个对内部缓冲区数据的引用。
 func (b *Buffer) readSlice(delim byte) (line []byte, err error) {
 	i := IndexByte(b.buf[b.off:], delim)
 	end := b.off + i + 1
@@ -411,6 +427,9 @@ func NewBuffer(buf []byte) *Buffer { return &Buffer{buf: buf} }
 //
 // In most cases, new(Buffer) (or just declaring a Buffer variable) is
 // sufficient to initialize a Buffer.
+// NewBufferString创建并初始化一个新的Buffer，使用字符串s作为其初始内容。它的目的是为了准备一个缓冲区来读取一个现有的字符串。
+//
+// 在大多数情况下，new(Buffer)（或者只是声明一个Buffer变量）就足以初始化一个Buffer。
 func NewBufferString(s string) *Buffer {
 	return &Buffer{buf: []byte(s)}
 }
