@@ -54,4 +54,5 @@ func runtime_canSpin(i int) bool
 // runtime_doSpin does active spinning.
 func runtime_doSpin()
 
+// 返回运行时时钟的当前值，单位为纳秒
 func runtime_nanotime() int64
