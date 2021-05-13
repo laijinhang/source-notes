@@ -24,10 +24,11 @@ func throw(string) // provided by runtime
 // 首次使用后不得复制Mutex。
 type Mutex struct {
 	// state是一个共用的字段
-	// 第 0个bit位 标记 mutex 是否被某个协程占用，也就是有没有加锁
-	// 第 1个bit位 标记 mutex 是否被唤醒，就是某个被唤醒的mutex尝试去获取锁
-	// 第 2个bit位 标记 mutex 表示饥饿状态？？？
-	// 剩下的bit位表示 waiter 的个数，最大允许记录 1<<(32-3)-1 个协程
+	// 从左到右的 第 0个bit位 标记 mutex 是否被某个协程占用，也就是有没有加锁
+	// 从左到右的 第 1个bit位 标记 mutex 是否被唤醒，就是某个被唤醒的mutex尝试去获取锁
+	// 从左到右的 第 2个bit位 标记 mutex 是否饥饿状态
+	// 剩下的bit位表示 waiter 的个数，最大允许记录 1<<(32-3) 个协程
+	// [阻塞的goroutine个数, starving标识, woken标识, locked标识]
 	state int32
 
 	sema uint32
@@ -40,11 +41,12 @@ type Locker interface {
 }
 
 const (
-	mutexLocked      = 1 << iota // mutex is locked
-	mutexWoken                   // 2
-	mutexStarving                // 4
-	mutexWaiterShift = iota      // 3
-
+	mutexLocked   = 1 << iota // mutex is locked	锁定状态
+	mutexWoken                // 2	唤醒状态
+	mutexStarving             // 4	饥饿状态
+	// 偏移量，用于计算等待获取锁的协程数，用法是state>>=mutexWaiterShift之后，
+	// state的值就表示当前阻塞等待锁的goroutine个数。最多可以阻塞2^29个goroutine。
+	mutexWaiterShift = iota // 3
 	// 互斥公平.
 	//
 	// Mutex有2种操作模式: 正常模式 和 饥饿模式.
@@ -74,6 +76,10 @@ func (m *Mutex) Lock() {
 	// Fast path: grab unlocked mutex.
 	// 如果mutex的state没有被锁，也没有等待/唤醒的协程，锁处于正常状态（未上锁），那么获得锁，返回
 	// 原子操作，如果m.state未上锁，也就是值为0，则上锁，并返回true/false（设置成功，则true，否则false）
+
+	/*
+		如果这边能直接拿到锁，则在这边拿到，拿不到的话，就执行后面的m.lockSlow()方法尝试拿锁
+	*/
 	if atomic.CompareAndSwapInt32(&m.state, 0, mutexLocked) {
 		// 看里面内容，下面三行代码什么也没做，估计是待实现内容
 		if race.Enabled {
@@ -95,6 +101,9 @@ func (m *Mutex) lockSlow() {
 	for {
 		// 在饥饿模式下，直接将锁移交给waiter（队列头部的waiter）因此新来的协程永远也不会获取锁
 		// 在正常模式，锁被其他协程持有，如果允spinning，则尝试自旋
+		/*
+			如果当前锁的状态是锁定或饥饿的话，也就是锁定状态时，则尝试自旋
+		*/
 		if old&(mutexLocked|mutexStarving) == mutexLocked && runtime_canSpin(iter) {
 			// Active spinning makes sense.
 			// Try to set mutexWoken flag to inform Unlock
@@ -117,6 +126,7 @@ func (m *Mutex) lockSlow() {
 		}
 		// 当前如果是处于饥饿模式，则更新waiters数量 +1
 		if old&(mutexLocked|mutexStarving) != 0 {
+			// 从左到右三位分别被 是否上锁 是否唤醒 是否处于饥饿状态 标识位所占用
 			new += 1 << mutexWaiterShift
 		}
 		// The current goroutine switches mutex to starvation mode.

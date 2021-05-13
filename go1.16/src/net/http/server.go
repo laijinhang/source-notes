@@ -257,9 +257,11 @@ var (
 )
 
 // A conn represents the server side of an HTTP connection.
+// conn代表一个HTTP连接的服务器端。
 type conn struct {
 	// server is the server on which the connection arrived.
 	// Immutable; never nil.
+	// server是连接所到达的服务器。不可变的；永远不会为nil。
 	server *Server
 
 	// cancelCtx cancels the connection-level context.
@@ -1911,6 +1913,7 @@ func (c *conn) serve(ctx context.Context) {
 				// responding to them and hanging up
 				// while they're still writing their
 				// request. Undefined behavior.
+				// 他们的HTTP客户端可能会也可能不会读到这个，如果我们在回应他们的时候，在他们还在写请求的时候就挂断了。未定义的行为。
 				const publicErr = "431 Request Header Fields Too Large"
 				fmt.Fprintf(c.rwc, "HTTP/1.1 "+publicErr+errorHeaders+publicErr)
 				c.closeWriteAndWait()
@@ -3567,6 +3570,7 @@ func (c *loggingConn) Close() (err error) {
 // checkConnErrorWriter writes to c.rwc and records any write errors to c.werr.
 // It only contains one field (and a pointer field at that), so it
 // fits in an interface value without an extra allocation.
+// checkConnErrorWriter写到c.rwc，并将任何写错记录到c.werr。 它只包含一个字段（而且是一个指针字段），所以它适合于一个接口值，不需要额外分配。
 type checkConnErrorWriter struct {
 	c *conn
 }
