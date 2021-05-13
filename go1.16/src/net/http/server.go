@@ -642,6 +642,7 @@ func (w *response) ReadFrom(src io.Reader) (n int64, err error) {
 const debugServerConnections = false
 
 // Create new connection from rwc.
+// 从rwc创建新的连接。
 func (srv *Server) newConn(rwc net.Conn) *conn {
 	c := &conn{
 		server: srv,
@@ -854,6 +855,7 @@ func newBufioReader(r io.Reader) *bufio.Reader {
 	}
 	// Note: if this reader size is ever changed, update
 	// TestHandlerBodyClose's assumptions.
+	// 注意：如果这个reader的大小有变化，更新TestHandlerBodyClose的假设。
 	return bufio.NewReader(r)
 }
 
@@ -884,6 +886,7 @@ func putBufioWriter(bw *bufio.Writer) {
 // DefaultMaxHeaderBytes is the maximum permitted size of the headers
 // in an HTTP request.
 // This can be overridden by setting Server.MaxHeaderBytes.
+// DefaultMaxHeaderBytes是HTTP请求中头信息的最大允许大小。这可以通过设置Server.MaxHeaderBytes来覆盖。
 const DefaultMaxHeaderBytes = 1 << 20 // 1 MB
 
 func (srv *Server) maxHeaderBytes() int {
@@ -893,7 +896,9 @@ func (srv *Server) maxHeaderBytes() int {
 	return DefaultMaxHeaderBytes
 }
 
+// 初始读限值大小
 func (srv *Server) initialReadLimitSize() int64 {
+	// 默认每个http请求最大限制大小为 1M+4kb
 	return int64(srv.maxHeaderBytes()) + 4096 // bufio slop
 }
 
@@ -966,6 +971,7 @@ func appendTime(b []byte, t time.Time) []byte {
 var errTooLarge = errors.New("http: request too large")
 
 // Read next request from connection.
+// 从连接中读取下一个请求。
 func (c *conn) readRequest(ctx context.Context) (w *response, err error) {
 	if c.hijacked() {
 		return nil, ErrHijacked
@@ -1826,7 +1832,9 @@ func isCommonNetReadError(err error) bool {
 }
 
 // Serve a new connection.
+// 提供一个新的连接。
 func (c *conn) serve(ctx context.Context) {
+	// 获取客户端的地址（ip:port）
 	c.remoteAddr = c.rwc.RemoteAddr().String()
 	ctx = context.WithValue(ctx, LocalAddrContextKey, c.rwc.LocalAddr())
 	defer func() {
@@ -1877,6 +1885,7 @@ func (c *conn) serve(ctx context.Context) {
 	}
 
 	// HTTP/1.x from here on.
+	// HTTP/1.x从这里开始。
 
 	ctx, cancelCtx := context.WithCancel(ctx)
 	c.cancelCtx = cancelCtx
@@ -2595,6 +2604,9 @@ type Server struct {
 	// tls.Config.SetSessionTicketKeys. To use
 	// SetSessionTicketKeys, use Server.Serve with a TLS Listener
 	// instead.
+	// TLSConfig可以选择提供一个TLS配置，供ServeTLS和ListenAndServeTLS使用。注意，这个值会被ServeTLS
+	// 和ListenAndServeTLS克隆，所以不可能用tls.Config.SetSessionTicketKeys等方法来修改配置。
+	// 要使用SetSessionTicketKeys，请使用带有TLS监听器的Server.Serve代替。
 	TLSConfig *tls.Config
 
 	// ReadTimeout is the maximum duration for reading the entire
@@ -2949,6 +2961,7 @@ var testHookServerServe func(*Server, net.Listener) // used if non-nil
 
 // shouldDoServeHTTP2 reports whether Server.Serve should configure
 // automatic HTTP/2. (which sets up the srv.TLSNextProto map)
+// shouldDoServeHTTP2报告Server.Serve是否应该配置自动HTTP/2。(其中设置了srv.TLSNextProto映射)
 func (srv *Server) shouldConfigureHTTP2ForServe() bool {
 	if srv.TLSConfig == nil {
 		// Compatibility with Go 1.6:
@@ -2993,6 +3006,7 @@ func (srv *Server) Serve(l net.Listener) error {
 	}
 
 	origListener := l
+	// 结束时关闭监听的连接
 	l = &onceCloseListener{Listener: l}
 	defer l.Close()
 
@@ -3016,6 +3030,7 @@ func (srv *Server) Serve(l net.Listener) error {
 	var tempDelay time.Duration // how long to sleep on accept failure
 
 	ctx := context.WithValue(baseCtx, ServerContextKey, srv)
+	// 处理连接进来的请求
 	for {
 		rw, err := l.Accept()
 		if err != nil {
@@ -3263,10 +3278,14 @@ func (srv *Server) setupHTTP2_ServeTLS() error {
 // configures HTTP/2 on srv using a more conservative policy than
 // setupHTTP2_ServeTLS because Serve is called after tls.Listen,
 // and may be called concurrently. See shouldConfigureHTTP2ForServe.
+// setupHTTP2_Serve是从(*Server).Serve中调用的，它使用比setupHTTP2_ServeTLS
+// 更保守的策略在srv上配置HTTP/2，因为Serve是在tls.Listen之后调用的，而且可能是同时调用。
+// 参见shouldConfigureHTTP2ForServe。
 //
 // The tests named TestTransportAutomaticHTTP2* and
 // TestConcurrentServerServe in server_test.go demonstrate some
 // of the supported use cases and motivations.
+// server_test.go中名为TestTransportAutomaticHTTP2*和TestConcurrentServerServe的测试展示了一些支持的用例和动机。
 func (srv *Server) setupHTTP2_Serve() error {
 	srv.nextProtoOnce.Do(srv.onceSetNextProtoDefaults_Serve)
 	return srv.nextProtoErr
@@ -3444,6 +3463,7 @@ func (tw *timeoutWriter) WriteHeader(code int) {
 
 // onceCloseListener wraps a net.Listener, protecting it from
 // multiple Close calls.
+// onceCloseListener包装了一个net.Listener，保护它不被多次调用关闭。
 type onceCloseListener struct {
 	net.Listener
 	once     sync.Once
