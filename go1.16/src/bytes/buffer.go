@@ -18,12 +18,12 @@ type Buffer struct {
 type readOp int8
 
 const (
-	opRead      readOp = -1 // Any other read operation.
-	opInvalid   readOp = 0  // Non-read operation.
-	opReadRune1 readOp = 1  // Read rune of size 1.
-	opReadRune2 readOp = 2  // Read rune of size 2.
-	opReadRune3 readOp = 3  // Read rune of size 3.
-	opReadRune4 readOp = 4  // Read rune of size 4.
+	opRead      readOp = -1 // Any other read operation.	任何其他读操作。
+	opInvalid   readOp = 0  // Non-read operation.			没有读操作
+	opReadRune1 readOp = 1  // Read rune of size 1.			读取大小为1的字符
+	opReadRune2 readOp = 2  // Read rune of size 2.			读取大小为2的字符
+	opReadRune3 readOp = 3  // Read rune of size 3.			读取大小为3的字符
+	opReadRune4 readOp = 4  // Read rune of size 4.			读取大小为4的字符
 )
 
 // bytes.Buffer太大错误
@@ -176,6 +176,7 @@ func (b *Buffer) ReadFrom(r io.Reader) (n int64, err error) {
 // 分配一个长度为n的切片
 func makeSlice(n int) []byte {
 	// If the make fails, give a known error.
+	// 如果make失败，给出一个已知的错误。
 	defer func() {
 		if recover() != nil {
 			panic(ErrTooLarge)

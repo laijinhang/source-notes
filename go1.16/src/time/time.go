@@ -5,13 +5,13 @@
 /*
 Go的Time包里包括三个时间：
 1、internal（公元元年）
-2、wall（1885年）：因为 Go 是可以表示超过 int32 的 unixtimestamp 的时间的，1885 应该是扩展出来的能表示的最小值。
+2、wall（1885年~2159年）：因为 Go 是可以表示超过 int32 的 unixtimestamp 的时间的，1885 应该是扩展出来的能表示的最小值。
 3、unix（1970年）
 
 时区：
 1. UTC：Universal Time
 2. LOC：local time zone
- */
+*/
 // Package time provides functionality for measuring and displaying time.
 //
 // The calendrical calculations always assume a Gregorian calendar, with
@@ -443,7 +443,7 @@ const (
 
 	/*
 		如unixToInternal类似，wallToInternal是将wall时间转化为公元元年的绝对时间，即公元元年到1885年所经历的秒数
-	 */
+	*/
 	wallToInternal int64 = (1884*365 + 1884/4 - 1884/100 + 1884/400) * secondsPerDay
 	internalToWall int64 = -wallToInternal
 )
@@ -634,8 +634,8 @@ func (t Time) YearDay() int {
 type Duration int64
 
 const (
-	minDuration Duration = -1 << 63	// 最小的持续时间
-	maxDuration Duration = 1<<63 - 1	// 最大的持续时间
+	minDuration Duration = -1 << 63  // 最小的持续时间
+	maxDuration Duration = 1<<63 - 1 // 最大的持续时间
 )
 
 // Common durations. There is no definition for units of Day or larger
@@ -657,12 +657,12 @@ const (
 // fmt.Print(time.Duration(seconds)*time.Second) //打印出10s
 //
 const (
-	Nanosecond  Duration = 1	// 纳秒
-	Microsecond          = 1000 * Nanosecond	// 微秒
-	Millisecond          = 1000 * Microsecond	// 毫秒
-	Second               = 1000 * Millisecond	// 秒
-	Minute               = 60 * Second	// 分
-	Hour                 = 60 * Minute	// 时
+	Nanosecond  Duration = 1                  // 纳秒
+	Microsecond          = 1000 * Nanosecond  // 微秒
+	Millisecond          = 1000 * Microsecond // 毫秒
+	Second               = 1000 * Millisecond // 秒
+	Minute               = 60 * Second        // 分
+	Hour                 = 60 * Minute        // 时
 )
 
 // String returns a string representing the duration in the form "72h3m0.5s".

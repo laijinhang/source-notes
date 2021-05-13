@@ -134,6 +134,7 @@ const (
 )
 
 // std0x records the std values for "01", "02", ..., "06".
+// std0x记录了 "01"、"02"、...、"06 "的std值。
 var std0x = [...]int{stdZeroMonth, stdZeroDay, stdZeroHour12, stdZeroMinute, stdZeroSecond, stdYear}
 
 // startsWithLowerCase reports whether the string has a lower-case letter at the beginning.
