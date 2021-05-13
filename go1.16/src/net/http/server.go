@@ -60,21 +60,28 @@ var (
 )
 
 // A Handler responds to an HTTP request.
+// 一个处理程序对一个HTTP请求做出响应。
 //
 // ServeHTTP should write reply headers and data to the ResponseWriter
 // and then return. Returning signals that the request is finished; it
 // is not valid to use the ResponseWriter or read from the
 // Request.Body after or concurrently with the completion of the
 // ServeHTTP call.
+// ServeHTTP应该把回复头和数据写到ResponseWriter中，然后返回。返回是请求完成的信号；
+// 在ServeHTTP调用完成后或同时，使用ResponseWriter或从Request.Body中读取是无效的。
 //
 // Depending on the HTTP client software, HTTP protocol version, and
 // any intermediaries between the client and the Go server, it may not
 // be possible to read from the Request.Body after writing to the
 // ResponseWriter. Cautious handlers should read the Request.Body
 // first, and then reply.
+// 根据HTTP客户端软件、HTTP协议版本以及客户端和Go服务器之间的任何中介，
+// 在向ResponseWriter写完后可能无法从Request.Body中读取。
+// 谨慎的处理程序应该先读取Request.Body，然后再回复。
 //
 // Except for reading the body, handlers should not modify the
 // provided Request.
+// 除了读取正文，处理程序不应该修改所提供的Request。
 //
 // If ServeHTTP panics, the server (the caller of ServeHTTP) assumes
 // that the effect of the panic was isolated to the active request.
@@ -83,15 +90,20 @@ var (
 // RST_STREAM, depending on the HTTP protocol. To abort a handler so
 // the client sees an interrupted response but the server doesn't log
 // an error, panic with the value ErrAbortHandler.
+// 如果ServeHTTP发生慌乱，服务器（ServeHTTP的调用者）会认为慌乱的影响只限于活动请求。
+// 它恢复了恐慌，将堆栈跟踪记录到服务器错误日志中，并根据HTTP协议，关闭网络连接或发送HTTP/2 RST_STREAM。
+// 要中止一个处理程序，使客户端看到一个中断的响应，但服务器不记录错误，用ErrAbortHandler的值进行恐慌。
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
 }
 
 // A ResponseWriter interface is used by an HTTP handler to
 // construct an HTTP response.
+// 一个ResponseWriter接口被一个HTTP处理程序用来构建一个HTTP响应。
 //
 // A ResponseWriter may not be used after the Handler.ServeHTTP method
 // has returned.
+// 在Handler.ServeHTTP方法返回后，不得使用ResponseWriter。
 type ResponseWriter interface {
 	// Header returns the header map that will be sent by
 	// WriteHeader. The Header map also is the mechanism with which
@@ -2219,6 +2231,7 @@ func RedirectHandler(url string, code int) Handler {
 // It matches the URL of each incoming request against a list of registered
 // patterns and calls the handler for the pattern that
 // most closely matches the URL.
+// ServeMux是一个HTTP请求复用器。它将每个传入的请求的URL与注册的模式列表进行匹配，并调用与URL最匹配的模式的处理程序。
 //
 // Patterns name fixed, rooted paths, like "/favicon.ico",
 // or rooted subtrees, like "/images/" (note the trailing slash).
@@ -2228,10 +2241,15 @@ func RedirectHandler(url string, code int) Handler {
 // called for paths beginning "/images/thumbnails/" and the
 // former will receive requests for any other paths in the
 // "/images/" subtree.
+// 模式命名固定的、有根的路径，如"/favicon.ico"，或有根的子树，如"/images/"（注意尾部的斜线）。
+// 较长的模式优先于较短的模式，因此，如果"/images/"和"/images/thumbnails/"都有处理程序，那么后者将被调用，
+// 用于处理以"/images/thumbnails/"开始的路径，而前者将接收"/images/"子树中任何其它路径的请求。
 //
 // Note that since a pattern ending in a slash names a rooted subtree,
 // the pattern "/" matches all paths not matched by other registered
 // patterns, not just the URL with Path == "/".
+// 注意，由于以斜线结尾的模式命名了一个有根的子树，模式"/"匹配所有没有被其他注册模式匹配的路径，
+// 而不仅仅是Path == "/"的URL。
 //
 // If a subtree has been registered and a request is received naming the
 // subtree root without its trailing slash, ServeMux redirects that
@@ -2240,21 +2258,29 @@ func RedirectHandler(url string, code int) Handler {
 // the trailing slash. For example, registering "/images/" causes ServeMux
 // to redirect a request for "/images" to "/images/", unless "/images" has
 // been registered separately.
+// 如果一个子树已经被注册，并且收到一个命名子树根的请求，但没有尾部斜线，
+// ServeMux将该请求重定向到子树根（添加尾部斜线）。
+// 这种行为可以通过为没有尾部斜线的路径单独注册来覆盖。
+// 例如，注册"/images/"会导致ServeMux将"/images "的请求重定向到"/images/"，除非"/images "已经被单独注册。
 //
 // Patterns may optionally begin with a host name, restricting matches to
 // URLs on that host only. Host-specific patterns take precedence over
 // general patterns, so that a handler might register for the two patterns
 // "/codesearch" and "codesearch.google.com/" without also taking over
 // requests for "http://www.google.com/".
+// 模式可以选择以主机名开始，只匹配该主机上的URL。特定于主机的模式优先于一般模式，
+// 因此一个处理程序可以注册"/codesearch "和 "codesearch.google.com/"这两个模式，
+// 而不需要同时接收 "http://www.google.com/"的请求。
 //
 // ServeMux also takes care of sanitizing the URL request path and the Host
 // header, stripping the port number and redirecting any request containing . or
 // .. elements or repeated slashes to an equivalent, cleaner URL.
+// ServeMux还负责清理URL请求路径和Host头，去除端口号，并将任何含有.或.元素或重复斜线的请求重定向到一个等价的、更干净的URL。
 type ServeMux struct {
 	mu    sync.RWMutex
 	m     map[string]muxEntry
-	es    []muxEntry // slice of entries sorted from longest to shortest.
-	hosts bool       // whether any patterns contain hostnames
+	es    []muxEntry // slice of entries sorted from longest to shortest. 从最长到最短排序的条目切片。
+	hosts bool       // whether any patterns contain hostnames 是否有任何模式包含主机名
 }
 
 type muxEntry struct {
@@ -2266,6 +2292,7 @@ type muxEntry struct {
 func NewServeMux() *ServeMux { return new(ServeMux) }
 
 // DefaultServeMux is the default ServeMux used by Serve.
+// DefaultServeMux是Serve使用的默认ServeMux。
 var DefaultServeMux = &defaultServeMux
 
 var defaultServeMux ServeMux
@@ -2509,6 +2536,7 @@ func Handle(pattern string, handler Handler) { DefaultServeMux.Handle(pattern, h
 // HandleFunc registers the handler function for the given pattern
 // in the DefaultServeMux.
 // The documentation for ServeMux explains how patterns are matched.
+// HandleFunc为DefaultServeMux中的给定模式注册了处理函数。ServeMux的文档解释了如何匹配模式。
 func HandleFunc(pattern string, handler func(ResponseWriter, *Request)) {
 	DefaultServeMux.HandleFunc(pattern, handler)
 }
