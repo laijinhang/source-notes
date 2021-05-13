@@ -2477,6 +2477,7 @@ func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request) {
 
 // Handle registers the handler for the given pattern.
 // If a handler already exists for pattern, Handle panics.
+// Handle注册了给定模式的处理函数，如果处理函数在这个handle中已经存在，Handle就会抛出panic。
 func (mux *ServeMux) Handle(pattern string, handler Handler) {
 	mux.mu.Lock()
 	defer mux.mu.Unlock()
@@ -2514,13 +2515,15 @@ func appendSorted(es []muxEntry, e muxEntry) []muxEntry {
 		return append(es, e)
 	}
 	// we now know that i points at where we want to insert
-	es = append(es, muxEntry{}) // try to grow the slice in place, any entry works.
-	copy(es[i+1:], es[i:])      // Move shorter entries down
+	// 我们现在知道，i指向我们要插入的地方。
+	es = append(es, muxEntry{}) // try to grow the slice in place, any entry works.尝试在原地增加切片，任何条目都可以。
+	copy(es[i+1:], es[i:])      // Move shorter entries down 将较短的条目下移
 	es[i] = e
 	return es
 }
 
 // HandleFunc registers the handler function for the given pattern.
+// HandleFunc注册了给定模式的处理函数。
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request)) {
 	if handler == nil {
 		panic("http: nil handler")
@@ -2918,11 +2921,15 @@ func (sh serverHandler) ServeHTTP(rw ResponseWriter, req *Request) {
 // ListenAndServe listens on the TCP network address srv.Addr and then
 // calls Serve to handle requests on incoming connections.
 // Accepted connections are configured to enable TCP keep-alives.
+// ListenAndServe在TCP网络地址srv.Addr上监听，然后调用Serve来处理传入连接的请求。
+// 接受的连接被配置为启用TCP keep-alives。
 //
 // If srv.Addr is blank, ":http" is used.
+// 如果srv.Addr为空，则使用":http"。
 //
 // ListenAndServe always returns a non-nil error. After Shutdown or Close,
 // the returned error is ErrServerClosed.
+// ListenAndServe总是返回一个非零的错误。在关机或关闭后，返回的错误是ErrServerClosed。
 func (srv *Server) ListenAndServe() error {
 	if srv.shuttingDown() {
 		return ErrServerClosed
@@ -2969,13 +2976,17 @@ var ErrServerClosed = errors.New("http: Server closed")
 // Serve accepts incoming connections on the Listener l, creating a
 // new service goroutine for each. The service goroutines read requests and
 // then call srv.Handler to reply to them.
+// Serve在Listener l上接受传入的连接，为每个连接创建一个新的服务goroutine。
+// 服务goroutine读取请求，然后调用srv.Handler来回复它们。
 //
 // HTTP/2 support is only enabled if the Listener returns *tls.Conn
 // connections and they were configured with "h2" in the TLS
 // Config.NextProtos.
+// 只有当监听器返回*tls.Conn连接并且在TLS Config.NextProtos中配置了 "h2 "时，才会启用HTTP/2支持。
 //
 // Serve always returns a non-nil error and closes l.
 // After Shutdown or Close, the returned error is ErrServerClosed.
+// Serve总是返回一个非零的错误并关闭l。在关闭或关闭之后，返回的错误是ErrServerClosed。
 func (srv *Server) Serve(l net.Listener) error {
 	if fn := testHookServerServe; fn != nil {
 		fn(srv, l) // call hook with unwrapped listener
@@ -3183,10 +3194,14 @@ func logf(r *Request, format string, args ...interface{}) {
 // ListenAndServe listens on the TCP network address addr and then calls
 // Serve with handler to handle requests on incoming connections.
 // Accepted connections are configured to enable TCP keep-alives.
+// ListenAndServe在TCP网络地址addr上监听，然后用处理程序调用Serve来处理进入的连接的请求。
+// 接受的连接被配置为启用TCP keep-alives。
 //
 // The handler is typically nil, in which case the DefaultServeMux is used.
+// 处理程序通常为nil，在这种情况下，使用DefaultServeMux。
 //
 // ListenAndServe always returns a non-nil error.
+// ListenAndServe总是返回一个非零的错误。
 func ListenAndServe(addr string, handler Handler) error {
 	server := &Server{Addr: addr, Handler: handler}
 	return server.ListenAndServe()
