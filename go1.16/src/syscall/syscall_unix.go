@@ -32,6 +32,7 @@ func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
 func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
 
 // clen returns the index of the first NULL byte in n or len(n) if n contains no NULL byte.
+// clen返回n中第一个为0值的位置，如果n中没有的话，返回n的长度
 func clen(n []byte) int {
 	for i := 0; i < len(n); i++ {
 		if n[i] == 0 {
@@ -42,7 +43,7 @@ func clen(n []byte) int {
 }
 
 // Mmap manager, for use by operating system-specific implementations.
-
+// Mmap管理器，供操作系统特定实现使用。
 type mmapper struct {
 	sync.Mutex
 	active map[*byte][]byte // active mappings; key is last byte in mapping

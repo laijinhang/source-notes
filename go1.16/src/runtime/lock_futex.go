@@ -51,11 +51,16 @@ func lock2(l *mutex) {
 	gp := getg()
 
 	if gp.m.locks < 0 {
-		throw("runtime·lock: lock count")
+		throw("runtime·lock: lock count")	// 运行时锁定：锁定计数
 	}
 	gp.m.locks++
 
 	// Speculative grab for lock.
+	// 投机性地抢夺锁。
+	/*
+	func Xchg(ptr *uint32, new uint32) uint32
+	将new值赋值给ptr所指向变量，并返回赋值前的ptr所指向变量值
+	 */
 	v := atomic.Xchg(key32(&l.key), mutex_locked)
 	if v == mutex_unlocked {
 		return
