@@ -71,6 +71,7 @@ func cookie(family, sotype, proto int) Cookie {
 }
 
 // A Status represents the status of a socket.
+// 一个状态代表一个套接字的状态。
 type Status struct {
 	Cookie    Cookie
 	Err       error // error status of socket system call
@@ -82,10 +83,11 @@ func (so Status) String() string {
 }
 
 // A Stat represents a per-cookie socket statistics.
+// 一个Stat代表每个cookie的套接字统计。
 type Stat struct {
-	Family   int // address family
-	Type     int // socket type
-	Protocol int // protocol number
+	Family   int // address family	协议族
+	Type     int // socket type		socker类型：TCP、UDP、原始套接字
+	Protocol int // protocol number	协议号
 
 	Opened    uint64 // number of sockets opened
 	Connected uint64 // number of sockets connected
@@ -116,13 +118,14 @@ func (st stats) getLocked(c Cookie) *Stat {
 }
 
 // A FilterType represents a filter type.
+// 一个FilterType代表一个过滤器类型。
 type FilterType int
 
 const (
-	FilterSocket        FilterType = iota // for Socket
-	FilterConnect                         // for Connect or ConnectEx
-	FilterListen                          // for Listen
-	FilterAccept                          // for Accept, Accept4 or AcceptEx
+	FilterSocket        FilterType = iota // for Socket	用于socket
+	FilterConnect                         // for Connect or ConnectEx	用于Connect或ConnectEx
+	FilterListen                          // for Listen	用于监听
+	FilterAccept                          // for Accept, Accept4 or AcceptEx	用于Accept, Accept4 或 AcceptEx
 	FilterGetsockoptInt                   // for GetsockoptInt
 	FilterClose                           // for Close or Closesocket
 )
