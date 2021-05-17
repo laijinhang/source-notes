@@ -11,13 +11,15 @@ import (
 
 // Replacer replaces a list of strings with replacements.
 // It is safe for concurrent use by multiple goroutines.
+// Replacer用替换品替换一个字符串列表。它对多个goroutine的并发使用是安全的。
 type Replacer struct {
-	once   sync.Once // guards buildOnce method
+	once   sync.Once // guards buildOnce method，守护buildOnce方法
 	r      replacer
 	oldnew []string
 }
 
 // replacer is the interface that a replacement algorithm needs to implement.
+// replacer是一个替换算法需要实现的接口。
 type replacer interface {
 	Replace(s string) string
 	WriteString(w io.Writer, s string) (n int, err error)
@@ -27,8 +29,11 @@ type replacer interface {
 // pairs. Replacements are performed in the order they appear in the
 // target string, without overlapping matches. The old string
 // comparisons are done in argument order.
+// NewReplacer从一个新旧字符串对的列表中返回一个新的Replacer。替换是按照它们在目标
+// 字符串中出现的顺序进行的，没有重叠的匹配。旧字符串的比较是按照参数顺序进行的。
 //
 // NewReplacer panics if given an odd number of arguments.
+// 如果给定的参数数是奇数，NewReplacer就会panic。
 func NewReplacer(oldnew ...string) *Replacer {
 	if len(oldnew)%2 == 1 {
 		panic("strings.NewReplacer: odd argument count")
@@ -64,6 +69,7 @@ func (b *Replacer) build() replacer {
 		}
 		// The first occurrence of old->new map takes precedence
 		// over the others with the same old string.
+		// 第一个出现的old->new map优先于其他相同的旧字符串。
 		for i := len(oldnew) - 2; i >= 0; i -= 2 {
 			o := oldnew[i][0]
 			n := oldnew[i+1][0]
@@ -75,14 +81,17 @@ func (b *Replacer) build() replacer {
 	r := byteStringReplacer{toReplace: make([]string, 0, len(oldnew)/2)}
 	// The first occurrence of old->new map takes precedence
 	// over the others with the same old string.
+	// 第一个出现的old->new map优先于其他相同的旧字符串。
 	for i := len(oldnew) - 2; i >= 0; i -= 2 {
 		o := oldnew[i][0]
 		n := oldnew[i+1]
 		// To avoid counting repetitions multiple times.
+		// 为了避免多次计算重复的次数。
 		if r.replacements[o] == nil {
 			// We need to use string([]byte{o}) instead of string(o),
 			// to avoid utf8 encoding of o.
 			// E. g. byte(150) produces string of length 2.
+			// 我们需要使用string([]byte{o})而不是string(o)，以避免对o进行utf8编码。例如，byte(150)产生长度为2的字符串。
 			r.toReplace = append(r.toReplace, string([]byte{o}))
 		}
 		r.replacements[o] = []byte(n)
