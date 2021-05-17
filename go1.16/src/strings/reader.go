@@ -14,14 +14,17 @@ import (
 // io.RuneReader, io.RuneScanner, io.Seeker, and io.WriterTo interfaces by reading
 // from a string.
 // The zero value for Reader operates like a Reader of an empty string.
+// 读取器通过从字符串中读取实现io.Reader, io.ReaderAt, io.ByteReader, io.ByteScanner, io.RuneReader,
+// io.RuneScanner, io.Seeker和io.WriterTo接口。读取器的零值与空字符串的读取器操作类似。
 type Reader struct {
 	s        string
-	i        int64 // current reading index
-	prevRune int   // index of previous rune; or < 0
+	i        int64 // current reading index，当前读指针
+	prevRune int   // index of previous rune; or < 0，前一个符文的索引；或 < 0
 }
 
 // Len returns the number of bytes of the unread portion of the
 // string.
+// Len返回字符串中未读部分的字节数。
 func (r *Reader) Len() int {
 	if r.i >= int64(len(r.s)) {
 		return 0
