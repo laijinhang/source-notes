@@ -37,6 +37,9 @@ var ErrShortBuffer = errors.New("short buffer")
 // If the EOF occurs unexpectedly in a structured data stream,
 // the appropriate error is either ErrUnexpectedEOF or some other error
 // giving more detail.
+// EOF是Read在没有更多输入时返回的错误。(Read必须返回EOF本身，而不是一个包裹EOF的错误，
+// 因为调用者会用==来测试EOF)。函数应该只返回EOF，以示对输入的优雅结束。 如果EOF在结构化
+// 数据流中意外发生，适当的错误是ErrUnexpectedEOF或者其他给出更多细节的错误。
 var EOF = errors.New("EOF")
 
 // ErrUnexpectedEOF means that EOF was encountered in the

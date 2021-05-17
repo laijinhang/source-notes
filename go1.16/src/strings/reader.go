@@ -36,9 +36,12 @@ func (r *Reader) Len() int {
 // Size is the number of bytes available for reading via ReadAt.
 // The returned value is always the same and is not affected by calls
 // to any other method.
+// Size返回底层字符串的原始长度。Size是可通过ReadAt读取的字节数。
+// 返回的值总是相同的，并且不受调用任何其他方法的影响。
 func (r *Reader) Size() int64 { return int64(len(r.s)) }
 
 // Read implements the io.Reader interface.
+// 读取实现了io.Reader接口。
 func (r *Reader) Read(b []byte) (n int, err error) {
 	if r.i >= int64(len(r.s)) {
 		return 0, io.EOF
@@ -50,8 +53,10 @@ func (r *Reader) Read(b []byte) (n int, err error) {
 }
 
 // ReadAt implements the io.ReaderAt interface.
+// ReadAt 实现了 io.ReaderAt 接口。
 func (r *Reader) ReadAt(b []byte, off int64) (n int, err error) {
 	// cannot modify state - see io.ReaderAt
+	// 不能修改状态--见io.ReaderAt
 	if off < 0 {
 		return 0, errors.New("strings.Reader.ReadAt: negative offset")
 	}
@@ -66,6 +71,7 @@ func (r *Reader) ReadAt(b []byte, off int64) (n int, err error) {
 }
 
 // ReadByte implements the io.ByteReader interface.
+// ReadByte 实现了 io.ByteReader 接口。
 func (r *Reader) ReadByte() (byte, error) {
 	r.prevRune = -1
 	if r.i >= int64(len(r.s)) {
@@ -77,6 +83,7 @@ func (r *Reader) ReadByte() (byte, error) {
 }
 
 // UnreadByte implements the io.ByteScanner interface.
+// UnreadByte实现了io.ByteScanner接口。
 func (r *Reader) UnreadByte() error {
 	if r.i <= 0 {
 		return errors.New("strings.Reader.UnreadByte: at beginning of string")
