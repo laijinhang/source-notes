@@ -36,6 +36,11 @@ type pollDesc struct {
 var serverInit sync.Once
 
 // epoll初始化
+/*
+	1、只调用一次epoll创建
+	2、将sysfd注册到epoll上，如果这个过程有错误，则返回对应的错误
+	3、保存pollDesc
+ */
 func (pd *pollDesc) init(fd *FD) error {
 	// 保证最多只被调用一次，调用runtime_pollServerInit创建一个epollServerInit创建一个epoll句柄，
 	// 实际执行的就是epoll_create
@@ -61,6 +66,9 @@ func (pd *pollDesc) init(fd *FD) error {
 	return nil
 }
 
+/*
+	关闭epoll
+ */
 func (pd *pollDesc) close() {
 	/*
 		runtimeCtx的类型是uintptr，如果没有初始化，它的值是零值，
@@ -165,11 +173,13 @@ func (fd *FD) SetDeadline(t time.Time) error {
 }
 
 // SetReadDeadline sets the read deadline associated with fd.
+// SetReadDeadline设置与fd相关的读取期限。
 func (fd *FD) SetReadDeadline(t time.Time) error {
 	return setDeadlineImpl(fd, t, 'r')
 }
 
 // SetWriteDeadline sets the write deadline associated with fd.
+// SetWriteDeadline设置与fd相关的写入期限。
 func (fd *FD) SetWriteDeadline(t time.Time) error {
 	return setDeadlineImpl(fd, t, 'w')
 }
@@ -195,6 +205,8 @@ func setDeadlineImpl(fd *FD, t time.Time, mode int) error {
 
 // IsPollDescriptor reports whether fd is the descriptor being used by the poller.
 // This is only used for testing.
+// IsPollDescriptor报告fd是否是被轮询者使用的描述符。
+// 这仅用于测试。
 func IsPollDescriptor(fd uintptr) bool {
 	return runtime_isPollServerDescriptor(fd)
 }

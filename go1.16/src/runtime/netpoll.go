@@ -162,6 +162,7 @@ func netpollinited() bool {
 
 // poll_runtime_isPollServerDescriptor reports whether fd is a
 // descriptor being used by netpoll.
+// poll_runtime_isPollServerDescriptor报告fd是否是netpoll正在使用的描述符。
 func poll_runtime_isPollServerDescriptor(fd uintptr) bool {
 	return netpollIsPollDescriptor(fd)
 }
