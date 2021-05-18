@@ -9,8 +9,12 @@ package strings
 // https://en.wikipedia.org/wiki/Boyer-Moore_string_search_algorithm
 // https://www.cs.utexas.edu/~moore/publications/fstrpos.pdf (note: this aged
 // document uses 1-based indexing)
+// stringFinder可以有效地查找源文本中的字符串。它是用Boyer-Moore字符串搜索算法实现的。
+// https://en.wikipedia.org/wiki/Boyer-Moore_string_search_algorithm
+// https://www.cs.utexas.edu/~moore/publications/fstrpos.pdf（注意：这个古老的文件使用基于1的索引）。
 type stringFinder struct {
 	// pattern is the string that we are searching for in the text.
+	// pattern是我们要在文本中搜索的字符串。
 	pattern string
 
 	// badCharSkip[b] contains the distance between the last byte of pattern
@@ -51,10 +55,12 @@ func makeStringFinder(pattern string) *stringFinder {
 		goodSuffixSkip: make([]int, len(pattern)),
 	}
 	// last is the index of the last character in the pattern.
+	// last是模式中最后一个字符的索引。
 	last := len(pattern) - 1
 
 	// Build bad character table.
 	// Bytes not in the pattern can skip one pattern's length.
+	// 建立bad character。不在模式中的字节可以跳过一个模式的长度。
 	for i := range f.badCharSkip {
 		f.badCharSkip[i] = len(pattern)
 	}

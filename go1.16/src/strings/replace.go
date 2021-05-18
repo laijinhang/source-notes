@@ -404,10 +404,11 @@ func (r *genericReplacer) WriteString(w io.Writer, s string) (n int, err error) 
 
 // singleStringReplacer is the implementation that's used when there is only
 // one string to replace (and that string has more than one byte).
+// singleStringReplacer是在只有一个字符串需要替换时使用的实现（该字符串有一个以上的字节）。
 type singleStringReplacer struct {
 	finder *stringFinder
 	// value is the new string that replaces that pattern when it's found.
-	//值是新的字符串，当它被发现时，将取代该模式。
+	// value是新的字符串，当它被找到时，将取代该模式。
 	value string
 }
 
@@ -463,10 +464,11 @@ func (r *singleStringReplacer) WriteString(w io.Writer, s string) (n int, err er
 // byteReplacer is the implementation that's used when all the "old"
 // and "new" values are single ASCII bytes.
 // The array contains replacement bytes indexed by old byte.
+// byteReplacer是当所有的 "旧 "和 "新 "值都是单个ASCII字节时使用的实现。该数组包含以旧字节为索引的替换字节。
 type byteReplacer [256]byte
 
 func (r *byteReplacer) Replace(s string) string {
-	var buf []byte // lazily allocated
+	var buf []byte // lazily allocated，懒惰地分配
 	for i := 0; i < len(s); i++ {
 		b := s[i]
 		if r[b] != b {
