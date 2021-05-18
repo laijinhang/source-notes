@@ -55,6 +55,11 @@ type stringFinder struct {
 	// suffix "xxabc" is not found elsewhere in the pattern. However, its
 	// rightmost "abc" (at position 6) is a prefix of the whole pattern, so
 	// goodSuffixSkip[3] == shift+len(suffix) == 6+5 == 11.
+	// 2. 如果匹配的后缀在模式中没有出现，那么匹配的框架可能与匹配后缀的结尾共享其部分前缀。
+	// 在这种情况下，goodSuffixSkip[i]将包含将框架移动多远以使这部分前缀与后缀对齐。例如，
+	// 在模式 "abcxxxabc "中，当发现后面的第一个错位在第3位时，匹配的后缀 "xxabc "在该模
+	// 式的其他地方没有发现。然而，它最右边的 "abc"（位于第6位）是整个模式的前缀，所以
+	// goodSuffixSkip[3]==shift+len(后缀) ==6+5 ==11。
 	goodSuffixSkip []int
 }
 
@@ -83,6 +88,7 @@ func makeStringFinder(pattern string) *stringFinder {
 	// Build good suffix table.
 	// First pass: set each value to the next index which starts a prefix of
 	// pattern.
+	// 建立好的后缀表。第一遍：将每个值设置为下一个索引，该索引开始一个模式的前缀。
 	lastPrefix := last
 	for i := last; i >= 0; i-- {
 		if HasPrefix(pattern, pattern[i+1:]) {
@@ -93,10 +99,12 @@ func makeStringFinder(pattern string) *stringFinder {
 		f.goodSuffixSkip[i] = lastPrefix + last - i
 	}
 	// Second pass: find repeats of pattern's suffix starting from the front.
+	// 第二遍：从前面开始寻找图案后缀的重复部分。
 	for i := 0; i < last; i++ {
 		lenSuffix := longestCommonSuffix(pattern, pattern[1:i+1])
 		if pattern[i-lenSuffix] != pattern[last-lenSuffix] {
 			// (last-i) is the shift, and lenSuffix is len(suffix).
+			// (last-i)是移位，lenSuffix是len(后缀)。
 			f.goodSuffixSkip[last-lenSuffix] = lenSuffix + last - i
 		}
 	}
@@ -115,10 +123,12 @@ func longestCommonSuffix(a, b string) (i int) {
 
 // next returns the index in text of the first occurrence of the pattern. If
 // the pattern is not found, it returns -1.
+// 接下来返回该模式第一次出现在文本中的索引。如果没有找到该模式，则返回-1。
 func (f *stringFinder) next(text string) int {
 	i := len(f.pattern) - 1
 	for i < len(text) {
 		// Compare backwards from the end until the first unmatching character.
+		// 从最后开始向后比较，直到第一个不匹配的字符。
 		j := len(f.pattern) - 1
 		for j >= 0 && text[i] == f.pattern[j] {
 			i--
