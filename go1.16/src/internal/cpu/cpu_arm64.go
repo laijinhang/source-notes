@@ -20,6 +20,7 @@ func doinit() {
 	}
 
 	// arm64 uses different ways to detect CPU features at runtime depending on the operating system.
+	// arm64根据操作系统的不同，在运行时使用不同的方式来检测CPU特性。
 	osInit()
 }
 

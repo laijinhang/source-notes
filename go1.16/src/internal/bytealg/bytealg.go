@@ -10,6 +10,7 @@ import (
 )
 
 // Offsets into internal/cpu records for use in assembly.
+// 进入内部/cpu记录的偏移量，以便在汇编中使用。
 const (
 	offsetX86HasSSE2   = unsafe.Offsetof(cpu.X86.HasSSE2)
 	offsetX86HasSSE42  = unsafe.Offsetof(cpu.X86.HasSSE42)
@@ -21,17 +22,23 @@ const (
 
 // MaxLen is the maximum length of the string to be searched for (argument b) in Index.
 // If MaxLen is not 0, make sure MaxLen >= 4.
+// MaxLen是要搜索的字符串（参数b）在索引中的最大长度。
+// 如果MaxLen不是0，确保MaxLen>=4。
 var MaxLen int
 
 // FIXME: the logic of HashStrBytes, HashStrRevBytes, IndexRabinKarpBytes and HashStr, HashStrRev,
 // IndexRabinKarp are exactly the same, except that the types are different. Can we eliminate
 // three of them without causing allocation?
+// FIXME: HashStrBytes, HashStrRevBytes, IndexRabinKarpBytes和HashStr, HashStrRev,
+// IndexRabinKarp是完全一样的，只是类型不同。我们能在不引起分配的情况下消除其中的三个吗？
 
 // PrimeRK is the prime base used in Rabin-Karp algorithm.
+// PrimeRK是Rabin-Karp算法中使用的素数基数。
 const PrimeRK = 16777619
 
 // HashStrBytes returns the hash and the appropriate multiplicative
 // factor for use in Rabin-Karp algorithm.
+// HashStrBytes返回散列值和适当的乘法因子，用于Rabin-Karp算法。
 func HashStrBytes(sep []byte) (uint32, uint32) {
 	hash := uint32(0)
 	for i := 0; i < len(sep); i++ {
@@ -49,6 +56,7 @@ func HashStrBytes(sep []byte) (uint32, uint32) {
 
 // HashStr returns the hash and the appropriate multiplicative
 // factor for use in Rabin-Karp algorithm.
+// HashStr返回散列值和适当的乘法因子，用于Rabin-Karp算法。
 func HashStr(sep string) (uint32, uint32) {
 	hash := uint32(0)
 	for i := 0; i < len(sep); i++ {
@@ -66,6 +74,7 @@ func HashStr(sep string) (uint32, uint32) {
 
 // HashStrRevBytes returns the hash of the reverse of sep and the
 // appropriate multiplicative factor for use in Rabin-Karp algorithm.
+// HashStrRevBytes返回sep反向的哈希值和适当的乘法因子，用于Rabin-Karp算法。
 func HashStrRevBytes(sep []byte) (uint32, uint32) {
 	hash := uint32(0)
 	for i := len(sep) - 1; i >= 0; i-- {
@@ -83,6 +92,7 @@ func HashStrRevBytes(sep []byte) (uint32, uint32) {
 
 // HashStrRev returns the hash of the reverse of sep and the
 // appropriate multiplicative factor for use in Rabin-Karp algorithm.
+// HashStrRev 返回 sep 反面的哈希值和适当的乘法因子，用于 Rabin-Karp 算法。
 func HashStrRev(sep string) (uint32, uint32) {
 	hash := uint32(0)
 	for i := len(sep) - 1; i >= 0; i-- {
@@ -100,8 +110,10 @@ func HashStrRev(sep string) (uint32, uint32) {
 
 // IndexRabinKarpBytes uses the Rabin-Karp search algorithm to return the index of the
 // first occurrence of substr in s, or -1 if not present.
+// IndexRabinKarpBytes使用Rabin-Karp搜索算法来返回substr在s中第一次出现的索引，如果不存在则返回-1。
 func IndexRabinKarpBytes(s, sep []byte) int {
 	// Rabin-Karp search
+	// Rabin-Karp搜索
 	hashsep, pow := HashStrBytes(sep)
 	n := len(sep)
 	var h uint32
@@ -125,8 +137,10 @@ func IndexRabinKarpBytes(s, sep []byte) int {
 
 // IndexRabinKarp uses the Rabin-Karp search algorithm to return the index of the
 // first occurrence of substr in s, or -1 if not present.
+// IndexRabinKarp使用Rabin-Karp搜索算法来返回s中第一个出现的substr的索引，如果不存在则为-1。
 func IndexRabinKarp(s, substr string) int {
 	// Rabin-Karp search
+	// Rabin-Karp搜索
 	hashss, pow := HashStr(substr)
 	n := len(substr)
 	var h uint32

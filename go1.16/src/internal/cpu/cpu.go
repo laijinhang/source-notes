@@ -10,20 +10,27 @@ package cpu
 // DebugOptions is set to true by the runtime if the OS supports reading
 // GODEBUG early in runtime startup.
 // This should not be changed after it is initialized.
+// 如果操作系统支持在运行时启动初期读取GODEBUG，则运行时将DebugOptions设置为true。
+// 在它被初始化后，不应改变它。
 var DebugOptions bool
 
 // CacheLinePad is used to pad structs to avoid false sharing.
+// CacheLinePad用于填充结构，以避免虚假共享。
 type CacheLinePad struct{ _ [CacheLinePadSize]byte }
 
 // CacheLineSize is the CPU's assumed cache line size.
 // There is currently no runtime detection of the real cache line size
 // so we use the constant per GOARCH CacheLinePadSize as an approximation.
+// CacheLineSize是CPU假定的高速缓存行大小。
+// 目前还没有对真正的缓存行大小进行运行时检测，所以我们使用每GOARCH CacheLinePadSize这个常数作为近似值。
 var CacheLineSize uintptr = CacheLinePadSize
 
 // The booleans in X86 contain the correspondingly named cpuid feature bit.
 // HasAVX and HasAVX2 are only set if the OS does support XMM and YMM registers
 // in addition to the cpuid feature bit being set.
 // The struct is padded to avoid false sharing.
+// X86中的布尔运算包含相应命名的cpuid特征位。HasAVX和HasAVX2只有在操作系统确实支持
+// XMM和YMM寄存器的情况下才会被设置，此外cpuid特征位也被设置。该结构被填充以避免错误的共享。
 var X86 struct {
 	_            CacheLinePad
 	HasAES       bool
@@ -47,6 +54,8 @@ var X86 struct {
 
 // The booleans in ARM contain the correspondingly named cpu feature bit.
 // The struct is padded to avoid false sharing.
+// ARM中的布尔运算包含相应命名的cpu特征位。
+// 该结构被填充以避免错误的共享。
 var ARM struct {
 	_        CacheLinePad
 	HasVFPv4 bool
@@ -56,6 +65,8 @@ var ARM struct {
 
 // The booleans in ARM64 contain the correspondingly named cpu feature bit.
 // The struct is padded to avoid false sharing.
+// ARM64中的布尔运算包含相应命名的cpu特征位。
+// 该结构被填充以避免错误的共享。
 var ARM64 struct {
 	_            CacheLinePad
 	HasAES       bool
