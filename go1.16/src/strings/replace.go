@@ -154,13 +154,20 @@ type trieNode struct {
 	//  * if the remaining fields are zero, there are no children.
 	//  * if prefix and next are non-zero, there is one child in next.
 	//  * if table is non-zero, it defines all the children.
+	// 一个 trie 节点可以有零个、一个或多个子节点。
+	//	* 如果其余字段为零，则没有子节点。
+	//	* 如果prefix和next不为零，则next中有一个子节点。
+	//	* 如果table非零，它定义了所有的子节点。
 	//
 	// Prefixes are preferred over tables when there is one child, but the
 	// root node always uses a table for lookup efficiency.
+	// 当有一个孩子时，前缀比表格更受欢迎，但根节点总是使用表格以提高查询效率。
 
 	// prefix is the difference in keys between this trie node and the next.
 	// In the example above, node n4 has prefix "cbc" and n4's next node is n5.
 	// Node n5 has no children and so has zero prefix, next and table fields.
+	// 前缀是这个 trie 节点和下一个节点之间的键的区别。 在上面的例子中，节点n4有前缀 "cbc"，
+	// n4的下一个节点是n5。节点n5没有孩子，所以它的前缀、下一个和表字段都是零。
 	prefix string
 	next   *trieNode
 
@@ -358,6 +365,7 @@ func (r *genericReplacer) WriteString(w io.Writer, s string) (n int, err error) 
 	var prevMatchEmpty bool
 	for i := 0; i <= len(s); {
 		// Fast path: s[i] is not a prefix of any pattern.
+		// 快速路径：s[i]不是任何模式的前缀。
 		if i != len(s) && r.root.priority == 0 {
 			index := int(r.mapping[s[i]])
 			if index == r.tableSize || r.root.table[index] == nil {
@@ -367,6 +375,7 @@ func (r *genericReplacer) WriteString(w io.Writer, s string) (n int, err error) 
 		}
 
 		// Ignore the empty match iff the previous loop found the empty match.
+		// 忽略空匹配，如果前一个循环找到了空匹配。
 		val, keylen, match := r.lookup(s[i:], prevMatchEmpty)
 		prevMatchEmpty = match && keylen == 0
 		if match {
@@ -398,6 +407,7 @@ func (r *genericReplacer) WriteString(w io.Writer, s string) (n int, err error) 
 type singleStringReplacer struct {
 	finder *stringFinder
 	// value is the new string that replaces that pattern when it's found.
+	//值是新的字符串，当它被发现时，将取代该模式。
 	value string
 }
 
