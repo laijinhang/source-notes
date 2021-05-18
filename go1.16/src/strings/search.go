@@ -4,6 +4,9 @@
 
 package strings
 
+/*
+字符串匹配的Boyer-Moore算法理解：http://www.ruanyifeng.com/blog/2013/05/boyer-moore_string_search_algorithm.html
+ */
 // stringFinder efficiently finds strings in a source text. It's implemented
 // using the Boyer-Moore string search algorithm:
 // https://en.wikipedia.org/wiki/Boyer-Moore_string_search_algorithm
@@ -17,6 +20,10 @@ type stringFinder struct {
 	// pattern是我们要在文本中搜索的字符串。
 	pattern string
 
+	/*
+		坏字符（Bad Character Heuristic）：当文本 T 中的某个字符跟模式 P 的某个字符不匹配时，我们称文本 T 中的这个失配字符为坏字符。
+		好后缀（Good Suffix Heuristic）：当文本 T 中的某个字符跟模式 P 的某个字符不匹配时，我们称文本 T 中的已经匹配的字符串为好后缀。
+	 */
 	// badCharSkip[b] contains the distance between the last byte of pattern
 	// and the rightmost occurrence of b in pattern. If b is not in pattern,
 	// badCharSkip[b] is len(pattern).
@@ -81,6 +88,7 @@ func makeStringFinder(pattern string) *stringFinder {
 	// The loop condition is < instead of <= so that the last byte does not
 	// have a zero distance to itself. Finding this byte out of place implies
 	// that it is not in the last position.
+	// 循环条件是<而不是<=，这样最后一个字节与自己的距离就不会是零。发现这个字节的位置不对，意味着它不在最后的位置。
 	for i := 0; i < last; i++ {
 		f.badCharSkip[pattern[i]] = last - i
 	}

@@ -94,6 +94,7 @@ func (r *Reader) UnreadByte() error {
 }
 
 // ReadRune implements the io.RuneReader interface.
+// ReadRune 实现了 io.RuneReader 接口。
 func (r *Reader) ReadRune() (ch rune, size int, err error) {
 	if r.i >= int64(len(r.s)) {
 		r.prevRune = -1
@@ -110,6 +111,7 @@ func (r *Reader) ReadRune() (ch rune, size int, err error) {
 }
 
 // UnreadRune implements the io.RuneScanner interface.
+// UnreadRune实现了io.RuneScanner接口。
 func (r *Reader) UnreadRune() error {
 	if r.i <= 0 {
 		return errors.New("strings.Reader.UnreadRune: at beginning of string")
@@ -123,6 +125,7 @@ func (r *Reader) UnreadRune() error {
 }
 
 // Seek implements the io.Seeker interface.
+// Seek实现了io.Seeker接口。
 func (r *Reader) Seek(offset int64, whence int) (int64, error) {
 	r.prevRune = -1
 	var abs int64
@@ -144,6 +147,7 @@ func (r *Reader) Seek(offset int64, whence int) (int64, error) {
 }
 
 // WriteTo implements the io.WriterTo interface.
+// WriteTo 实现了 io.WriterTo 接口。
 func (r *Reader) WriteTo(w io.Writer) (n int64, err error) {
 	r.prevRune = -1
 	if r.i >= int64(len(r.s)) {
@@ -163,8 +167,11 @@ func (r *Reader) WriteTo(w io.Writer) (n int64, err error) {
 }
 
 // Reset resets the Reader to be reading from s.
+// 重置读取器，使其从s读取。
 func (r *Reader) Reset(s string) { *r = Reader{s, 0, -1} }
 
 // NewReader returns a new Reader reading from s.
 // It is similar to bytes.NewBufferString but more efficient and read-only.
+// NewReader返回一个从s读取的新的阅读器。
+// 它类似于bytes.NewBufferString，但效率更高，而且是只读的。
 func NewReader(s string) *Reader { return &Reader{s, 0, -1} }

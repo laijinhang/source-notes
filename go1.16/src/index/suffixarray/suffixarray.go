@@ -4,15 +4,19 @@
 
 // Package suffixarray implements substring search in logarithmic time using
 // an in-memory suffix array.
+// Package suffixarray在后缀数组内存在对数时间内实现子串搜索。
 //
 // Example use:
+// 使用实例:
 //
 //	// create index for some data
+//  // 为一些数据创建索引
 //	index := suffixarray.New(data)
 //
 //	// lookup byte slice s
-//	offsets1 := index.Lookup(s, -1) // the list of all indices where s occurs in data
-//	offsets2 := index.Lookup(s, 3)  // the list of at most 3 indices where s occurs in data
+//	// 查找字节片s
+//	offsets1 := index.Lookup(s, -1) // the list of all indices where s occurs in data	// 数据中出现s的所有索引的列表
+//	offsets2 := index.Lookup(s, 3)  // the list of at most 3 indices where s occurs in data	// 列表中出现s的所有索引
 //
 package suffixarray
 
@@ -27,14 +31,16 @@ import (
 )
 
 // Can change for testing
+// 可以为测试而改变
 var maxData32 int = realMaxData32
 
 const realMaxData32 = math.MaxInt32
 
 // Index implements a suffix array for fast substring search.
+// 索引实现了一个后缀数组，用于快速子串搜索。
 type Index struct {
 	data []byte
-	sa   ints // suffix array for data; sa.len() == len(data)
+	sa   ints // suffix array for data; sa.len() == len(data)	// 数据的后缀数组; sa.len() == len(data)
 }
 
 // An ints is either an []int32 or an []int64.

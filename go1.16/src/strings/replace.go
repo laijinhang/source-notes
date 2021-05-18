@@ -192,6 +192,7 @@ func (t *trieNode) add(key, val string, priority int, r *genericReplacer) {
 
 	if t.prefix != "" {
 		// Need to split the prefix among multiple nodes.
+		// 需要在多个节点之间分割前缀。
 		var n int // length of the longest common prefix
 		for ; n < len(t.prefix) && n < len(key); n++ {
 			if t.prefix[n] != key[n] {

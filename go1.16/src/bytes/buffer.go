@@ -212,6 +212,8 @@ func (b *Buffer) WriteTo(w io.Writer) (n int64, err error) {
 // The returned error is always nil, but is included to match bufio.Writer's
 // WriteByte. If the buffer becomes too large, WriteByte will panic with
 // ErrTooLarge.
+// WriteByte将字节c追加到缓冲区中，根据需要增加缓冲区。返回的错误总是nil，但被包括在内以匹配
+// bufio.Writer的WriteByte。如果缓冲区变得太大，WriteByte将以ErrTooLarge panic。
 func (b *Buffer) WriteByte(c byte) error {
 	b.lastRead = opInvalid
 	m, ok := b.tryGrowByReslice(1)
@@ -338,6 +340,9 @@ func (b *Buffer) ReadRune() (r rune, size int, err error) {
 // not a successful ReadRune, UnreadRune returns an error.  (In this regard
 // it is stricter than UnreadByte, which will unread the last byte
 // from any read operation.)
+// UnreadRune取消读取ReadRune返回的最后一个符文。如果最近对缓冲区的读或写操作不是一个成功
+// 的ReadRune，UnreadRune会返回一个错误。 (在这方面它比UnreadByte更严格，UnreadByte
+// 会取消任何读操作的最后一个字节)。
 func (b *Buffer) UnreadRune() error {
 	if b.lastRead <= opInvalid {
 		return errors.New("bytes.Buffer: UnreadRune: previous operation was not a successful ReadRune")
@@ -355,6 +360,8 @@ var errUnreadByte = errors.New("bytes.Buffer: UnreadByte: previous operation was
 // read operation that read at least one byte. If a write has happened since
 // the last read, if the last read returned an error, or if the read read zero
 // bytes, UnreadByte returns an error.
+// UnreadRune解读由ReadRune返回的最后一个符文。如果最近在缓冲区上的读或写操作不是一个成功的ReadRune，
+// UnreadRune会返回一个错误。 (在这方面它比UnreadByte更严格，UnreadByte会取消任何读操作的最后一个字节)。
 func (b *Buffer) UnreadByte() error {
 	if b.lastRead == opInvalid {
 		return errUnreadByte
@@ -372,6 +379,9 @@ func (b *Buffer) UnreadByte() error {
 // it returns the data read before the error and the error itself (often io.EOF).
 // ReadBytes returns err != nil if and only if the returned data does not end in
 // delim.
+// ReadBytes一直读到输入中第一次出现delim为止，返回一个包含数据的片断，直到并包括分界符。
+// 如果ReadBytes在找到定界符之前遇到了错误，它会返回在错误之前读到的数据和错误本身（通常是io.EOF）。
+// 如果且仅当返回的数据不以定界符结束时，ReadBytes返回err !=nil。
 func (b *Buffer) ReadBytes(delim byte) (line []byte, err error) {
 	slice, err := b.readSlice(delim)
 	// return a copy of slice. The buffer's backing array may
@@ -401,6 +411,9 @@ func (b *Buffer) readSlice(delim byte) (line []byte, err error) {
 // it returns the data read before the error and the error itself (often io.EOF).
 // ReadString returns err != nil if and only if the returned data does not end
 // in delim.
+// ReadString 读取到输入中第一次出现的 delim，返回一个包含数据的字符串，直到并包括分界符。
+// 如果ReadString在找到定界符之前遇到了错误，它会返回在错误之前读到的数据和错误本身（通常是io.EOF）。
+// 如果且仅当返回的数据不以定界符结束时，ReadString返回err !=nil。
 func (b *Buffer) ReadString(delim byte) (line string, err error) {
 	slice, err := b.readSlice(delim)
 	return string(slice), err
@@ -419,16 +432,16 @@ func (b *Buffer) ReadString(delim byte) (line string, err error) {
 //
 // In most cases, new(Buffer) (or just declaring a Buffer variable) is
 // sufficient to initialize a Buffer.
+// 在大多数情况下，new(Buffer)（或者只是声明一个Buffer变量）就足以初始化一个Buffer。
 func NewBuffer(buf []byte) *Buffer { return &Buffer{buf: buf} }
 
 // NewBufferString creates and initializes a new Buffer using string s as its
 // initial contents. It is intended to prepare a buffer to read an existing
 // string.
+// NewBufferString创建并初始化一个新的Buffer，使用字符串s作为其初始内容。它的目的是为了准备一个缓冲区来读取一个现有的字符串。
 //
 // In most cases, new(Buffer) (or just declaring a Buffer variable) is
 // sufficient to initialize a Buffer.
-// NewBufferString创建并初始化一个新的Buffer，使用字符串s作为其初始内容。它的目的是为了准备一个缓冲区来读取一个现有的字符串。
-//
 // 在大多数情况下，new(Buffer)（或者只是声明一个Buffer变量）就足以初始化一个Buffer。
 func NewBufferString(s string) *Buffer {
 	return &Buffer{buf: []byte(s)}
