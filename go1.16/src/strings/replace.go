@@ -101,12 +101,14 @@ func (b *Replacer) build() replacer {
 }
 
 // Replace returns a copy of s with all replacements performed.
+// 替换后返回s的副本，并执行所有的替换。
 func (r *Replacer) Replace(s string) string {
 	r.once.Do(r.buildOnce)
 	return r.r.Replace(s)
 }
 
 // WriteString writes s to w with all replacements performed.
+// WriteString将s写入w，并进行所有替换。
 func (r *Replacer) WriteString(w io.Writer, s string) (n int, err error) {
 	r.once.Do(r.buildOnce)
 	return r.r.WriteString(w, s)
@@ -115,6 +117,8 @@ func (r *Replacer) WriteString(w io.Writer, s string) (n int, err error) {
 // trieNode is a node in a lookup trie for prioritized key/value pairs. Keys
 // and values may be empty. For example, the trie containing keys "ax", "ay",
 // "bcbc", "x" and "xy" could have eight nodes:
+// trieNode是优先键/值对的查找三角中的一个节点。键和值可以是空的。例如，包含键 "ax"、"ay"、
+// "bcbc"、"x "和 "xy "的 trie 可以有八个节点。
 //
 //  n0  -
 //  n1  a-
@@ -129,15 +133,21 @@ func (r *Replacer) WriteString(w io.Writer, s string) (n int, err error) {
 // n2 and n3; n4's child is n5; n6's child is n7. Nodes n0, n1 and n4 (marked
 // with a trailing "-") are partial keys, and nodes n2, n3, n5, n6 and n7
 // (marked with a trailing "+") are complete keys.
+// n0是根节点，它的孩子是n1、n4和n6；n1的孩子是n2和n3；n4的孩子是n5；n6的孩子是n7。
+// 节点n0、n1和n4（标有尾部"-"）是部分键，节点n2、n3、n5、n6和n7（标有尾部 "+"）是完整键。
 type trieNode struct {
 	// value is the value of the trie node's key/value pair. It is empty if
 	// this node is not a complete key.
+	// value是 trie节点的键/值对的值。如果这个节点不是一个完整的键，它就是空的。
 	value string
 	// priority is the priority (higher is more important) of the trie node's
 	// key/value pair; keys are not necessarily matched shortest- or longest-
 	// first. Priority is positive if this node is a complete key, and zero
 	// otherwise. In the example above, positive/zero priorities are marked
 	// with a trailing "+" or "-".
+	// 优先级是 trie 节点的键/值对的优先级（越高越重要）。键/值对；键不一定是最短或最长的匹配。
+	// 首先。如果该节点是一个完整的键，则优先级为正，否则为零。 否则为零。在上面的例子中，
+	// 正/零优先级被标记为用尾部的 "+"或"-"标记。
 	priority int
 
 	// A trie node may have zero, one or more child nodes:
