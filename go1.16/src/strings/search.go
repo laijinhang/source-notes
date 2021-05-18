@@ -20,15 +20,21 @@ type stringFinder struct {
 	// badCharSkip[b] contains the distance between the last byte of pattern
 	// and the rightmost occurrence of b in pattern. If b is not in pattern,
 	// badCharSkip[b] is len(pattern).
+	// badCharSkip[b]包含图案的最后一个字节与图案中最右边的b之间的距离。如果b不在图案中，
+	// badCharSkip[b]就是len(pattern)。
 	//
 	// Whenever a mismatch is found with byte b in the text, we can safely
 	// shift the matching frame at least badCharSkip[b] until the next time
 	// the matching char could be in alignment.
+	// 每当发现与文本中的字节b不匹配时，我们可以安全地将匹配的帧至少移动到badCharSkip[b]，
+	// 直到下一次匹配的字符可以对齐。
 	badCharSkip [256]int
 
 	// goodSuffixSkip[i] defines how far we can shift the matching frame given
 	// that the suffix pattern[i+1:] matches, but the byte pattern[i] does
 	// not. There are two cases to consider:
+	// goodSuffixSkip[i]定义了在后缀模式[i+1:]匹配，但字节模式[i]不匹配的情况下，
+	// 我们可以将匹配的框架转移多远。有两种情况需要考虑。
 	//
 	// 1. The matched suffix occurs elsewhere in pattern (with a different
 	// byte preceding it that we might possibly match). In this case, we can
@@ -36,6 +42,9 @@ type stringFinder struct {
 	// example, the pattern "mississi" has the suffix "issi" next occurring
 	// (in right-to-left order) at index 1, so goodSuffixSkip[3] ==
 	// shift+len(suffix) == 3+4 == 7.
+	// 1. 匹配的后缀在模式中的其他地方出现（前面有一个不同的字节，我们可能会匹配）。在这种情况下，
+	// 我们可以将匹配的帧移到与下一个后缀块对齐。例如，模式 "mississi "的后缀 "issi "在索引1处
+	// 出现（按从右到左的顺序），所以goodSuffixSkip[3] == shift+len(senix) == 3+4 == 7。
 	//
 	// 2. If the matched suffix does not occur elsewhere in pattern, then the
 	// matching frame may share part of its prefix with the end of the
@@ -80,6 +89,7 @@ func makeStringFinder(pattern string) *stringFinder {
 			lastPrefix = i + 1
 		}
 		// lastPrefix is the shift, and (last-i) is len(suffix).
+		// lastPrefix是移位，(last-i)是len(senix)。
 		f.goodSuffixSkip[i] = lastPrefix + last - i
 	}
 	// Second pass: find repeats of pattern's suffix starting from the front.
