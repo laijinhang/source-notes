@@ -219,6 +219,16 @@ func cgoIPLookup(result chan<- ipLookupResult, network, name string) {
 	result <- ipLookupResult{addrs, cname, err}
 }
 
+/*
+	cgoLookupIP，cgo方式进行域名解析：
+	1、如果传入的那个上下文没有关闭，则调用cgoLookupIPCNAME方法
+	2、如果传入的那个上下文以及关闭
+		1. 生成一个长度为1类型为ipLookupResult的有缓冲通道
+		2. 开启一个协程去拿解析出来的结果
+		3. 外面使用select等待结果
+			1. 如果拿到了结果，则将结果返回
+			2. 如果没有拿到结果，就关闭了context（也就是超时了），则返回错误
+ */
 func cgoLookupIP(ctx context.Context, network, name string) (addrs []IPAddr, err error, completed bool) {
 	if ctx.Done() == nil {
 		addrs, _, err = cgoLookupIPCNAME(network, name)

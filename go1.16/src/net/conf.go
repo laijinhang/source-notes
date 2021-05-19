@@ -15,17 +15,20 @@ import (
 )
 
 // conf represents a system's network configuration.
+// conf代表一个系统的网络配置。
 type conf struct {
 	// forceCgoLookupHost forces CGO to always be used, if available.
+	// forceCgoLookupHost强制使用CGO，如果有的话。
 	forceCgoLookupHost bool
 
-	netGo  bool // go DNS resolution forced
-	netCgo bool // cgo DNS resolution forced
+	netGo  bool // go DNS resolution forced		// go 强制的DNS解析
+	netCgo bool // cgo DNS resolution forced	// cgo 强制的DNS解析
 
 	// machine has an /etc/mdns.allow file
+	// 机器有一个/etc/mdns.allow文件
 	hasMDNSAllow bool
 
-	goos          string // the runtime.GOOS, to ease testing
+	goos          string // the runtime.GOOS, to ease testing	// runtime.GOOS，以方便测试
 	dnsDebugLevel int
 
 	nss    *nssConf
@@ -33,16 +36,23 @@ type conf struct {
 }
 
 var (
-	confOnce sync.Once // guards init of confVal via initConfVal
+	confOnce sync.Once // guards init of confVal via initConfVal	// 通过initConfVal守护confVal的初始化。
 	confVal  = &conf{goos: runtime.GOOS}
 )
 
 // systemConf returns the machine's network configuration.
+// systemConf返回机器的网络配置。
 func systemConf() *conf {
 	confOnce.Do(initConfVal)
 	return confVal
 }
 
+/*
+	初始化配置值
+	1、
+	2、如果是darwin和ios系统，则强制使用cgo查询host
+	3、如果指定了任何环境指定的解析器选项，则强制使用cgo查询host
+ */
 func initConfVal() {
 	dnsMode, debugLevel := goDebugNetDNS()
 	confVal.dnsDebugLevel = debugLevel
@@ -69,6 +79,7 @@ func initConfVal() {
 	// Darwin pops up annoying dialog boxes if programs try to do
 	// their own DNS requests. So always use cgo instead, which
 	// avoids that.
+	/* 如果是darwin和ios系统，则强制使用cgo查询host */
 	if runtime.GOOS == "darwin" || runtime.GOOS == "ios" {
 		confVal.forceCgoLookupHost = true
 		return
@@ -77,6 +88,7 @@ func initConfVal() {
 	// If any environment-specified resolver options are specified,
 	// force cgo. Note that LOCALDOMAIN can change behavior merely
 	// by being specified with the empty string.
+	// 如果指定了任何环境指定的解析器选项，则强制使用 cgo。请注意，LOCALDOMAIN仅仅通过被指定为空字符串就可以改变行为。
 	_, localDomainDefined := syscall.Getenv("LOCALDOMAIN")
 	if os.Getenv("RES_OPTIONS") != "" ||
 		os.Getenv("HOSTALIASES") != "" ||
@@ -88,6 +100,7 @@ func initConfVal() {
 
 	// OpenBSD apparently lets you override the location of resolv.conf
 	// with ASR_CONFIG. If we notice that, defer to libc.
+	// OpenBSD 显然允许你用 ASR_CONFIG 覆盖 resolv.conf 的位置。 如果我们注意到这一点，请遵从 libc。
 	if runtime.GOOS == "openbsd" && os.Getenv("ASR_CONFIG") != "" {
 		confVal.forceCgoLookupHost = true
 		return
@@ -104,6 +117,7 @@ func initConfVal() {
 		// had something important in it and defer to cgo.
 		// libc's resolver might then fail too, but at least
 		// it wasn't our fault.
+		// 如果我们不能读取 resolv.conf 文件，就认为它有重要的东西在里面，并推迟到 cgo。
 		confVal.forceCgoLookupHost = true
 	}
 
@@ -114,12 +128,15 @@ func initConfVal() {
 
 // canUseCgo reports whether calling cgo functions is allowed
 // for non-hostname lookups.
+// canUseCgo报告是否允许调用cgo函数进行非主机名的查询。
 func (c *conf) canUseCgo() bool {
 	return c.hostLookupOrder(nil, "") == hostLookupCgo
 }
 
 // hostLookupOrder determines which strategy to use to resolve hostname.
 // The provided Resolver is optional. nil means to not consider its options.
+// hostLookupOrder决定了使用哪种策略来解析主机名。
+// 提供的Resolver是可选的，nil表示不考虑其选项。
 func (c *conf) hostLookupOrder(r *Resolver, hostname string) (ret hostLookupOrder) {
 	if c.dnsDebugLevel > 1 {
 		defer func() {
@@ -276,15 +293,18 @@ func (c *conf) hostLookupOrder(r *Resolver, hostname string) (ret hostLookupOrde
 }
 
 // goDebugNetDNS parses the value of the GODEBUG "netdns" value.
+// goDebugNetDNS解析了GODEBUG "netdns" 的值。
 // The netdns value can be of the form:
-//    1       // debug level 1
-//    2       // debug level 2
-//    cgo     // use cgo for DNS lookups
-//    go      // use go for DNS lookups
-//    cgo+1   // use cgo for DNS lookups + debug level 1
-//    1+cgo   // same
-//    cgo+2   // same, but debug level 2
+// netdns的值可以是以下形式。
+//    1       // debug level 1								// 调试级别1
+//    2       // debug level 2								// 调试级别2
+//    cgo     // use cgo for DNS lookups					// 使用 cgo 进行 DNS 查询
+//    go      // use go for DNS lookups						// 使用go进行DNS查询
+//    cgo+1   // use cgo for DNS lookups + debug level 1	// 使用cgo进行DNS查询+调试级别1
+//    1+cgo   // same										// 相同
+//    cgo+2   // same, but debug level 2					// 相同，但调试级别为2
 // etc.
+// 等。
 func goDebugNetDNS() (dnsMode string, debugLevel int) {
 	goDebug := goDebugString("netdns")
 	parsePart := func(s string) {
@@ -308,12 +328,14 @@ func goDebugNetDNS() (dnsMode string, debugLevel int) {
 
 // isLocalhost reports whether h should be considered a "localhost"
 // name for the myhostname NSS module.
+// isLocalhost报告h是否应该被认为是myhostname NSS模块的 "localhost "名称。
 func isLocalhost(h string) bool {
 	return stringsEqualFold(h, "localhost") || stringsEqualFold(h, "localhost.localdomain") || stringsHasSuffixFold(h, ".localhost") || stringsHasSuffixFold(h, ".localhost.localdomain")
 }
 
 // isGateway reports whether h should be considered a "gateway"
 // name for the myhostname NSS module.
+// isGateway报告h是否应该被认为是myhostname NSS模块的一个 "网关 "名称。
 func isGateway(h string) bool {
 	return stringsEqualFold(h, "gateway")
 }

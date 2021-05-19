@@ -360,6 +360,8 @@ func readFull(r io.Reader) (all []byte, err error) {
 
 // goDebugString returns the value of the named GODEBUG key.
 // GODEBUG is of the form "key=val,key2=val2"
+// goDebugString返回命名的GODEBUG键的值。
+// GODEBUG的形式是 "key=val,key2=val2"
 func goDebugString(key string) string {
 	s := os.Getenv("GODEBUG")
 	for i := 0; i < len(s)-len(key)-1; i++ {

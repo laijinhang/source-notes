@@ -106,6 +106,11 @@ type Context interface {
 	//
 	// See https://blog.golang.org/pipelines for more examples of how to use
 	// a Done channel for cancellation.
+	/*
+		该方法返回一个channel，需要在select-case语句中使用，如"case <-context.Done():"。
+		当context关闭后，Done()返回一个被关闭的管道，关闭的管理仍然是可读的，据此goroutine可以收到关闭请求；
+		当context还未关闭时，Done()返回nil。
+	 */
 	Done() <-chan struct{}
 
 	// If Done is not yet closed, Err returns nil.
