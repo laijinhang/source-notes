@@ -88,6 +88,20 @@ func (b *Buffer) tryGrowByReslice(n int) (int, bool) {
 }
 
 // 扩展缓冲区
+/*
+	1、读取buf的长度
+	2、如果buf的长度为0，且偏移不为0，则重置
+		buf长度置空
+		偏移置0
+		设置为没有读操作
+	3、尝试重新裁剪，如果长度够，则直接返回裁剪后的长度
+	4、如果buf为空，且n小于buf的最小长度64，则按64进行分配
+	5、如果 已使用+要使用的 还有到预分配的一般，则把已读部分清空
+	6、如果要分配的大小，超出了int最大，则抛出 太大错误
+	7、其他情况，则buf按 2*c+n 的长度进行分配，并把之前偏移后的复制过去，也就是把未读的拿过去，已读的数据抛弃掉
+	8、偏移量置0
+	9、buf的len部分设为增长后的实际长度
+ */
 func (b *Buffer) grow(n int) int {
 	m := b.Len()
 	if m == 0 && b.off != 0 {
@@ -141,6 +155,13 @@ func (b *Buffer) Write(p []byte) (n int, err error) {
 	return copy(b.buf[m:], p), nil
 }
 
+/*
+	向buf写入数据s
+	1、因为现在是在写数据，所以清空读记录
+	2、判断是否需要增长切片
+	3、如果需要增长，则增长
+	4、拷贝数据过去
+ */
 func (b *Buffer) WriteString(s string) (n int, err error) {
 	b.lastRead = opInvalid
 	m, ok := b.tryGrowByReslice(len(s))

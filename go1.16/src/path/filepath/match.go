@@ -14,32 +14,40 @@ import (
 )
 
 // ErrBadPattern indicates a pattern was malformed.
+// ErrBadPattern表示一个模式是错误的。
 var ErrBadPattern = errors.New("syntax error in pattern")
 
 // Match reports whether name matches the shell file name pattern.
 // The pattern syntax is:
+// 匹配报告名称是否符合shell文件名模式。
+// 该模式的语法是：
 //
 //	pattern:
+//	模式：
 //		{ term }
 //	term:
-//		'*'         matches any sequence of non-Separator characters
-//		'?'         matches any single non-Separator character
+//	术语：
+//		'*'         matches any sequence of non-Separator characters	匹配任何非分隔符的序列
+//		'?'         matches any single non-Separator character			匹配任何一个非分离器字符
 //		'[' [ '^' ] { character-range } ']'
-//		            character class (must be non-empty)
-//		c           matches character c (c != '*', '?', '\\', '[')
-//		'\\' c      matches character c
+//		            character class (must be non-empty)					字符类（必须为非空）。
+//		c           matches character c (c != '*', '?', '\\', '[')		匹配字符c (c != '*', '?', '\\', '[' )
+//		'\\' c      matches character c									匹配字符c
 //
 //	character-range:
-//		c           matches character c (c != '\\', '-', ']')
-//		'\\' c      matches character c
-//		lo '-' hi   matches character c for lo <= c <= hi
+//	字符范围。
+//		c           matches character c (c != '\\', '-', ']')			 匹配字符c (c != '\\', '-', ']' )
+//		'\\' c      matches character c									 匹配字符c
+//		lo '-' hi   matches character c for lo <= c <= hi				 匹配字符c为lo <= c <= hi
 //
 // Match requires pattern to match all of name, not just a substring.
 // The only possible returned error is ErrBadPattern, when pattern
 // is malformed.
+// 匹配要求模式匹配所有的名字，而不仅仅是一个子串。唯一可能返回的错误是ErrBadPattern，当pattern是不正常的。
 //
 // On Windows, escaping is disabled. Instead, '\\' is treated as
 // path separator.
+// 在Windows上，转义功能被禁用。相反，'\\'被视为路径分隔符。
 //
 func Match(pattern, name string) (matched bool, err error) {
 Pattern:
