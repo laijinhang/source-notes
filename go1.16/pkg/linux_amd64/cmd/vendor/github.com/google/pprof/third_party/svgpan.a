@@ -1,7 +1,7 @@
 !<arch>
-__.PKGDEF       0           0     0     644     8156      `
-go object linux amd64 go1.16 X:none
-build id "a7as9W4nRK0wsxkrUJzK/xrofDdAhNWzSR5UR0i96"
+__.PKGDEF       0           0     0     644     8158      `
+go object linux amd64 go1.16.1 X:none
+build id "UQ88vI8VBeKfyGymPXHj/DsyJfUhLoAvdei8KbrPx"
 
 
 $$B
@@ -295,9 +295,9 @@ function handleMouseUp(evt) {
 }
  svgpanJSSourceC& L >À> “>  Å2√èÔ1Í
 $$
-_go_.o          0           0     0     644     449       `
-go object linux amd64 go1.16 X:none
-build id "a7as9W4nRK0wsxkrUJzK/xrofDdAhNWzSR5UR0i96"
+_go_.o          0           0     0     644     451       `
+go object linux amd64 go1.16.1 X:none
+build id "UQ88vI8VBeKfyGymPXHj/DsyJfUhLoAvdei8KbrPx"
 
 
 !
