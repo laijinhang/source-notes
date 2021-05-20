@@ -1,0 +1,1110 @@
+# command-line-arguments
+"".approx<1> STEXT size=437 args=0x8 locals=0x18 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	TEXT	"".approx(SB), ABIInternal, $24-8
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	PCDATA	$0, $-2
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	JLS	427
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	PCDATA	$0, $-1
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	SUBQ	$24, SP
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	MOVQ	BP, 16(SP)
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	LEAQ	16(SP), BP
+	0x0021 00033 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0021 00033 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0021 00033 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	MOVBQZX	runtime.x86HasSSE41(SB), AX
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	TESTQ	AX, AX
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	JEQ	383
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	MOVSD	"".x+32(SP), X0
+	0x0038 00056 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	ROUNDSD	$2, X0, X1
+	0x003e 00062 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	MOVSD	X1, "".sink64(SB)
+	0x0046 00070 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:26)	JEQ	348
+	0x004c 00076 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:26)	ROUNDSD	$1, X0, X1
+	0x0052 00082 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:26)	MOVSD	X1, "".sink64+8(SB)
+	0x005a 00090 (<unknown line number>)	NOP
+	0x005a 00090 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	XCHGL	AX, AX
+	0x005b 00091 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	MOVQ	"".x+32(SP), DX
+	0x0060 00096 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	MOVQ	DX, BX
+	0x0063 00099 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	SHRQ	$52, DX
+	0x0067 00103 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	ANDQ	$2047, DX
+	0x006e 00110 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	CMPQ	DX, $1023
+	0x0075 00117 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	JCC	265
+	0x007b 00123 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	MOVQ	$-9223372036854775808, CX
+	0x0085 00133 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	ANDQ	CX, BX
+	0x0088 00136 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	MOVQ	$4607182418800017408, CX
+	0x0092 00146 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	ORQ	BX, CX
+	0x0095 00149 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	CMPQ	DX, $1022
+	0x009c 00156 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	CMOVQEQ	CX, BX
+	0x00a0 00160 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	TESTQ	AX, AX
+	0x00a3 00163 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	MOVQ	BX, "".sink64+16(SB)
+	0x00aa 00170 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:39)	JEQ	230
+	0x00ac 00172 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:39)	ROUNDSD	$3, X0, X1
+	0x00b2 00178 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:39)	MOVSD	X1, "".sink64+24(SB)
+	0x00ba 00186 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:44)	JEQ	212
+	0x00bc 00188 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:44)	ROUNDSD	$0, X0, X0
+	0x00c2 00194 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:44)	MOVSD	X0, "".sink64+32(SB)
+	0x00ca 00202 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:45)	MOVQ	16(SP), BP
+	0x00cf 00207 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:45)	ADDQ	$24, SP
+	0x00d3 00211 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:45)	RET
+	0x00d4 00212 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:44)	MOVSD	X0, (SP)
+	0x00d9 00217 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:44)	PCDATA	$1, $0
+	0x00d9 00217 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:44)	CALL	math.RoundToEven(SB)
+	0x00de 00222 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:44)	MOVSD	8(SP), X0
+	0x00e4 00228 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:44)	JMP	194
+	0x00e6 00230 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:39)	MOVSD	X0, (SP)
+	0x00eb 00235 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:39)	CALL	math.Trunc(SB)
+	0x00f0 00240 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:39)	MOVSD	8(SP), X1
+	0x00f6 00246 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:39)	MOVBQZX	runtime.x86HasSSE41(SB), AX
+	0x00fe 00254 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:39)	TESTQ	AX, AX
+	0x0101 00257 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:44)	MOVSD	"".x+32(SP), X0
+	0x0107 00263 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:39)	JMP	178
+	0x0109 00265 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	CMPQ	DX, $1075
+	0x0110 00272 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	JCC	340
+	0x0112 00274 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	LEAQ	-1023(DX), CX
+	0x0119 00281 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	CMPQ	CX, $64
+	0x011d 00285 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	SBBQ	DX, DX
+	0x0120 00288 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	MOVQ	$2251799813685248, SI
+	0x012a 00298 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	SHRQ	CX, SI
+	0x012d 00301 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	ANDQ	DX, SI
+	0x0130 00304 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	ADDQ	SI, BX
+	0x0133 00307 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	MOVQ	$4503599627370495, SI
+	0x013d 00317 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	SHRQ	CX, SI
+	0x0140 00320 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	ANDQ	DX, SI
+	0x0143 00323 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	NOTQ	SI
+	0x0146 00326 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	ANDQ	BX, SI
+	0x0149 00329 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	TESTQ	AX, AX
+	0x014c 00332 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	MOVQ	SI, BX
+	0x014f 00335 (<unknown line number>)	JMP	163
+	0x0154 00340 (<unknown line number>)	TESTQ	AX, AX
+	0x0157 00343 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	MOVQ	BX, SI
+	0x015a 00346 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:32)	JMP	332
+	0x015c 00348 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:26)	MOVSD	X0, (SP)
+	0x0161 00353 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:26)	CALL	math.Floor(SB)
+	0x0166 00358 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:26)	MOVSD	8(SP), X1
+	0x016c 00364 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:26)	MOVBQZX	runtime.x86HasSSE41(SB), AX
+	0x0174 00372 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:39)	MOVSD	"".x+32(SP), X0
+	0x017a 00378 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:26)	JMP	82
+	0x017f 00383 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	MOVSD	"".x+32(SP), X0
+	0x0185 00389 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	MOVSD	X0, (SP)
+	0x018a 00394 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	CALL	math.Ceil(SB)
+	0x018f 00399 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	MOVSD	8(SP), X1
+	0x0195 00405 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	MOVBQZX	runtime.x86HasSSE41(SB), AX
+	0x019d 00413 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	TESTQ	AX, AX
+	0x01a0 00416 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:26)	MOVSD	"".x+32(SP), X0
+	0x01a6 00422 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	JMP	62
+	0x01ab 00427 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:19)	NOP
+	0x01ab 00427 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	PCDATA	$1, $-1
+	0x01ab 00427 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	PCDATA	$0, $-2
+	0x01ab 00427 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	CALL	runtime.morestack_noctxt(SB)
+	0x01b0 00432 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	PCDATA	$0, $-1
+	0x01b0 00432 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:13)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 0f 86 98  dH..%....H;a....
+	0x0010 01 00 00 48 83 ec 18 48 89 6c 24 10 48 8d 6c 24  ...H...H.l$.H.l$
+	0x0020 10 48 0f b6 05 00 00 00 00 48 85 c0 0f 84 4d 01  .H.......H....M.
+	0x0030 00 00 f2 0f 10 44 24 20 66 0f 3a 0b c8 02 f2 0f  .....D$ f.:.....
+	0x0040 11 0d 00 00 00 00 0f 84 10 01 00 00 66 0f 3a 0b  ............f.:.
+	0x0050 c8 01 f2 0f 11 0d 00 00 00 00 90 48 8b 54 24 20  ...........H.T$ 
+	0x0060 48 89 d3 48 c1 ea 34 48 81 e2 ff 07 00 00 48 81  H..H..4H......H.
+	0x0070 fa ff 03 00 00 0f 83 8e 00 00 00 48 b9 00 00 00  ...........H....
+	0x0080 00 00 00 00 80 48 21 cb 48 b9 00 00 00 00 00 00  .....H!.H.......
+	0x0090 f0 3f 48 09 d9 48 81 fa fe 03 00 00 48 0f 44 d9  .?H..H......H.D.
+	0x00a0 48 85 c0 48 89 1d 00 00 00 00 74 3a 66 0f 3a 0b  H..H......t:f.:.
+	0x00b0 c8 03 f2 0f 11 0d 00 00 00 00 74 18 66 0f 3a 0b  ..........t.f.:.
+	0x00c0 c0 00 f2 0f 11 05 00 00 00 00 48 8b 6c 24 10 48  ..........H.l$.H
+	0x00d0 83 c4 18 c3 f2 0f 11 04 24 e8 00 00 00 00 f2 0f  ........$.......
+	0x00e0 10 44 24 08 eb dc f2 0f 11 04 24 e8 00 00 00 00  .D$.......$.....
+	0x00f0 f2 0f 10 4c 24 08 48 0f b6 05 00 00 00 00 48 85  ...L$.H.......H.
+	0x0100 c0 f2 0f 10 44 24 20 eb a9 48 81 fa 33 04 00 00  ....D$ ..H..3...
+	0x0110 73 42 48 8d 8a 01 fc ff ff 48 83 f9 40 48 19 d2  sBH......H..@H..
+	0x0120 48 be 00 00 00 00 00 00 08 00 48 d3 ee 48 21 d6  H.........H..H!.
+	0x0130 48 01 f3 48 be ff ff ff ff ff ff 0f 00 48 d3 ee  H..H.........H..
+	0x0140 48 21 d6 48 f7 d6 48 21 de 48 85 c0 48 89 f3 e9  H!.H..H!.H..H...
+	0x0150 4f ff ff ff 48 85 c0 48 89 de eb f0 f2 0f 11 04  O...H..H........
+	0x0160 24 e8 00 00 00 00 f2 0f 10 4c 24 08 48 0f b6 05  $........L$.H...
+	0x0170 00 00 00 00 f2 0f 10 44 24 20 e9 d3 fe ff ff f2  .......D$ ......
+	0x0180 0f 10 44 24 20 f2 0f 11 04 24 e8 00 00 00 00 f2  ..D$ ....$......
+	0x0190 0f 10 4c 24 08 48 0f b6 05 00 00 00 00 48 85 c0  ..L$.H.......H..
+	0x01a0 f2 0f 10 44 24 20 e9 93 fe ff ff e8 00 00 00 00  ...D$ ..........
+	0x01b0 e9 4b fe ff ff                                   .K...
+	rel 5+4 t=17 TLS+0
+	rel 37+4 t=16 runtime.x86HasSSE41<0>+0
+	rel 66+4 t=16 "".sink64<0>+0
+	rel 86+4 t=16 "".sink64<0>+8
+	rel 166+4 t=16 "".sink64<0>+16
+	rel 182+4 t=16 "".sink64<0>+24
+	rel 198+4 t=16 "".sink64<0>+32
+	rel 218+4 t=8 math.RoundToEven<1>+0
+	rel 236+4 t=8 math.Trunc<1>+0
+	rel 250+4 t=16 runtime.x86HasSSE41<0>+0
+	rel 354+4 t=8 math.Floor<1>+0
+	rel 368+4 t=16 runtime.x86HasSSE41<0>+0
+	rel 395+4 t=8 math.Ceil<1>+0
+	rel 409+4 t=16 runtime.x86HasSSE41<0>+0
+	rel 428+4 t=8 runtime.morestack_noctxt<0>+0
+"".sqrt<1> STEXT nosplit size=17 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:47)	TEXT	"".sqrt(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:47)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:47)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:55)	MOVSD	"".x+8(SP), X0
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:55)	SQRTSD	X0, X0
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:55)	MOVSD	X0, "".~r1+16(SP)
+	0x0010 00016 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:55)	RET
+	0x0000 f2 0f 10 44 24 08 f2 0f 51 c0 f2 0f 11 44 24 10  ...D$...Q....D$.
+	0x0010 c3                                               .
+"".abs<1> STEXT nosplit size=53 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:59)	TEXT	"".abs(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:59)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:59)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (<unknown line number>)	NOP
+	0x0000 00000 (<unknown line number>)	NOP
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:67)	MOVQ	"".x+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:67)	BTRQ	$63, AX
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:67)	MOVQ	AX, "".sink64(SB)
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:73)	MOVQ	"".y+16(SP), AX
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:73)	BTRQ	$63, AX
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:73)	MOVQ	AX, X0
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:73)	MOVSD	$f64.8000000000000000(SB), X1
+	0x0028 00040 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:73)	PXOR	X1, X0
+	0x002c 00044 (<unknown line number>)	NOP
+	0x002c 00044 (<unknown line number>)	NOP
+	0x002c 00044 (<unknown line number>)	NOP
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:73)	MOVSD	X0, "".sink64+8(SB)
+	0x0034 00052 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:74)	RET
+	0x0000 48 8b 44 24 08 48 0f ba f0 3f 48 89 05 00 00 00  H.D$.H...?H.....
+	0x0010 00 48 8b 44 24 10 48 0f ba f0 3f 66 48 0f 6e c0  .H.D$.H...?fH.n.
+	0x0020 f2 0f 10 0d 00 00 00 00 66 0f ef c1 f2 0f 11 05  ........f.......
+	0x0030 00 00 00 00 c3                                   .....
+	rel 13+4 t=16 "".sink64<0>+0
+	rel 36+4 t=16 $f64.8000000000000000<0>+0
+	rel 48+4 t=16 "".sink64<0>+8
+"".abs32<1> STEXT nosplit size=36 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:77)	TEXT	"".abs32(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:77)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:77)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (<unknown line number>)	NOP
+	0x0000 00000 (<unknown line number>)	NOP
+	0x0000 00000 (<unknown line number>)	NOP
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:79)	MOVSS	"".x+8(SP), X0
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:79)	CVTSS2SD	X0, X0
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:79)	MOVQ	X0, AX
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:79)	BTRQ	$63, AX
+	0x0014 00020 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:79)	MOVQ	AX, X0
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:79)	CVTSD2SS	X0, X0
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:79)	MOVSS	X0, "".~r1+16(SP)
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:79)	RET
+	0x0000 f3 0f 10 44 24 08 f3 0f 5a c0 66 48 0f 7e c0 48  ...D$...Z.fH.~.H
+	0x0010 0f ba f0 3f 66 48 0f 6e c0 f2 0f 5a c0 f3 0f 11  ...?fH.n...Z....
+	0x0020 44 24 10 c3                                      D$..
+"".copysign<1> STEXT nosplit size=97 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:83)	TEXT	"".copysign(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:83)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:83)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (<unknown line number>)	NOP
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:89)	MOVQ	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:89)	MOVQ	AX, CX
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:89)	BTRQ	$63, AX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:89)	MOVQ	"".b+16(SP), DX
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:89)	MOVQ	$-9223372036854775808, BX
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:89)	ANDQ	BX, DX
+	0x001f 00031 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:89)	ORQ	AX, DX
+	0x0022 00034 (<unknown line number>)	NOP
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:89)	MOVQ	DX, "".sink64(SB)
+	0x0029 00041 (<unknown line number>)	NOP
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:96)	MOVQ	"".c+24(SP), AX
+	0x002e 00046 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:96)	MOVQ	AX, DX
+	0x0031 00049 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:96)	BTSQ	$63, AX
+	0x0036 00054 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:96)	MOVQ	AX, "".sink64+8(SB)
+	0x003d 00061 (<unknown line number>)	NOP
+	0x003d 00061 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:101)	BTSQ	$63, CX
+	0x0042 00066 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:101)	MOVQ	CX, "".sink64+16(SB)
+	0x0049 00073 (<unknown line number>)	NOP
+	0x0049 00073 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:107)	ANDQ	DX, BX
+	0x004c 00076 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:107)	MOVQ	$4607182418800017408, AX
+	0x0056 00086 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:107)	ORQ	AX, BX
+	0x0059 00089 (<unknown line number>)	NOP
+	0x0059 00089 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:107)	MOVQ	BX, "".sink64+24(SB)
+	0x0060 00096 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:108)	RET
+	0x0000 48 8b 44 24 08 48 89 c1 48 0f ba f0 3f 48 8b 54  H.D$.H..H...?H.T
+	0x0010 24 10 48 bb 00 00 00 00 00 00 00 80 48 21 da 48  $.H.........H!.H
+	0x0020 09 c2 48 89 15 00 00 00 00 48 8b 44 24 18 48 89  ..H......H.D$.H.
+	0x0030 c2 48 0f ba e8 3f 48 89 05 00 00 00 00 48 0f ba  .H...?H......H..
+	0x0040 e9 3f 48 89 0d 00 00 00 00 48 21 d3 48 b8 00 00  .?H......H!.H...
+	0x0050 00 00 00 00 f0 3f 48 09 c3 48 89 1d 00 00 00 00  .....?H..H......
+	0x0060 c3                                               .
+	rel 37+4 t=16 "".sink64<0>+0
+	rel 57+4 t=16 "".sink64<0>+8
+	rel 69+4 t=16 "".sink64<0>+16
+	rel 92+4 t=16 "".sink64<0>+24
+"".fma<1> STEXT size=140 args=0x20 locals=0x28 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	TEXT	"".fma(SB), ABIInternal, $40-32
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	PCDATA	$0, $-2
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	JLS	130
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	PCDATA	$0, $-1
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	SUBQ	$40, SP
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	MOVQ	BP, 32(SP)
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	LEAQ	32(SP), BP
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	MOVBQZX	runtime.x86HasFMA(SB), AX
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	TESTQ	AX, AX
+	0x0028 00040 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	JEQ	81
+	0x002a 00042 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	"".z+64(SP), X0
+	0x0030 00048 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	"".x+48(SP), X1
+	0x0036 00054 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	"".y+56(SP), X2
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	VFMADD231SD	X2, X1, X0
+	0x0041 00065 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	X0, "".~r3+72(SP)
+	0x0047 00071 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVQ	32(SP), BP
+	0x004c 00076 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	ADDQ	$40, SP
+	0x0050 00080 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	RET
+	0x0051 00081 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	"".x+48(SP), X0
+	0x0057 00087 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	X0, (SP)
+	0x005c 00092 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	"".y+56(SP), X0
+	0x0062 00098 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	X0, 8(SP)
+	0x0068 00104 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	"".z+64(SP), X0
+	0x006e 00110 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	X0, 16(SP)
+	0x0074 00116 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	PCDATA	$1, $0
+	0x0074 00116 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	CALL	math.FMA(SB)
+	0x0079 00121 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	MOVSD	24(SP), X0
+	0x007f 00127 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	NOP
+	0x0080 00128 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	JMP	65
+	0x0082 00130 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:117)	NOP
+	0x0082 00130 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	PCDATA	$1, $-1
+	0x0082 00130 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	PCDATA	$0, $-2
+	0x0082 00130 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	CALL	runtime.morestack_noctxt(SB)
+	0x0087 00135 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	PCDATA	$0, $-1
+	0x0087 00135 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:110)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 73 48  dH..%....H;a.vsH
+	0x0010 83 ec 28 48 89 6c 24 20 48 8d 6c 24 20 48 0f b6  ..(H.l$ H.l$ H..
+	0x0020 05 00 00 00 00 48 85 c0 74 27 f2 0f 10 44 24 40  .....H..t'...D$@
+	0x0030 f2 0f 10 4c 24 30 f2 0f 10 54 24 38 c4 e2 f1 b9  ...L$0...T$8....
+	0x0040 c2 f2 0f 11 44 24 48 48 8b 6c 24 20 48 83 c4 28  ....D$HH.l$ H..(
+	0x0050 c3 f2 0f 10 44 24 30 f2 0f 11 04 24 f2 0f 10 44  ....D$0....$...D
+	0x0060 24 38 f2 0f 11 44 24 08 f2 0f 10 44 24 40 f2 0f  $8...D$....D$@..
+	0x0070 11 44 24 10 e8 00 00 00 00 f2 0f 10 44 24 18 90  .D$.........D$..
+	0x0080 eb bf e8 00 00 00 00 e9 74 ff ff ff              ........t...
+	rel 5+4 t=17 TLS+0
+	rel 33+4 t=16 runtime.x86HasFMA<0>+0
+	rel 117+4 t=8 math.FMA<1>+0
+	rel 131+4 t=8 runtime.morestack_noctxt<0>+0
+"".fromFloat64<1> STEXT nosplit size=33 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:120)	TEXT	"".fromFloat64(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:120)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:120)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (<unknown line number>)	NOP
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:125)	MOVSD	"".f64+8(SP), X0
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:125)	MOVSD	$f64.3ff0000000000000(SB), X1
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:125)	ADDSD	X1, X0
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:125)	MOVQ	X0, AX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:125)	INCQ	AX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:125)	MOVQ	AX, "".~r1+16(SP)
+	0x001f 00031 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:125)	NOP
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:125)	RET
+	0x0000 f2 0f 10 44 24 08 f2 0f 10 0d 00 00 00 00 f2 0f  ...D$...........
+	0x0010 58 c1 66 48 0f 7e c0 48 ff c0 48 89 44 24 10 90  X.fH.~.H..H.D$..
+	0x0020 c3                                               .
+	rel 10+4 t=16 $f64.3ff0000000000000<0>+0
+"".fromFloat32<1> STEXT nosplit size=29 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:128)	TEXT	"".fromFloat32(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:128)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:128)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (<unknown line number>)	NOP
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:131)	MOVSS	"".f32+8(SP), X0
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:131)	MOVSS	$f32.3f800000(SB), X1
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:131)	ADDSS	X1, X0
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:131)	MOVL	X0, AX
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:131)	INCL	AX
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:131)	MOVL	AX, "".~r1+16(SP)
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:131)	RET
+	0x0000 f3 0f 10 44 24 08 f3 0f 10 0d 00 00 00 00 f3 0f  ...D$...........
+	0x0010 58 c1 66 0f 7e c0 ff c0 89 44 24 10 c3           X.f.~....D$..
+	rel 10+4 t=16 $f32.3f800000<0>+0
+"".toFloat64<1> STEXT nosplit size=33 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:134)	TEXT	"".toFloat64(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:134)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:134)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:139)	MOVQ	"".u64+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:139)	INCQ	AX
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:139)	MOVQ	AX, X0
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:139)	MOVSD	$f64.3ff0000000000000(SB), X1
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:139)	ADDSD	X0, X1
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:139)	MOVSD	X1, "".~r1+16(SP)
+	0x001f 00031 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:139)	NOP
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:139)	RET
+	0x0000 48 8b 44 24 08 48 ff c0 66 48 0f 6e c0 f2 0f 10  H.D$.H..fH.n....
+	0x0010 0d 00 00 00 00 f2 0f 58 c8 f2 0f 11 4c 24 10 90  .......X....L$..
+	0x0020 c3                                               .
+	rel 17+4 t=16 $f64.3ff0000000000000<0>+0
+"".toFloat32<1> STEXT nosplit size=29 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:142)	TEXT	"".toFloat32(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:142)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:142)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:145)	MOVL	"".u32+8(SP), AX
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:145)	INCL	AX
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:145)	MOVL	AX, X0
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:145)	MOVSS	$f32.3f800000(SB), X1
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:145)	ADDSS	X0, X1
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:145)	MOVSS	X1, "".~r1+16(SP)
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:145)	RET
+	0x0000 8b 44 24 08 ff c0 66 0f 6e c0 f3 0f 10 0d 00 00  .D$...f.n.......
+	0x0010 00 00 f3 0f 58 c8 f3 0f 11 4c 24 10 c3           ....X....L$..
+	rel 14+4 t=16 $f32.3f800000<0>+0
+"".constantCheck64<1> STEXT nosplit size=6 args=0x8 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:151)	TEXT	"".constantCheck64(SB), NOSPLIT|ABIInternal, $0-8
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:151)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:151)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:154)	MOVB	$0, "".~r0+8(SP)
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:154)	RET
+	0x0000 c6 44 24 08 00 c3                                .D$...
+"".constantCheck32<1> STEXT nosplit size=6 args=0x8 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:157)	TEXT	"".constantCheck32(SB), NOSPLIT|ABIInternal, $0-8
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:157)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:157)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:160)	MOVB	$1, "".~r0+8(SP)
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:160)	RET
+	0x0000 c6 44 24 08 01 c3                                .D$...
+"".constantConvert32<1> STEXT nosplit size=45 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:166)	TEXT	"".constantConvert32(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:166)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:166)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (<unknown line number>)	NOP
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:172)	MOVSS	"".x+8(SP), X0
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:172)	MOVSS	$f32.3f800000(SB), X1
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:172)	UCOMISS	X1, X0
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:172)	JLS	38
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:173)	MOVSS	$f32.80000000(SB), X1
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:173)	PXOR	X1, X0
+	0x001f 00031 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:173)	MOVSS	X0, "".~r1+16(SP)
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:173)	RET
+	0x0026 00038 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:175)	MOVSS	X0, "".~r1+16(SP)
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:175)	RET
+	0x0000 f3 0f 10 44 24 08 f3 0f 10 0d 00 00 00 00 0f 2e  ...D$...........
+	0x0010 c1 76 13 f3 0f 10 0d 00 00 00 00 66 0f ef c1 f3  .v.........f....
+	0x0020 0f 11 44 24 10 c3 f3 0f 11 44 24 10 c3           ..D$.....D$..
+	rel 10+4 t=16 $f32.3f800000<0>+0
+	rel 23+4 t=16 $f32.80000000<0>+0
+"".constantConvertInt32<1> STEXT nosplit size=23 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:178)	TEXT	"".constantConvertInt32(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:178)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:178)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:184)	MOVL	"".x+8(SP), AX
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:184)	CMPL	AX, $1065353216
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:184)	JLS	18
+	0x000b 00011 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:185)	NEGL	AX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:185)	MOVL	AX, "".~r1+16(SP)
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:185)	RET
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:187)	MOVL	AX, "".~r1+16(SP)
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:187)	RET
+	0x0000 8b 44 24 08 3d 00 00 80 3f 76 07 f7 d8 89 44 24  .D$.=...?v....D$
+	0x0010 10 c3 89 44 24 10 c3                             ...D$..
+"".nanGenerate64<1> STEXT nosplit size=49 args=0x8 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:190)	TEXT	"".nanGenerate64(SB), NOSPLIT|ABIInternal, $0-8
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:190)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:190)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:199)	XORPS	X0, X0
+	0x0003 00003 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:199)	DIVSD	X0, X0
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:201)	XORPS	X1, X1
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:201)	MOVSD	$f64.7ff0000000000000(SB), X2
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:201)	MULSD	X2, X1
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:203)	MOVSD	$f64.bff0000000000000(SB), X2
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:203)	SQRTSD	X2, X2
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:204)	ADDSD	X0, X1
+	0x0026 00038 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:204)	ADDSD	X1, X2
+	0x002a 00042 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:204)	MOVSD	X2, "".~r0+8(SP)
+	0x0030 00048 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:204)	RET
+	0x0000 0f 57 c0 f2 0f 5e c0 0f 57 c9 f2 0f 10 15 00 00  .W...^..W.......
+	0x0010 00 00 f2 0f 59 ca f2 0f 10 15 00 00 00 00 f2 0f  ....Y...........
+	0x0020 51 d2 f2 0f 58 c8 f2 0f 58 d1 f2 0f 11 54 24 08  Q...X...X....T$.
+	0x0030 c3                                               .
+	rel 14+4 t=16 $f64.7ff0000000000000<0>+0
+	rel 26+4 t=16 $f64.bff0000000000000<0>+0
+"".nanGenerate32<1> STEXT nosplit size=33 args=0x8 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:207)	TEXT	"".nanGenerate32(SB), NOSPLIT|ABIInternal, $0-8
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:207)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:207)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:213)	XORPS	X0, X0
+	0x0003 00003 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:213)	DIVSS	X0, X0
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:215)	XORPS	X1, X1
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:215)	MOVSS	$f32.7f800000(SB), X2
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:215)	MULSS	X2, X1
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:216)	ADDSS	X1, X0
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:216)	MOVSS	X0, "".~r0+8(SP)
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/math.go:216)	RET
+	0x0000 0f 57 c0 f3 0f 5e c0 0f 57 c9 f3 0f 10 15 00 00  .W...^..W.......
+	0x0010 00 00 f3 0f 59 ca f3 0f 58 c1 f3 0f 11 44 24 08  ....Y...X....D$.
+	0x0020 c3                                               .
+	rel 14+4 t=16 $f32.7f800000<0>+0
+type..eq.[8]float64<1> STEXT dupok nosplit size=53 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (<autogenerated>:1)	TEXT	type..eq.[8]float64(SB), DUPOK|NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (<autogenerated>:1)	FUNCDATA	$0, gclocals·dc9b0298814590ca3ffc3a889546fc8b(SB)
+	0x0000 00000 (<autogenerated>:1)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (<autogenerated>:1)	MOVQ	"".p+8(SP), AX
+	0x0005 00005 (<autogenerated>:1)	MOVQ	"".q+16(SP), CX
+	0x000a 00010 (<autogenerated>:1)	XORL	DX, DX
+	0x000c 00012 (<autogenerated>:1)	JMP	17
+	0x000e 00014 (<autogenerated>:1)	INCQ	DX
+	0x0011 00017 (<autogenerated>:1)	CMPQ	DX, $8
+	0x0015 00021 (<autogenerated>:1)	JGE	47
+	0x0017 00023 (<autogenerated>:1)	MOVSD	(AX)(DX*8), X0
+	0x001c 00028 (<autogenerated>:1)	MOVSD	(CX)(DX*8), X1
+	0x0021 00033 (<autogenerated>:1)	UCOMISD	X1, X0
+	0x0025 00037 (<autogenerated>:1)	JNE	41
+	0x0027 00039 (<autogenerated>:1)	JPC	14
+	0x0029 00041 (<autogenerated>:1)	MOVB	$0, "".r+24(SP)
+	0x002e 00046 (<autogenerated>:1)	RET
+	0x002f 00047 (<autogenerated>:1)	MOVB	$1, "".r+24(SP)
+	0x0034 00052 (<autogenerated>:1)	RET
+	0x0000 48 8b 44 24 08 48 8b 4c 24 10 31 d2 eb 03 48 ff  H.D$.H.L$.1...H.
+	0x0010 c2 48 83 fa 08 7d 18 f2 0f 10 04 d0 f2 0f 10 0c  .H...}..........
+	0x0020 d1 66 0f 2e c1 75 02 7b e5 c6 44 24 18 00 c3 c6  .f...u.{..D$....
+	0x0030 44 24 18 01 c3                                   D$...
+go.cuinfo.packagename.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 63 6f 64 65 67 65 6e                             codegen
+""..inittask<0> SNOPTRDATA size=32
+	0x0000 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 math..inittask<0>+0
+go.info.math.Round$abstract<0> SDWARFABSFCN dupok size=42
+	0x0000 04 6d 61 74 68 2e 52 6f 75 6e 64 00 01 01 11 78  .math.Round....x
+	0x0010 00 00 00 00 00 00 0c 62 69 74 73 00 4a 00 00 00  .......bits.J...
+	0x0020 00 0c 65 00 4b 00 00 00 00 00                    ..e.K.....
+	rel 0+0 t=24 type.float64<0>+0
+	rel 0+0 t=24 type.uint<0>+0
+	rel 0+0 t=24 type.uint64<0>+0
+	rel 18+4 t=31 go.info.float64<0>+0
+	rel 29+4 t=31 go.info.uint64<0>+0
+	rel 37+4 t=31 go.info.uint<0>+0
+go.info.math.Float64bits$abstract<0> SDWARFABSFCN dupok size=29
+	0x0000 04 6d 61 74 68 2e 46 6c 6f 61 74 36 34 62 69 74  .math.Float64bit
+	0x0010 73 00 01 01 11 66 00 00 00 00 00 00 00           s....f.......
+	rel 0+0 t=24 type.float64<0>+0
+	rel 24+4 t=31 go.info.float64<0>+0
+go.info.math.Float64frombits$abstract<0> SDWARFABSFCN dupok size=33
+	0x0000 04 6d 61 74 68 2e 46 6c 6f 61 74 36 34 66 72 6f  .math.Float64fro
+	0x0010 6d 62 69 74 73 00 01 01 11 62 00 00 00 00 00 00  mbits....b......
+	0x0020 00                                               .
+	rel 0+0 t=24 type.uint64<0>+0
+	rel 28+4 t=31 go.info.uint64<0>+0
+go.info.math.Abs$abstract<0> SDWARFABSFCN dupok size=21
+	0x0000 04 6d 61 74 68 2e 41 62 73 00 01 01 11 78 00 00  .math.Abs....x..
+	0x0010 00 00 00 00 00                                   .....
+	rel 0+0 t=24 type.float64<0>+0
+	rel 16+4 t=31 go.info.float64<0>+0
+go.info.math.Copysign$abstract<0> SDWARFABSFCN dupok size=34
+	0x0000 04 6d 61 74 68 2e 43 6f 70 79 73 69 67 6e 00 01  .math.Copysign..
+	0x0010 01 11 78 00 00 00 00 00 00 11 79 00 00 00 00 00  ..x.......y.....
+	0x0020 00 00                                            ..
+	rel 0+0 t=24 type.float64<0>+0
+	rel 21+4 t=31 go.info.float64<0>+0
+	rel 29+4 t=31 go.info.float64<0>+0
+go.info.math.Float32bits$abstract<0> SDWARFABSFCN dupok size=29
+	0x0000 04 6d 61 74 68 2e 46 6c 6f 61 74 33 32 62 69 74  .math.Float32bit
+	0x0010 73 00 01 01 11 66 00 00 00 00 00 00 00           s....f.......
+	rel 0+0 t=24 type.float32<0>+0
+	rel 24+4 t=31 go.info.float32<0>+0
+go.info.math.Float32frombits$abstract<0> SDWARFABSFCN dupok size=33
+	0x0000 04 6d 61 74 68 2e 46 6c 6f 61 74 33 32 66 72 6f  .math.Float32fro
+	0x0010 6d 62 69 74 73 00 01 01 11 62 00 00 00 00 00 00  mbits....b......
+	0x0020 00                                               .
+	rel 0+0 t=24 type.uint32<0>+0
+	rel 28+4 t=31 go.info.uint32<0>+0
+"".sink64<0> SNOPTRBSS size=64
+runtime.memequal64·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal64<1>+0
+runtime.gcbits.01<0> SRODATA dupok size=1
+	0x0000 01                                               .
+type..namedata.*[]float64-<0> SRODATA dupok size=13
+	0x0000 00 00 0a 2a 5b 5d 66 6c 6f 61 74 36 34           ...*[]float64
+type.*[]float64<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 f4 91 61 4f 08 08 08 36 00 00 00 00 00 00 00 00  ..aO...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]float64-<0>+0
+	rel 48+8 t=1 type.[]float64<0>+0
+type.[]float64<0> SRODATA dupok size=56
+	0x0000 18 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 30 33 37 9c 02 08 08 17 00 00 00 00 00 00 00 00  037.............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]float64-<0>+0
+	rel 44+4 t=6 type.*[]float64<0>+0
+	rel 48+8 t=1 type.float64<0>+0
+type..eqfunc.[8]float64<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 type..eq.[8]float64<1>+0
+type..namedata.*[8]float64-<0> SRODATA dupok size=14
+	0x0000 00 00 0b 2a 5b 38 5d 66 6c 6f 61 74 36 34        ...*[8]float64
+type.*[8]float64<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 5e 31 96 0a 08 08 08 36 00 00 00 00 00 00 00 00  ^1.....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[8]float64-<0>+0
+	rel 48+8 t=1 type.[8]float64<0>+0
+runtime.gcbits.<0> SRODATA dupok size=0
+type.[8]float64<0> SRODATA dupok size=72
+	0x0000 40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  @...............
+	0x0010 9d 41 3c d7 02 08 08 11 00 00 00 00 00 00 00 00  .A<.............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 08 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc.[8]float64<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[8]float64-<0>+0
+	rel 44+4 t=6 type.*[8]float64<0>+0
+	rel 48+8 t=1 type.float64<0>+0
+	rel 56+8 t=1 type.[]float64<0>+0
+type..importpath.math.<0> SRODATA dupok size=7
+	0x0000 00 00 04 6d 61 74 68                             ...math
+gclocals·33cdeccccebe80329f1fdbee7f5874cb<0> SRODATA dupok size=8
+	0x0000 01 00 00 00 00 00 00 00                          ........
+gclocals·dc9b0298814590ca3ffc3a889546fc8b<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 02 00 00 00 03 00                    ..........
+gclocals·69c1753bd5f81501d95132d08af04464<0> SRODATA dupok size=8
+	0x0000 02 00 00 00 00 00 00 00                          ........
+$f32.3f800000<0> SRODATA size=4
+	0x0000 00 00 80 3f                                      ...?
+$f32.7f800000<0> SRODATA size=4
+	0x0000 00 00 80 7f                                      ....
+$f32.80000000<0> SRODATA size=4
+	0x0000 00 00 00 80                                      ....
+$f64.3ff0000000000000<0> SRODATA size=8
+	0x0000 00 00 00 00 00 00 f0 3f                          .......?
+$f64.7ff0000000000000<0> SRODATA size=8
+	0x0000 00 00 00 00 00 00 f0 7f                          ........
+$f64.8000000000000000<0> SRODATA size=8
+	0x0000 00 00 00 00 00 00 00 80                          ........
+$f64.bff0000000000000<0> SRODATA size=8
+	0x0000 00 00 00 00 00 00 f0 bf                          ........
+aux for "".approx<0> SDWARFRANGE size=96
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 21 00 00 00 00 00 00 00 2c 00 00 00 00 00 00 00  !.......,.......
+	0x0020 5a 00 00 00 00 00 00 00 a3 00 00 00 00 00 00 00  Z...............
+	0x0030 09 01 00 00 00 00 00 00 4f 01 00 00 00 00 00 00  ........O.......
+	0x0040 57 01 00 00 00 00 00 00 5c 01 00 00 00 00 00 00  W.......\.......
+	0x0050 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	rel 8+8 t=1 "".approx<1>+0
+aux for "".approx<0> SDWARFLOC size=299
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 b5 01 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 b5 01 00 00 00  ................
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00  ................
+	0x0070 00 00 00 00 00 00 88 00 00 00 00 00 00 00 95 00  ................
+	0x0080 00 00 00 00 00 00 01 00 53 95 00 00 00 00 00 00  ........S.......
+	0x0090 00 a3 00 00 00 00 00 00 00 01 00 52 a3 00 00 00  ...........R....
+	0x00a0 00 00 00 00 b2 00 00 00 00 00 00 00 01 00 53 33  ..............S3
+	0x00b0 01 00 00 00 00 00 00 4c 01 00 00 00 00 00 00 01  .......L........
+	0x00c0 00 53 4c 01 00 00 00 00 00 00 54 01 00 00 00 00  .SL.......T.....
+	0x00d0 00 00 01 00 54 00 00 00 00 00 00 00 00 00 00 00  ....T...........
+	0x00e0 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00 00  ................
+	0x00f0 00 00 00 00 00 6e 00 00 00 00 00 00 00 a3 00 00  .....n..........
+	0x0100 00 00 00 00 00 01 00 51 19 01 00 00 00 00 00 00  .......Q........
+	0x0110 b5 01 00 00 00 00 00 00 01 00 52 00 00 00 00 00  ..........R.....
+	0x0120 00 00 00 00 00 00 00 00 00 00 00                 ...........
+	rel 8+8 t=1 "".approx<1>+0
+	rel 59+8 t=1 "".approx<1>+0
+	rel 110+8 t=1 "".approx<1>+0
+	rel 237+8 t=1 "".approx<1>+0
+aux for "".approx<0> SDWARFLINES size=149
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 07 14  ................
+	0x0010 0a cd 04 07 06 03 05 a0 04 02 06 79 06 4b 06 03  ...........y.K..
+	0x0020 02 dc 06 4b 04 03 06 03 2b a0 1a 06 41 06 9c 04  ...K....+...A...
+	0x0030 09 03 46 51 04 03 03 3b 50 06 73 06 2f 06 73 06  ..FQ...;P.s./.s.
+	0x0040 2c 06 03 08 5a 04 02 06 03 48 51 03 02 5a 06 23  ,...Z....HQ..Z.#
+	0x0050 06 a0 06 23 06 9c 06 72 03 7f bf 08 32 03 7f 47  ...#...r....2..G
+	0x0060 04 03 06 03 26 28 06 55 06 03 01 28 56 06 37 06  ....&(.U...(V.7.
+	0x0070 ec 06 73 a7 03 7a 97 04 02 03 4c 1f 03 0d ff 03  ..s..z....L.....
+	0x0080 77 47 03 7d 3d 08 03 02 6e 03 7d 47 06 03 7e 3d  wG.}=...n.}G..~=
+	0x0090 02 0a 00 01 01                                   .....
+	rel 3+8 t=1 "".approx<1>+0
+aux for "".approx<0> SDWARFFCN size=137
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 61 70 70 72 6f 78 00 00  guments.approx..
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01  ................
+	0x0030 9c 02 00 00 00 01 10 78 00 00 0d 00 00 00 00 00  .......x........
+	0x0040 00 00 00 07 00 00 00 00 00 00 00 00 02 00 00 00  ................
+	0x0050 20 13 00 00 00 00 00 00 00 00 0e 00 00 00 00 00   ...............
+	0x0060 00 00 00 0e 00 00 00 00 00 00 00 00 06 00 00 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0080 00 03 00 00 00 4a 00 00 00                       .....J...
+	rel 31+8 t=1 "".approx<1>+0
+	rel 39+8 t=1 "".approx<1>+437
+	rel 59+4 t=31 go.info.float64<0>+0
+	rel 63+4 t=31 <0>+0
+	rel 68+4 t=31 go.info.math.Round$abstract<0>+0
+	rel 72+4 t=31 <0>+0
+	rel 82+4 t=31 go.info.math.Round$abstract<0>+14
+	rel 86+4 t=31 <0>+51
+	rel 91+4 t=31 go.info.math.Round$abstract<0>+22
+	rel 95+4 t=31 <0>+102
+	rel 100+4 t=31 go.info.math.Round$abstract<0>+33
+	rel 104+4 t=31 <0>+229
+	rel 109+4 t=31 go.info.math.Float64bits$abstract<0>+0
+	rel 113+8 t=1 "".approx<1>+33
+	rel 121+8 t=1 "".approx<1>+44
+aux for "".sqrt<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".sqrt<1>+0
+aux for "".sqrt<0> SDWARFLINES size=23
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 31 14  ..............1.
+	0x0010 06 4b 02 0b 00 01 01                             .K.....
+	rel 3+8 t=1 "".sqrt<1>+0
+aux for "".sqrt<0> SDWARFFCN size=78
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 71 72 74 00 00 00 00  guments.sqrt....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 78 00 00 2f 00 00 00 00 00 00 00  .....x../.......
+	0x0040 00 0f 7e 72 31 00 01 2f 00 00 00 00 00 00        ..~r1../......
+	rel 0+0 t=24 type.float64<0>+0
+	rel 29+8 t=1 "".sqrt<1>+0
+	rel 37+8 t=1 "".sqrt<1>+17
+	rel 57+4 t=31 go.info.float64<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 72+4 t=31 go.info.float64<0>+0
+aux for "".abs<0> SDWARFLINES size=53
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 3d 14  ..............=.
+	0x0010 04 05 03 4e 3d 04 02 03 31 46 04 05 03 4e 51 06  ...N=...1F...NQ.
+	0x0020 41 04 07 06 03 0b 46 04 02 03 27 46 06 5f 06 88  A.....F...'F._..
+	0x0030 02 01 00 01 01                                   .....
+	rel 3+8 t=1 "".abs<1>+0
+aux for "".abs<0> SDWARFFCN size=153
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 61 62 73 00 00 00 00 00  guments.abs.....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02 00  ................
+	0x0030 00 00 01 0f 78 00 00 3b 00 00 00 00 00 0f 79 00  ....x..;......y.
+	0x0040 00 3b 00 00 00 00 00 06 00 00 00 00 00 00 00 00  .;..............
+	0x0050 00 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00  ................
+	0x0060 43 00 06 00 00 00 00 00 00 00 00 00 00 00 00 00  C...............
+	0x0070 00 00 00 00 00 00 00 02 00 00 00 49 06 00 00 00  ...........I....
+	0x0080 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0090 00 05 00 00 00 0d 00 00 00                       .........
+	rel 0+0 t=24 type.float64<0>+0
+	rel 28+8 t=1 "".abs<1>+0
+	rel 36+8 t=1 "".abs<1>+53
+	rel 56+4 t=31 go.info.float64<0>+0
+	rel 66+4 t=31 go.info.float64<0>+0
+	rel 72+4 t=31 go.info.math.Abs$abstract<0>+0
+	rel 76+8 t=1 "".abs<1>+5
+	rel 84+8 t=1 "".abs<1>+10
+	rel 99+4 t=31 go.info.math.Abs$abstract<0>+0
+	rel 103+8 t=1 "".abs<1>+17
+	rel 111+8 t=1 "".abs<1>+32
+	rel 125+4 t=31 go.info.math.Float64frombits$abstract<0>+0
+	rel 129+8 t=1 "".abs<1>+27
+	rel 137+8 t=1 "".abs<1>+32
+aux for "".abs32<0> SDWARFLOC size=102
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 24 00 00 00 00 00 00 00  ........$.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 0a 00 00 00 00 00 00 00 19 00 00 00 00  ................
+	0x0050 00 00 00 01 00 61 00 00 00 00 00 00 00 00 00 00  .....a..........
+	0x0060 00 00 00 00 00 00                                ......
+	rel 8+8 t=1 "".abs32<1>+0
+	rel 59+8 t=1 "".abs32<1>+0
+aux for "".abs32<0> SDWARFLINES size=47
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 c9 00  ................
+	0x0010 14 06 4b 04 07 06 03 4c 33 04 05 03 7a 3d 04 07  ..K....L3...z=..
+	0x0020 03 0b 46 04 02 03 2d 46 06 37 02 07 00 01 01     ..F...-F.7.....
+	rel 3+8 t=1 "".abs32<1>+0
+aux for "".abs32<0> SDWARFFCN size=169
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 61 62 73 33 32 00 00 00  guments.abs32...
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c  ................
+	0x0030 02 00 00 00 01 10 78 00 00 4d 00 00 00 00 00 00  ......x..M......
+	0x0040 00 00 0f 7e 72 31 00 01 4d 00 00 00 00 00 06 00  ...~r1..M.......
+	0x0050 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 02 00 00 00 4f 13 00 00 00 00 00 00 00  .......O........
+	0x0070 00 06 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0080 00 00 00 00 00 00 05 00 00 00 0d 00 06 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00a0 00 05 00 00 00 0d 00 00 00                       .........
+	rel 0+0 t=24 type.float32<0>+0
+	rel 30+8 t=1 "".abs32<1>+0
+	rel 38+8 t=1 "".abs32<1>+36
+	rel 58+4 t=31 go.info.float32<0>+0
+	rel 62+4 t=31 <0>+0
+	rel 73+4 t=31 go.info.float32<0>+0
+	rel 79+4 t=31 go.info.math.Abs$abstract<0>+0
+	rel 83+8 t=1 "".abs32<1>+10
+	rel 91+8 t=1 "".abs32<1>+25
+	rel 105+4 t=31 go.info.math.Abs$abstract<0>+12
+	rel 109+4 t=31 <0>+51
+	rel 114+4 t=31 go.info.math.Float64bits$abstract<0>+0
+	rel 118+8 t=1 "".abs32<1>+10
+	rel 126+8 t=1 "".abs32<1>+15
+	rel 141+4 t=31 go.info.math.Float64frombits$abstract<0>+0
+	rel 145+8 t=1 "".abs32<1>+20
+	rel 153+8 t=1 "".abs32<1>+25
+aux for "".copysign<0> SDWARFLINES size=73
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 d3 00  ................
+	0x0010 14 04 06 03 b6 7f 3d 06 2d 04 02 06 08 03 c9 00  ......=.-.......
+	0x0020 28 04 06 03 b6 7f 51 06 41 04 02 06 03 d0 00 64  (.....Q.A......d
+	0x0030 5a 06 41 04 06 06 03 aa 7f 51 06 2d 04 02 06 03  Z.A......Q.-....
+	0x0040 db 00 96 56 02 01 00 01 01                       ...V.....
+	rel 3+8 t=1 "".copysign<1>+0
+aux for "".copysign<0> SDWARFFCN size=168
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6f 70 79 73 69 67 6e  guments.copysign
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 01 9c 02 00 00 00 01 0f 61 00 00 53 00 00 00  .........a..S...
+	0x0040 00 00 0f 62 00 00 53 00 00 00 00 00 0f 63 00 00  ...b..S......c..
+	0x0050 53 00 00 00 00 00 06 00 00 00 00 00 00 00 00 00  S...............
+	0x0060 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00 59  ...............Y
+	0x0070 00 06 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0080 00 00 00 00 00 00 02 00 00 00 60 00 06 00 00 00  ..........`.....
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00a0 00 02 00 00 00 6b 00 00                          .....k..
+	rel 0+0 t=24 type.float64<0>+0
+	rel 33+8 t=1 "".copysign<1>+0
+	rel 41+8 t=1 "".copysign<1>+97
+	rel 61+4 t=31 go.info.float64<0>+0
+	rel 71+4 t=31 go.info.float64<0>+0
+	rel 81+4 t=31 go.info.float64<0>+0
+	rel 87+4 t=31 go.info.math.Copysign$abstract<0>+0
+	rel 91+8 t=1 "".copysign<1>+5
+	rel 99+8 t=1 "".copysign<1>+34
+	rel 114+4 t=31 go.info.math.Copysign$abstract<0>+0
+	rel 118+8 t=1 "".copysign<1>+41
+	rel 126+8 t=1 "".copysign<1>+54
+	rel 141+4 t=31 go.info.math.Copysign$abstract<0>+0
+	rel 145+8 t=1 "".copysign<1>+73
+	rel 153+8 t=1 "".copysign<1>+89
+aux for "".fma<0> SDWARFLOC size=155
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8c 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 8c 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 8c  ................
+	0x0080 00 00 00 00 00 00 00 02 00 91 10 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00                 ...........
+	rel 8+8 t=1 "".fma<1>+0
+	rel 59+8 t=1 "".fma<1>+0
+	rel 111+8 t=1 "".fma<1>+0
+aux for "".fma<0> SDWARFLINES size=42
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 e8 00  ................
+	0x0010 14 0a a5 06 9b 06 03 02 82 06 23 06 f5 06 4b 06  ..........#...K.
+	0x0020 02 23 03 7d fb 02 0a 00 01 01                    .#.}......
+	rel 3+8 t=1 "".fma<1>+0
+aux for "".fma<0> SDWARFFCN size=103
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 66 6d 61 00 00 00 00 00  guments.fma.....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02 00  ................
+	0x0030 00 00 01 10 78 00 00 6e 00 00 00 00 00 00 00 00  ....x..n........
+	0x0040 10 79 00 00 6e 00 00 00 00 00 00 00 00 10 7a 00  .y..n.........z.
+	0x0050 00 6e 00 00 00 00 00 00 00 00 0f 7e 72 33 00 01  .n.........~r3..
+	0x0060 6e 00 00 00 00 00 00                             n......
+	rel 0+0 t=24 type.float64<0>+0
+	rel 28+8 t=1 "".fma<1>+0
+	rel 36+8 t=1 "".fma<1>+140
+	rel 56+4 t=31 go.info.float64<0>+0
+	rel 60+4 t=31 <0>+0
+	rel 69+4 t=31 go.info.float64<0>+0
+	rel 73+4 t=31 <0>+51
+	rel 82+4 t=31 go.info.float64<0>+0
+	rel 86+4 t=31 <0>+103
+	rel 97+4 t=31 go.info.float64<0>+0
+aux for "".fromFloat64<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 21 00 00 00 00 00 00 00  ........!.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".fromFloat64<1>+0
+aux for "".fromFloat64<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 f7 00  ................
+	0x0010 14 06 4b 04 07 06 03 9e 7f 83 04 02 03 e1 00 46  ..K............F
+	0x0020 06 2d 02 07 00 01 01                             .-.....
+	rel 3+8 t=1 "".fromFloat64<1>+0
+aux for "".fromFloat64<0> SDWARFFCN size=114
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 66 72 6f 6d 46 6c 6f 61  guments.fromFloa
+	0x0020 74 36 34 00 00 00 00 00 00 00 00 00 00 00 00 00  t64.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 10 66 36 34 00  ............f64.
+	0x0040 00 78 00 00 00 00 00 00 00 00 0f 7e 72 31 00 01  .x.........~r1..
+	0x0050 78 00 00 00 00 00 06 00 00 00 00 00 00 00 00 00  x...............
+	0x0060 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00 7d  ...............}
+	0x0070 00 00                                            ..
+	rel 0+0 t=24 type.uint64<0>+0
+	rel 36+8 t=1 "".fromFloat64<1>+0
+	rel 44+8 t=1 "".fromFloat64<1>+33
+	rel 66+4 t=31 go.info.float64<0>+0
+	rel 70+4 t=31 <0>+0
+	rel 81+4 t=31 go.info.uint64<0>+0
+	rel 87+4 t=31 go.info.math.Float64bits$abstract<0>+0
+	rel 91+8 t=1 "".fromFloat64<1>+18
+	rel 99+8 t=1 "".fromFloat64<1>+23
+aux for "".fromFloat32<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 1d 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".fromFloat32<1>+0
+aux for "".fromFloat32<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 fd 00  ................
+	0x0010 14 06 4b 04 07 06 03 8d 7f 83 04 02 03 f2 00 3c  ..K............<
+	0x0020 06 23 02 05 00 01 01                             .#.....
+	rel 3+8 t=1 "".fromFloat32<1>+0
+aux for "".fromFloat32<0> SDWARFFCN size=117
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 66 72 6f 6d 46 6c 6f 61  guments.fromFloa
+	0x0020 74 33 32 00 00 00 00 00 00 00 00 00 00 00 00 00  t32.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 10 66 33 32 00  ............f32.
+	0x0040 00 80 01 00 00 00 00 00 00 00 00 0f 7e 72 31 00  ............~r1.
+	0x0050 01 80 01 00 00 00 00 00 06 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 00 00 00 00 00 00 02 00 00  ................
+	0x0070 00 83 01 00 00                                   .....
+	rel 0+0 t=24 type.uint32<0>+0
+	rel 36+8 t=1 "".fromFloat32<1>+0
+	rel 44+8 t=1 "".fromFloat32<1>+29
+	rel 67+4 t=31 go.info.float32<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 83+4 t=31 go.info.uint32<0>+0
+	rel 89+4 t=31 go.info.math.Float32bits$abstract<0>+0
+	rel 93+8 t=1 "".fromFloat32<1>+18
+	rel 101+8 t=1 "".fromFloat32<1>+22
+aux for "".toFloat64<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 21 00 00 00 00 00 00 00  ........!.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".toFloat64<1>+0
+aux for "".toFloat64<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 85 01  ................
+	0x0010 14 06 41 02 1c 00 01 01                          ..A.....
+	rel 3+8 t=1 "".toFloat64<1>+0
+aux for "".toFloat64<0> SDWARFFCN size=87
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 74 6f 46 6c 6f 61 74 36  guments.toFloat6
+	0x0020 34 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  4...............
+	0x0030 00 00 01 9c 02 00 00 00 01 10 75 36 34 00 00 86  ..........u64...
+	0x0040 01 00 00 00 00 00 00 00 00 0f 7e 72 31 00 01 86  ..........~r1...
+	0x0050 01 00 00 00 00 00 00                             .......
+	rel 0+0 t=24 type.float64<0>+0
+	rel 34+8 t=1 "".toFloat64<1>+0
+	rel 42+8 t=1 "".toFloat64<1>+33
+	rel 65+4 t=31 go.info.uint64<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 81+4 t=31 go.info.float64<0>+0
+aux for "".toFloat32<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 1d 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".toFloat32<1>+0
+aux for "".toFloat32<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 8b 01  ................
+	0x0010 14 06 37 02 19 00 01 01                          ..7.....
+	rel 3+8 t=1 "".toFloat32<1>+0
+aux for "".toFloat32<0> SDWARFFCN size=87
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 74 6f 46 6c 6f 61 74 33  guments.toFloat3
+	0x0020 32 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  2...............
+	0x0030 00 00 01 9c 02 00 00 00 01 10 75 33 32 00 00 8e  ..........u32...
+	0x0040 01 00 00 00 00 00 00 00 00 0f 7e 72 31 00 01 8e  ..........~r1...
+	0x0050 01 00 00 00 00 00 00                             .......
+	rel 0+0 t=24 type.float32<0>+0
+	rel 34+8 t=1 "".toFloat32<1>+0
+	rel 42+8 t=1 "".toFloat32<1>+29
+	rel 65+4 t=31 go.info.uint32<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 81+4 t=31 go.info.float32<0>+0
+aux for "".constantCheck64<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 94 01  ................
+	0x0010 14 06 41 02 01 00 01 01                          ..A.....
+	rel 3+8 t=1 "".constantCheck64<1>+0
+aux for "".constantCheck64<0> SDWARFFCN size=77
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6f 6e 73 74 61 6e 74  guments.constant
+	0x0020 43 68 65 63 6b 36 34 00 00 00 00 00 00 00 00 00  Check64.........
+	0x0030 00 00 00 00 00 00 00 00 01 9c 02 00 00 00 01 0f  ................
+	0x0040 7e 72 30 00 01 97 01 00 00 00 00 00 00           ~r0..........
+	rel 0+0 t=24 type.bool<0>+0
+	rel 40+8 t=1 "".constantCheck64<1>+0
+	rel 48+8 t=1 "".constantCheck64<1>+6
+	rel 71+4 t=31 go.info.bool<0>+0
+aux for "".constantCheck32<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 9a 01  ................
+	0x0010 14 06 41 02 01 00 01 01                          ..A.....
+	rel 3+8 t=1 "".constantCheck32<1>+0
+aux for "".constantCheck32<0> SDWARFFCN size=77
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6f 6e 73 74 61 6e 74  guments.constant
+	0x0020 43 68 65 63 6b 33 32 00 00 00 00 00 00 00 00 00  Check32.........
+	0x0030 00 00 00 00 00 00 00 00 01 9c 02 00 00 00 01 0f  ................
+	0x0040 7e 72 30 00 01 9d 01 00 00 00 00 00 00           ~r0..........
+	rel 0+0 t=24 type.bool<0>+0
+	rel 40+8 t=1 "".constantCheck32<1>+0
+	rel 48+8 t=1 "".constantCheck32<1>+6
+	rel 71+4 t=31 go.info.bool<0>+0
+aux for "".constantConvert32<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 2d 00 00 00 00 00 00 00  ........-.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".constantConvert32<1>+0
+aux for "".constantConvert32<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 a6 01  ................
+	0x0010 14 06 4b 06 92 06 5f 06 7f 06 4b 02 01 00 01 01  ..K..._...K.....
+	rel 3+8 t=1 "".constantConvert32<1>+0
+aux for "".constantConvert32<0> SDWARFFCN size=93
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6f 6e 73 74 61 6e 74  guments.constant
+	0x0020 43 6f 6e 76 65 72 74 33 32 00 00 00 00 00 00 00  Convert32.......
+	0x0030 00 00 00 00 00 00 00 00 00 00 01 9c 02 00 00 00  ................
+	0x0040 01 10 78 00 00 a6 01 00 00 00 00 00 00 00 00 0f  ..x.............
+	0x0050 7e 72 31 00 01 a6 01 00 00 00 00 00 00           ~r1..........
+	rel 0+0 t=24 type.float32<0>+0
+	rel 42+8 t=1 "".constantConvert32<1>+0
+	rel 50+8 t=1 "".constantConvert32<1>+45
+	rel 71+4 t=31 go.info.float32<0>+0
+	rel 75+4 t=31 <0>+0
+	rel 87+4 t=31 go.info.float32<0>+0
+aux for "".constantConvertInt32<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 17 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".constantConvertInt32<1>+0
+aux for "".constantConvertInt32<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 b2 01  ................
+	0x0010 14 06 37 06 56 06 23 06 43 06 37 02 01 00 01 01  ..7.V.#.C.7.....
+	rel 3+8 t=1 "".constantConvertInt32<1>+0
+aux for "".constantConvertInt32<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6f 6e 73 74 61 6e 74  guments.constant
+	0x0020 43 6f 6e 76 65 72 74 49 6e 74 33 32 00 00 00 00  ConvertInt32....
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0040 00 00 00 01 10 78 00 00 b2 01 00 00 00 00 00 00  .....x..........
+	0x0050 00 00 0f 7e 72 31 00 01 b2 01 00 00 00 00 00 00  ...~r1..........
+	rel 0+0 t=24 type.uint32<0>+0
+	rel 45+8 t=1 "".constantConvertInt32<1>+0
+	rel 53+8 t=1 "".constantConvertInt32<1>+23
+	rel 74+4 t=31 go.info.uint32<0>+0
+	rel 78+4 t=31 <0>+0
+	rel 90+4 t=31 go.info.uint32<0>+0
+aux for "".nanGenerate64<0> SDWARFLOC size=153
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 07 00 00 00 00 00 00 00 31 00 00 00 00 00 00 00  ........1.......
+	0x0020 01 00 61 00 00 00 00 00 00 00 00 00 00 00 00 00  ..a.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 16 00 00 00 00 00 00 00 26 00 00 00 00  ...........&....
+	0x0050 00 00 00 01 00 62 00 00 00 00 00 00 00 00 00 00  .....b..........
+	0x0060 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00  ................
+	0x0070 00 00 00 00 00 00 22 00 00 00 00 00 00 00 2a 00  ......".......*.
+	0x0080 00 00 00 00 00 00 01 00 63 00 00 00 00 00 00 00  ........c.......
+	0x0090 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".nanGenerate64<1>+0
+	rel 59+8 t=1 "".nanGenerate64<1>+0
+	rel 110+8 t=1 "".nanGenerate64<1>+0
+aux for "".nanGenerate64<0> SDWARFLINES size=36
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 c1 01  ................
+	0x0010 14 06 2d 06 39 06 2d 06 89 06 5f 06 38 06 37 02  ..-.9.-..._.8.7.
+	0x0020 0b 00 01 01                                      ....
+	rel 3+8 t=1 "".nanGenerate64<1>+0
+aux for "".nanGenerate64<0> SDWARFFCN size=157
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 6e 61 6e 47 65 6e 65 72  guments.nanGener
+	0x0020 61 74 65 36 34 00 00 00 00 00 00 00 00 00 00 00  ate64...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0a 7a 65  ..............ze
+	0x0040 72 6f 00 c1 01 00 00 00 00 00 0a 69 6e 66 00 c3  ro.........inf..
+	0x0050 01 00 00 00 00 00 0a 6e 65 67 6f 6e 65 00 c4 01  .......negone...
+	0x0060 00 00 00 00 00 0b 7a 30 00 c7 01 00 00 00 00 00  ......z0........
+	0x0070 00 00 00 0b 7a 31 00 c9 01 00 00 00 00 00 00 00  ....z1..........
+	0x0080 00 0b 7a 32 00 cb 01 00 00 00 00 00 00 00 00 0f  ..z2............
+	0x0090 7e 72 30 00 01 be 01 00 00 00 00 00 00           ~r0..........
+	rel 0+0 t=24 type.float64<0>+0
+	rel 38+8 t=1 "".nanGenerate64<1>+0
+	rel 46+8 t=1 "".nanGenerate64<1>+49
+	rel 69+4 t=31 go.info.float64<0>+0
+	rel 81+4 t=31 go.info.float64<0>+0
+	rel 96+4 t=31 go.info.float64<0>+0
+	rel 107+4 t=31 go.info.float64<0>+0
+	rel 111+4 t=31 <0>+0
+	rel 121+4 t=31 go.info.float64<0>+0
+	rel 125+4 t=31 <0>+51
+	rel 135+4 t=31 go.info.float64<0>+0
+	rel 139+4 t=31 <0>+102
+	rel 151+4 t=31 go.info.float64<0>+0
+aux for "".nanGenerate32<0> SDWARFLOC size=102
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 07 00 00 00 00 00 00 00 1a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 61 00 00 00 00 00 00 00 00 00 00 00 00 00  ..a.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 16 00 00 00 00 00 00 00 21 00 00 00 00  ...........!....
+	0x0050 00 00 00 01 00 62 00 00 00 00 00 00 00 00 00 00  .....b..........
+	0x0060 00 00 00 00 00 00                                ......
+	rel 8+8 t=1 "".nanGenerate32<1>+0
+	rel 59+8 t=1 "".nanGenerate32<1>+0
+aux for "".nanGenerate32<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 cf 01  ................
+	0x0010 14 06 2d 06 39 06 2d 06 88 06 37 02 07 00 01 01  ..-.9.-...7.....
+	rel 3+8 t=1 "".nanGenerate32<1>+0
+aux for "".nanGenerate32<0> SDWARFFCN size=128
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 6e 61 6e 47 65 6e 65 72  guments.nanGener
+	0x0020 61 74 65 33 32 00 00 00 00 00 00 00 00 00 00 00  ate32...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0a 7a 65  ..............ze
+	0x0040 72 6f 00 d0 01 00 00 00 00 00 0a 69 6e 66 00 d2  ro.........inf..
+	0x0050 01 00 00 00 00 00 0b 7a 30 00 d5 01 00 00 00 00  .......z0.......
+	0x0060 00 00 00 00 0b 7a 31 00 d7 01 00 00 00 00 00 00  .....z1.........
+	0x0070 00 00 0f 7e 72 30 00 01 cf 01 00 00 00 00 00 00  ...~r0..........
+	rel 0+0 t=24 type.float32<0>+0
+	rel 38+8 t=1 "".nanGenerate32<1>+0
+	rel 46+8 t=1 "".nanGenerate32<1>+33
+	rel 69+4 t=31 go.info.float32<0>+0
+	rel 81+4 t=31 go.info.float32<0>+0
+	rel 92+4 t=31 go.info.float32<0>+0
+	rel 96+4 t=31 <0>+0
+	rel 106+4 t=31 go.info.float32<0>+0
+	rel 110+4 t=31 <0>+51
+	rel 122+4 t=31 go.info.float32<0>+0
+aux for type..eq.[8]float64<0> SDWARFLOC size=155
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 35 00 00 00 00 00 00 00  ........5.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 35 00 00 00 00  ...........5....
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 2e 00 00 00 00 00 00 00 35  ...............5
+	0x0080 00 00 00 00 00 00 00 02 00 91 10 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00                 ...........
+	rel 8+8 t=1 type..eq.[8]float64<1>+0
+	rel 59+8 t=1 type..eq.[8]float64<1>+0
+	rel 111+8 t=1 type..eq.[8]float64<1>+0
+aux for type..eq.[8]float64<0> SDWARFLINES size=33
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 01 0f 06 41  ...............A
+	0x0010 06 87 06 37 06 d7 06 41 06 19 06 41 02 01 00 01  ...7...A...A....
+	0x0020 01                                               .
+	rel 3+8 t=1 type..eq.[8]float64<1>+0
+aux for type..eq.[8]float64<0> SDWARFFCN size=84
+	0x0000 03 74 79 70 65 2e 2e 65 71 2e 5b 38 5d 66 6c 6f  .type..eq.[8]flo
+	0x0010 61 74 36 34 00 00 00 00 00 00 00 00 00 00 00 00  at64............
+	0x0020 00 00 00 00 00 01 9c 01 00 00 00 01 10 70 00 00  .............p..
+	0x0030 01 00 00 00 00 00 00 00 00 10 71 00 00 01 00 00  ..........q.....
+	0x0040 00 00 00 00 00 00 10 72 00 01 01 00 00 00 00 00  .......r........
+	0x0050 00 00 00 00                                      ....
+	rel 21+8 t=1 type..eq.[8]float64<1>+0
+	rel 29+8 t=1 type..eq.[8]float64<1>+53
+	rel 49+4 t=31 go.info.*[8]float64<0>+0
+	rel 53+4 t=31 <0>+0
+	rel 62+4 t=31 go.info.*[8]float64<0>+0
+	rel 66+4 t=31 <0>+51
+	rel 75+4 t=31 go.info.bool<0>+0
+	rel 79+4 t=31 <0>+103

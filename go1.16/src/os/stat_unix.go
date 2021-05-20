@@ -26,6 +26,7 @@ func (f *File) Stat() (FileInfo, error) {
 }
 
 // statNolog stats a file with no test logging.
+// statNolog对一个没有测试记录的文件进行统计。
 func statNolog(name string) (FileInfo, error) {
 	var fs fileStat
 	err := ignoringEINTR(func() error {

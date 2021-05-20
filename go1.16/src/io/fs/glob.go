@@ -9,12 +9,14 @@ import (
 )
 
 // A GlobFS is a file system with a Glob method.
+// GlobFS是一个具有Glob方法的文件系统。
 type GlobFS interface {
 	FS
 
 	// Glob returns the names of all files matching pattern,
 	// providing an implementation of the top-level
 	// Glob function.
+	// Glob返回与pattern匹配的所有文件的名称，提供一个顶级Glob函数的实现。
 	Glob(pattern string) ([]string, error)
 }
 
@@ -22,20 +24,27 @@ type GlobFS interface {
 // if there is no matching file. The syntax of patterns is the same
 // as in path.Match. The pattern may describe hierarchical names such as
 // usr/*/bin/ed.
+// Glob返回与模式匹配的所有文件的名称，如果没有匹配的文件则返回nil。
+// 模式的语法与path.Match中相同。模式可以描述层次化的名称，如usr/*/bin/ed。
 //
 // Glob ignores file system errors such as I/O errors reading directories.
 // The only possible returned error is path.ErrBadPattern, reporting that
 // the pattern is malformed.
+// Glob忽略了文件系统的错误，如I/O错误读取目录。
+// 唯一可能返回的错误是path.ErrBadPattern，报告模式是malformed。
 //
 // If fs implements GlobFS, Glob calls fs.Glob.
 // Otherwise, Glob uses ReadDir to traverse the directory tree
 // and look for matches for the pattern.
+// 如果fs实现了GlobFS，Glob调用fs.Glob。
+// 否则，Glob使用ReadDir遍历目录树，寻找匹配的模式。
 func Glob(fsys FS, pattern string) (matches []string, err error) {
 	if fsys, ok := fsys.(GlobFS); ok {
 		return fsys.Glob(pattern)
 	}
 
 	// Check pattern is well-formed.
+	// 检查pattern是否格式良好。
 	if _, err := path.Match(pattern, ""); err != nil {
 		return nil, err
 	}
@@ -108,6 +117,7 @@ func glob(fs FS, dir, pattern string, matches []string) (m []string, e error) {
 
 // hasMeta reports whether path contains any of the magic characters
 // recognized by path.Match.
+// hasMeta报告路径是否包含path.Match所识别的任何magic字符。
 func hasMeta(path string) bool {
 	for i := 0; i < len(path); i++ {
 		switch path[i] {

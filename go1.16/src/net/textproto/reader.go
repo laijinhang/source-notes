@@ -673,11 +673,43 @@ var commonHeaderOnce sync.Once
 func initCommonHeader() {
 	commonHeader = make(map[string]string)
 	for _, v := range []string{
-		"Accept",
-		"Accept-Charset",
-		"Accept-Encoding",
-		"Accept-Language",
+		"Accept",			// 请求头，请求方（客户端）希望服务器返回的数据格式
+		"Accept-Charset",	// 请求头，请求方（客户端）希望服务器返回的数据的字符编码
+		"Accept-Encoding",	// 请求头，请求方（客户端）能够处理（解压）的压缩格式
+		"Accept-Language",	// 请求头，请求方（客户端）希望服务器返回数据的语言
+		/*
+		响应头，响应方（服务器）告诉请求方，我是否能够支持范围请求（也就是响应方按请求方所需要的内容长度来响应）
+		案例：
+		1. 响应头带Accept-Ranges: bytes
+		代表服务器可以接受范围请求，这种就可以用于做断点传输功能（如断点下载），也有些网页也是支持断点续传的，如
+		curl https://www.baidu.com --header "Range: bytes=0-3"
+		可拿到最前面的4个字节内容数据
+
+		配合并发请求，可以实现 断点传输/快速下载
+
+		2. Accept-Ranges: none
+		表示不允范围请求
+		 */
 		"Accept-Ranges",
+		/*
+		Cache-Control指令指明了谁来缓存响应、缓存条件以及缓存时间
+
+		应用场景：web性能优化，从性能优化的角度，最好的请求是不需要与服务端进行交互，
+		一个本地的响应副本可以消除所有的网络延时并避免数据传输时的数据费用。
+
+		说明：Cache-Control标头被定义为HTTP / 1.1规范的一部分，并且取代了原先用
+		于定义response缓存策略的Expire等，现在所有的现代浏览器都支持HTTP Cache-Control。
+
+		请求头/响应头
+
+		请求头的可选值：
+		1. no-cache
+		2. no-store
+
+		响应头的可选值：
+		1. public
+
+		 */
 		"Cache-Control",
 		"Cc",
 		"Connection",

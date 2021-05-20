@@ -848,16 +848,21 @@ func fastrandinit() {
 }
 
 // Mark gp ready to run.
+// 标记gp准备运行。
 func ready(gp *g, traceskip int, next bool) {
 	if trace.enabled {
 		traceGoUnpark(gp, traceskip)
 	}
 
+	// 读取协程的状态
 	status := readgstatus(gp)
 
 	// Mark runnable.
+	// 标记可运行。
 	_g_ := getg()
+	// 禁用抢占，因为它可以在本地var中持有p
 	mp := acquirem() // disable preemption because it can be holding p in a local var
+	// 如果协程的状态不是阻塞状态
 	if status&^_Gscan != _Gwaiting {
 		dumpgstatus(gp)
 		throw("bad g->status in ready")
@@ -4144,17 +4149,30 @@ func syscall_runtime_AfterExec() {
 }
 
 // Allocate a new g, with a stack big enough for stacksize bytes.
+// 分配一个新的g，堆栈足够大，足够堆栈大小的字节。
+/*
+在调用 malg的时候会将传入的stacksize（内存大小）加上一个 _StackSystem值 预留给系统调用使用，
+round2函数会将传入的值转化成大于传入值的2的指数。然后会切换到 G0 执行 stackalloc函数进行栈内存分配。
+
+分配完毕之后会设置stackguard0为 stack.lo + _StackGuard，作为判断是否需要进行栈扩容使用
+*/
 func malg(stacksize int32) *g {
+	// 创建 G
 	newg := new(g)
 	if stacksize >= 0 {
+		// 这里会在 stacksize 的基础上为每个栈预留系统调用所需的内存大小 _StackSystem
+		// 在 Linux/Darwin 上（ _StackSystem == 0 ）本行不改变 stacksize 的大小
 		stacksize = round2(_StackSystem + stacksize)
+		// 切换到 G0 为 newg 初始化栈内存
 		systemstack(func() {
 			newg.stack = stackalloc(uint32(stacksize))
 		})
+		// 设置 stackguard0，用来判断是否要进行栈扩容
 		newg.stackguard0 = newg.stack.lo + _StackGuard
 		newg.stackguard1 = ^uintptr(0)
 		// Clear the bottom word of the stack. We record g
 		// there on gsignal stack during VDSO on ARM and ARM64.
+		// 清理堆栈的底部字。在ARM和ARM64上的VDSO期间，我们将g记录在gsignal栈中。
 		*(*uintptr)(unsafe.Pointer(newg.stack.lo)) = 0
 	}
 	return newg
@@ -6001,6 +6019,7 @@ func pidleget() *p {
 	_p_ := sched.pidle.ptr()
 	if _p_ != nil {
 		// Timer may get added at any time now.
+		// 计时器可以在任何时候被添加到现在。
 		timerpMask.set(_p_.id)
 		idlepMask.clear(_p_.id)
 		sched.pidle = _p_.link
@@ -6011,11 +6030,18 @@ func pidleget() *p {
 
 // runqempty reports whether _p_ has no Gs on its local run queue.
 // It never returns true spuriously.
+// runqempty报告_p_在其本地运行队列中是否没有G。
+// 它不会虚假地返回true。
 func runqempty(_p_ *p) bool {
 	// Defend against a race where 1) _p_ has G1 in runqnext but runqhead == runqtail,
 	// 2) runqput on _p_ kicks G1 to the runq, 3) runqget on _p_ empties runqnext.
 	// Simply observing that runqhead == runqtail and then observing that runqnext == nil
 	// does not mean the queue is empty.
+	// 抵御这样的race：
+	// 1）_p_在runqnext中有G1，但runqhead == runqtail，
+	// 2）_p_上的runqput将G1踢到runq中，
+	// 3）_p_上的runqget清空runqnext。
+	// 仅仅观察到runqhead == runqtail，然后观察到runqnext == nil并不意味着队列是空的。
 	for {
 		head := atomic.Load(&_p_.runqhead)
 		tail := atomic.Load(&_p_.runqtail)
@@ -6042,11 +6068,18 @@ const randomizeScheduler = raceenabled
 // If next is true, runqput puts g in the _p_.runnext slot.
 // If the run queue is full, runnext puts g on the global queue.
 // Executed only by the owner P.
+// runqput试图把g放到本地可运行队列中。
+// 如果next为false，runqput将g添加到可运行队列的尾部。
+// 如果next为真，runqput将g放入_p_.runnext槽中。
+// 如果运行队列已满，runnext将g放到全局队列中。
+// 只由所有者P执行。
 func runqput(_p_ *p, gp *g, next bool) {
 	if randomizeScheduler && next && fastrand()%2 == 0 {
 		next = false
 	}
 
+	// 判断是否将新增的G放入到当前P的runnext
+	// 后续将被替换出来的G放到本地G队列的尾部
 	if next {
 	retryNext:
 		// 将 G 放入到 runnext 中作为下一个处理器执行的任务
@@ -6063,6 +6096,7 @@ func runqput(_p_ *p, gp *g, next bool) {
 	}
 
 retry:
+	// atomic.LoadAcq 获取上次 atomic.CaSRel 的 _p_.runqhead 的值
 	h := atomic.LoadAcq(&_p_.runqhead) // load-acquire, synchronize with consumers
 	t := _p_.runqtail
 	// 放入到 P 本地运行队列中
@@ -6071,20 +6105,24 @@ retry:
 		atomic.StoreRel(&_p_.runqtail, t+1) // store-release, makes the item available for consumption
 		return
 	}
-	// P 本地列表放不了，放入全局的运行队列中
+	// P 本地列表放不了，则将当前P本地可运行队列的一半放入全局的运行队列中
 	if runqputslow(_p_, gp, h, t) {
 		return
 	}
 	// the queue is not full, now the put above must succeed
+	// 队列没有满，现在上面的put必须成功。
 	goto retry
 }
 
 // Put g and a batch of work from local runnable queue on global queue.
 // Executed only by the owner P.
+// 把g和本地可运行队列中的一批工作放到全局队列中。只由所有者P执行。
 func runqputslow(_p_ *p, gp *g, h, t uint32) bool {
+	// 这里的长度取的是p本地可运行队列总长的一半 +1，即 256/2+1
 	var batch [len(_p_.runq)/2 + 1]*g
 
 	// First, grab a batch from local queue.
+	// 首先，从本地队列中抓取一个批次。
 	n := t - h
 	n = n / 2
 	if n != uint32(len(_p_.runq)/2) {

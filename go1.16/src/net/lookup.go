@@ -261,9 +261,13 @@ func withUnexpiredValuesPreserved(lookupCtx context.Context) context.Context {
 
 // lookupIPAddr looks up host using the local resolver and particular network.
 // It returns a slice of that host's IPv4 and IPv6 addresses.
+// lookupIPAddr 使用本地解析器和特定网络查找主机。
+// 它返回该主机的IPv4和IPv6地址的一个片断。
 func (r *Resolver) lookupIPAddr(ctx context.Context, network, host string) ([]IPAddr, error) {
 	// Make sure that no matter what we do later, host=="" is rejected.
 	// parseIP, for example, does accept empty strings.
+	// 确保无论我们以后做什么，host==""都会被拒绝。
+	// 例如，parseIP就接受空字符串。
 	if host == "" {
 		return nil, &DNSError{Err: errNoSuchHost.Error(), Name: host, IsNotFound: true}
 	}

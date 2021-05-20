@@ -88,9 +88,14 @@ func (fd *FD) Init(net string, pollable bool) error {
 
 // Destroy closes the file descriptor. This is called when there are
 // no remaining references.
+// destroy关闭文件描述符。当没有剩余的引用时，会调用这个功能。
+/*
+	1、fd轮询器
+ */
 func (fd *FD) destroy() error {
 	// Poller may want to unregister fd in readiness notification mechanism,
 	// so this must be executed before CloseFunc.
+	// 轮询器可能想在就绪的通知机制中取消对fd的注册，所以必须在CloseFunc之前执行这个。
 	fd.pd.close()
 
 	// We don't use ignoringEINTR here because POSIX does not define
@@ -98,6 +103,9 @@ func (fd *FD) destroy() error {
 	// If the descriptor is indeed closed, using a loop would race
 	// with some other goroutine opening a new descriptor.
 	// (The Linux kernel guarantees that it is closed on an EINTR error.)
+	// 我们在这里不使用ignoringEINTR，因为POSIX没有定义如果close返回EINTR，描述符是否关闭。
+	// 如果描述符确实被关闭了，使用一个循环会与其他goroutine打开一个新的描述符相竞争。
+	// (Linux内核保证在EINTR错误时关闭它)。
 	err := CloseFunc(fd.Sysfd)
 
 	fd.Sysfd = -1

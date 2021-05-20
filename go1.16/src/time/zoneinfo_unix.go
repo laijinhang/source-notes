@@ -18,6 +18,8 @@ import (
 
 // Many systems use /usr/share/zoneinfo, Solaris 2 has
 // /usr/share/lib/zoneinfo, IRIX 6 has /usr/lib/locale/TZ.
+// 许多系统使用/usr/share/zoneinfo，Solaris 2有
+// /usr/share/lib/zoneinfo，IRIX 6有/usr/lib/locale/TZ。
 var zoneSources = []string{
 	"/usr/share/zoneinfo/",
 	"/usr/share/lib/zoneinfo/",
@@ -32,6 +34,9 @@ func initLocal() {
 	// $TZ="foo" or $TZ=":foo" if foo is an absolute path, then the file pointed
 	// by foo will be used to initialize timezone; otherwise, file
 	// /usr/share/zoneinfo/foo will be used.
+	// 查阅$TZ以找到要使用的时区。没有$TZ意味着使用系统默认的/etc/localtime。
+	// $TZ=""表示使用UTC。$TZ="foo "或$TZ=":foo "如果foo是一个绝对路径，
+	// 那么foo所指向的文件将被用来初始化时区；否则，将使用文件/usr/share/zoneinfo/foo。
 
 	tz, ok := syscall.Getenv("TZ")
 	switch {

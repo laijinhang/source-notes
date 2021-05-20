@@ -1,0 +1,1156 @@
+# command-line-arguments
+"".cmovint<1> STEXT nosplit size=27 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:9)	TEXT	"".cmovint(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:9)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:9)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:10)	MOVQ	"".c+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:10)	ADDQ	$4, AX
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:11)	TESTQ	AX, AX
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:17)	MOVL	$182, CX
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:17)	CMOVQLT	CX, AX
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:17)	MOVQ	AX, "".~r1+16(SP)
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:11)	RET
+	0x0000 48 8b 44 24 08 48 83 c0 04 48 85 c0 b9 b6 00 00  H.D$.H...H......
+	0x0010 00 48 0f 4c c1 48 89 44 24 10 c3                 .H.L.H.D$..
+"".cmovchan<1> STEXT nosplit size=23 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:20)	TEXT	"".cmovchan(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:20)	FUNCDATA	$0, gclocals·522734ad228da40e2256ba19cf2bc72c(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:20)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:21)	MOVQ	"".x+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:21)	MOVQ	"".y+16(SP), CX
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:21)	CMPQ	AX, CX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:27)	CMOVQNE	CX, AX
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:27)	MOVQ	AX, "".~r2+24(SP)
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:21)	RET
+	0x0000 48 8b 44 24 08 48 8b 4c 24 10 48 39 c8 48 0f 45  H.D$.H.L$.H9.H.E
+	0x0010 c1 48 89 44 24 18 c3                             .H.D$..
+"".cmovuintptr<1> STEXT nosplit size=29 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:30)	TEXT	"".cmovuintptr(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:30)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:30)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:32)	MOVQ	"".y+16(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:32)	MOVQ	AX, CX
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:32)	NEGQ	AX
+	0x000b 00011 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:31)	MOVQ	"".x+8(SP), DX
+	0x0010 00016 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:31)	CMPQ	DX, CX
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:37)	CMOVQCS	AX, DX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:37)	MOVQ	DX, "".~r2+24(SP)
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:31)	RET
+	0x0000 48 8b 44 24 10 48 89 c1 48 f7 d8 48 8b 54 24 08  H.D$.H..H..H.T$.
+	0x0010 48 39 ca 48 0f 42 d0 48 89 54 24 18 c3           H9.H.B.H.T$..
+"".cmov32bit<1> STEXT nosplit size=22 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:40)	TEXT	"".cmov32bit(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:40)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:40)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:42)	MOVL	"".y+12(SP), AX
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:42)	MOVL	AX, CX
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:42)	NEGL	AX
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:41)	MOVL	"".x+8(SP), DX
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:41)	CMPL	DX, CX
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:47)	CMOVLCS	AX, DX
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:47)	MOVL	DX, "".~r2+16(SP)
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:41)	RET
+	0x0000 8b 44 24 0c 89 c1 f7 d8 8b 54 24 08 39 ca 0f 42  .D$......T$.9..B
+	0x0010 d0 89 54 24 10 c3                                ..T$..
+"".cmov16bit<1> STEXT nosplit size=27 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:50)	TEXT	"".cmov16bit(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:50)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:50)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:52)	MOVWLZX	"".y+10(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:52)	MOVL	AX, CX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:52)	NEGL	AX
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:51)	MOVWLZX	"".x+8(SP), DX
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:51)	CMPW	DX, CX
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:57)	CMOVWCS	AX, DX
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:57)	MOVW	DX, "".~r2+16(SP)
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:51)	RET
+	0x0000 0f b7 44 24 0a 89 c1 f7 d8 0f b7 54 24 08 66 39  ..D$.......T$.f9
+	0x0010 ca 66 0f 42 d0 66 89 54 24 10 c3                 .f.B.f.T$..
+"".cmovfloateq<1> STEXT nosplit size=40 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:62)	TEXT	"".cmovfloateq(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:62)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:62)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:64)	MOVSD	"".x+8(SP), X0
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:64)	MOVSD	"".y+16(SP), X1
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:64)	UCOMISD	X1, X0
+	0x0010 00016 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:70)	MOVL	$128, CX
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:70)	MOVL	$256, AX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:70)	CMOVQNE	CX, AX
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:70)	CMOVQPC	AX, CX
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:70)	MOVQ	CX, "".~r2+24(SP)
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:64)	RET
+	0x0000 f2 0f 10 44 24 08 f2 0f 10 4c 24 10 66 0f 2e c1  ...D$....L$.f...
+	0x0010 b9 80 00 00 00 b8 00 01 00 00 48 0f 45 c1 48 0f  ..........H.E.H.
+	0x0020 4b c8 48 89 4c 24 18 c3                          K.H.L$..
+"".cmovfloatne<1> STEXT nosplit size=40 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:73)	TEXT	"".cmovfloatne(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:73)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:73)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:75)	MOVSD	"".x+8(SP), X0
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:75)	MOVSD	"".y+16(SP), X1
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:75)	UCOMISD	X1, X0
+	0x0010 00016 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:81)	MOVL	$128, AX
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:81)	MOVL	$256, CX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:81)	CMOVQNE	CX, AX
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:81)	CMOVQPS	CX, AX
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:81)	MOVQ	AX, "".~r2+24(SP)
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:75)	RET
+	0x0000 f2 0f 10 44 24 08 f2 0f 10 4c 24 10 66 0f 2e c1  ...D$....L$.f...
+	0x0010 b8 80 00 00 00 b9 00 01 00 00 48 0f 45 c1 48 0f  ..........H.E.H.
+	0x0020 4a c1 48 89 44 24 18 c3                          J.H.D$..
+"".frexp<1> STEXT nosplit size=24 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:85)	TEXT	"".frexp(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:85)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:85)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:86)	MOVSD	$f64.3ff0000000000000(SB), X0
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:86)	MOVSD	X0, "".frac+16(SP)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:86)	MOVQ	$4, "".exp+24(SP)
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:86)	RET
+	0x0000 f2 0f 10 05 00 00 00 00 f2 0f 11 44 24 10 48 c7  ...........D$.H.
+	0x0010 44 24 18 04 00 00 00 c3                          D$......
+	rel 4+4 t=16 $f64.3ff0000000000000<0>+0
+"".ldexp<1> STEXT nosplit size=15 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:90)	TEXT	"".ldexp(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:90)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:90)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:91)	MOVSD	$f64.3ff0000000000000(SB), X0
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:91)	MOVSD	X0, "".~r2+24(SP)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:91)	RET
+	0x0000 f2 0f 10 05 00 00 00 00 f2 0f 11 44 24 18 c3     ...........D$..
+	rel 4+4 t=16 $f64.3ff0000000000000<0>+0
+"".cmovfloatint2<1> STEXT size=171 args=0x18 locals=0x28 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	TEXT	"".cmovfloatint2(SB), ABIInternal, $40-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	PCDATA	$0, $-2
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	JLS	161
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	PCDATA	$0, $-1
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	SUBQ	$40, SP
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	MOVQ	BP, 32(SP)
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	LEAQ	32(SP), BP
+	0x0021 00033 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0021 00033 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0021 00033 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:99)	MOVSD	"".x+48(SP), X0
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:99)	JMP	132
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:99)	MOVSD	X0, "".r+24(SP)
+	0x002f 00047 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:100)	MOVSD	X0, (SP)
+	0x0034 00052 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:100)	PCDATA	$1, $0
+	0x0034 00052 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:100)	CALL	"".frexp(SB)
+	0x0039 00057 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:100)	MOVQ	16(SP), AX
+	0x003e 00062 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:100)	MOVSD	8(SP), X0
+	0x0044 00068 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:107)	MOVSD	"".y+56(SP), X1
+	0x004a 00074 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:107)	MOVSD	X1, (SP)
+	0x004f 00079 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:102)	LEAQ	-1(AX), CX
+	0x0053 00083 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:101)	MOVSD	$f64.4010000000000000(SB), X2
+	0x005b 00091 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:101)	UCOMISD	X0, X2
+	0x005f 00095 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:107)	CMOVQHI	CX, AX
+	0x0063 00099 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:107)	ADDQ	$-5, AX
+	0x0067 00103 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:107)	MOVQ	AX, 8(SP)
+	0x006c 00108 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:107)	CALL	"".ldexp(SB)
+	0x0071 00113 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:107)	MOVSD	16(SP), X0
+	0x0077 00119 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:107)	MOVSD	"".r+24(SP), X1
+	0x007d 00125 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:107)	SUBSD	X0, X1
+	0x0081 00129 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:99)	MOVUPS	X1, X0
+	0x0084 00132 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:99)	MOVSD	"".y+56(SP), X1
+	0x008a 00138 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:99)	UCOMISD	X1, X0
+	0x008e 00142 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:99)	JCC	41
+	0x0090 00144 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:109)	MOVSD	X0, "".~r2+64(SP)
+	0x0096 00150 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:109)	MOVQ	32(SP), BP
+	0x009b 00155 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:109)	ADDQ	$40, SP
+	0x009f 00159 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:109)	NOP
+	0x00a0 00160 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:109)	RET
+	0x00a1 00161 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:109)	NOP
+	0x00a1 00161 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	PCDATA	$1, $-1
+	0x00a1 00161 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	PCDATA	$0, $-2
+	0x00a1 00161 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	CALL	runtime.morestack_noctxt(SB)
+	0x00a6 00166 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	PCDATA	$0, $-1
+	0x00a6 00166 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:95)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 0f 86 8e  dH..%....H;a....
+	0x0010 00 00 00 48 83 ec 28 48 89 6c 24 20 48 8d 6c 24  ...H..(H.l$ H.l$
+	0x0020 20 f2 0f 10 44 24 30 eb 5b f2 0f 11 44 24 18 f2   ...D$0.[...D$..
+	0x0030 0f 11 04 24 e8 00 00 00 00 48 8b 44 24 10 f2 0f  ...$.....H.D$...
+	0x0040 10 44 24 08 f2 0f 10 4c 24 38 f2 0f 11 0c 24 48  .D$....L$8....$H
+	0x0050 8d 48 ff f2 0f 10 15 00 00 00 00 66 0f 2e d0 48  .H.........f...H
+	0x0060 0f 47 c1 48 83 c0 fb 48 89 44 24 08 e8 00 00 00  .G.H...H.D$.....
+	0x0070 00 f2 0f 10 44 24 10 f2 0f 10 4c 24 18 f2 0f 5c  ....D$....L$...\
+	0x0080 c8 0f 10 c1 f2 0f 10 4c 24 38 66 0f 2e c1 73 99  .......L$8f...s.
+	0x0090 f2 0f 11 44 24 40 48 8b 6c 24 20 48 83 c4 28 90  ...D$@H.l$ H..(.
+	0x00a0 c3 e8 00 00 00 00 e9 55 ff ff ff                 .......U...
+	rel 5+4 t=17 TLS+0
+	rel 53+4 t=8 "".frexp<1>+0
+	rel 87+4 t=16 $f64.4010000000000000<0>+0
+	rel 109+4 t=8 "".ldexp<1>+0
+	rel 162+4 t=8 runtime.morestack_noctxt<0>+0
+"".cmovloaded<1> STEXT nosplit size=27 args=0x30 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:112)	TEXT	"".cmovloaded(SB), NOSPLIT|ABIInternal, $0-48
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:112)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:112)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:113)	MOVQ	"".x+24(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:116)	MOVQ	"".y+40(SP), CX
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:116)	SARQ	$2, CX
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:113)	TESTQ	AX, AX
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:121)	CMOVQNE	AX, CX
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:121)	MOVQ	CX, "".~r2+48(SP)
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:113)	RET
+	0x0000 48 8b 44 24 18 48 8b 4c 24 28 48 c1 f9 02 48 85  H.D$.H.L$(H...H.
+	0x0010 c0 48 0f 45 c8 48 89 4c 24 30 c3                 .H.E.H.L$0.
+"".cmovuintptr2<1> STEXT nosplit size=26 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:124)	TEXT	"".cmovuintptr2(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:124)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:124)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:125)	MOVQ	"".x+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:125)	SHLQ	$1, AX
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:126)	TESTQ	AX, AX
+	0x000b 00011 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:132)	MOVL	$256, CX
+	0x0010 00016 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:132)	CMOVQEQ	CX, AX
+	0x0014 00020 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:132)	MOVQ	AX, "".~r2+24(SP)
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:126)	RET
+	0x0000 48 8b 44 24 08 48 d1 e0 48 85 c0 b9 00 01 00 00  H.D$.H..H.......
+	0x0010 48 0f 44 c1 48 89 44 24 18 c3                    H.D.H.D$..
+"".cmovfloatmove<1> STEXT nosplit size=40 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:136)	TEXT	"".cmovfloatmove(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:136)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:136)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:138)	MOVQ	"".x+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:138)	MOVQ	"".y+16(SP), CX
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:138)	CMPQ	AX, CX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:138)	JGT	30
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:138)	MOVSD	$f64.4000000000000000(SB), X0
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:144)	MOVSD	X0, "".~r2+24(SP)
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:144)	RET
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:144)	MOVSD	$f64.3ff0000000000000(SB), X0
+	0x0026 00038 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:138)	JMP	23
+	0x0000 48 8b 44 24 08 48 8b 4c 24 10 48 39 c8 7f 0f f2  H.D$.H.L$.H9....
+	0x0010 0f 10 05 00 00 00 00 f2 0f 11 44 24 18 c3 f2 0f  ..........D$....
+	0x0020 10 05 00 00 00 00 eb ef                          ........
+	rel 19+4 t=16 $f64.4000000000000000<0>+0
+	rel 34+4 t=16 $f64.3ff0000000000000<0>+0
+"".cmovinvert1<1> STEXT nosplit size=36 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:152)	TEXT	"".cmovinvert1(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:152)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:152)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:153)	MOVQ	"".gsink(SB), AX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:154)	MOVQ	"".y+16(SP), CX
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:154)	MOVQ	CX, DX
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:154)	NEGQ	CX
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:153)	MOVQ	"".x+8(SP), BX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:153)	CMPQ	AX, BX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:157)	CMOVQGT	CX, DX
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:157)	MOVQ	DX, "".~r2+24(SP)
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:153)	RET
+	0x0000 48 8b 05 00 00 00 00 48 8b 4c 24 10 48 89 ca 48  H......H.L$.H..H
+	0x0010 f7 d9 48 8b 5c 24 08 48 39 d8 48 0f 4f d1 48 89  ..H.\$.H9.H.O.H.
+	0x0020 54 24 18 c3                                      T$..
+	rel 3+4 t=16 "".gsink<0>+0
+"".cmovinvert2<1> STEXT nosplit size=36 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:159)	TEXT	"".cmovinvert2(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:159)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:159)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:160)	MOVQ	"".gsink(SB), AX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:161)	MOVQ	"".y+16(SP), CX
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:161)	MOVQ	CX, DX
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:161)	NEGQ	CX
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:160)	MOVQ	"".x+8(SP), BX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:160)	CMPQ	AX, BX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:164)	CMOVQGE	CX, DX
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:164)	MOVQ	DX, "".~r2+24(SP)
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:160)	RET
+	0x0000 48 8b 05 00 00 00 00 48 8b 4c 24 10 48 89 ca 48  H......H.L$.H..H
+	0x0010 f7 d9 48 8b 5c 24 08 48 39 d8 48 0f 4d d1 48 89  ..H.\$.H9.H.M.H.
+	0x0020 54 24 18 c3                                      T$..
+	rel 3+4 t=16 "".gsink<0>+0
+"".cmovinvert3<1> STEXT nosplit size=36 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:166)	TEXT	"".cmovinvert3(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:166)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:166)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:167)	MOVQ	"".gsink(SB), AX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:168)	MOVQ	"".y+16(SP), CX
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:168)	MOVQ	CX, DX
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:168)	NEGQ	CX
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:167)	MOVQ	"".x+8(SP), BX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:167)	CMPQ	AX, BX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:171)	CMOVQEQ	CX, DX
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:171)	MOVQ	DX, "".~r2+24(SP)
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:167)	RET
+	0x0000 48 8b 05 00 00 00 00 48 8b 4c 24 10 48 89 ca 48  H......H.L$.H..H
+	0x0010 f7 d9 48 8b 5c 24 08 48 39 d8 48 0f 44 d1 48 89  ..H.\$.H9.H.D.H.
+	0x0020 54 24 18 c3                                      T$..
+	rel 3+4 t=16 "".gsink<0>+0
+"".cmovinvert4<1> STEXT nosplit size=36 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:173)	TEXT	"".cmovinvert4(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:173)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:173)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:174)	MOVQ	"".gsink(SB), AX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:175)	MOVQ	"".y+16(SP), CX
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:175)	MOVQ	CX, DX
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:175)	NEGQ	CX
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:174)	MOVQ	"".x+8(SP), BX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:174)	CMPQ	AX, BX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:178)	CMOVQNE	CX, DX
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:178)	MOVQ	DX, "".~r2+24(SP)
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:174)	RET
+	0x0000 48 8b 05 00 00 00 00 48 8b 4c 24 10 48 89 ca 48  H......H.L$.H..H
+	0x0010 f7 d9 48 8b 5c 24 08 48 39 d8 48 0f 45 d1 48 89  ..H.\$.H9.H.E.H.
+	0x0020 54 24 18 c3                                      T$..
+	rel 3+4 t=16 "".gsink<0>+0
+"".cmovinvert5<1> STEXT nosplit size=36 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:180)	TEXT	"".cmovinvert5(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:180)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:180)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:181)	MOVQ	"".gusink(SB), AX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:182)	MOVQ	"".y+16(SP), CX
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:182)	MOVQ	CX, DX
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:182)	NEGQ	CX
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:181)	MOVQ	"".x+8(SP), BX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:181)	CMPQ	AX, BX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:185)	CMOVQCS	CX, DX
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:185)	MOVQ	DX, "".~r2+24(SP)
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:181)	RET
+	0x0000 48 8b 05 00 00 00 00 48 8b 4c 24 10 48 89 ca 48  H......H.L$.H..H
+	0x0010 f7 d9 48 8b 5c 24 08 48 39 d8 48 0f 42 d1 48 89  ..H.\$.H9.H.B.H.
+	0x0020 54 24 18 c3                                      T$..
+	rel 3+4 t=16 "".gusink<0>+0
+"".cmovinvert6<1> STEXT nosplit size=36 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:187)	TEXT	"".cmovinvert6(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:187)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:187)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:188)	MOVQ	"".gusink(SB), AX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:189)	MOVQ	"".y+16(SP), CX
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:189)	MOVQ	CX, DX
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:189)	NEGQ	CX
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:188)	MOVQ	"".x+8(SP), BX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:188)	CMPQ	AX, BX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:192)	CMOVQLS	CX, DX
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:192)	MOVQ	DX, "".~r2+24(SP)
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:188)	RET
+	0x0000 48 8b 05 00 00 00 00 48 8b 4c 24 10 48 89 ca 48  H......H.L$.H..H
+	0x0010 f7 d9 48 8b 5c 24 08 48 39 d8 48 0f 46 d1 48 89  ..H.\$.H9.H.F.H.
+	0x0020 54 24 18 c3                                      T$..
+	rel 3+4 t=16 "".gusink<0>+0
+"".cmovload<1> STEXT nosplit size=81 args=0x30 locals=0x18 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:195)	TEXT	"".cmovload(SB), NOSPLIT|ABIInternal, $24-48
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:195)	SUBQ	$24, SP
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:195)	MOVQ	BP, 16(SP)
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:195)	LEAQ	16(SP), BP
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:195)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:195)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:195)	MOVBLZX	"".b+64(SP), DX
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:195)	TESTB	DL, DL
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:196)	JEQ	65
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:197)	MOVQ	"".i+56(SP), DX
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:197)	INCQ	DX
+	0x001f 00031 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	MOVQ	"".a+40(SP), CX
+	0x0024 00036 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	CMPQ	CX, DX
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	JLS	72
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	MOVQ	"".a+32(SP), AX
+	0x002e 00046 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	MOVQ	(AX)(DX*8), AX
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	MOVQ	AX, "".~r3+72(SP)
+	0x0037 00055 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	MOVQ	16(SP), BP
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	ADDQ	$24, SP
+	0x0040 00064 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	RET
+	0x0041 00065 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	MOVQ	"".i+56(SP), DX
+	0x0046 00070 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:196)	JMP	31
+	0x0048 00072 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	MOVQ	DX, AX
+	0x004b 00075 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	PCDATA	$1, $1
+	0x004b 00075 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	CALL	runtime.panicIndex(SB)
+	0x0050 00080 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:201)	XCHGL	AX, AX
+	0x0000 48 83 ec 18 48 89 6c 24 10 48 8d 6c 24 10 0f b6  H...H.l$.H.l$...
+	0x0010 54 24 40 84 d2 74 2a 48 8b 54 24 38 48 ff c2 48  T$@..t*H.T$8H..H
+	0x0020 8b 4c 24 28 48 39 d1 76 1f 48 8b 44 24 20 48 8b  .L$(H9.v.H.D$ H.
+	0x0030 04 d0 48 89 44 24 48 48 8b 6c 24 10 48 83 c4 18  ..H.D$HH.l$.H...
+	0x0040 c3 48 8b 54 24 38 eb d7 48 89 d0 e8 00 00 00 00  .H.T$8..H.......
+	0x0050 90                                               .
+	rel 76+4 t=8 runtime.panicIndex<1>+0
+"".cmovstore<1> STEXT nosplit size=74 args=0x28 locals=0x18 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:204)	TEXT	"".cmovstore(SB), NOSPLIT|ABIInternal, $24-40
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:204)	SUBQ	$24, SP
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:204)	MOVQ	BP, 16(SP)
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:204)	LEAQ	16(SP), BP
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:204)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:204)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:206)	MOVQ	"".i+56(SP), AX
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:206)	LEAQ	1(AX), DX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:209)	MOVBLZX	"".b+64(SP), BX
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:209)	TESTQ	BX, BX
+	0x001f 00031 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:209)	CMOVQNE	DX, AX
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:209)	MOVQ	"".a+40(SP), CX
+	0x0028 00040 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:209)	CMPQ	CX, AX
+	0x002b 00043 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:205)	JLS	68
+	0x002d 00045 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:209)	MOVQ	"".a+32(SP), CX
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:209)	MOVQ	$7, (CX)(AX*8)
+	0x003a 00058 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:210)	MOVQ	16(SP), BP
+	0x003f 00063 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:210)	ADDQ	$24, SP
+	0x0043 00067 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:210)	RET
+	0x0044 00068 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:209)	PCDATA	$1, $1
+	0x0044 00068 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:209)	CALL	runtime.panicIndex(SB)
+	0x0049 00073 (/home/laijh/go/src/source-notes/go1.16/test/codegen/condmove.go:209)	XCHGL	AX, AX
+	0x0000 48 83 ec 18 48 89 6c 24 10 48 8d 6c 24 10 48 8b  H...H.l$.H.l$.H.
+	0x0010 44 24 38 48 8d 50 01 0f b6 5c 24 40 48 85 db 48  D$8H.P...\$@H..H
+	0x0020 0f 45 c2 48 8b 4c 24 28 48 39 c1 76 17 48 8b 4c  .E.H.L$(H9.v.H.L
+	0x0030 24 20 48 c7 04 c1 07 00 00 00 48 8b 6c 24 10 48  $ H.......H.l$.H
+	0x0040 83 c4 18 c3 e8 00 00 00 00 90                    ..........
+	rel 69+4 t=8 runtime.panicIndex<1>+0
+go.cuinfo.packagename.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 63 6f 64 65 67 65 6e                             codegen
+"".gsink<0> SNOPTRBSS size=8
+"".gusink<0> SNOPTRBSS size=8
+runtime.memequal64·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal64<1>+0
+runtime.gcbits.01<0> SRODATA dupok size=1
+	0x0000 01                                               .
+type..namedata.*[]int-<0> SRODATA dupok size=9
+	0x0000 00 00 06 2a 5b 5d 69 6e 74                       ...*[]int
+type.*[]int<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 1b 31 52 88 08 08 08 36 00 00 00 00 00 00 00 00  .1R....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]int-<0>+0
+	rel 48+8 t=1 type.[]int<0>+0
+type.[]int<0> SRODATA dupok size=56
+	0x0000 18 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 8e 66 f9 1b 02 08 08 17 00 00 00 00 00 00 00 00  .f..............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]int-<0>+0
+	rel 44+4 t=6 type.*[]int<0>+0
+	rel 48+8 t=1 type.int<0>+0
+type..eqfunc32<0> SRODATA dupok size=16
+	0x0000 00 00 00 00 00 00 00 00 20 00 00 00 00 00 00 00  ........ .......
+	rel 0+8 t=1 runtime.memequal_varlen<0>+0
+type..namedata.*[4]int-<0> SRODATA dupok size=10
+	0x0000 00 00 07 2a 5b 34 5d 69 6e 74                    ...*[4]int
+type.*[4]int<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 f0 ba d6 e0 08 08 08 36 00 00 00 00 00 00 00 00  .......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[4]int-<0>+0
+	rel 48+8 t=1 type.[4]int<0>+0
+runtime.gcbits.<0> SRODATA dupok size=0
+type.[4]int<0> SRODATA dupok size=72
+	0x0000 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ...............
+	0x0010 ae 6a 57 d6 0a 08 08 11 00 00 00 00 00 00 00 00  .jW.............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 04 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc32<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[4]int-<0>+0
+	rel 44+4 t=6 type.*[4]int<0>+0
+	rel 48+8 t=1 type.int<0>+0
+	rel 56+8 t=1 type.[]int<0>+0
+type..namedata.*chan int-<0> SRODATA dupok size=12
+	0x0000 00 00 09 2a 63 68 61 6e 20 69 6e 74              ...*chan int
+type.*chan int<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 ed 7b ed 3b 08 08 08 36 00 00 00 00 00 00 00 00  .{.;...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*chan int-<0>+0
+	rel 48+8 t=1 type.chan int<0>+0
+type.chan int<0> SRODATA dupok size=64
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 91 55 cb 71 0a 08 08 32 00 00 00 00 00 00 00 00  .U.q...2........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*chan int-<0>+0
+	rel 44+4 t=6 type.*chan int<0>+0
+	rel 48+8 t=1 type.int<0>+0
+gclocals·33cdeccccebe80329f1fdbee7f5874cb<0> SRODATA dupok size=8
+	0x0000 01 00 00 00 00 00 00 00                          ........
+gclocals·522734ad228da40e2256ba19cf2bc72c<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 03 00 00 00 03 00                    ..........
+gclocals·69c1753bd5f81501d95132d08af04464<0> SRODATA dupok size=8
+	0x0000 02 00 00 00 00 00 00 00                          ........
+gclocals·1a65e721a2ccc325b382662e7ffee780<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 01 00 00 00 01 00                    ..........
+$f64.3ff0000000000000<0> SRODATA size=8
+	0x0000 00 00 00 00 00 00 f0 3f                          .......?
+$f64.4000000000000000<0> SRODATA size=8
+	0x0000 00 00 00 00 00 00 00 40                          .......@
+$f64.4010000000000000<0> SRODATA size=8
+	0x0000 00 00 00 00 00 00 10 40                          .......@
+aux for "".cmovint<0> SDWARFLOC size=102
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 09 00 00 00 00 00 00 00 1b 00 00 00 00 00 00 00  ................
+	0x0020 01 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00  ..P.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 1b 00 00 00 00  ................
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00                                ......
+	rel 8+8 t=1 "".cmovint<1>+0
+	rel 59+8 t=1 "".cmovint<1>+0
+aux for "".cmovint<0> SDWARFLINES size=34
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 04 14  ................
+	0x0010 06 41 06 38 03 01 32 06 41 06 03 7e 65 02 01 00  .A.8..2.A..~e...
+	0x0020 01 01                                            ..
+	rel 3+8 t=1 "".cmovint<1>+0
+aux for "".cmovint<0> SDWARFFCN size=93
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 69 6e 74 00  guments.cmovint.
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 01 9c 02 00 00 00 01 0b 78 00 0a 00 00 00 00 00  ........x.......
+	0x0040 00 00 00 10 63 00 00 09 00 00 00 00 00 00 00 00  ....c...........
+	0x0050 0f 7e 72 31 00 01 09 00 00 00 00 00 00           .~r1.........
+	rel 0+0 t=24 type.int<0>+0
+	rel 32+8 t=1 "".cmovint<1>+0
+	rel 40+8 t=1 "".cmovint<1>+27
+	rel 59+4 t=31 go.info.int<0>+0
+	rel 63+4 t=31 <0>+0
+	rel 72+4 t=31 go.info.int<0>+0
+	rel 76+4 t=31 <0>+51
+	rel 87+4 t=31 go.info.int<0>+0
+aux for "".cmovchan<0> SDWARFLOC size=104
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 17 00 00 00 00 00 00 00  ................
+	0x0020 02 00 91 08 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 00 17 00 00 00  ................
+	0x0050 00 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 00                          ........
+	rel 8+8 t=1 "".cmovchan<1>+0
+	rel 60+8 t=1 "".cmovchan<1>+0
+aux for "".cmovchan<0> SDWARFLINES size=33
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 0f 14  ................
+	0x0010 06 41 06 03 01 64 06 37 06 03 7e 3d 02 01 00 01  .A...d.7..~=....
+	0x0020 01                                               .
+	rel 3+8 t=1 "".cmovchan<1>+0
+aux for "".cmovchan<0> SDWARFFCN size=95
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 63 68 61 6e  guments.cmovchan
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 01 9c 02 00 00 00 01 10 78 00 00 14 00 00 00  .........x......
+	0x0040 00 00 00 00 00 10 79 00 00 14 00 00 00 00 00 00  ......y.........
+	0x0050 00 00 0f 7e 72 32 00 01 14 00 00 00 00 00 00     ...~r2.........
+	rel 0+0 t=24 type.chan int<0>+0
+	rel 33+8 t=1 "".cmovchan<1>+0
+	rel 41+8 t=1 "".cmovchan<1>+23
+	rel 61+4 t=31 go.info.chan int<0>+0
+	rel 65+4 t=31 <0>+0
+	rel 74+4 t=31 go.info.chan int<0>+0
+	rel 78+4 t=31 <0>+52
+	rel 89+4 t=31 go.info.chan int<0>+0
+aux for "".cmovuintptr<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 1d 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 1d 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".cmovuintptr<1>+0
+	rel 59+8 t=1 "".cmovuintptr<1>+0
+aux for "".cmovuintptr<0> SDWARFLINES size=37
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 1a 14  ................
+	0x0010 06 41 06 4a 06 41 06 03 01 32 06 37 06 03 7e 3d  .A.J.A...2.7..~=
+	0x0020 02 01 00 01 01                                   .....
+	rel 3+8 t=1 "".cmovuintptr<1>+0
+aux for "".cmovuintptr<0> SDWARFFCN size=98
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 75 69 6e 74  guments.cmovuint
+	0x0020 70 74 72 00 00 00 00 00 00 00 00 00 00 00 00 00  ptr.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 10 78 00 00 1e  ............x...
+	0x0040 00 00 00 00 00 00 00 00 10 79 00 00 1e 00 00 00  .........y......
+	0x0050 00 00 00 00 00 0f 7e 72 32 00 01 1e 00 00 00 00  ......~r2.......
+	0x0060 00 00                                            ..
+	rel 0+0 t=24 type.uintptr<0>+0
+	rel 36+8 t=1 "".cmovuintptr<1>+0
+	rel 44+8 t=1 "".cmovuintptr<1>+29
+	rel 64+4 t=31 go.info.uintptr<0>+0
+	rel 68+4 t=31 <0>+0
+	rel 77+4 t=31 go.info.uintptr<0>+0
+	rel 81+4 t=31 <0>+51
+	rel 92+4 t=31 go.info.uintptr<0>+0
+aux for "".cmov32bit<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 16 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 16 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 04 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".cmov32bit<1>+0
+	rel 59+8 t=1 "".cmov32bit<1>+0
+aux for "".cmov32bit<0> SDWARFLINES size=37
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 24 14  ..............$.
+	0x0010 06 37 06 36 06 37 06 03 01 28 06 2d 06 03 7e 33  .7.6.7...(.-..~3
+	0x0020 02 01 00 01 01                                   .....
+	rel 3+8 t=1 "".cmov32bit<1>+0
+aux for "".cmov32bit<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 33 32 62 69  guments.cmov32bi
+	0x0020 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  t...............
+	0x0030 00 00 01 9c 02 00 00 00 01 10 78 00 00 28 00 00  ..........x..(..
+	0x0040 00 00 00 00 00 00 10 79 00 00 28 00 00 00 00 00  .......y..(.....
+	0x0050 00 00 00 0f 7e 72 32 00 01 28 00 00 00 00 00 00  ....~r2..(......
+	rel 0+0 t=24 type.uint32<0>+0
+	rel 34+8 t=1 "".cmov32bit<1>+0
+	rel 42+8 t=1 "".cmov32bit<1>+22
+	rel 62+4 t=31 go.info.uint32<0>+0
+	rel 66+4 t=31 <0>+0
+	rel 75+4 t=31 go.info.uint32<0>+0
+	rel 79+4 t=31 <0>+51
+	rel 90+4 t=31 go.info.uint32<0>+0
+aux for "".cmov16bit<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 1b 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 1b 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 02 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".cmov16bit<1>+0
+	rel 59+8 t=1 "".cmov16bit<1>+0
+aux for "".cmov16bit<0> SDWARFLINES size=37
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 2e 14  ................
+	0x0010 06 41 06 36 06 41 06 03 01 32 06 37 06 03 7e 3d  .A.6.A...2.7..~=
+	0x0020 02 01 00 01 01                                   .....
+	rel 3+8 t=1 "".cmov16bit<1>+0
+aux for "".cmov16bit<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 31 36 62 69  guments.cmov16bi
+	0x0020 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  t...............
+	0x0030 00 00 01 9c 02 00 00 00 01 10 78 00 00 32 00 00  ..........x..2..
+	0x0040 00 00 00 00 00 00 10 79 00 00 32 00 00 00 00 00  .......y..2.....
+	0x0050 00 00 00 0f 7e 72 32 00 01 32 00 00 00 00 00 00  ....~r2..2......
+	rel 0+0 t=24 type.uint16<0>+0
+	rel 34+8 t=1 "".cmov16bit<1>+0
+	rel 42+8 t=1 "".cmov16bit<1>+27
+	rel 62+4 t=31 go.info.uint16<0>+0
+	rel 66+4 t=31 <0>+0
+	rel 75+4 t=31 go.info.uint16<0>+0
+	rel 79+4 t=31 <0>+51
+	rel 90+4 t=31 go.info.uint16<0>+0
+aux for "".cmovfloateq<0> SDWARFLOC size=154
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 22 00 00 00 00 00 00 00 28 00 00 00 00 00 00 00  ".......(.......
+	0x0020 01 00 52 00 00 00 00 00 00 00 00 00 00 00 00 00  ..R.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 28 00 00 00 00  ...........(....
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 28 00  ..............(.
+	0x0080 00 00 00 00 00 00 02 00 91 08 00 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".cmovfloateq<1>+0
+	rel 59+8 t=1 "".cmovfloateq<1>+0
+	rel 110+8 t=1 "".cmovfloateq<1>+0
+aux for "".cmovfloateq<0> SDWARFLINES size=33
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 3a 14  ..............:.
+	0x0010 06 4b 06 03 01 78 06 41 06 03 7e bf 02 01 00 01  .K...x.A..~.....
+	0x0020 01                                               .
+	rel 3+8 t=1 "".cmovfloateq<1>+0
+aux for "".cmovfloateq<0> SDWARFFCN size=110
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 66 6c 6f 61  guments.cmovfloa
+	0x0020 74 65 71 00 00 00 00 00 00 00 00 00 00 00 00 00  teq.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 0b 61 00 3f 00  ............a.?.
+	0x0040 00 00 00 00 00 00 00 10 78 00 00 3e 00 00 00 00  ........x..>....
+	0x0050 00 00 00 00 10 79 00 00 3e 00 00 00 00 00 00 00  .....y..>.......
+	0x0060 00 0f 7e 72 32 00 01 3e 00 00 00 00 00 00        ..~r2..>......
+	rel 0+0 t=24 type.int<0>+0
+	rel 36+8 t=1 "".cmovfloateq<1>+0
+	rel 44+8 t=1 "".cmovfloateq<1>+40
+	rel 63+4 t=31 go.info.int<0>+0
+	rel 67+4 t=31 <0>+0
+	rel 76+4 t=31 go.info.float64<0>+0
+	rel 80+4 t=31 <0>+51
+	rel 89+4 t=31 go.info.float64<0>+0
+	rel 93+4 t=31 <0>+102
+	rel 104+4 t=31 go.info.int<0>+0
+aux for "".cmovfloatne<0> SDWARFLOC size=154
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 22 00 00 00 00 00 00 00 28 00 00 00 00 00 00 00  ".......(.......
+	0x0020 01 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00  ..P.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 28 00 00 00 00  ...........(....
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 28 00  ..............(.
+	0x0080 00 00 00 00 00 00 02 00 91 08 00 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".cmovfloatne<1>+0
+	rel 59+8 t=1 "".cmovfloatne<1>+0
+	rel 110+8 t=1 "".cmovfloatne<1>+0
+aux for "".cmovfloatne<0> SDWARFLINES size=34
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 c5 00  ................
+	0x0010 14 06 4b 06 03 01 78 06 41 06 03 7e bf 02 01 00  ..K...x.A..~....
+	0x0020 01 01                                            ..
+	rel 3+8 t=1 "".cmovfloatne<1>+0
+aux for "".cmovfloatne<0> SDWARFFCN size=110
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 66 6c 6f 61  guments.cmovfloa
+	0x0020 74 6e 65 00 00 00 00 00 00 00 00 00 00 00 00 00  tne.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 0b 61 00 4a 00  ............a.J.
+	0x0040 00 00 00 00 00 00 00 10 78 00 00 49 00 00 00 00  ........x..I....
+	0x0050 00 00 00 00 10 79 00 00 49 00 00 00 00 00 00 00  .....y..I.......
+	0x0060 00 0f 7e 72 32 00 01 49 00 00 00 00 00 00        ..~r2..I......
+	rel 0+0 t=24 type.int<0>+0
+	rel 36+8 t=1 "".cmovfloatne<1>+0
+	rel 44+8 t=1 "".cmovfloatne<1>+40
+	rel 63+4 t=31 go.info.int<0>+0
+	rel 67+4 t=31 <0>+0
+	rel 76+4 t=31 go.info.float64<0>+0
+	rel 80+4 t=31 <0>+51
+	rel 89+4 t=31 go.info.float64<0>+0
+	rel 93+4 t=31 <0>+102
+	rel 104+4 t=31 go.info.int<0>+0
+aux for "".frexp<0> SDWARFLOC size=104
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 08 00 00 00 00 00 00 00 18 00 00 00 00 00 00 00  ................
+	0x0020 02 00 91 08 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00  ................
+	0x0040 00 00 00 00 17 00 00 00 00 00 00 00 18 00 00 00  ................
+	0x0050 00 00 00 00 02 00 91 10 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 00                          ........
+	rel 8+8 t=1 "".frexp<1>+0
+	rel 60+8 t=1 "".frexp<1>+0
+aux for "".frexp<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 d0 00  ................
+	0x0010 14 06 5f 02 10 00 01 01                          .._.....
+	rel 3+8 t=1 "".frexp<1>+0
+aux for "".frexp<0> SDWARFFCN size=95
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 66 72 65 78 70 00 00 00  guments.frexp...
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c  ................
+	0x0030 02 00 00 00 01 0f 66 00 00 55 00 00 00 00 00 10  ......f..U......
+	0x0040 66 72 61 63 00 01 55 00 00 00 00 00 00 00 00 10  frac..U.........
+	0x0050 65 78 70 00 01 55 00 00 00 00 00 00 00 00 00     exp..U.........
+	rel 0+0 t=24 type.float64<0>+0
+	rel 30+8 t=1 "".frexp<1>+0
+	rel 38+8 t=1 "".frexp<1>+24
+	rel 58+4 t=31 go.info.float64<0>+0
+	rel 71+4 t=31 go.info.float64<0>+0
+	rel 75+4 t=31 <0>+0
+	rel 86+4 t=31 go.info.int<0>+0
+	rel 90+4 t=31 <0>+52
+aux for "".ldexp<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 d5 00  ................
+	0x0010 14 06 5f 02 07 00 01 01                          .._.....
+	rel 3+8 t=1 "".ldexp<1>+0
+aux for "".ldexp<0> SDWARFFCN size=91
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 6c 64 65 78 70 00 00 00  guments.ldexp...
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c  ................
+	0x0030 02 00 00 00 01 0f 66 72 61 63 00 00 5a 00 00 00  ......frac..Z...
+	0x0040 00 00 0f 65 78 70 00 00 5a 00 00 00 00 00 0f 7e  ...exp..Z......~
+	0x0050 72 32 00 01 5a 00 00 00 00 00 00                 r2..Z......
+	rel 0+0 t=24 type.float64<0>+0
+	rel 0+0 t=24 type.int<0>+0
+	rel 30+8 t=1 "".ldexp<1>+0
+	rel 38+8 t=1 "".ldexp<1>+15
+	rel 61+4 t=31 go.info.float64<0>+0
+	rel 73+4 t=31 go.info.int<0>+0
+	rel 85+4 t=31 go.info.float64<0>+0
+aux for "".cmovfloatint2<0> SDWARFLOC size=314
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 2f 00 00 00 00 00 00 00  ......../.......
+	0x0020 01 00 9c 2f 00 00 00 00 00 00 00 84 00 00 00 00  .../............
+	0x0030 00 00 00 02 00 91 68 84 00 00 00 00 00 00 00 ab  ......h.........
+	0x0040 00 00 00 00 00 00 00 01 00 61 00 00 00 00 00 00  .........a......
+	0x0050 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff ff  ................
+	0x0060 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0070 00 00 ab 00 00 00 00 00 00 00 01 00 9c 00 00 00  ................
+	0x0080 00 00 00 00 00 00 00 00 00 00 00 00 00 ff ff ff  ................
+	0x0090 ff ff ff ff ff 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00a0 00 00 00 00 00 ab 00 00 00 00 00 00 00 02 00 91  ................
+	0x00b0 08 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00c0 00 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00  ................
+	0x00d0 00 44 00 00 00 00 00 00 00 71 00 00 00 00 00 00  .D.......q......
+	0x00e0 00 01 00 61 00 00 00 00 00 00 00 00 00 00 00 00  ...a............
+	0x00f0 00 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00  ................
+	0x0100 00 00 00 00 3e 00 00 00 00 00 00 00 67 00 00 00  ....>.......g...
+	0x0110 00 00 00 00 01 00 50 67 00 00 00 00 00 00 00 71  ......Pg.......q
+	0x0120 00 00 00 00 00 00 00 01 00 52 00 00 00 00 00 00  .........R......
+	0x0130 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".cmovfloatint2<1>+0
+	rel 98+8 t=1 "".cmovfloatint2<1>+0
+	rel 149+8 t=1 "".cmovfloatint2<1>+0
+	rel 201+8 t=1 "".cmovfloatint2<1>+0
+	rel 252+8 t=1 "".cmovfloatint2<1>+0
+aux for "".cmovfloatint2<0> SDWARFLINES size=65
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 d9 00  ................
+	0x0010 14 0a cd 9f 06 4b 06 60 06 73 03 02 82 06 03 7f  .....K.`.s......
+	0x0020 79 36 06 5f 06 03 01 3c 06 37 08 03 7c 47 06 2d  y6._...<.7..|G.-
+	0x0030 06 4b 06 03 05 50 06 4b 06 03 76 79 02 0a 00 01  .K...P.K..vy....
+	0x0040 01                                               .
+	rel 3+8 t=1 "".cmovfloatint2<1>+0
+aux for "".cmovfloatint2<0> SDWARFFCN size=170
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 66 6c 6f 61  guments.cmovfloa
+	0x0020 74 69 6e 74 32 00 00 00 00 00 00 00 00 00 00 00  tint2...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0b 72 00  ..............r.
+	0x0040 62 00 00 00 00 00 00 00 00 0a 79 66 72 00 60 00  b.........yfr.`.
+	0x0050 00 00 00 00 10 78 00 00 5f 00 00 00 00 00 00 00  .....x.._.......
+	0x0060 00 10 79 00 00 5f 00 00 00 00 00 00 00 00 0f 7e  ..y.._.........~
+	0x0070 72 32 00 01 5f 00 00 00 00 00 15 00 00 00 00 00  r2.._...........
+	0x0080 00 00 00 00 00 00 00 00 00 00 00 0b 72 66 72 00  ............rfr.
+	0x0090 64 00 00 00 00 00 00 00 00 0b 72 65 78 70 00 64  d.........rexp.d
+	0x00a0 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 0+0 t=24 type.float64<0>+0
+	rel 38+8 t=1 "".cmovfloatint2<1>+0
+	rel 46+8 t=1 "".cmovfloatint2<1>+171
+	rel 65+4 t=31 go.info.float64<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 79+4 t=31 go.info.float64<0>+0
+	rel 89+4 t=31 go.info.float64<0>+0
+	rel 93+4 t=31 <0>+90
+	rel 102+4 t=31 go.info.float64<0>+0
+	rel 106+4 t=31 <0>+141
+	rel 117+4 t=31 go.info.float64<0>+0
+	rel 123+8 t=1 "".cmovfloatint2<1>+47
+	rel 131+8 t=1 "".cmovfloatint2<1>+129
+	rel 145+4 t=31 go.info.float64<0>+0
+	rel 149+4 t=31 <0>+193
+	rel 160+4 t=31 go.info.int<0>+0
+	rel 164+4 t=31 <0>+244
+aux for "".cmovloaded<0> SDWARFLOC size=52
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 1b 00 00 00 00 00 00 00  ................
+	0x0020 02 00 91 20 00 00 00 00 00 00 00 00 00 00 00 00  ... ............
+	0x0030 00 00 00 00                                      ....
+	rel 8+8 t=1 "".cmovloaded<1>+0
+aux for "".cmovloaded<0> SDWARFLINES size=36
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 eb 00  ................
+	0x0010 14 44 06 41 34 06 03 03 32 06 37 06 03 7c 3d 02  .D.A4...2.7..|=.
+	0x0020 01 00 01 01                                      ....
+	rel 3+8 t=1 "".cmovloaded<1>+0
+aux for "".cmovloaded<0> SDWARFFCN size=95
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 6c 6f 61 64  guments.cmovload
+	0x0020 65 64 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ed..............
+	0x0030 00 00 00 01 9c 02 00 00 00 01 0f 78 00 00 70 00  ...........x..p.
+	0x0040 00 00 00 01 9c 10 79 00 00 70 00 00 00 00 00 00  ......y..p......
+	0x0050 00 00 0f 7e 72 32 00 01 70 00 00 00 00 00 00     ...~r2..p......
+	rel 0+0 t=24 type.int<0>+0
+	rel 35+8 t=1 "".cmovloaded<1>+0
+	rel 43+8 t=1 "".cmovloaded<1>+27
+	rel 63+4 t=31 go.info.[4]int<0>+0
+	rel 74+4 t=31 go.info.int<0>+0
+	rel 78+4 t=31 <0>+0
+	rel 89+4 t=31 go.info.int<0>+0
+aux for "".cmovuintptr2<0> SDWARFLOC size=102
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 14 00 00 00 00 00 00 00 1a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00  ..P.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 1a 00 00 00 00  ................
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00                                ......
+	rel 8+8 t=1 "".cmovuintptr2<1>+0
+	rel 59+8 t=1 "".cmovuintptr2<1>+0
+aux for "".cmovuintptr2<0> SDWARFLINES size=35
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 f7 00  ................
+	0x0010 14 06 41 06 2e 03 01 32 06 41 06 03 7e 65 02 01  ..A....2.A..~e..
+	0x0020 00 01 01                                         ...
+	rel 3+8 t=1 "".cmovuintptr2<1>+0
+aux for "".cmovuintptr2<0> SDWARFFCN size=108
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 75 69 6e 74  guments.cmovuint
+	0x0020 70 74 72 32 00 00 00 00 00 00 00 00 00 00 00 00  ptr2............
+	0x0030 00 00 00 00 00 01 9c 02 00 00 00 01 0b 61 00 7d  .............a.}
+	0x0040 00 00 00 00 00 00 00 00 10 78 00 00 7c 00 00 00  .........x..|...
+	0x0050 00 00 00 00 00 0f 79 00 00 7c 00 00 00 00 00 0f  ......y..|......
+	0x0060 7e 72 32 00 01 7c 00 00 00 00 00 00              ~r2..|......
+	rel 0+0 t=24 type.uintptr<0>+0
+	rel 37+8 t=1 "".cmovuintptr2<1>+0
+	rel 45+8 t=1 "".cmovuintptr2<1>+26
+	rel 64+4 t=31 go.info.uintptr<0>+0
+	rel 68+4 t=31 <0>+0
+	rel 77+4 t=31 go.info.uintptr<0>+0
+	rel 81+4 t=31 <0>+51
+	rel 90+4 t=31 go.info.uintptr<0>+0
+	rel 102+4 t=31 go.info.uintptr<0>+0
+aux for "".cmovfloatmove<0> SDWARFLOC size=154
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 17 00 00 00 00 00 00 00 1e 00 00 00 00 00 00 00  ................
+	0x0020 01 00 61 00 00 00 00 00 00 00 00 00 00 00 00 00  ..a.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 28 00 00 00 00  ...........(....
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 28 00  ..............(.
+	0x0080 00 00 00 00 00 00 02 00 91 08 00 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".cmovfloatmove<1>+0
+	rel 59+8 t=1 "".cmovfloatmove<1>+0
+	rel 110+8 t=1 "".cmovfloatmove<1>+0
+aux for "".cmovfloatmove<0> SDWARFLINES size=33
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 84 01  ................
+	0x0010 14 06 41 06 03 01 c8 06 4b 03 7e 65 02 02 00 01  ..A.....K.~e....
+	0x0020 01                                               .
+	rel 3+8 t=1 "".cmovfloatmove<1>+0
+aux for "".cmovfloatmove<0> SDWARFFCN size=116
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 66 6c 6f 61  guments.cmovfloa
+	0x0020 74 6d 6f 76 65 00 00 00 00 00 00 00 00 00 00 00  tmove...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0b 61 00  ..............a.
+	0x0040 89 01 00 00 00 00 00 00 00 00 10 78 00 00 88 01  ...........x....
+	0x0050 00 00 00 00 00 00 00 00 10 79 00 00 88 01 00 00  .........y......
+	0x0060 00 00 00 00 00 00 0f 7e 72 32 00 01 88 01 00 00  .......~r2......
+	0x0070 00 00 00 00                                      ....
+	rel 0+0 t=24 type.float64<0>+0
+	rel 38+8 t=1 "".cmovfloatmove<1>+0
+	rel 46+8 t=1 "".cmovfloatmove<1>+40
+	rel 66+4 t=31 go.info.float64<0>+0
+	rel 70+4 t=31 <0>+0
+	rel 80+4 t=31 go.info.int<0>+0
+	rel 84+4 t=31 <0>+51
+	rel 94+4 t=31 go.info.int<0>+0
+	rel 98+4 t=31 <0>+102
+	rel 110+4 t=31 go.info.float64<0>+0
+aux for "".cmovinvert1<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 24 00 00 00 00 00 00 00  ........$.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 24 00 00 00 00  ...........$....
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".cmovinvert1<1>+0
+	rel 59+8 t=1 "".cmovinvert1<1>+0
+aux for "".cmovinvert1<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 93 01  ................
+	0x0010 14 56 06 41 4a 06 63 06 37 06 3d 02 01 00 01 01  .V.AJ.c.7.=.....
+	rel 3+8 t=1 "".cmovinvert1<1>+0
+aux for "".cmovinvert1<0> SDWARFFCN size=101
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 69 6e 76 65  guments.cmovinve
+	0x0020 72 74 31 00 00 00 00 00 00 00 00 00 00 00 00 00  rt1.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 10 78 00 00 98  ............x...
+	0x0040 01 00 00 00 00 00 00 00 00 10 79 00 00 98 01 00  ..........y.....
+	0x0050 00 00 00 00 00 00 00 0f 7e 72 32 00 01 98 01 00  ........~r2.....
+	0x0060 00 00 00 00 00                                   .....
+	rel 0+0 t=24 type.int64<0>+0
+	rel 36+8 t=1 "".cmovinvert1<1>+0
+	rel 44+8 t=1 "".cmovinvert1<1>+36
+	rel 65+4 t=31 go.info.int64<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 79+4 t=31 go.info.int64<0>+0
+	rel 83+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.int64<0>+0
+aux for "".cmovinvert2<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 24 00 00 00 00 00 00 00  ........$.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 24 00 00 00 00  ...........$....
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".cmovinvert2<1>+0
+	rel 59+8 t=1 "".cmovinvert2<1>+0
+aux for "".cmovinvert2<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 9a 01  ................
+	0x0010 14 56 06 41 4a 06 63 06 37 06 3d 02 01 00 01 01  .V.AJ.c.7.=.....
+	rel 3+8 t=1 "".cmovinvert2<1>+0
+aux for "".cmovinvert2<0> SDWARFFCN size=101
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 69 6e 76 65  guments.cmovinve
+	0x0020 72 74 32 00 00 00 00 00 00 00 00 00 00 00 00 00  rt2.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 10 78 00 00 9f  ............x...
+	0x0040 01 00 00 00 00 00 00 00 00 10 79 00 00 9f 01 00  ..........y.....
+	0x0050 00 00 00 00 00 00 00 0f 7e 72 32 00 01 9f 01 00  ........~r2.....
+	0x0060 00 00 00 00 00                                   .....
+	rel 0+0 t=24 type.int64<0>+0
+	rel 36+8 t=1 "".cmovinvert2<1>+0
+	rel 44+8 t=1 "".cmovinvert2<1>+36
+	rel 65+4 t=31 go.info.int64<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 79+4 t=31 go.info.int64<0>+0
+	rel 83+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.int64<0>+0
+aux for "".cmovinvert3<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 24 00 00 00 00 00 00 00  ........$.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 24 00 00 00 00  ...........$....
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".cmovinvert3<1>+0
+	rel 59+8 t=1 "".cmovinvert3<1>+0
+aux for "".cmovinvert3<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 a1 01  ................
+	0x0010 14 56 06 41 4a 06 63 06 37 06 3d 02 01 00 01 01  .V.AJ.c.7.=.....
+	rel 3+8 t=1 "".cmovinvert3<1>+0
+aux for "".cmovinvert3<0> SDWARFFCN size=101
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 69 6e 76 65  guments.cmovinve
+	0x0020 72 74 33 00 00 00 00 00 00 00 00 00 00 00 00 00  rt3.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 10 78 00 00 a6  ............x...
+	0x0040 01 00 00 00 00 00 00 00 00 10 79 00 00 a6 01 00  ..........y.....
+	0x0050 00 00 00 00 00 00 00 0f 7e 72 32 00 01 a6 01 00  ........~r2.....
+	0x0060 00 00 00 00 00                                   .....
+	rel 0+0 t=24 type.int64<0>+0
+	rel 36+8 t=1 "".cmovinvert3<1>+0
+	rel 44+8 t=1 "".cmovinvert3<1>+36
+	rel 65+4 t=31 go.info.int64<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 79+4 t=31 go.info.int64<0>+0
+	rel 83+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.int64<0>+0
+aux for "".cmovinvert4<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 24 00 00 00 00 00 00 00  ........$.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 24 00 00 00 00  ...........$....
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".cmovinvert4<1>+0
+	rel 59+8 t=1 "".cmovinvert4<1>+0
+aux for "".cmovinvert4<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 a8 01  ................
+	0x0010 14 56 06 41 4a 06 63 06 37 06 3d 02 01 00 01 01  .V.AJ.c.7.=.....
+	rel 3+8 t=1 "".cmovinvert4<1>+0
+aux for "".cmovinvert4<0> SDWARFFCN size=101
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 69 6e 76 65  guments.cmovinve
+	0x0020 72 74 34 00 00 00 00 00 00 00 00 00 00 00 00 00  rt4.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 10 78 00 00 ad  ............x...
+	0x0040 01 00 00 00 00 00 00 00 00 10 79 00 00 ad 01 00  ..........y.....
+	0x0050 00 00 00 00 00 00 00 0f 7e 72 32 00 01 ad 01 00  ........~r2.....
+	0x0060 00 00 00 00 00                                   .....
+	rel 0+0 t=24 type.int64<0>+0
+	rel 36+8 t=1 "".cmovinvert4<1>+0
+	rel 44+8 t=1 "".cmovinvert4<1>+36
+	rel 65+4 t=31 go.info.int64<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 79+4 t=31 go.info.int64<0>+0
+	rel 83+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.int64<0>+0
+aux for "".cmovinvert5<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 24 00 00 00 00 00 00 00  ........$.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 24 00 00 00 00  ...........$....
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".cmovinvert5<1>+0
+	rel 59+8 t=1 "".cmovinvert5<1>+0
+aux for "".cmovinvert5<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 af 01  ................
+	0x0010 14 56 06 41 4a 06 63 06 37 06 3d 02 01 00 01 01  .V.AJ.c.7.=.....
+	rel 3+8 t=1 "".cmovinvert5<1>+0
+aux for "".cmovinvert5<0> SDWARFFCN size=101
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 69 6e 76 65  guments.cmovinve
+	0x0020 72 74 35 00 00 00 00 00 00 00 00 00 00 00 00 00  rt5.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 10 78 00 00 b4  ............x...
+	0x0040 01 00 00 00 00 00 00 00 00 10 79 00 00 b4 01 00  ..........y.....
+	0x0050 00 00 00 00 00 00 00 0f 7e 72 32 00 01 b4 01 00  ........~r2.....
+	0x0060 00 00 00 00 00                                   .....
+	rel 0+0 t=24 type.uint64<0>+0
+	rel 36+8 t=1 "".cmovinvert5<1>+0
+	rel 44+8 t=1 "".cmovinvert5<1>+36
+	rel 65+4 t=31 go.info.uint64<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 79+4 t=31 go.info.uint64<0>+0
+	rel 83+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.uint64<0>+0
+aux for "".cmovinvert6<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 24 00 00 00 00 00 00 00  ........$.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 24 00 00 00 00  ...........$....
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".cmovinvert6<1>+0
+	rel 59+8 t=1 "".cmovinvert6<1>+0
+aux for "".cmovinvert6<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 b6 01  ................
+	0x0010 14 56 06 41 4a 06 63 06 37 06 3d 02 01 00 01 01  .V.AJ.c.7.=.....
+	rel 3+8 t=1 "".cmovinvert6<1>+0
+aux for "".cmovinvert6<0> SDWARFFCN size=101
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 69 6e 76 65  guments.cmovinve
+	0x0020 72 74 36 00 00 00 00 00 00 00 00 00 00 00 00 00  rt6.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 10 78 00 00 bb  ............x...
+	0x0040 01 00 00 00 00 00 00 00 00 10 79 00 00 bb 01 00  ..........y.....
+	0x0050 00 00 00 00 00 00 00 0f 7e 72 32 00 01 bb 01 00  ........~r2.....
+	0x0060 00 00 00 00 00                                   .....
+	rel 0+0 t=24 type.uint64<0>+0
+	rel 36+8 t=1 "".cmovinvert6<1>+0
+	rel 44+8 t=1 "".cmovinvert6<1>+36
+	rel 65+4 t=31 go.info.uint64<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 79+4 t=31 go.info.uint64<0>+0
+	rel 83+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.uint64<0>+0
+aux for "".cmovload<0> SDWARFLOC size=104
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 51 00 00 00 00 00 00 00  ........Q.......
+	0x0020 02 00 91 18 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 00 51 00 00 00  ............Q...
+	0x0050 00 00 00 00 02 00 91 20 00 00 00 00 00 00 00 00  ....... ........
+	0x0060 00 00 00 00 00 00 00 00                          ........
+	rel 8+8 t=1 "".cmovload<1>+0
+	rel 60+8 t=1 "".cmovload<1>+0
+aux for "".cmovload<0> SDWARFLINES size=46
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 0a 03 bd  ................
+	0x0010 01 14 06 9b 06 56 24 06 41 06 31 06 41 06 41 06  .....V$.A.1.A.A.
+	0x0020 41 06 03 7f fb 06 28 06 5f 02 01 00 01 01        A.....(._.....
+	rel 3+8 t=1 "".cmovload<1>+0
+aux for "".cmovload<0> SDWARFFCN size=109
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 6c 6f 61 64  guments.cmovload
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 01 9c 02 00 00 00 01 0f 61 00 00 c3 01 00 00  .........a......
+	0x0040 00 00 00 10 69 00 00 c3 01 00 00 00 00 00 00 00  ....i...........
+	0x0050 00 10 62 00 00 c3 01 00 00 00 00 00 00 00 00 0f  ..b.............
+	0x0060 7e 72 33 00 01 c3 01 00 00 00 00 00 00           ~r3..........
+	rel 0+0 t=24 type.[]int<0>+0
+	rel 0+0 t=24 type.int<0>+0
+	rel 33+8 t=1 "".cmovload<1>+0
+	rel 41+8 t=1 "".cmovload<1>+81
+	rel 62+4 t=31 go.info.[]int<0>+0
+	rel 73+4 t=31 go.info.int<0>+0
+	rel 77+4 t=31 <0>+0
+	rel 87+4 t=31 go.info.bool<0>+0
+	rel 91+4 t=31 <0>+52
+	rel 103+4 t=31 go.info.int<0>+0
+aux for "".cmovstore<0> SDWARFLOC size=104
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 4a 00 00 00 00 00 00 00  ........J.......
+	0x0020 02 00 91 18 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 00 4a 00 00 00  ............J...
+	0x0050 00 00 00 00 02 00 91 20 00 00 00 00 00 00 00 00  ....... ........
+	0x0060 00 00 00 00 00 00 00 00                          ........
+	rel 8+8 t=1 "".cmovstore<1>+0
+	rel 60+8 t=1 "".cmovstore<1>+0
+aux for "".cmovstore<0> SDWARFLINES size=40
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 0a 03 c6  ................
+	0x0010 01 14 9d 06 41 06 3a 06 41 06 a1 06 27 06 92 06  ....A.:.A...'...
+	0x0020 72 06 41 02 01 00 01 01                          r.A.....
+	rel 3+8 t=1 "".cmovstore<1>+0
+aux for "".cmovstore<0> SDWARFFCN size=97
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 6d 6f 76 73 74 6f 72  guments.cmovstor
+	0x0020 65 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  e...............
+	0x0030 00 00 01 9c 02 00 00 00 01 0f 61 00 00 cc 01 00  ..........a.....
+	0x0040 00 00 00 00 10 69 00 00 cc 01 00 00 00 00 00 00  .....i..........
+	0x0050 00 00 10 62 00 00 cc 01 00 00 00 00 00 00 00 00  ...b............
+	0x0060 00                                               .
+	rel 0+0 t=24 type.[]int<0>+0
+	rel 34+8 t=1 "".cmovstore<1>+0
+	rel 42+8 t=1 "".cmovstore<1>+74
+	rel 63+4 t=31 go.info.[]int<0>+0
+	rel 74+4 t=31 go.info.int<0>+0
+	rel 78+4 t=31 <0>+0
+	rel 88+4 t=31 go.info.bool<0>+0
+	rel 92+4 t=31 <0>+52

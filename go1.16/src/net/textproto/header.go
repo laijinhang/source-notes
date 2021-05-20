@@ -6,10 +6,13 @@ package textproto
 
 // A MIMEHeader represents a MIME-style header mapping
 // keys to sets of values.
+// 一个MIMEHeader代表一个MIME风格的头，将键值映射到数值集。
 type MIMEHeader map[string][]string
 
 // Add adds the key, value pair to the header.
 // It appends to any existing values associated with key.
+// 添加将键、值对添加到头中。
+// 它附加到任何与key相关的现有值上。
 func (h MIMEHeader) Add(key, value string) {
 	key = CanonicalMIMEHeaderKey(key)
 	h[key] = append(h[key], value)

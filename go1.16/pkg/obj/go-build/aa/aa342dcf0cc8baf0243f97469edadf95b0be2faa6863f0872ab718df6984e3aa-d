@@ -1,0 +1,7 @@
+# test log
+stat /dev/zero
+getenv ZONEINFO
+getenv ZONEINFO
+getenv TZ
+stat /etc/localtime
+stat /usr/share/zoneinfo/Asia/Shanghai

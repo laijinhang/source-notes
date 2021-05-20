@@ -709,6 +709,12 @@ var threadLimit chan struct{}
 
 var threadOnce sync.Once
 
+// 获取线程
+/*
+	通过acquireThread、releaseThread来限制最大线程数
+	acquireThread在第一次调用的时候，生成一个指定大小的有缓冲通道来限制最大线程数，然后能够使用的线程数减1
+	releaseThread释放线程，也就是在使用完之后，回收限制数
+ */
 func acquireThread() {
 	threadOnce.Do(func() {
 		threadLimit = make(chan struct{}, concurrentThreadsLimit())

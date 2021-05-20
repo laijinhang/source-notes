@@ -36,11 +36,14 @@ var (
 )
 
 // nowFunc returns the current time; it's overridden in tests.
+// nowFunc返回当前时间；它在测试中被重写了。
 var nowFunc = time.Now
 
 // Register makes a database driver available by the provided name.
 // If Register is called twice with the same name or if driver is nil,
 // it panics.
+// Register通过提供的名称使数据库驱动可用。
+// 如果Register以相同的名字被调用两次，或者driver为nil，那么它就会panic。
 func Register(name string, driver driver.Driver) {
 	driversMu.Lock()
 	defer driversMu.Unlock()

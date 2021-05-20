@@ -120,6 +120,7 @@ func (noBody) WriteTo(io.Writer) (int64, error) { return 0, nil }
 
 var (
 	// verify that an io.Copy from NoBody won't require a buffer:
+	// 验证NoBody的io.Copy不需要缓冲区：
 	_ io.WriterTo   = NoBody
 	_ io.ReadCloser = NoBody
 )

@@ -338,8 +338,20 @@ func (r *Resolver) lookupAddr(ctx context.Context, addr string) ([]string, error
 // file descriptors makes that error less likely. We don't bother to
 // apply the same limit to DNS lookups run directly from Go, because
 // there we will return a meaningful "too many open files" error.
+// concurrentThreadsLimit返回我们允许通过cgo并发运行DNS查询的线程数。
+// 一个DNS查询可能会使用一个文件描述符，所以我们将其限制在小于允许打开的文件数量。
+// 在某些系统上，特别是Darwin，如果getaddrinfo不能打开一个文件描述符，它只是
+// 返回EAI_NONAME而不是一个有用的错误。限制并发的getaddrinfo调用的数量，使其
+// 少于允许的文件描述符的数量，可以减少这种错误的发生。我们懒得对直接从Go运行的
+// DNS查询应用同样的限制，因为在那里我们会返回一个有意义的 "太多打开的文件 "的错误。
+/*
+	1、先通过系统调用拿到进程能够打开的最大文件描述数，如果读取中有错误返回，则返回限制为500
+	2、如果进程能够打开的最大文件描述符超过500，则返回500
+	3、如果进程能够打开的最大文件描述符数小于等于500，并且大于30，则返回这个基础上减去30
+ */
 func concurrentThreadsLimit() int {
 	var rlim syscall.Rlimit
+	// 读取进程能打开的最大文件描述符数，并把它放入到rlim变量里
 	if err := syscall.Getrlimit(syscall.RLIMIT_NOFILE, &rlim); err != nil {
 		return 500
 	}

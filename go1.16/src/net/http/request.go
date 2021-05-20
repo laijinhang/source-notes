@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // HTTP Request reading and parsing.
+// HTTP请求的读取和解析。
 
 package http
 

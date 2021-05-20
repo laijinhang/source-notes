@@ -1,0 +1,23 @@
+# test log
+open testdata
+open testdata/commas.src
+open testdata/issue11377.src
+open testdata/issue23434.src
+open testdata/issue3106.src
+open testdata/issue34946.src
+open parser.go
+open parser_test.go
+open error_test.go
+open short_test.go
+open .
+stat ./error_test.go
+stat ./example_test.go
+stat ./interface.go
+open interface.go
+stat ./parser.go
+open parser.go
+stat ./parser_test.go
+open parser_test.go
+stat ./performance_test.go
+stat ./short_test.go
+open ./testdata/issue42951

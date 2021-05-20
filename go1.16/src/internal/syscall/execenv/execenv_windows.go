@@ -16,11 +16,13 @@ import (
 // Default will return the default environment
 // variables based on the process attributes
 // provided.
+// Default将根据提供的进程属性返回默认的环境变量。
 //
 // If the process attributes contain a token, then
 // the environment variables will be sourced from
 // the defaults for that user token, otherwise they
 // will be sourced from syscall.Environ().
+// 如果进程属性中包含一个令牌，那么环境变量将来自该用户令牌的默认值，否则它们将来自syscall.Environ()。
 func Default(sys *syscall.SysProcAttr) (env []string, err error) {
 	if sys == nil || sys.Token == 0 {
 		return syscall.Environ(), nil
@@ -35,6 +37,7 @@ func Default(sys *syscall.SysProcAttr) (env []string, err error) {
 	for {
 
 		// find NUL terminator
+		// 找到NUL终止符
 		end := unsafe.Pointer(blockp)
 		for *(*uint16)(end) != 0 {
 			end = unsafe.Pointer(uintptr(end) + 2)
@@ -43,6 +46,7 @@ func Default(sys *syscall.SysProcAttr) (env []string, err error) {
 		n := (uintptr(end) - uintptr(unsafe.Pointer(blockp))) / 2
 		if n == 0 {
 			// environment block ends with empty string
+			// 环境块以空字符串结束
 			break
 		}
 

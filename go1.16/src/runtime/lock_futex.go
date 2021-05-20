@@ -51,12 +51,20 @@ func lock2(l *mutex) {
 	gp := getg()
 
 	if gp.m.locks < 0 {
-		throw("runtime·lock: lock count")
+		throw("runtime·lock: lock count")	// 运行时锁定：锁定计数
 	}
 	gp.m.locks++
 
 	// Speculative grab for lock.
+	// 投机性地抢夺锁。
+	/*
+	func Xchg(ptr *uint32, new uint32) uint32
+	将new值赋值给ptr所指向变量，并返回赋值前的ptr所指向变量值
+	 */
 	v := atomic.Xchg(key32(&l.key), mutex_locked)
+	/*
+		如果l.key是从未锁变成锁定，则直接返回
+	 */
 	if v == mutex_unlocked {
 		return
 	}
@@ -68,16 +76,22 @@ func lock2(l *mutex) {
 	// careful to change it back to MUTEX_SLEEPING before
 	// returning, to ensure that the sleeping thread gets
 	// its wakeup call.
+	// wait是MUTEX_LOCKED或MUTEX_SLEEPING，这取决于是否有线程在这个互斥上睡眠。
+	// 如果我们把l->key从MUTEX_SLEEPING改成其他的值，我们必须注意在返回之前把它
+	// 改回MUTEX_SLEEPING，以确保睡眠线程得到它的唤醒。
 	wait := v
 
 	// On uniprocessors, no point spinning.
 	// On multiprocessors, spin for ACTIVE_SPIN attempts.
+	// 在单核处理器上，没有必要进行旋转。
+	// 在多处理器上，为ACTIVE_SPIN的尝试而旋转。
 	spin := 0
 	if ncpu > 1 {
 		spin = active_spin
 	}
 	for {
 		// Try for lock, spinning.
+		// 尝试锁定，旋转。
 		for i := 0; i < spin; i++ {
 			for l.key == mutex_unlocked {
 				if atomic.Cas(key32(&l.key), mutex_unlocked, wait) {
@@ -88,6 +102,7 @@ func lock2(l *mutex) {
 		}
 
 		// Try for lock, rescheduling.
+		// 尝试锁定，重新安排时间。
 		for i := 0; i < passive_spin; i++ {
 			for l.key == mutex_unlocked {
 				if atomic.Cas(key32(&l.key), mutex_unlocked, wait) {

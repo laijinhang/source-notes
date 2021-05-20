@@ -2,6 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+/*
+Go的Time包里包括三个时间：
+1、internal（公元元年）
+2、wall（1885年~2159年）：因为 Go 是可以表示超过 int32 的 unixtimestamp 的时间的，1885 应该是扩展出来的能表示的最小值。
+3、unix（1970年）
+
+时区：
+1. UTC：Universal Time
+2. LOC：local time zone
+*/
 // Package time provides functionality for measuring and displaying time.
 //
 // The calendrical calculations always assume a Gregorian calendar, with
@@ -136,15 +146,15 @@ type Time struct {
 	// If the hasMonotonic bit is 1, then the 33-bit field holds a 33-bit
 	// unsigned wall seconds since Jan 1 year 1885, and ext holds a
 	// signed 64-bit monotonic clock reading, nanoseconds since process start.
-	wall uint64
-	ext  int64
+	wall uint64 // 表示距离公元 1 年 1 月 1 日 00:00:00UTC 的秒数
+	ext  int64  // 表示纳秒
 
 	// loc specifies the Location that should be used to
 	// determine the minute, hour, month, day, and year
 	// that correspond to this Time.
 	// The nil location means UTC.
 	// All UTC times are represented with loc==nil, never loc==&utcLoc.
-	loc *Location
+	loc *Location // 代表时区，主要处理偏移量，不同的时区，对应的时间不一样
 }
 
 const (
@@ -173,6 +183,7 @@ func (t *Time) sec() int64 {
 }
 
 // unixSec returns the time's seconds since Jan 1 1970 (Unix time).
+// unixSec返回从1970/1/1到Time这个秒数
 func (t *Time) unixSec() int64 { return t.sec() + internalToUnix }
 
 // addSec adds d seconds to the time.
@@ -238,6 +249,7 @@ func (t *Time) mono() int64 {
 }
 
 // After reports whether the time instant t is after u.
+// After报告时间点t是否在u之后。
 func (t Time) After(u Time) bool {
 	if t.wall&u.wall&hasMonotonic != 0 {
 		return t.ext > u.ext
@@ -248,6 +260,7 @@ func (t Time) After(u Time) bool {
 }
 
 // Before reports whether the time instant t is before u.
+// Before报告时间点t是否在u之前。
 func (t Time) Before(u Time) bool {
 	if t.wall&u.wall&hasMonotonic != 0 {
 		return t.ext < u.ext
@@ -408,15 +421,29 @@ const (
 
 	// The year of the zero Time.
 	// Assumed by the unixToInternal computation below.
+	// 公元元年
+	// 零点时间的年份。
+	// 由下面的unixToInternal计算所假定。
 	internalYear = 1
 
 	// Offsets to convert between internal and absolute or Unix times.
 	absoluteToInternal int64 = (absoluteZeroYear - internalYear) * 365.2425 * secondsPerDay
 	internalToAbsolute       = -absoluteToInternal
 
+	/*
+		unixToInternal是将unix时间转化为内部的绝对时间，即计算从公元元年到unix起始时间所经历的秒数
+		(1969*365 + 1969/4 - 1969/100 + 1969/400) * secondsPerDay
+		1969*365：表示将所有年份都按平年计算
+		1969/4：表示可能是闰年多出的天数，但并不是能被4整除的都是闰年，也就是再减去1969/100加上1969/400就是闰年的天数了
+		1969/4 - 1969/100 + 1969/400：表示闰年的天数
+		secondsPerDay：一天的秒数
+	*/
 	unixToInternal int64 = (1969*365 + 1969/4 - 1969/100 + 1969/400) * secondsPerDay
 	internalToUnix int64 = -unixToInternal
 
+	/*
+		如unixToInternal类似，wallToInternal是将wall时间转化为公元元年的绝对时间，即公元元年到1885年所经历的秒数
+	*/
 	wallToInternal int64 = (1884*365 + 1884/4 - 1884/100 + 1884/400) * secondsPerDay
 	internalToWall int64 = -wallToInternal
 )
@@ -429,9 +456,12 @@ func (t Time) IsZero() bool {
 
 // abs returns the time t as an absolute time, adjusted by the zone offset.
 // It is called when computing a presentation property like Month or Hour.
+// abs将时间t作为绝对时间返回，并通过区域偏移进行调整。
+// 在计算月或小时这样的演示属性时，它被调用。
 func (t Time) abs() uint64 {
 	l := t.loc
 	// Avoid function calls when possible.
+	// 尽可能避免函数调用。
 	if l == nil || l == &localLoc {
 		l = l.get()
 	}
@@ -449,12 +479,14 @@ func (t Time) abs() uint64 {
 
 // locabs is a combination of the Zone and abs methods,
 // extracting both return values from a single zone lookup.
+// locabs是Zone和abs方法的组合，从一个区的查询中提取两个返回值。
 func (t Time) locabs() (name string, offset int, abs uint64) {
 	l := t.loc
 	if l == nil || l == &localLoc {
 		l = l.get()
 	}
 	// Avoid function call if we hit the local time cache.
+	// 如果我们击中了本地时间缓存，则避免函数调用。
 	sec := t.unixSec()
 	if l != &utcLoc {
 		if l.cacheZone != nil && l.cacheStart <= sec && sec < l.cacheEnd {
@@ -472,37 +504,44 @@ func (t Time) locabs() (name string, offset int, abs uint64) {
 }
 
 // Date returns the year, month, and day in which t occurs.
+// Date返回t发生的年、月、日。
 func (t Time) Date() (year int, month Month, day int) {
 	year, month, day, _ = t.date(true)
 	return
 }
 
 // Year returns the year in which t occurs.
+// 年份返回t发生的年份。
 func (t Time) Year() int {
 	year, _, _, _ := t.date(false)
 	return year
 }
 
 // Month returns the month of the year specified by t.
+// Month返回t指定的年份的月份。
 func (t Time) Month() Month {
 	_, month, _, _ := t.date(true)
 	return month
 }
 
 // Day returns the day of the month specified by t.
+// Day返回t所指定的月份的日期。
 func (t Time) Day() int {
 	_, _, day, _ := t.date(true)
 	return day
 }
 
 // Weekday returns the day of the week specified by t.
+// Weekday 返回由t指定的一周中的一天。
 func (t Time) Weekday() Weekday {
 	return absWeekday(t.abs())
 }
 
+// absWeekday与Weekday类似，但对绝对时间进行操作。
 // absWeekday is like Weekday but operates on an absolute time.
 func absWeekday(abs uint64) Weekday {
 	// January 1 of the absolute year, like January 1 of 2001, was a Monday.
+	// 绝对年份的1月1日，如2001年的1月1日，是一个星期一。
 	sec := (abs + uint64(Monday)*secondsPerDay) % secondsPerWeek
 	return Weekday(int(sec) / secondsPerDay)
 }
@@ -511,6 +550,9 @@ func absWeekday(abs uint64) Weekday {
 // Week ranges from 1 to 53. Jan 01 to Jan 03 of year n might belong to
 // week 52 or 53 of year n-1, and Dec 29 to Dec 31 might belong to week 1
 // of year n+1.
+// ISOWeek返回t发生的ISO 8601年和周的编号。周数范围从1到53。
+// n年的1月1日至1月3日可能属于n-1年的第52或53周，
+// 12月29日至12月31日可能属于n+1年的第1周。
 func (t Time) ISOWeek() (year, week int) {
 	// According to the rule that the first calendar week of a calendar year is
 	// the week including the first Thursday of that year, and that the last one is
@@ -535,11 +577,13 @@ func (t Time) ISOWeek() (year, week int) {
 }
 
 // Clock returns the hour, minute, and second within the day specified by t.
+// 时钟返回t指定的一天中的时、分、秒。
 func (t Time) Clock() (hour, min, sec int) {
 	return absClock(t.abs())
 }
 
 // absClock is like clock but operates on an absolute time.
+// absClock就像时钟一样，但在绝对时间上操作。
 func absClock(abs uint64) (hour, min, sec int) {
 	sec = int(abs % secondsPerDay)
 	hour = sec / secondsPerHour
@@ -550,28 +594,33 @@ func absClock(abs uint64) (hour, min, sec int) {
 }
 
 // Hour returns the hour within the day specified by t, in the range [0, 23].
+// Hour 返回由t指定的一天中的小时，范围为[0, 23]。
 func (t Time) Hour() int {
 	return int(t.abs()%secondsPerDay) / secondsPerHour
 }
 
 // Minute returns the minute offset within the hour specified by t, in the range [0, 59].
+// Minute 返回由t指定的小时内的分钟偏移量，范围为[0, 59]。
 func (t Time) Minute() int {
 	return int(t.abs()%secondsPerHour) / secondsPerMinute
 }
 
 // Second returns the second offset within the minute specified by t, in the range [0, 59].
+// Second 返回由t指定的分钟内的第二个偏移量，范围为[0, 59]。
 func (t Time) Second() int {
 	return int(t.abs() % secondsPerMinute)
 }
 
 // Nanosecond returns the nanosecond offset within the second specified by t,
 // in the range [0, 999999999].
+// Nanosecond返回由t指定的秒内的纳秒偏移量，范围为[0, 999999999]。
 func (t Time) Nanosecond() int {
 	return int(t.nsec())
 }
 
 // YearDay returns the day of the year specified by t, in the range [1,365] for non-leap years,
 // and [1,366] in leap years.
+// YearDay返回由t指定的一年中的一天，非闰年的范围为[1,365]，闰年的范围为[1,366]。
 func (t Time) YearDay() int {
 	_, _, _, yday := t.date(false)
 	return yday + 1
@@ -580,39 +629,52 @@ func (t Time) YearDay() int {
 // A Duration represents the elapsed time between two instants
 // as an int64 nanosecond count. The representation limits the
 // largest representable duration to approximately 290 years.
+// 一个持续时间以int64纳秒计数的形式表示两个瞬间之间所经过的时间。
+// 该表示法将最大的可表示时间限制在大约290年。
 type Duration int64
 
 const (
-	minDuration Duration = -1 << 63
-	maxDuration Duration = 1<<63 - 1
+	minDuration Duration = -1 << 63  // 最小的持续时间
+	maxDuration Duration = 1<<63 - 1 // 最大的持续时间
 )
 
 // Common durations. There is no definition for units of Day or larger
 // to avoid confusion across daylight savings time zone transitions.
+// 常见的期限。没有对日或更大的单位进行定义，以避免在夏令时区的转换中产生混淆。
 //
 // To count the number of units in a Duration, divide:
 //	second := time.Second
 //	fmt.Print(int64(second/time.Millisecond)) // prints 1000
+// 要计算一个Duration中的单位数，要进行除法。
+// second := time.Second
+// fmt.Print(int64(second/time.Millisecond)) //打印出1000
 //
 // To convert an integer number of units to a Duration, multiply:
 //	seconds := 10
 //	fmt.Print(time.Duration(seconds)*time.Second) // prints 10s
+// 要将一个整数的单位数转换为持续时间，要乘以。
+// seconds :=10
+// fmt.Print(time.Duration(seconds)*time.Second) //打印出10s
 //
 const (
-	Nanosecond  Duration = 1
-	Microsecond          = 1000 * Nanosecond
-	Millisecond          = 1000 * Microsecond
-	Second               = 1000 * Millisecond
-	Minute               = 60 * Second
-	Hour                 = 60 * Minute
+	Nanosecond  Duration = 1                  // 纳秒
+	Microsecond          = 1000 * Nanosecond  // 微秒
+	Millisecond          = 1000 * Microsecond // 毫秒
+	Second               = 1000 * Millisecond // 秒
+	Minute               = 60 * Second        // 分
+	Hour                 = 60 * Minute        // 时
 )
 
 // String returns a string representing the duration in the form "72h3m0.5s".
 // Leading zero units are omitted. As a special case, durations less than one
 // second format use a smaller unit (milli-, micro-, or nanoseconds) to ensure
 // that the leading digit is non-zero. The zero duration formats as 0s.
+// String 返回代表持续时间的字符串，形式为 "72h3m0.5s"。省略了前面的零单位。
+// 作为一种特殊情况，持续时间小于一秒的格式使用较小的单位（毫秒、微秒或纳秒），
+// 以确保前导数字为非零。零持续时间的格式为0s。
 func (d Duration) String() string {
 	// Largest time is 2540400h10m10.000000000s
+	// 最大的时间是2540400h10m10.000000000s
 	var buf [32]byte
 	w := len(buf)
 
@@ -625,6 +687,7 @@ func (d Duration) String() string {
 	if u < uint64(Second) {
 		// Special case: if duration is smaller than a second,
 		// use smaller units, like 1.2ms
+		// 特殊情况：如果持续时间小于一秒，使用更小的单位，如1.2ms
 		var prec int
 		w--
 		buf[w] = 's'
@@ -634,16 +697,20 @@ func (d Duration) String() string {
 			return "0s"
 		case u < uint64(Microsecond):
 			// print nanoseconds
+			// 打印纳秒
 			prec = 0
 			buf[w] = 'n'
 		case u < uint64(Millisecond):
 			// print microseconds
+			// 打印微秒数
 			prec = 3
 			// U+00B5 'µ' micro sign == 0xC2 0xB5
-			w-- // Need room for two bytes.
+			// U+00B5 'µ' 微信号 == 0xC2 0xB5
+			w-- // Need room for two bytes.需要两个字节的空间。
 			copy(buf[w:], "µ")
 		default:
 			// print milliseconds
+			// 打印毫秒数
 			prec = 6
 			buf[w] = 'm'
 		}
@@ -656,10 +723,12 @@ func (d Duration) String() string {
 		w, u = fmtFrac(buf[:w], u, 9)
 
 		// u is now integer seconds
+		// u现在是整数秒
 		w = fmtInt(buf[:w], u%60)
 		u /= 60
 
 		// u is now integer minutes
+		// u现在是整数分钟
 		if u > 0 {
 			w--
 			buf[w] = 'm'
@@ -668,6 +737,8 @@ func (d Duration) String() string {
 
 			// u is now integer hours
 			// Stop at hours because days can be different lengths.
+			// u现在是整数小时
+			// 停在小时上，因为天可以是不同的长度。
 			if u > 0 {
 				w--
 				buf[w] = 'h'
@@ -688,8 +759,11 @@ func (d Duration) String() string {
 // tail of buf, omitting trailing zeros. It omits the decimal
 // point too when the fraction is 0. It returns the index where the
 // output bytes begin and the value v/10**prec.
+// fmtFrac将v/10**prec的分数（例如，".12345"）格式化到buf的尾部，省略尾部的零。
+// 当分数为0时，它也省略小数点。它返回输出字节开始的索引和v/10**prec的值。
 func fmtFrac(buf []byte, v uint64, prec int) (nw int, nv uint64) {
 	// Omit trailing zeros up to and including decimal point.
+	// 省略小数点前的尾部零，包括小数点。
 	w := len(buf)
 	print := false
 	for i := 0; i < prec; i++ {
@@ -710,6 +784,8 @@ func fmtFrac(buf []byte, v uint64, prec int) (nw int, nv uint64) {
 
 // fmtInt formats v into the tail of buf.
 // It returns the index where the output begins.
+// fmtInt 将 v 格式化为 buf 的尾部。
+// 它返回输出开始的索引。
 func fmtInt(buf []byte, v uint64) int {
 	w := len(buf)
 	if v == 0 {
@@ -726,12 +802,15 @@ func fmtInt(buf []byte, v uint64) int {
 }
 
 // Nanoseconds returns the duration as an integer nanosecond count.
+// 纳秒以整数纳秒计数的形式返回持续时间。
 func (d Duration) Nanoseconds() int64 { return int64(d) }
 
 // Microseconds returns the duration as an integer microsecond count.
+// 微秒以整数微秒计数的形式返回持续时间。
 func (d Duration) Microseconds() int64 { return int64(d) / 1e3 }
 
 // Milliseconds returns the duration as an integer millisecond count.
+// Milliseconds以整数毫秒的形式返回持续时间。
 func (d Duration) Milliseconds() int64 { return int64(d) / 1e6 }
 
 // These methods return float64 because the dominant
@@ -744,6 +823,7 @@ func (d Duration) Milliseconds() int64 { return int64(d) / 1e6 }
 // differently.
 
 // Seconds returns the duration as a floating point number of seconds.
+// Seconds 返回持续时间的浮点数，为秒。
 func (d Duration) Seconds() float64 {
 	sec := d / Second
 	nsec := d % Second
@@ -751,6 +831,7 @@ func (d Duration) Seconds() float64 {
 }
 
 // Minutes returns the duration as a floating point number of minutes.
+// Minutes 返回持续时间为分钟的浮点数。
 func (d Duration) Minutes() float64 {
 	min := d / Minute
 	nsec := d % Minute
@@ -758,6 +839,7 @@ func (d Duration) Minutes() float64 {
 }
 
 // Hours returns the duration as a floating point number of hours.
+// Hours 返回持续时间为浮点数的小时数。
 func (d Duration) Hours() float64 {
 	hour := d / Hour
 	nsec := d % Hour
@@ -766,6 +848,8 @@ func (d Duration) Hours() float64 {
 
 // Truncate returns the result of rounding d toward zero to a multiple of m.
 // If m <= 0, Truncate returns d unchanged.
+// Truncate返回d向零舍入到m的倍数的结果。
+// 如果m<=0，Truncate返回d，不改变。
 func (d Duration) Truncate(m Duration) Duration {
 	if m <= 0 {
 		return d
@@ -775,6 +859,7 @@ func (d Duration) Truncate(m Duration) Duration {
 
 // lessThanHalf reports whether x+x < y but avoids overflow,
 // assuming x and y are both positive (Duration is signed).
+// lessThanHalf报告x+x是否<y，但避免溢出，假设x和y都是正数（Duration是有符号的）。
 func lessThanHalf(x, y Duration) bool {
 	return uint64(x)+uint64(x) < uint64(y)
 }
@@ -785,6 +870,10 @@ func lessThanHalf(x, y Duration) bool {
 // value that can be stored in a Duration,
 // Round returns the maximum (or minimum) duration.
 // If m <= 0, Round returns d unchanged.
+// Round返回将d四舍五入到最接近的m的倍数的结果。
+// 如果结果超过了可以存储在持续时间中的最大（或最小）值，
+// Round会返回最大（或最小）持续时间。
+// 如果m <= 0，Round返回d，不作任何改变。
 func (d Duration) Round(m Duration) Duration {
 	if m <= 0 {
 		return d
@@ -798,7 +887,7 @@ func (d Duration) Round(m Duration) Duration {
 		if d1 := d - m + r; d1 < d {
 			return d1
 		}
-		return minDuration // overflow
+		return minDuration // overflow，溢出
 	}
 	if lessThanHalf(r, m) {
 		return d - r
@@ -806,10 +895,11 @@ func (d Duration) Round(m Duration) Duration {
 	if d1 := d + m - r; d1 > d {
 		return d1
 	}
-	return maxDuration // overflow
+	return maxDuration // overflow，溢出
 }
 
 // Add returns the time t+d.
+// Add返回时间t+d。
 func (t Time) Add(d Duration) Time {
 	dsec := int64(d / 1e9)
 	nsec := t.nsec() + int32(d%1e9)
@@ -893,10 +983,13 @@ func Until(t Time) Duration {
 // given number of years, months, and days to t.
 // For example, AddDate(-1, 2, 3) applied to January 1, 2011
 // returns March 4, 2010.
+// 例如，AddDate(-1, 2, 3)应用于2011年1月1日，返回2010年3月4日的时间。
 //
 // AddDate normalizes its result in the same way that Date does,
 // so, for example, adding one month to October 31 yields
 // December 1, the normalized form for November 31.
+// AddDate以与Date相同的方式对其结果进行规范化处理，因此，举例来说，
+// 在10月31日的基础上增加一个月，得到12月1日，即11月31日的规范化形式。
 func (t Time) AddDate(years int, months int, days int) Time {
 	year, month, day := t.Date()
 	hour, min, sec := t.Clock()
@@ -904,24 +997,27 @@ func (t Time) AddDate(years int, months int, days int) Time {
 }
 
 const (
-	secondsPerMinute = 60
-	secondsPerHour   = 60 * secondsPerMinute
-	secondsPerDay    = 24 * secondsPerHour
-	secondsPerWeek   = 7 * secondsPerDay
-	daysPer400Years  = 365*400 + 97
-	daysPer100Years  = 365*100 + 24
-	daysPer4Years    = 365*4 + 1
+	secondsPerMinute = 60                    // 1分钟的秒数
+	secondsPerHour   = 60 * secondsPerMinute // 1小时的秒数
+	secondsPerDay    = 24 * secondsPerHour   // 1天的秒数
+	secondsPerWeek   = 7 * secondsPerDay     // 1周的秒数
+	daysPer400Years  = 365*400 + 97          // 每400年的天数，365（普通年份一年天数）*400（四百年）+97（这四百年里有97年是闰年）
+	daysPer100Years  = 365*100 + 24          // 每100年的天数，365（普通年份一年天数）*100（一百年）+24（这一百年里有24年是闰年）
+	daysPer4Years    = 365*4 + 1             // 每4年的天数，365（普通年份一年天数）*4（四年）+1（每四年会有一年闰年）
 )
 
 // date computes the year, day of year, and when full=true,
 // the month and day in which t occurs.
+// date计算年、日，当full=true时，计算t发生的月份和日期。
 func (t Time) date(full bool) (year int, month Month, day int, yday int) {
 	return absDate(t.abs(), full)
 }
 
 // absDate is like date but operates on an absolute time.
+// absDate与date类似，但对绝对时间进行操作。
 func absDate(abs uint64, full bool) (year int, month Month, day int, yday int) {
 	// Split into time and day.
+	// 分为时间和日期。
 	d := abs / secondsPerDay
 
 	// Account for 400 year cycles.
@@ -1048,9 +1144,11 @@ func daysSinceEpoch(year int) uint64 {
 }
 
 // Provided by package runtime.
+//由包runtime提供。
 func now() (sec int64, nsec int32, mono int64)
 
 // runtimeNano returns the current value of the runtime clock in nanoseconds.
+// runtimeNano 返回运行时时钟的当前值，单位为纳秒。
 //go:linkname runtimeNano runtime.nanotime
 func runtimeNano() int64
 
@@ -1063,6 +1161,7 @@ func runtimeNano() int64
 var startNano int64 = runtimeNano() - 1
 
 // Now returns the current local time.
+// 现在返回当前的本地时间。
 func Now() Time {
 	sec, nsec, mono := now()
 	mono -= startNano
@@ -1084,6 +1183,7 @@ func (t Time) UTC() Time {
 }
 
 // Local returns t with the location set to local time.
+// 当地返回t，位置设置为当地时间。
 func (t Time) Local() Time {
 	t.setLoc(Local)
 	return t
@@ -1326,10 +1426,12 @@ func norm(hi, lo, base int) (nhi, nlo int) {
 // Date returns the Time corresponding to
 //	yyyy-mm-dd hh:mm:ss + nsec nanoseconds
 // in the appropriate zone for that time in the given location.
+// Date 返回与yyyy-mm-dd hh:mm:ss + nsec nanoseconds相对应的时间，在给定的地点，该时间的适当区域。
 //
 // The month, day, hour, min, sec, and nsec values may be outside
 // their usual ranges and will be normalized during the conversion.
 // For example, October 32 converts to November 1.
+// 月、日、时、分、秒和nsec值可能超出其通常的范围，在转换过程中会被归一化。例如，10月32日转换为11月1日。
 //
 // A daylight savings time transition skips or repeats times.
 // For example, in the United States, March 13, 2011 2:15am never occurred,
@@ -1337,37 +1439,47 @@ func norm(hi, lo, base int) (nhi, nlo int) {
 // choice of time zone, and therefore the time, is not well-defined.
 // Date returns a time that is correct in one of the two zones involved
 // in the transition, but it does not guarantee which.
+// 夏令时的转换会跳过或重复时间。例如，在美国，2011年3月13日凌晨2:15从未发生过，
+// 而2011年11月6日凌晨1:15发生过两次。在这种情况下，时区的选择，也就是时间的选择，
+// 并不是很明确的。Date返回的时间在过渡中涉及的两个时区中的一个是正确的，但它不保证是哪一个。
 //
 // Date panics if loc is nil.
+// 如果loc为nil，Date会panic。
 func Date(year int, month Month, day, hour, min, sec, nsec int, loc *Location) Time {
 	if loc == nil {
 		panic("time: missing Location in call to Date")
 	}
 
 	// Normalize month, overflowing into year.
+	// 将月份规范化，溢出到年份。
 	m := int(month) - 1
 	year, m = norm(year, m, 12)
 	month = Month(m) + 1
 
 	// Normalize nsec, sec, min, hour, overflowing into day.
+	//将nsec、sec、min、hour规范化，溢出到day。
 	sec, nsec = norm(sec, nsec, 1e9)
 	min, sec = norm(min, sec, 60)
 	hour, min = norm(hour, min, 60)
 	day, hour = norm(day, hour, 24)
 
 	// Compute days since the absolute epoch.
+	// 计算自绝对纪元以来的天数。
 	d := daysSinceEpoch(year)
 
 	// Add in days before this month.
+	// 加入本月之前的日子。
 	d += uint64(daysBefore[month-1])
 	if isLeap(year) && month >= March {
-		d++ // February 29
+		d++ // February 29，2月29日
 	}
 
 	// Add in days before today.
+	// 加入今天之前的日子。
 	d += uint64(day - 1)
 
 	// Add in time elapsed today.
+	// 加入今天所经过的时间。
 	abs := d * secondsPerDay
 	abs += uint64(hour*secondsPerHour + min*secondsPerMinute + sec)
 
@@ -1377,6 +1489,8 @@ func Date(year int, month Month, day, hour, min, sec, nsec int, loc *Location) T
 	// The lookup function expects UTC, so we pass t in the
 	// hope that it will not be too close to a zone transition,
 	// and then adjust if it is.
+	// 寻找t的区域偏移，这样我们就可以调整为UTC。查找函数希望是UTC，所以我们传递t，
+	// 希望它不会太接近区域转换，如果是的话再调整。
 	_, offset, start, end := loc.lookup(unix)
 	if offset != 0 {
 		switch utc := unix - int64(offset); {
@@ -1395,11 +1509,14 @@ func Date(year int, month Month, day, hour, min, sec, nsec int, loc *Location) T
 
 // Truncate returns the result of rounding t down to a multiple of d (since the zero time).
 // If d <= 0, Truncate returns t stripped of any monotonic clock reading but otherwise unchanged.
+// Truncate返回将t四舍五入到d的倍数的结果（从零时间开始）。 如果d<=0，Truncate返回t，去掉任何单调的时钟读数，但其他方面没有变化。
 //
 // Truncate operates on the time as an absolute duration since the
 // zero time; it does not operate on the presentation form of the
 // time. Thus, Truncate(Hour) may return a time with a non-zero
 // minute, depending on the time's Location.
+// Truncate将时间作为自零点以来的绝对持续时间进行操作；它不对时间的表现形式进行操作。
+// 因此，Truncate(Hour)可能会返回一个非零分钟的时间，这取决于时间的位置。
 func (t Time) Truncate(d Duration) Time {
 	t.stripMono()
 	if d <= 0 {
@@ -1412,11 +1529,15 @@ func (t Time) Truncate(d Duration) Time {
 // Round returns the result of rounding t to the nearest multiple of d (since the zero time).
 // The rounding behavior for halfway values is to round up.
 // If d <= 0, Round returns t stripped of any monotonic clock reading but otherwise unchanged.
+// Round返回将t四舍五入到最接近的d的倍数的结果（从零时间开始）。半途值的取舍行为是向上取舍。
+// 如果d<=0，Round返回的t扣除了任何单调的时钟读数，但其他方面没有变化。
 //
 // Round operates on the time as an absolute duration since the
 // zero time; it does not operate on the presentation form of the
 // time. Thus, Round(Hour) may return a time with a non-zero
 // minute, depending on the time's Location.
+// Round操作的是自零点以来的绝对持续时间；它不对时间的表现形式进行操作。
+// 因此，Round(Hour)可能返回一个具有非零分钟的时间，这取决于时间的位置。
 func (t Time) Round(d Duration) Time {
 	t.stripMono()
 	if d <= 0 {
@@ -1438,6 +1559,7 @@ func div(t Time, d Duration) (qmod2 int, r Duration) {
 	sec := t.sec()
 	if sec < 0 {
 		// Operate on absolute value.
+		// 对绝对值进行操作。
 		neg = true
 		sec = -sec
 		nsec = -nsec

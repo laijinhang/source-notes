@@ -1,0 +1,3 @@
+./renameio.go
+./renameio_test.go
+./umask_test.go

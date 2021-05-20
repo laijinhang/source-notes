@@ -14,38 +14,52 @@ import (
 
 // Package time knows the layout of this structure.
 // If this struct changes, adjust ../time/sleep.go:/runtimeTimer.
+// time包里有这个结构的布局。
+// 如果这个结构发生变化，请调整 ../time/sleep.go:/runtimeTimer。
 type timer struct {
 	// If this timer is on a heap, which P's heap it is on.
 	// puintptr rather than *p to match uintptr in the versions
 	// of this struct defined in other packages.
+	// 如果这个定时器在一个堆上，那么它在哪个P的堆上。
+	// puintptr而不是*p，以匹配uintptr在其他软件包中的版本。
 	pp puintptr
 
 	// Timer wakes up at when, and then at when+period, ... (period > 0 only)
 	// each time calling f(arg, now) in the timer goroutine, so f must be
 	// a well-behaved function and not block.
+	// 定时器在when时唤醒，然后在when+period时唤醒，...... (只有period > 0)，
+	// 每次调用定时器goroutine中的f(arg, now)，所以f必须是一个乖巧的函数，不能阻塞。
 	//
 	// when must be positive on an active timer.
-	when   int64
+	// 当在一个活动的定时器when必须是正数。
+	when   int64 // timer触发的绝对时间。计算方式是把当前时间加上延迟时间
 	period int64
-	f      func(interface{}, uintptr)
+	f      func(interface{}, uintptr) // f是timer触发时，调用的callback
 	arg    interface{}
 	seq    uintptr
 
 	// What to set the when field to in timerModifiedXX status.
+	// 在timerModifiedXX状态下，要把when字段设置为什么。
 	nextwhen int64
 
 	// The status field holds one of the values below.
+	// 状态字段持有以下其中一个值。
 	status uint32
 }
 
 // Code outside this file has to be careful in using a timer value.
+// 这个文件以外的代码在使用定时器值时必须小心。
 //
 // The pp, status, and nextwhen fields may only be used by code in this file.
+// pp、status和nextwhen字段只能由本文件中的代码使用。
 //
 // Code that creates a new timer value can set the when, period, f,
 // arg, and seq fields.
 // A new timer value may be passed to addtimer (called by time.startTimer).
 // After doing that no fields may be touched.
+// 创建新定时器值的代码可以设置when、period、f、arg和seq字段。
+// 一个新的定时器值可以被传递给addtimer（由time.startTimer调用）。
+// 这样做之后，任何字段都不能被触及。
 //
 // An active timer (one that has been passed to addtimer) may be
 // passed to deltimer (time.stopTimer), after which it is no longer an
@@ -55,22 +69,34 @@ type timer struct {
 // It's OK to just drop an inactive timer and let the GC collect it.
 // It's not OK to pass an inactive timer to addtimer.
 // Only newly allocated timer values may be passed to addtimer.
+// 一个活动的定时器（已经传递给addtimer的）可以传递给deltimer（time.stopTimer），
+// 之后它就不再是一个活动的定时器。它是一个非活动定时器。在一个非活动定时器中
+// period、f、arg和seq字段可以被修改，但不能修改when字段。
+// 丢弃一个不活动的定时器并让GC收集它是可以的。
+// 将一个不活动的定时器传递给addtimer是不合适的。
+// 只有新分配的定时器值可以被传递给addtimer。
 //
 // An active timer may be passed to modtimer. No fields may be touched.
 // It remains an active timer.
+// 一个活动的定时器可以被传递给modtimer。不可以触及任何字段。它仍然是一个活动的定时器。
 //
 // An inactive timer may be passed to resettimer to turn into an
 // active timer with an updated when field.
 // It's OK to pass a newly allocated timer value to resettimer.
+// 一个不活动的定时器可以传递给resettimer，使其变成一个有更新的when字段的活动定时器。
+// 将一个新分配的定时器值传递给resettimer也是可以的。
 //
 // Timer operations are addtimer, deltimer, modtimer, resettimer,
 // cleantimers, adjusttimers, and runtimer.
+// 计时器的操作有addtimer, deltimer, modtimer, resettimer, cleantimers, adjusttimers, and runtimer。
 //
 // We don't permit calling addtimer/deltimer/modtimer/resettimer simultaneously,
 // but adjusttimers and runtimer can be called at the same time as any of those.
+// 我们不允许同时调用addtimer/deltimer/modtimer/resettimer，但调整时间和运行时间可以与其中任何一个同时调用。
 //
 // Active timers live in heaps attached to P, in the timers field.
 // Inactive timers live there too temporarily, until they are removed.
+// 活跃的定时器住在连接到P的堆中，在定时器领域。不活跃的定时器也暂时住在那里，直到它们被删除。
 //
 // addtimer:
 //   timerNoStatus   -> timerWaiting
@@ -116,62 +142,87 @@ type timer struct {
 //   timerMoving     -> panic: inconsistent timer heap
 
 // Values for the timer status field.
+// 定时器状态字段的值。
 const (
 	// Timer has no status set yet.
+	// 计时器还没有设置状态。
 	timerNoStatus = iota
 
 	// Waiting for timer to fire.
 	// The timer is in some P's heap.
+	// 等待定时器启动。计时器在某个P的堆中。
 	timerWaiting
 
 	// Running the timer function.
 	// A timer will only have this status briefly.
+	// 运行定时器函数。一个定时器只会短暂地拥有这种状态。
 	timerRunning
 
 	// The timer is deleted and should be removed.
 	// It should not be run, but it is still in some P's heap.
+	// 定时器被删除了，应该被删除。它不应该被运行，但它仍然在某个P的堆中。
 	timerDeleted
 
 	// The timer is being removed.
 	// The timer will only have this status briefly.
+	// 定时器正在被移除。
+	// 计时器只会短暂地拥有这种状态。
 	timerRemoving
 
 	// The timer has been stopped.
 	// It is not in any P's heap.
+	// 定时器已经停止。
+	// 它不在任何P的堆中。
 	timerRemoved
 
 	// The timer is being modified.
 	// The timer will only have this status briefly.
+	// 定时器正在被修改。
+	// 定时器只会短暂地有这种状态。
 	timerModifying
 
 	// The timer has been modified to an earlier time.
 	// The new when value is in the nextwhen field.
 	// The timer is in some P's heap, possibly in the wrong place.
+	// 计时器已经被修改到一个较早的时间。
+	// 新的时间值在nextwhen字段中。
+	// 计时器在某个P的堆中，可能在错误的地方。
 	timerModifiedEarlier
 
 	// The timer has been modified to the same or a later time.
 	// The new when value is in the nextwhen field.
 	// The timer is in some P's heap, possibly in the wrong place.
+	// 计时器已被修改为相同或更晚的时间。
+	// 新的时间值在nextwhen字段中。
+	// 计时器在某个P的堆中，可能在错误的地方。
 	timerModifiedLater
 
 	// The timer has been modified and is being moved.
 	// The timer will only have this status briefly.
+	// 定时器已经被修改，正在被移动。
+	// 定时器只会短暂地拥有这种状态。
 	timerMoving
 )
 
 // maxWhen is the maximum value for timer's when field.
+// maxWhen是定时器的when字段的最大值。
 const maxWhen = 1<<63 - 1
 
 // verifyTimers can be set to true to add debugging checks that the
 // timer heaps are valid.
+// verifyTimers可以被设置为 "true"，以增加调试检查，确保定时器堆的有效性。
 const verifyTimers = false
 
 // Package time APIs.
 // Godoc uses the comments in package time, not these.
+// 包时间的API。
+// Godoc使用包时间中的注释，而不是这些。
 
 // time.now is implemented in assembly.
+// time.now是用汇编实现的。
 
 // timeSleep puts the current goroutine to sleep for at least ns nanoseconds.
+// timeSleep使当前的goroutine进入睡眠状态，时间至少为ns纳秒。
 //go:linkname timeSleep time.Sleep
 func timeSleep(ns int64) {
 	if ns <= 0 {
@@ -187,7 +238,7 @@ func timeSleep(ns int64) {
 	t.f = goroutineReady
 	t.arg = gp
 	t.nextwhen = nanotime() + ns
-	if t.nextwhen < 0 { // check for overflow.
+	if t.nextwhen < 0 { // check for overflow.检查溢出情况。
 		t.nextwhen = maxWhen
 	}
 	gopark(resetForSleep, unsafe.Pointer(t), waitReasonSleep, traceEvGoSleep, 1)
@@ -204,6 +255,7 @@ func resetForSleep(gp *g, ut unsafe.Pointer) bool {
 }
 
 // startTimer adds t to the timer heap.
+// startTimer将t添加到定时器堆中。
 //go:linkname startTimer time.startTimer
 func startTimer(t *timer) {
 	if raceenabled {
@@ -214,14 +266,18 @@ func startTimer(t *timer) {
 
 // stopTimer stops a timer.
 // It reports whether t was stopped before being run.
+// stopTimer 停止一个定时器。
+// 它报告t在被运行之前是否被停止。
 //go:linkname stopTimer time.stopTimer
 func stopTimer(t *timer) bool {
 	return deltimer(t)
 }
 
 // resetTimer resets an inactive timer, adding it to the heap.
+// resetTimer重置一个不活动的定时器，将其加入堆中。
 //go:linkname resetTimer time.resetTimer
 // Reports whether the timer was modified before it was run.
+// 报告定时器在运行前是否被修改。
 func resetTimer(t *timer, when int64) bool {
 	if raceenabled {
 		racerelease(unsafe.Pointer(t))
@@ -230,14 +286,17 @@ func resetTimer(t *timer, when int64) bool {
 }
 
 // modTimer modifies an existing timer.
+// modTimer修改了一个现有的定时器。
 //go:linkname modTimer time.modTimer
 func modTimer(t *timer, when, period int64, f func(interface{}, uintptr), arg interface{}, seq uintptr) {
 	modtimer(t, when, period, f, arg, seq)
 }
 
 // Go runtime.
+// Go运行时。
 
 // Ready the goroutine arg.
+// 准备好goroutine的参数。
 func goroutineReady(arg interface{}, seq uintptr) {
 	goready(arg.(*g), 0)
 }
@@ -246,17 +305,24 @@ func goroutineReady(arg interface{}, seq uintptr) {
 // This should only be called with a newly created timer.
 // That avoids the risk of changing the when field of a timer in some P's heap,
 // which could cause the heap to become unsorted.
+// addtimer将一个定时器添加到当前的P中，这应该只用一个新创建的定时器来调用。
+// 这样可以避免改变某个P的堆中的定时器的when字段的风险，这可能会导致堆变得没有排序。
 func addtimer(t *timer) {
 	// when must be positive. A negative value will cause runtimer to
 	// overflow during its delta calculation and never expire other runtime
 	// timers. Zero will cause checkTimers to fail to notice the timer.
+	// when必须是正值。负值将导致runtimer在其delta计算过程中溢出，
+	// 并且永远不会超过其他运行时间定时器。零将导致checkTimers无法注意到该计时器。
 	if t.when <= 0 {
+		// 定时器的when必须是正数
 		throw("timer when must be positive")
 	}
 	if t.period < 0 {
+		// 定时器周期必须为非负数
 		throw("timer period must be non-negative")
 	}
 	if t.status != timerNoStatus {
+		// 调用带有初始化定时器的添加定时器
 		throw("addtimer called with initialized timer")
 	}
 	t.status = timerWaiting
@@ -274,9 +340,12 @@ func addtimer(t *timer) {
 
 // doaddtimer adds t to the current P's heap.
 // The caller must have locked the timers for pp.
+// doaddtimer将t添加到当前P的堆中。
+// 调用者必须已经锁定了pp的定时器。
 func doaddtimer(pp *p, t *timer) {
 	// Timers rely on the network poller, so make sure the poller
 	// has started.
+	// 计时器依赖于网络投票器，所以要确保投票器已经启动。
 	if netpollInited == 0 {
 		netpollGenericInit()
 	}
@@ -341,18 +410,22 @@ func deltimer(t *timer) bool {
 			}
 		case timerDeleted, timerRemoving, timerRemoved:
 			// Timer was already run.
+			// 计时器已经运行了。
 			return false
 		case timerRunning, timerMoving:
 			// The timer is being run or moved, by a different P.
 			// Wait for it to complete.
+			// 计时器正在运行或移动，由不同的P来完成，等待它完成。
 			osyield()
 		case timerNoStatus:
 			// Removing timer that was never added or
 			// has already been run. Also see issue 21874.
+			// 删除从未添加过或已经运行过的计时器。也请看问题21874。
 			return false
 		case timerModifying:
 			// Simultaneous calls to deltimer and modtimer.
 			// Wait for the other call to complete.
+			// 同时调用deltimer和modtimer。 等待另一个调用完成。
 			osyield()
 		default:
 			badTimer()

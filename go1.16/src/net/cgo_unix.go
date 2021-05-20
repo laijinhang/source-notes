@@ -140,6 +140,11 @@ func cgoPortLookup(result chan<- portLookupResult, hints *C.struct_addrinfo, net
 	result <- portLookupResult{port, err}
 }
 
+/*
+	1. 获取线程
+	2. 使用linux c进行域名解析方式解析出对应ip地址
+	3. 释放线程
+ */
 func cgoLookupIPCNAME(network, name string) (addrs []IPAddr, cname string, err error) {
 	acquireThread()
 	defer releaseThread()
@@ -214,11 +219,29 @@ func cgoLookupIPCNAME(network, name string) (addrs []IPAddr, cname string, err e
 	return addrs, cname, nil
 }
 
+/*
+	1、调用cgoLookupIPCNAME去获取域名对应的ip地址
+	2、通过通道的方式传输结果内容
+ */
 func cgoIPLookup(result chan<- ipLookupResult, network, name string) {
 	addrs, cname, err := cgoLookupIPCNAME(network, name)
 	result <- ipLookupResult{addrs, cname, err}
 }
 
+/*
+	cgoLookupIP，cgo方式进行域名解析：
+	1、如果传入的那个上下文没有关闭，则调用cgoLookupIPCNAME方法
+	2、如果传入的那个上下文已经关闭
+		1. 生成一个长度为1类型为ipLookupResult的有缓冲通道
+		2. 开启一个协程去拿解析出来的结果
+			1. 调用cgoLookupIPCNAME去获取域名对应的ip地址
+			2. 通过通道的方式传输结果内容
+		3. 外面使用select等待结果
+			1. 如果拿到了结果，则将结果返回
+			2. 如果没有拿到结果，就关闭了context（也就是超时了），则返回错误
+
+	上面两种不同之处
+ */
 func cgoLookupIP(ctx context.Context, network, name string) (addrs []IPAddr, err error, completed bool) {
 	if ctx.Done() == nil {
 		addrs, _, err = cgoLookupIPCNAME(network, name)

@@ -198,10 +198,14 @@ func epipecheck(file *File, e error) {
 
 // DevNull is the name of the operating system's ``null device.''
 // On Unix-like systems, it is "/dev/null"; on Windows, "NUL".
+// DevNull是操作系统的 "空设备 "的名称。
+// 在类Unix系统中，它是"/dev/null"；在Windows中，是 "NUL"。
 const DevNull = "/dev/null"
 
 // openFileNolog is the Unix implementation of OpenFile.
 // Changes here should be reflected in openFdAt, if relevant.
+// openFileNolog 是 OpenFile 的 Unix 实现。
+// 这里的变化应该反映在 openFdAt 中，如果相关的话。
 func openFileNolog(name string, flag int, perm FileMode) (*File, error) {
 	setSticky := false
 	if !supportsCreateWithStickyBit && flag&O_CREATE != 0 && perm&ModeSticky != 0 {

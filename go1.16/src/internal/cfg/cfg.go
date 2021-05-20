@@ -5,10 +5,13 @@
 // Package cfg holds configuration shared by the Go command and internal/testenv.
 // Definitions that don't need to be exposed outside of cmd/go should be in
 // cmd/go/internal/cfg instead of this package.
+// 包 cfg 保存 Go 命令和内部/testenv 共享的配置。
+// 不需要在 cmd/go 外部公开的定义应该放在 cmd/go/internal/cfg 而不是这个包里。
 package cfg
 
 // KnownEnv is a list of environment variables that affect the operation
 // of the Go command.
+// KnownEnv是一个影响Go命令运行的环境变量列表。
 const KnownEnv = `
 	AR
 	CC

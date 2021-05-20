@@ -1,0 +1,57 @@
+# command-line-arguments
+"".f<1> STEXT nosplit size=66 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:12)	TEXT	"".f(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:12)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:12)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:14)	MOVQ	"".x+16(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:14)	TESTQ	AX, AX
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:14)	JEQ	56
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:14)	CMPQ	AX, $1
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:14)	JNE	46
+	0x0010 00016 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:17)	MOVQ	"".x+8(SP), AX
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:17)	CMPB	(AX), $49
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:17)	JNE	36
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:18)	MOVQ	$-2, "".~r1+24(SP)
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:18)	RET
+	0x0024 00036 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:17)	CMPB	(AX), $50
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:17)	JEQ	26
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:17)	CMPB	(AX), $51
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:17)	JEQ	26
+	0x002e 00046 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:20)	MOVQ	$-3, "".~r1+24(SP)
+	0x0037 00055 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:20)	RET
+	0x0038 00056 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:16)	MOVQ	$-1, "".~r1+24(SP)
+	0x0041 00065 (/home/laijh/go/src/source-notes/go1.16/test/codegen/switch.go:16)	RET
+	0x0000 48 8b 44 24 10 48 85 c0 74 2e 48 83 f8 01 75 1e  H.D$.H..t.H...u.
+	0x0010 48 8b 44 24 08 80 38 31 75 0a 48 c7 44 24 18 fe  H.D$..81u.H.D$..
+	0x0020 ff ff ff c3 80 38 32 74 f1 80 38 33 74 ec 48 c7  .....82t..83t.H.
+	0x0030 44 24 18 fd ff ff ff c3 48 c7 44 24 18 ff ff ff  D$......H.D$....
+	0x0040 ff c3                                            ..
+go.cuinfo.packagename.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 63 6f 64 65 67 65 6e                             codegen
+gclocals·1a65e721a2ccc325b382662e7ffee780<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 01 00 00 00 01 00                    ..........
+gclocals·69c1753bd5f81501d95132d08af04464<0> SRODATA dupok size=8
+	0x0000 02 00 00 00 00 00 00 00                          ........
+aux for "".f<0> SDWARFLOC size=58
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 42 00 00 00 00 00 00 00  ........B.......
+	0x0020 08 00 91 08 93 08 91 08 93 08 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".f<1>+0
+aux for "".f<0> SDWARFLINES size=40
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 08 14  ................
+	0x0010 06 41 06 80 06 41 06 42 06 69 18 06 76 06 69 06  .A...A.B.i..v.i.
+	0x0020 15 06 69 02 01 00 01 01                          ..i.....
+	rel 3+8 t=1 "".f<1>+0
+aux for "".f<0> SDWARFFCN size=75
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 66 00 00 00 00 00 00 00  guments.f.......
+	0x0020 00 00 00 00 00 00 00 00 00 00 01 9c 02 00 00 00  ................
+	0x0030 01 10 78 00 00 0c 00 00 00 00 00 00 00 00 0f 7e  ..x............~
+	0x0040 72 31 00 01 0c 00 00 00 00 00 00                 r1.........
+	rel 0+0 t=24 type.int<0>+0
+	rel 26+8 t=1 "".f<1>+0
+	rel 34+8 t=1 "".f<1>+66
+	rel 54+4 t=31 go.info.string<0>+0
+	rel 58+4 t=31 <0>+0
+	rel 69+4 t=31 go.info.int<0>+0

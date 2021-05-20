@@ -32,6 +32,9 @@ var respExcludeHeader = map[string]bool{
 // The Client and Transport return Responses from servers once
 // the response headers have been received. The response body
 // is streamed on demand as the Body field is read.
+// 响应表示来自HTTP请求的响应。
+//
+// 客户端和传输系统在收到响应头后会从服务器返回响应。响应体在Body字段被读取时按需流转。
 type Response struct {
 	Status     string // e.g. "200 OK"
 	StatusCode int    // e.g. 200
@@ -48,6 +51,12 @@ type Response struct {
 	// authoritative.
 	//
 	// Keys in the map are canonicalized (see CanonicalHeaderKey).
+
+	// Header将头的键值映射为值。如果响应有多个具有相同键的头，它们可以被串联起来，用逗号分隔。
+	// (RFC 7230, section 3.2.2要求多个头在语义上等同于逗号分隔的序列)。当头的值与本结构中
+	// 的其他字段（如ContentLength、TransferEncoding、Trailer）重复时，字段的值是权威的。
+	//
+	// map中的键是规范化的（见CanonicalHeaderKey）。
 	Header Header
 
 	// Body represents the response body.

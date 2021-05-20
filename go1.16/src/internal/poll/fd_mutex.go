@@ -41,22 +41,38 @@ const (
 	mutexWMask   = (1<<20 - 1) << 43
 )
 
+// 在一个文件或套接字上有太多的并发操作（最大1048575）。
 const overflowMsg = "too many concurrent operations on a single file or socket (max 1048575)"
 
 // Read operations must do rwlock(true)/rwunlock(true).
+// 读取操作必须做rwlock(true)/rwunlock(true)。
 //
 // Write operations must do rwlock(false)/rwunlock(false).
+// 写操作必须做rwlock(false)/rwunlock(false)。
 //
 // Misc operations must do incref/decref.
 // Misc operations include functions like setsockopt and setDeadline.
 // They need to use incref/decref to ensure that they operate on the
 // correct fd in presence of a concurrent close call (otherwise fd can
 // be closed under their feet).
+// 杂项操作必须做增量/减量。
+// 杂项操作包括 setsockopt 和 setDeadline 等函数。
+// 它们需要使用incref/decref来确保在出现并发的关闭调用时对正确的fd进行操作（否则fd会在它们脚下被关闭）。
 //
 // Close operations must do increfAndClose/decref.
+// 关闭操作必须做increfAndClose/decref。
 
 // incref adds a reference to mu.
 // It reports whether mu is available for reading or writing.
+// incref添加一个对mu的引用。
+// 它报告mu是否可用于读或写。
+/*
+	1、获取锁状态
+	2、判断锁是否已关闭，如果已关闭，则返回false，没有关闭，则继续
+	3、锁的引用总数加一
+	4、如果太多引用（文件或套接字上有太多并发，超过了最大1048575），也就是越界了
+	5、使用cas尝试获取添加对锁的引用，如果成功，则返回true，否则进入执行第1步
+*/
 func (mu *fdMutex) incref() bool {
 	for {
 		old := atomic.LoadUint64(&mu.state)
@@ -75,6 +91,18 @@ func (mu *fdMutex) incref() bool {
 
 // increfAndClose sets the state of mu to closed.
 // It returns false if the file was already closed.
+// increfAndClose将mu的状态设为关闭。
+// 如果文件已经被关闭，它将返回false。
+/*
+	1、获取锁状态，放入临时锁变量old
+	2、判断是否关闭，如果已关闭则返回false
+	3、old上标记关闭，并将引用数加1
+	4、如果太多引用（文件或套接字上有太多并发，超过了最大1048575），也就是越界了
+	5、删除所有读和写的等待者
+	6、使用cas尝试设置新锁状态，如果失败，则继续执行第1步，如果成功
+	7、唤醒所有读和写的等待者，他们将在唤醒后观察关闭的标志（也就是通知这个锁的所有等待者，表示这个锁要关闭了，去做相应的处理吧）
+	8、返回true
+ */
 func (mu *fdMutex) increfAndClose() bool {
 	for {
 		old := atomic.LoadUint64(&mu.state)
@@ -82,15 +110,19 @@ func (mu *fdMutex) increfAndClose() bool {
 			return false
 		}
 		// Mark as closed and acquire a reference.
+		// 标记为关闭，并获得一个引用。
 		new := (old | mutexClosed) + mutexRef
 		if new&mutexRefMask == 0 {
 			panic(overflowMsg)
 		}
 		// Remove all read and write waiters.
+		// 删除所有读和写的等待者。
 		new &^= mutexRMask | mutexWMask
 		if atomic.CompareAndSwapUint64(&mu.state, old, new) {
 			// Wake all read and write waiters,
 			// they will observe closed flag after wakeup.
+			// 唤醒所有读和写的等待者。
+			// 他们将在唤醒后观察关闭的标志。
 			for old&mutexRMask != 0 {
 				old -= mutexRWait
 				runtime_Semrelease(&mu.rsema)
@@ -173,6 +205,8 @@ func (mu *fdMutex) rwlock(read bool) bool {
 
 // unlock removes a reference from mu and unlocks mu.
 // It reports whether there is no remaining reference.
+// unlock从mu中删除一个引用并解锁mu。
+// 它报告是否没有剩余的引用。
 func (mu *fdMutex) rwunlock(read bool) bool {
 	var mutexBit, mutexWait, mutexMask uint64
 	var mutexSema *uint32
@@ -193,6 +227,7 @@ func (mu *fdMutex) rwunlock(read bool) bool {
 			panic("inconsistent poll.fdMutex")
 		}
 		// Drop lock, drop reference and wake read waiter if present.
+		// 丢弃锁，丢弃引用，如果存在的话，唤醒读取服务器。
 		new := (old &^ mutexBit) - mutexRef
 		if old&mutexMask != 0 {
 			new -= mutexWait
@@ -248,6 +283,8 @@ func (fd *FD) readLock() error {
 // readUnlock removes a reference from fd and unlocks fd for reading.
 // It also closes fd when the state of fd is set to closed and there
 // is no remaining reference.
+// readUnlock从fd中删除一个引用，并解锁fd以供读取。
+// 当fd的状态被设置为closed并且没有剩余的引用时，它也会关闭fd。
 func (fd *FD) readUnlock() {
 	if fd.fdmu.rwunlock(true) {
 		fd.destroy()
@@ -267,6 +304,8 @@ func (fd *FD) writeLock() error {
 // writeUnlock removes a reference from fd and unlocks fd for writing.
 // It also closes fd when the state of fd is set to closed and there
 // is no remaining reference.
+// writeUnlock从fd中删除一个引用，并解锁fd以便写入。
+// 当fd的状态被设置为closed并且没有剩余的引用时，它也会关闭fd。
 func (fd *FD) writeUnlock() {
 	if fd.fdmu.rwunlock(false) {
 		fd.destroy()

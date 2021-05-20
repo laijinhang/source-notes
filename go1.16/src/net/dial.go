@@ -151,6 +151,7 @@ func (d *Dialer) resolver() *Resolver {
 
 // partialDeadline returns the deadline to use for a single address,
 // when multiple addresses are pending.
+// partialDeadline 返回用于单个地址的最后期限，当有多个地址待定时。
 func partialDeadline(now, deadline time.Time, addrsRemaining int) (time.Time, error) {
 	if deadline.IsZero() {
 		return deadline, nil
@@ -358,6 +359,7 @@ type sysDialer struct {
 }
 
 // Dial connects to the address on the named network.
+// 拨号连接到指定网络上的地址。
 func (d *Dialer) Dial(network, address string) (Conn, error) {
 	return d.DialContext(context.Background(), network, address)
 }

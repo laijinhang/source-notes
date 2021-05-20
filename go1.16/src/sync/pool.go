@@ -138,9 +138,12 @@ func (p *Pool) Put(x interface{}) {
 // Get may choose to ignore the pool and treat it as empty.
 // Callers should not assume any relation between values passed to Put and
 // the values returned by Get.
+// Get从池中选择一个任意的项目，将其从池中移除，并将其返回给调用者。
+// Get可以选择忽略池子并将其视为空的。调用者不应该假设传递给Put的值和Get返回的值之间有任何关系。
 //
 // If Get would otherwise return nil and p.New is non-nil, Get returns
 // the result of calling p.New.
+// 如果Get会返回nil，并且p.New不是nil，Get会返回调用p.New的结果。
 func (p *Pool) Get() interface{} {
 	if race.Enabled {
 		race.Disable()

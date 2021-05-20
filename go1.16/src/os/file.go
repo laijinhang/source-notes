@@ -324,6 +324,10 @@ func Create(name string) (*File, error) {
 // is passed, it is created with mode perm (before umask). If successful,
 // methods on the returned File can be used for I/O.
 // If there is an error, it will be of type *PathError.
+// OpenFile是一个通用的打开调用；大多数用户会使用Open或Create来代替。
+// 它用指定的标志（O_RDONLY等）打开命名的文件。如果文件不存在，并且传递了
+// O_CREATE标志，它将以perm模式（在umask之前）创建。如果成功，返回的文件
+// 上的方法可以用于I/O。如果有一个错误，它将是*PathError类型的。
 func OpenFile(name string, flag int, perm FileMode) (*File, error) {
 	testlog.Open(name)
 	f, err := openFileNolog(name, flag, perm)
@@ -690,6 +694,9 @@ func ReadFile(name string) ([]byte, error) {
 // WriteFile writes data to the named file, creating it if necessary.
 // If the file does not exist, WriteFile creates it with permissions perm (before umask);
 // otherwise WriteFile truncates it before writing, without changing permissions.
+// WriteFile 将数据写入命名的文件，如果有必要的话，将创建它。
+// 如果该文件不存在，WriteFile 将以权限 perm (在 umask 之前) 创建它。
+// 否则，WriteFile 在写之前将其截断，而不改变权限。
 func WriteFile(name string, data []byte, perm FileMode) error {
 	f, err := OpenFile(name, O_WRONLY|O_CREATE|O_TRUNC, perm)
 	if err != nil {

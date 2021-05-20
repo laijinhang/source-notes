@@ -62,6 +62,7 @@ const (
 )
 
 // first is information about the first byte in a UTF-8 sequence.
+// first是关于UTF-8序列中第一个字节的信息。
 var first = [256]uint8{
 	//   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
 	as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x00-0x0F
@@ -408,10 +409,16 @@ func RuneCount(p []byte) int {
 }
 
 // RuneCountInString is like RuneCount but its input is a string.
+// RuneCountInString与RuneCount类似，但其输入是一个字符串。
 func RuneCountInString(s string) (n int) {
+	/*
+		ASCII 每个字符长度为1
+		中文 每个字长度为3
+	*/
 	ns := len(s)
 	for i := 0; i < ns; n++ {
 		c := s[i]
+		// 0 ~ 127
 		if c < RuneSelf {
 			// ASCII fast path
 			i++
