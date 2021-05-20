@@ -44,6 +44,7 @@ const maxConsecutiveEmptyReads = 100
 // 对于size的长度，如果小于16，则设为16
 func NewReaderSize(rd io.Reader, size int) *Reader {
 	// Is it already a Reader?
+	// 这已经是一个Reader？
 	b, ok := rd.(*Reader)
 	if ok && len(b.buf) >= size {
 		return b
@@ -79,10 +80,16 @@ func (b *Reader) reset(buf []byte, r io.Reader) {
 	}
 }
 
+// bufio: reader从读取中返回负数
 var errNegativeRead = errors.New("bufio: reader returned negative count from Read")
 
 // fill reads a new chunk into the buffer.
 // fill将一个新的块读入缓冲区。
+/*
+	1、如果读指针大于0（等于0的时候表示不需要把已读部分清干净），把buf上未读部分（r指针到w指针之间的部分）拷贝到buf的开头位置，w指针标到新的位置上（也就是w-r），r指针标未0
+	2、如果写指针大于等于buf，则抛出panic出 bufio: tried to fill full buffer 错误
+	3、？？？是要将w后面的清空？？？
+ */
 func (b *Reader) fill() {
 	// Slide existing data to beginning.
 	// 将现有的数据滑到开头。
@@ -93,6 +100,7 @@ func (b *Reader) fill() {
 	}
 
 	if b.w >= len(b.buf) {
+		// bufio: 试图填满缓冲区
 		panic("bufio: tried to fill full buffer")
 	}
 
@@ -242,7 +250,7 @@ func (b *Reader) ReadByte() (byte, error) {
 		if b.err != nil {
 			return 0, b.readErr()
 		}
-		b.fill() // buffer is empty
+		b.fill() // buffer is empty	// 缓冲区是空的
 	}
 	c := b.buf[b.r]
 	b.r++

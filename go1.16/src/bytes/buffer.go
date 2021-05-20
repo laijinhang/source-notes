@@ -220,6 +220,7 @@ func (b *Buffer) WriteTo(w io.Writer) (n int64, err error) {
 		}
 		// all bytes should have been written, by definition of
 		// Write method in io.Writer
+		//根据io.Writer中Write方法的定义，所有的字节都应该被写入。
 		if m != nBytes {
 			return n, io.ErrShortWrite
 		}

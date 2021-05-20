@@ -172,6 +172,6 @@ func (r *Reader) Reset(s string) { *r = Reader{s, 0, -1} }
 
 // NewReader returns a new Reader reading from s.
 // It is similar to bytes.NewBufferString but more efficient and read-only.
-// NewReader返回一个从s读取的新的阅读器。
+// NewReader返回一个从s读取的新的Reader。
 // 它类似于bytes.NewBufferString，但效率更高，而且是只读的。
 func NewReader(s string) *Reader { return &Reader{s, 0, -1} }
