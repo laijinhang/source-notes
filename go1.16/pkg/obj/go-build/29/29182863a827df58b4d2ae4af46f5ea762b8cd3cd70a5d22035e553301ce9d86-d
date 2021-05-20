@@ -1,0 +1,49 @@
+# test log
+open DOES NOT EXIST
+open testdata/file1.tmpl
+open testdata/file2.tmpl
+stat DOES NOT EXIST
+stat testdata
+open testdata
+open testdata/file1.tmpl
+open testdata/file2.tmpl
+open testdata/DOES NOT EXIST
+open testdata/file1.tmpl
+open testdata/file2.tmpl
+open testdata/file1.tmpl
+open testdata/file2.tmpl
+open testdata/.
+open testdata/file1.tmpl
+open testdata/file2.tmpl
+open testdata/tmpl1.tmpl
+open testdata/tmpl2.tmpl
+stat testdata
+open testdata
+open testdata/tmpl1.tmpl
+open testdata/tmpl2.tmpl
+getenv TMPDIR
+open /tmp/template2082925448/T0.tmpl
+open /tmp/template2082925448/T1.tmpl
+open /tmp/template2082925448/T2.tmpl
+stat /tmp/template2082925448
+open /tmp/template2082925448
+open /tmp/template2082925448/T0.tmpl
+open /tmp/template2082925448/T1.tmpl
+open /tmp/template2082925448/T2.tmpl
+open /tmp
+getenv TMPDIR
+open /tmp/template3967475965/T1.tmpl
+open /tmp/template3967475965/T2.tmpl
+stat /tmp/template3967475965
+open /tmp/template3967475965
+open /tmp/template3967475965/T1.tmpl
+open /tmp/template3967475965/T2.tmpl
+open /tmp
+getenv TMPDIR
+open /tmp/template2604226897/T0.tmpl
+open /tmp/template2604226897/T1.tmpl
+stat /tmp/template2604226897
+open /tmp/template2604226897
+open /tmp/template2604226897/T0.tmpl
+open /tmp/template2604226897/T1.tmpl
+open /tmp

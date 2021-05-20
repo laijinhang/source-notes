@@ -1,0 +1,10 @@
+# test log
+open /dev/null
+open /tmp/go-build2596633161/b550/cpu.test
+getenv GODEBUG
+open /dev/null
+open /tmp/go-build2596633161/b550/cpu.test
+getenv GODEBUG
+open /dev/null
+open /tmp/go-build2596633161/b550/cpu.test
+getenv GODEBUG
