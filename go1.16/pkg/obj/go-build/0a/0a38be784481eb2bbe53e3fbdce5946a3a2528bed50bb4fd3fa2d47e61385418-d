@@ -1,0 +1,13 @@
+./build.go
+./buildlist.go
+./help.go
+./import.go
+./init.go
+./list.go
+./load.go
+./modfile.go
+./mvs.go
+./query.go
+./search.go
+./stat_unix.go
+./vendor.go

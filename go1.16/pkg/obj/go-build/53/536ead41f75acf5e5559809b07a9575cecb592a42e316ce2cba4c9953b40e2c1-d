@@ -1,0 +1,4 @@
+# test log
+getenv GO_GCFLAGS
+getenv GO_GCFLAGS
+open /proc/sys/net/core/somaxconn

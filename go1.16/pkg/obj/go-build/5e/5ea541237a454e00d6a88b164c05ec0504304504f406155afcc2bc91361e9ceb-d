@@ -1,0 +1,2518 @@
+# command-line-arguments
+"".CompareString1<1> STEXT nosplit size=34 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:20)	TEXT	"".CompareString1(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:20)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:20)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	MOVQ	"".s+16(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	CMPQ	AX, $2
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	JNE	29
+	0x000b 00011 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	MOVQ	"".s+8(SP), AX
+	0x0010 00016 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	CMPW	(AX), $30840
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	SETEQ	AL
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	MOVB	AL, "".~r1+24(SP)
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	RET
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	XORL	AX, AX
+	0x001f 00031 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	NOP
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:25)	JMP	24
+	0x0000 48 8b 44 24 10 48 83 f8 02 75 12 48 8b 44 24 08  H.D$.H...u.H.D$.
+	0x0010 66 81 38 78 78 0f 94 c0 88 44 24 18 c3 31 c0 90  f.8xx....D$..1..
+	0x0020 eb f6                                            ..
+"".CompareString2<1> STEXT nosplit size=34 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:28)	TEXT	"".CompareString2(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:28)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:28)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:33)	MOVQ	"".s+16(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:33)	CMPQ	AX, $4
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:33)	JNE	30
+	0x000b 00011 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:33)	MOVQ	"".s+8(SP), AX
+	0x0010 00016 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:33)	CMPL	(AX), $2021161080
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:33)	SETEQ	AL
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:33)	MOVB	AL, "".~r1+24(SP)
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:33)	RET
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:33)	XORL	AX, AX
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:33)	JMP	25
+	0x0000 48 8b 44 24 10 48 83 f8 04 75 13 48 8b 44 24 08  H.D$.H...u.H.D$.
+	0x0010 81 38 78 78 78 78 0f 94 c0 88 44 24 18 c3 31 c0  .8xxxx....D$..1.
+	0x0020 eb f7                                            ..
+"".CompareString3<1> STEXT nosplit size=41 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:36)	TEXT	"".CompareString3(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:36)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:36)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	MOVQ	"".s+16(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	CMPQ	AX, $8
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	JNE	37
+	0x000b 00011 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	MOVQ	$8680820740569200760, AX
+	0x0015 00021 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	MOVQ	"".s+8(SP), CX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	CMPQ	(CX), AX
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	SETEQ	AL
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	MOVB	AL, "".~r1+24(SP)
+	0x0024 00036 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	RET
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	XORL	AX, AX
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:42)	JMP	32
+	0x0000 48 8b 44 24 10 48 83 f8 08 75 1a 48 b8 78 78 78  H.D$.H...u.H.xxx
+	0x0010 78 78 78 78 78 48 8b 4c 24 08 48 39 01 0f 94 c0  xxxxxH.L$.H9....
+	0x0020 88 44 24 18 c3 31 c0 eb f7                       .D$..1...
+"".CompareArray1<1> STEXT nosplit size=49 args=0x10 locals=0x10 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:47)	TEXT	"".CompareArray1(SB), NOSPLIT|ABIInternal, $16-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:47)	SUBQ	$16, SP
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:47)	MOVQ	BP, 8(SP)
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:47)	LEAQ	8(SP), BP
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:47)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:47)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:52)	MOVWLZX	"".a+24(SP), AX
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:52)	MOVW	AX, ""..autotmp_3+6(SP)
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:52)	MOVWLZX	"".b+26(SP), AX
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:52)	CMPW	""..autotmp_3+6(SP), AX
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:52)	SETEQ	"".~r2+32(SP)
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:52)	MOVQ	8(SP), BP
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:52)	ADDQ	$16, SP
+	0x0030 00048 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:52)	RET
+	0x0000 48 83 ec 10 48 89 6c 24 08 48 8d 6c 24 08 0f b7  H...H.l$.H.l$...
+	0x0010 44 24 18 66 89 44 24 06 0f b7 44 24 1a 66 39 44  D$.f.D$...D$.f9D
+	0x0020 24 06 0f 94 44 24 20 48 8b 6c 24 08 48 83 c4 10  $...D$ H.l$.H...
+	0x0030 c3                                               .
+"".CompareArray2<1> STEXT nosplit size=86 args=0x18 locals=0x18 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:55)	TEXT	"".CompareArray2(SB), NOSPLIT|ABIInternal, $24-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:55)	SUBQ	$24, SP
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:55)	MOVQ	BP, 16(SP)
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:55)	LEAQ	16(SP), BP
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:55)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:55)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVL	"".a+32(SP), AX
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVWLZX	"".a+36(SP), CX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVL	AX, ""..autotmp_3+10(SP)
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVW	CX, ""..autotmp_3+14(SP)
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVWLZX	"".b+42(SP), AX
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVL	"".b+38(SP), CX
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVL	CX, ""..autotmp_4+4(SP)
+	0x002d 00045 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVW	AX, ""..autotmp_4+8(SP)
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVL	""..autotmp_4+4(SP), CX
+	0x0036 00054 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	CMPL	""..autotmp_3+10(SP), CX
+	0x003a 00058 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	JNE	82
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	CMPW	""..autotmp_3+14(SP), AX
+	0x0041 00065 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	SETEQ	AL
+	0x0044 00068 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVB	AL, "".~r2+48(SP)
+	0x0048 00072 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	MOVQ	16(SP), BP
+	0x004d 00077 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	ADDQ	$24, SP
+	0x0051 00081 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	RET
+	0x0052 00082 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	XORL	AX, AX
+	0x0054 00084 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:58)	JMP	68
+	0x0000 48 83 ec 18 48 89 6c 24 10 48 8d 6c 24 10 8b 44  H...H.l$.H.l$..D
+	0x0010 24 20 0f b7 4c 24 24 89 44 24 0a 66 89 4c 24 0e  $ ..L$$.D$.f.L$.
+	0x0020 0f b7 44 24 2a 8b 4c 24 26 89 4c 24 04 66 89 44  ..D$*.L$&.L$.f.D
+	0x0030 24 08 8b 4c 24 04 39 4c 24 0a 75 16 66 39 44 24  $..L$.9L$.u.f9D$
+	0x0040 0e 0f 94 c0 88 44 24 30 48 8b 6c 24 10 48 83 c4  .....D$0H.l$.H..
+	0x0050 18 c3 31 c0 eb ee                                ..1...
+"".CompareArray3<1> STEXT nosplit size=86 args=0x18 locals=0x18 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:61)	TEXT	"".CompareArray3(SB), NOSPLIT|ABIInternal, $24-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:61)	SUBQ	$24, SP
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:61)	MOVQ	BP, 16(SP)
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:61)	LEAQ	16(SP), BP
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:61)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:61)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVL	"".a+32(SP), AX
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVWLZX	"".a+36(SP), CX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVL	AX, ""..autotmp_3+10(SP)
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVW	CX, ""..autotmp_3+14(SP)
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVWLZX	"".b+42(SP), AX
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVL	"".b+38(SP), CX
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVL	CX, ""..autotmp_4+4(SP)
+	0x002d 00045 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVW	AX, ""..autotmp_4+8(SP)
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVL	""..autotmp_4+4(SP), CX
+	0x0036 00054 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	CMPL	""..autotmp_3+10(SP), CX
+	0x003a 00058 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	JNE	82
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	CMPW	""..autotmp_3+14(SP), AX
+	0x0041 00065 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	SETEQ	AL
+	0x0044 00068 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVB	AL, "".~r2+48(SP)
+	0x0048 00072 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	MOVQ	16(SP), BP
+	0x004d 00077 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	ADDQ	$24, SP
+	0x0051 00081 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	RET
+	0x0052 00082 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	XORL	AX, AX
+	0x0054 00084 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:64)	JMP	68
+	0x0000 48 83 ec 18 48 89 6c 24 10 48 8d 6c 24 10 8b 44  H...H.l$.H.l$..D
+	0x0010 24 20 0f b7 4c 24 24 89 44 24 0a 66 89 4c 24 0e  $ ..L$$.D$.f.L$.
+	0x0020 0f b7 44 24 2a 8b 4c 24 26 89 4c 24 04 66 89 44  ..D$*.L$&.L$.f.D
+	0x0030 24 08 8b 4c 24 04 39 4c 24 0a 75 16 66 39 44 24  $..L$.9L$.u.f9D$
+	0x0040 0e 0f 94 c0 88 44 24 30 48 8b 6c 24 10 48 83 c4  .....D$0H.l$.H..
+	0x0050 18 c3 31 c0 eb ee                                ..1...
+"".CompareArray4<1> STEXT nosplit size=85 args=0x20 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:67)	TEXT	"".CompareArray4(SB), NOSPLIT|ABIInternal, $32-32
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:67)	SUBQ	$32, SP
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:67)	MOVQ	BP, 24(SP)
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:67)	LEAQ	24(SP), BP
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:67)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:67)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVQ	"".a+40(SP), AX
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVL	"".a+48(SP), CX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVQ	AX, ""..autotmp_3+12(SP)
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVL	CX, ""..autotmp_3+20(SP)
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVL	"".b+60(SP), AX
+	0x0024 00036 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVQ	"".b+52(SP), CX
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVQ	CX, ""..autotmp_4(SP)
+	0x002d 00045 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVL	AX, ""..autotmp_4+8(SP)
+	0x0031 00049 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVQ	""..autotmp_4(SP), CX
+	0x0035 00053 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	CMPQ	""..autotmp_3+12(SP), CX
+	0x003a 00058 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	JNE	81
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	CMPL	""..autotmp_3+20(SP), AX
+	0x0040 00064 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	SETEQ	AL
+	0x0043 00067 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVB	AL, "".~r2+64(SP)
+	0x0047 00071 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	MOVQ	24(SP), BP
+	0x004c 00076 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	ADDQ	$32, SP
+	0x0050 00080 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	RET
+	0x0051 00081 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	XORL	AX, AX
+	0x0053 00083 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:70)	JMP	67
+	0x0000 48 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 48 8b  H.. H.l$.H.l$.H.
+	0x0010 44 24 28 8b 4c 24 30 48 89 44 24 0c 89 4c 24 14  D$(.L$0H.D$..L$.
+	0x0020 8b 44 24 3c 48 8b 4c 24 34 48 89 0c 24 89 44 24  .D$<H.L$4H..$.D$
+	0x0030 08 48 8b 0c 24 48 39 4c 24 0c 75 15 39 44 24 14  .H..$H9L$.u.9D$.
+	0x0040 0f 94 c0 88 44 24 40 48 8b 6c 24 18 48 83 c4 20  ....D$@H.l$.H.. 
+	0x0050 c3 31 c0 eb ee                                   .1...
+"".CompareArray5<1> STEXT nosplit size=123 args=0x28 locals=0x28 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:73)	TEXT	"".CompareArray5(SB), NOSPLIT|ABIInternal, $40-40
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:73)	SUBQ	$40, SP
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:73)	MOVQ	BP, 32(SP)
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:73)	LEAQ	32(SP), BP
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:73)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:73)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVQ	"".a+48(SP), AX
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVQ	"".a+55(SP), CX
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVQ	AX, ""..autotmp_3+17(SP)
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVQ	CX, ""..autotmp_3+24(SP)
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVQ	"".b+63(SP), AX
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVQ	"".b+70(SP), CX
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVQ	AX, ""..autotmp_4+2(SP)
+	0x0031 00049 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVQ	CX, ""..autotmp_4+9(SP)
+	0x0036 00054 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVQ	""..autotmp_4+2(SP), AX
+	0x003b 00059 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	NOP
+	0x0040 00064 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	CMPQ	""..autotmp_3+17(SP), AX
+	0x0045 00069 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	JNE	119
+	0x0047 00071 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVL	""..autotmp_4+10(SP), AX
+	0x004b 00075 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	CMPL	""..autotmp_3+25(SP), AX
+	0x004f 00079 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	JNE	119
+	0x0051 00081 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVWLZX	""..autotmp_4+14(SP), AX
+	0x0056 00086 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	CMPW	""..autotmp_3+29(SP), AX
+	0x005b 00091 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	JNE	119
+	0x005d 00093 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVBLZX	""..autotmp_4+16(SP), AX
+	0x0062 00098 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	CMPB	""..autotmp_3+31(SP), AL
+	0x0066 00102 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	SETEQ	AL
+	0x0069 00105 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVB	AL, "".~r2+80(SP)
+	0x006d 00109 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	MOVQ	32(SP), BP
+	0x0072 00114 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	ADDQ	$40, SP
+	0x0076 00118 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	RET
+	0x0077 00119 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	XORL	AX, AX
+	0x0079 00121 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:75)	JMP	105
+	0x0000 48 83 ec 28 48 89 6c 24 20 48 8d 6c 24 20 48 8b  H..(H.l$ H.l$ H.
+	0x0010 44 24 30 48 8b 4c 24 37 48 89 44 24 11 48 89 4c  D$0H.L$7H.D$.H.L
+	0x0020 24 18 48 8b 44 24 3f 48 8b 4c 24 46 48 89 44 24  $.H.D$?H.L$FH.D$
+	0x0030 02 48 89 4c 24 09 48 8b 44 24 02 0f 1f 44 00 00  .H.L$.H.D$...D..
+	0x0040 48 39 44 24 11 75 30 8b 44 24 0a 39 44 24 19 75  H9D$.u0.D$.9D$.u
+	0x0050 26 0f b7 44 24 0e 66 39 44 24 1d 75 1a 0f b6 44  &..D$.f9D$.u...D
+	0x0060 24 10 38 44 24 1f 0f 94 c0 88 44 24 50 48 8b 6c  $.8D$.....D$PH.l
+	0x0070 24 20 48 83 c4 28 c3 31 c0 eb ee                 $ H..(.1...
+"".CompareArray6<1> STEXT nosplit size=20 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:79)	TEXT	"".CompareArray6(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:79)	FUNCDATA	$0, gclocals·dc9b0298814590ca3ffc3a889546fc8b(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:79)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:84)	MOVQ	"".b+16(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:84)	MOVL	(AX), AX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:84)	MOVQ	"".a+8(SP), CX
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:84)	CMPL	(CX), AX
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:84)	SETNE	"".~r2+24(SP)
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:84)	RET
+	0x0000 48 8b 44 24 10 8b 00 48 8b 4c 24 08 39 01 0f 95  H.D$...H.L$.9...
+	0x0010 44 24 18 c3                                      D$..
+"".CmpFold<1> STEXT nosplit size=13 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:93)	TEXT	"".CmpFold(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:93)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:93)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:95)	MOVL	"".x+8(SP), AX
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:95)	CMPL	AX, $4
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:95)	SETHI	"".~r1+16(SP)
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:95)	RET
+	0x0000 8b 44 24 08 83 f8 04 0f 97 44 24 10 c3           .D$......D$..
+"".CmpMem1<1> STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:101)	TEXT	"".CmpMem1(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:101)	FUNCDATA	$0, gclocals·09cf9819fc716118c209c2d2155a3632(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:101)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:103)	MOVQ	"".p+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:103)	MOVQ	"".q+16(SP), CX
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:103)	CMPQ	(CX), AX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:103)	SETGT	"".~r2+24(SP)
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:103)	RET
+	0x0000 48 8b 44 24 08 48 8b 4c 24 10 48 39 01 0f 9f 44  H.D$.H.L$.H9...D
+	0x0010 24 18 c3                                         $..
+"".CmpMem2<1> STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:106)	TEXT	"".CmpMem2(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:106)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:106)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:108)	MOVQ	"".q+16(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:108)	MOVQ	"".p+8(SP), CX
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:108)	CMPQ	(CX), AX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:108)	SETLT	"".~r2+24(SP)
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:108)	RET
+	0x0000 48 8b 44 24 10 48 8b 4c 24 08 48 39 01 0f 9c 44  H.D$.H.L$.H9...D
+	0x0010 24 18 c3                                         $..
+"".CmpMem3<1> STEXT nosplit size=15 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:111)	TEXT	"".CmpMem3(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:111)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:111)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:113)	MOVQ	"".p+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:113)	CMPQ	(AX), $7
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:113)	SETLT	"".~r1+16(SP)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:113)	RET
+	0x0000 48 8b 44 24 08 48 83 38 07 0f 9c 44 24 10 c3     H.D$.H.8...D$..
+"".CmpMem4<1> STEXT nosplit size=15 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:116)	TEXT	"".CmpMem4(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:116)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:116)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:118)	MOVQ	"".p+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:118)	CMPQ	(AX), $7
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:118)	SETGT	"".~r1+16(SP)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:118)	RET
+	0x0000 48 8b 44 24 08 48 83 38 07 0f 9f 44 24 10 c3     H.D$.H.8...D$..
+"".CmpMem5<1> STEXT size=78 args=0x8 locals=0x8 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	TEXT	"".CmpMem5(SB), ABIInternal, $8-8
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	PCDATA	$0, $-2
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	JLS	71
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	PCDATA	$0, $-1
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	SUBQ	$8, SP
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	MOVQ	BP, (SP)
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	LEAQ	(SP), BP
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	MOVQ	"".p+16(SP), DI
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	TESTB	AL, (DI)
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	PCDATA	$0, $-2
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	CMPL	runtime.writeBarrier(SB), $0
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	JNE	59
+	0x002b 00043 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	MOVQ	$0, (DI)
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:124)	PCDATA	$0, $-1
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:124)	MOVQ	(SP), BP
+	0x0036 00054 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:124)	ADDQ	$8, SP
+	0x003a 00058 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:124)	RET
+	0x003b 00059 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	PCDATA	$0, $-2
+	0x003b 00059 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	XORL	AX, AX
+	0x003d 00061 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	NOP
+	0x0040 00064 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	CALL	runtime.gcWriteBarrier(SB)
+	0x0045 00069 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	JMP	50
+	0x0047 00071 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:123)	NOP
+	0x0047 00071 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	PCDATA	$1, $-1
+	0x0047 00071 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	PCDATA	$0, $-2
+	0x0047 00071 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	CALL	runtime.morestack_noctxt(SB)
+	0x004c 00076 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	PCDATA	$0, $-1
+	0x004c 00076 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:121)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 38 48  dH..%....H;a.v8H
+	0x0010 83 ec 08 48 89 2c 24 48 8d 2c 24 48 8b 7c 24 10  ...H.,$H.,$H.|$.
+	0x0020 84 07 83 3d 00 00 00 00 00 75 10 48 c7 07 00 00  ...=.....u.H....
+	0x0030 00 00 48 8b 2c 24 48 83 c4 08 c3 31 c0 0f 1f 00  ..H.,$H....1....
+	0x0040 e8 00 00 00 00 eb eb e8 00 00 00 00 eb b2        ..............
+	rel 5+4 t=17 TLS+0
+	rel 36+4 t=16 runtime.writeBarrier<0>+-1
+	rel 65+4 t=8 runtime.gcWriteBarrier<1>+0
+	rel 72+4 t=8 runtime.morestack_noctxt<0>+0
+"".CmpMem6<1> STEXT nosplit size=105 args=0x20 locals=0x18 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:126)	TEXT	"".CmpMem6(SB), NOSPLIT|ABIInternal, $24-32
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:126)	SUBQ	$24, SP
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:126)	MOVQ	BP, 16(SP)
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:126)	LEAQ	16(SP), BP
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:126)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:126)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	MOVQ	"".a+40(SP), CX
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	CMPQ	CX, $1
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	JLS	94
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	MOVQ	"".a+32(SP), DX
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	MOVQ	8(DX), BX
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	CMPQ	CX, $2
+	0x0026 00038 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	JLS	84
+	0x0028 00040 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	CMPQ	16(DX), BX
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	JGE	65
+	0x002e 00046 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:130)	MOVQ	$1, "".~r1+56(SP)
+	0x0037 00055 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:130)	MOVQ	16(SP), BP
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:130)	ADDQ	$24, SP
+	0x0040 00064 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:130)	RET
+	0x0041 00065 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:132)	MOVQ	$2, "".~r1+56(SP)
+	0x004a 00074 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:132)	MOVQ	16(SP), BP
+	0x004f 00079 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:132)	ADDQ	$24, SP
+	0x0053 00083 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:132)	RET
+	0x0054 00084 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	MOVL	$2, AX
+	0x0059 00089 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	PCDATA	$1, $1
+	0x0059 00089 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	CALL	runtime.panicIndex(SB)
+	0x005e 00094 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	MOVL	$1, AX
+	0x0063 00099 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	CALL	runtime.panicIndex(SB)
+	0x0068 00104 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:129)	XCHGL	AX, AX
+	0x0000 48 83 ec 18 48 89 6c 24 10 48 8d 6c 24 10 48 8b  H...H.l$.H.l$.H.
+	0x0010 4c 24 28 48 83 f9 01 76 45 48 8b 54 24 20 48 8b  L$(H...vEH.T$ H.
+	0x0020 5a 08 48 83 f9 02 76 2c 48 39 5a 10 7d 13 48 c7  Z.H...v,H9Z.}.H.
+	0x0030 44 24 38 01 00 00 00 48 8b 6c 24 10 48 83 c4 18  D$8....H.l$.H...
+	0x0040 c3 48 c7 44 24 38 02 00 00 00 48 8b 6c 24 10 48  .H.D$8....H.l$.H
+	0x0050 83 c4 18 c3 b8 02 00 00 00 e8 00 00 00 00 b8 01  ................
+	0x0060 00 00 00 e8 00 00 00 00 90                       .........
+	rel 90+4 t=8 runtime.panicIndex<1>+0
+	rel 100+4 t=8 runtime.panicIndex<1>+0
+"".CmpZero1<1> STEXT nosplit size=21 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:138)	TEXT	"".CmpZero1(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:138)	FUNCDATA	$0, gclocals·09cf9819fc716118c209c2d2155a3632(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:138)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:139)	MOVL	"".a+8(SP), AX
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:139)	TESTL	AX, AX
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:139)	JGE	20
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:140)	MOVQ	"".ptr+16(SP), AX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:140)	MOVQ	$0, (AX)
+	0x0014 00020 (<unknown line number>)	RET
+	0x0000 8b 44 24 08 85 c0 7d 0c 48 8b 44 24 10 48 c7 00  .D$...}.H.D$.H..
+	0x0010 00 00 00 00 c3                                   .....
+"".CmpZero2<1> STEXT nosplit size=23 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:144)	TEXT	"".CmpZero2(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:144)	FUNCDATA	$0, gclocals·09cf9819fc716118c209c2d2155a3632(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:144)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:145)	MOVQ	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:145)	TESTQ	AX, AX
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:145)	JGE	22
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:146)	MOVQ	"".ptr+16(SP), AX
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:146)	MOVQ	$0, (AX)
+	0x0016 00022 (<unknown line number>)	RET
+	0x0000 48 8b 44 24 08 48 85 c0 7d 0c 48 8b 44 24 10 48  H.D$.H..}.H.D$.H
+	0x0010 c7 00 00 00 00 00 c3                             .......
+"".CmpZero3<1> STEXT nosplit size=21 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:150)	TEXT	"".CmpZero3(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:150)	FUNCDATA	$0, gclocals·09cf9819fc716118c209c2d2155a3632(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:150)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:151)	MOVL	"".a+8(SP), AX
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:151)	TESTL	AX, AX
+	0x0006 00006 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:151)	JLT	20
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:152)	MOVQ	"".ptr+16(SP), AX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:152)	MOVQ	$0, (AX)
+	0x0014 00020 (<unknown line number>)	RET
+	0x0000 8b 44 24 08 85 c0 7c 0c 48 8b 44 24 10 48 c7 00  .D$...|.H.D$.H..
+	0x0010 00 00 00 00 c3                                   .....
+"".CmpZero4<1> STEXT nosplit size=23 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:156)	TEXT	"".CmpZero4(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:156)	FUNCDATA	$0, gclocals·09cf9819fc716118c209c2d2155a3632(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:156)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:157)	MOVQ	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:157)	TESTQ	AX, AX
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:157)	JLT	22
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:158)	MOVQ	"".ptr+16(SP), AX
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:158)	MOVQ	$0, (AX)
+	0x0016 00022 (<unknown line number>)	RET
+	0x0000 48 8b 44 24 08 48 85 c0 7c 0c 48 8b 44 24 10 48  H.D$.H..|.H.D$.H
+	0x0010 c7 00 00 00 00 00 c3                             .......
+"".CmpToZero<1> STEXT nosplit size=177 args=0x28 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:162)	TEXT	"".CmpToZero(SB), NOSPLIT|ABIInternal, $0-40
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:162)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:162)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:170)	MOVL	"".a+8(SP), AX
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:170)	MOVL	"".b+12(SP), CX
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:170)	LEAL	(CX)(AX*1), DX
+	0x000b 00011 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:172)	MOVL	AX, BX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:172)	XORL	CX, AX
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:177)	MOVQ	"".e+24(SP), SI
+	0x0014 00020 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:177)	MOVQ	"".f+32(SP), DI
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:177)	LEAQ	(DI)(SI*1), R8
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:181)	MOVL	"".d+16(SP), R9
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:181)	LEAL	(R9)(CX*1), R10
+	0x0026 00038 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:186)	ANDL	BX, R9
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:190)	LEAQ	(SI)(DI*8), R11
+	0x002d 00045 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:167)	TESTL	CX, BX
+	0x002f 00047 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:191)	JLT	168
+	0x0031 00049 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:170)	TESTL	DX, DX
+	0x0033 00051 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:193)	JLT	159
+	0x0035 00053 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:172)	TESTL	AX, AX
+	0x0037 00055 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:195)	JLT	150
+	0x0039 00057 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:175)	TESTQ	DI, SI
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:197)	JLT	141
+	0x003e 00062 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:197)	NOP
+	0x0040 00064 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:177)	TESTQ	R8, R8
+	0x0043 00067 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:199)	JLT	132
+	0x0045 00069 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:181)	TESTL	R10, R10
+	0x0048 00072 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:201)	JEQ	126
+	0x004a 00074 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:186)	TESTL	R9, R9
+	0x004d 00077 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:203)	JGE	120
+	0x004f 00079 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:188)	SHLQ	$3, DI
+	0x0053 00083 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:188)	TESTQ	DI, SI
+	0x0056 00086 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:205)	JLT	111
+	0x0058 00088 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:190)	TESTQ	R11, R11
+	0x005b 00091 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:207)	JGE	102
+	0x005d 00093 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:208)	MOVL	$8, "".~r5+40(SP)
+	0x0065 00101 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:208)	RET
+	0x0066 00102 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:210)	MOVL	$0, "".~r5+40(SP)
+	0x006e 00110 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:210)	RET
+	0x006f 00111 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:206)	MOVL	$7, "".~r5+40(SP)
+	0x0077 00119 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:206)	RET
+	0x0078 00120 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:204)	MOVL	R9, "".~r5+40(SP)
+	0x007d 00125 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:204)	RET
+	0x007e 00126 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:202)	MOVL	R10, "".~r5+40(SP)
+	0x0083 00131 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:202)	RET
+	0x0084 00132 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:200)	MOVL	$5, "".~r5+40(SP)
+	0x008c 00140 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:200)	RET
+	0x008d 00141 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:198)	MOVL	$4, "".~r5+40(SP)
+	0x0095 00149 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:198)	RET
+	0x0096 00150 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:196)	MOVL	$3, "".~r5+40(SP)
+	0x009e 00158 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:196)	RET
+	0x009f 00159 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:194)	MOVL	$2, "".~r5+40(SP)
+	0x00a7 00167 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:194)	RET
+	0x00a8 00168 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:192)	MOVL	$1, "".~r5+40(SP)
+	0x00b0 00176 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:192)	RET
+	0x0000 8b 44 24 08 8b 4c 24 0c 8d 14 01 89 c3 31 c8 48  .D$..L$......1.H
+	0x0010 8b 74 24 18 48 8b 7c 24 20 4c 8d 04 37 44 8b 4c  .t$.H.|$ L..7D.L
+	0x0020 24 10 45 8d 14 09 41 21 d9 4c 8d 1c fe 85 cb 7c  $.E...A!.L.....|
+	0x0030 77 85 d2 7c 6a 85 c0 7c 5d 48 85 fe 7c 4f 66 90  w..|j..|]H..|Of.
+	0x0040 4d 85 c0 7c 3f 45 85 d2 74 34 45 85 c9 7d 29 48  M..|?E..t4E..})H
+	0x0050 c1 e7 03 48 85 fe 7c 17 4d 85 db 7d 09 c7 44 24  ...H..|.M..}..D$
+	0x0060 28 08 00 00 00 c3 c7 44 24 28 00 00 00 00 c3 c7  (......D$(......
+	0x0070 44 24 28 07 00 00 00 c3 44 89 4c 24 28 c3 44 89  D$(.....D.L$(.D.
+	0x0080 54 24 28 c3 c7 44 24 28 05 00 00 00 c3 c7 44 24  T$(..D$(......D$
+	0x0090 28 04 00 00 00 c3 c7 44 24 28 03 00 00 00 c3 c7  (......D$(......
+	0x00a0 44 24 28 02 00 00 00 c3 c7 44 24 28 01 00 00 00  D$(......D$(....
+	0x00b0 c3                                               .
+"".CmpLogicalToZero<1> STEXT nosplit size=117 args=0x28 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:214)	TEXT	"".CmpLogicalToZero(SB), NOSPLIT|ABIInternal, $0-40
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:214)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:214)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:219)	MOVL	"".a+8(SP), AX
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:219)	TESTL	$63, AX
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:219)	JEQ	107
+	0x000b 00011 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:226)	MOVQ	"".d+24(SP), AX
+	0x0010 00016 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:226)	MOVBLZX	AL, CX
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:226)	TESTQ	CX, CX
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:226)	JEQ	97
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:233)	MOVQ	"".e+32(SP), CX
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:233)	NOP
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:233)	TESTQ	CX, AX
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:233)	JEQ	86
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:239)	MOVQ	AX, DX
+	0x0028 00040 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:239)	ORQ	CX, AX
+	0x002b 00043 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:239)	TESTQ	AX, AX
+	0x002e 00046 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:239)	JEQ	76
+	0x0030 00048 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:246)	XORQ	DX, CX
+	0x0033 00051 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:246)	TESTQ	CX, CX
+	0x0036 00054 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:246)	JNE	66
+	0x0038 00056 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:247)	MOVQ	$1, "".~r5+40(SP)
+	0x0041 00065 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:247)	RET
+	0x0042 00066 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:249)	MOVQ	$0, "".~r5+40(SP)
+	0x004b 00075 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:249)	RET
+	0x004c 00076 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:240)	MOVQ	$1, "".~r5+40(SP)
+	0x0055 00085 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:240)	RET
+	0x0056 00086 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:234)	MOVQ	$1, "".~r5+40(SP)
+	0x005f 00095 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:234)	NOP
+	0x0060 00096 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:234)	RET
+	0x0061 00097 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:227)	MOVQ	$1, "".~r5+40(SP)
+	0x006a 00106 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:227)	RET
+	0x006b 00107 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:220)	MOVQ	$1, "".~r5+40(SP)
+	0x0074 00116 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:220)	RET
+	0x0000 8b 44 24 08 a9 3f 00 00 00 74 60 48 8b 44 24 18  .D$..?...t`H.D$.
+	0x0010 0f b6 c8 48 85 c9 74 49 48 8b 4c 24 20 0f 1f 00  ...H..tIH.L$ ...
+	0x0020 48 85 c8 74 31 48 89 c2 48 09 c8 48 85 c0 74 1c  H..t1H..H..H..t.
+	0x0030 48 31 d1 48 85 c9 75 0a 48 c7 44 24 28 01 00 00  H1.H..u.H.D$(...
+	0x0040 00 c3 48 c7 44 24 28 00 00 00 00 c3 48 c7 44 24  ..H.D$(.....H.D$
+	0x0050 28 01 00 00 00 c3 48 c7 44 24 28 01 00 00 00 90  (.....H.D$(.....
+	0x0060 c3 48 c7 44 24 28 01 00 00 00 c3 48 c7 44 24 28  .H.D$(.....H.D$(
+	0x0070 01 00 00 00 c3                                   .....
+"".CmpToZero_ex1<1> STEXT nosplit size=217 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:258)	TEXT	"".CmpToZero_ex1(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:258)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:258)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:260)	MOVQ	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:260)	LEAQ	3(AX), CX
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:260)	TESTQ	CX, CX
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:260)	JLT	207
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:265)	LEAQ	5(AX), CX
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:265)	TESTQ	CX, CX
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:265)	JLE	197
+	0x001f 00031 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:270)	LEAQ	13(AX), CX
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:270)	TESTQ	CX, CX
+	0x0026 00038 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:270)	JGE	187
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:275)	LEAQ	-7(AX), CX
+	0x0030 00048 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:275)	TESTQ	CX, CX
+	0x0033 00051 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:275)	JLT	177
+	0x0035 00053 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:280)	LEAQ	-11(AX), CX
+	0x0039 00057 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:280)	TESTQ	CX, CX
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:280)	JGE	167
+	0x003e 00062 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:285)	ADDQ	$-19, AX
+	0x0042 00066 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:285)	TESTQ	AX, AX
+	0x0045 00069 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:285)	JGT	157
+	0x0047 00071 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:291)	MOVL	"".e+16(SP), AX
+	0x004b 00075 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:291)	LEAL	3(AX), CX
+	0x004e 00078 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:291)	TESTL	CX, CX
+	0x0050 00080 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:291)	JLT	147
+	0x0052 00082 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:297)	LEAL	13(AX), CX
+	0x0055 00085 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:297)	TESTL	CX, CX
+	0x0057 00087 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:297)	JGE	137
+	0x0059 00089 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:303)	LEAL	-7(AX), CX
+	0x005c 00092 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:303)	NOP
+	0x0060 00096 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:303)	TESTL	CX, CX
+	0x0062 00098 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:303)	JLT	127
+	0x0064 00100 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:309)	ADDL	$-11, AX
+	0x0067 00103 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:309)	TESTL	AX, AX
+	0x0069 00105 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:309)	JLT	117
+	0x006b 00107 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:310)	MOVQ	$8, "".~r2+24(SP)
+	0x0074 00116 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:310)	RET
+	0x0075 00117 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:313)	MOVQ	$0, "".~r2+24(SP)
+	0x007e 00126 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:313)	RET
+	0x007f 00127 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:304)	MOVQ	$7, "".~r2+24(SP)
+	0x0088 00136 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:304)	RET
+	0x0089 00137 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:298)	MOVQ	$6, "".~r2+24(SP)
+	0x0092 00146 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:298)	RET
+	0x0093 00147 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:292)	MOVQ	$5, "".~r2+24(SP)
+	0x009c 00156 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:292)	RET
+	0x009d 00157 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:286)	MOVQ	$4, "".~r2+24(SP)
+	0x00a6 00166 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:286)	RET
+	0x00a7 00167 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:281)	MOVQ	$4, "".~r2+24(SP)
+	0x00b0 00176 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:281)	RET
+	0x00b1 00177 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:276)	MOVQ	$3, "".~r2+24(SP)
+	0x00ba 00186 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:276)	RET
+	0x00bb 00187 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:271)	MOVQ	$2, "".~r2+24(SP)
+	0x00c4 00196 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:271)	RET
+	0x00c5 00197 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:266)	MOVQ	$1, "".~r2+24(SP)
+	0x00ce 00206 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:266)	RET
+	0x00cf 00207 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:261)	MOVQ	$1, "".~r2+24(SP)
+	0x00d8 00216 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:261)	RET
+	0x0000 48 8b 44 24 08 48 8d 48 03 48 85 c9 0f 8c bd 00  H.D$.H.H.H......
+	0x0010 00 00 48 8d 48 05 48 85 c9 0f 8e a6 00 00 00 48  ..H.H.H........H
+	0x0020 8d 48 0d 48 85 c9 0f 8d 8f 00 00 00 48 8d 48 f9  .H.H........H.H.
+	0x0030 48 85 c9 7c 7c 48 8d 48 f5 48 85 c9 7d 69 48 83  H..||H.H.H..}iH.
+	0x0040 c0 ed 48 85 c0 7f 56 8b 44 24 10 8d 48 03 85 c9  ..H...V.D$..H...
+	0x0050 7c 41 8d 48 0d 85 c9 7d 30 8d 48 f9 0f 1f 40 00  |A.H...}0.H...@.
+	0x0060 85 c9 7c 1b 83 c0 f5 85 c0 7c 0a 48 c7 44 24 18  ..|......|.H.D$.
+	0x0070 08 00 00 00 c3 48 c7 44 24 18 00 00 00 00 c3 48  .....H.D$......H
+	0x0080 c7 44 24 18 07 00 00 00 c3 48 c7 44 24 18 06 00  .D$......H.D$...
+	0x0090 00 00 c3 48 c7 44 24 18 05 00 00 00 c3 48 c7 44  ...H.D$......H.D
+	0x00a0 24 18 04 00 00 00 c3 48 c7 44 24 18 04 00 00 00  $......H.D$.....
+	0x00b0 c3 48 c7 44 24 18 03 00 00 00 c3 48 c7 44 24 18  .H.D$......H.D$.
+	0x00c0 02 00 00 00 c3 48 c7 44 24 18 01 00 00 00 c3 48  .....H.D$......H
+	0x00d0 c7 44 24 18 01 00 00 00 c3                       .D$......
+"".CmpToZero_ex2<1> STEXT nosplit size=130 args=0x30 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:318)	TEXT	"".CmpToZero_ex2(SB), NOSPLIT|ABIInternal, $0-48
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:318)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:318)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:320)	MOVQ	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:320)	MOVQ	"".b+16(SP), CX
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:320)	LEAQ	(CX)(AX*1), DX
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:320)	TESTQ	DX, DX
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:320)	JLT	120
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:325)	MOVQ	"".c+24(SP), DX
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:325)	ADDQ	DX, AX
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:325)	NOP
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:325)	TESTQ	AX, AX
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:325)	JLE	110
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:330)	LEAQ	(DX)(CX*1), AX
+	0x0029 00041 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:330)	TESTQ	AX, AX
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:330)	JGE	100
+	0x002e 00046 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:336)	MOVL	"".e+32(SP), AX
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:336)	MOVL	"".f+36(SP), CX
+	0x0036 00054 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:336)	ADDL	CX, AX
+	0x0038 00056 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:336)	TESTL	AX, AX
+	0x003a 00058 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:336)	JLT	90
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:342)	MOVL	"".g+40(SP), AX
+	0x0040 00064 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:342)	ADDL	CX, AX
+	0x0042 00066 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:342)	TESTL	AX, AX
+	0x0044 00068 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:342)	JLT	80
+	0x0046 00070 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:343)	MOVQ	$6, "".~r6+48(SP)
+	0x004f 00079 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:343)	RET
+	0x0050 00080 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:345)	MOVQ	$0, "".~r6+48(SP)
+	0x0059 00089 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:345)	RET
+	0x005a 00090 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:337)	MOVQ	$5, "".~r6+48(SP)
+	0x0063 00099 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:337)	RET
+	0x0064 00100 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:331)	MOVQ	$2, "".~r6+48(SP)
+	0x006d 00109 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:331)	RET
+	0x006e 00110 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:326)	MOVQ	$1, "".~r6+48(SP)
+	0x0077 00119 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:326)	RET
+	0x0078 00120 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:321)	MOVQ	$1, "".~r6+48(SP)
+	0x0081 00129 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:321)	RET
+	0x0000 48 8b 44 24 08 48 8b 4c 24 10 48 8d 14 01 48 85  H.D$.H.L$.H...H.
+	0x0010 d2 7c 65 48 8b 54 24 18 48 01 d0 0f 1f 44 00 00  .|eH.T$.H....D..
+	0x0020 48 85 c0 7e 49 48 8d 04 0a 48 85 c0 7d 36 8b 44  H..~IH...H..}6.D
+	0x0030 24 20 8b 4c 24 24 01 c8 85 c0 7c 1e 8b 44 24 28  $ .L$$....|..D$(
+	0x0040 01 c8 85 c0 7c 0a 48 c7 44 24 30 06 00 00 00 c3  ....|.H.D$0.....
+	0x0050 48 c7 44 24 30 00 00 00 00 c3 48 c7 44 24 30 05  H.D$0.....H.D$0.
+	0x0060 00 00 00 c3 48 c7 44 24 30 02 00 00 00 c3 48 c7  ....H.D$0.....H.
+	0x0070 44 24 30 01 00 00 00 c3 48 c7 44 24 30 01 00 00  D$0.....H.D$0...
+	0x0080 00 c3                                            ..
+"".CmpToZero_ex3<1> STEXT nosplit size=133 args=0x38 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:349)	TEXT	"".CmpToZero_ex3(SB), NOSPLIT|ABIInternal, $0-56
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:349)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:349)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:351)	MOVQ	"".c+24(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:351)	MOVQ	"".b+16(SP), CX
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:351)	MOVQ	AX, DX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:351)	IMULQ	CX, AX
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:351)	MOVQ	"".a+8(SP), BX
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:351)	ADDQ	BX, AX
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:351)	TESTQ	AX, AX
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:351)	JLT	123
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:356)	MOVQ	"".d+32(SP), AX
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:356)	IMULQ	DX, AX
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:356)	ADDQ	CX, AX
+	0x002a 00042 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:356)	TESTQ	AX, AX
+	0x002d 00045 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:356)	JGE	113
+	0x002f 00047 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:362)	MOVL	"".g+48(SP), AX
+	0x0033 00051 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:362)	MOVL	"".f+44(SP), CX
+	0x0037 00055 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:362)	MOVL	AX, DX
+	0x0039 00057 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:362)	IMULL	CX, AX
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:362)	MOVL	"".e+40(SP), BX
+	0x0040 00064 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:362)	ADDL	BX, AX
+	0x0042 00066 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:362)	TESTL	AX, AX
+	0x0044 00068 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:362)	JGT	103
+	0x0046 00070 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:368)	MOVL	"".h+52(SP), AX
+	0x004a 00074 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:368)	IMULL	DX, AX
+	0x004d 00077 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:368)	ADDL	CX, AX
+	0x004f 00079 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:368)	TESTL	AX, AX
+	0x0051 00081 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:368)	JGT	93
+	0x0053 00083 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:369)	MOVQ	$6, "".~r8+56(SP)
+	0x005c 00092 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:369)	RET
+	0x005d 00093 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:371)	MOVQ	$0, "".~r8+56(SP)
+	0x0066 00102 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:371)	RET
+	0x0067 00103 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:363)	MOVQ	$5, "".~r8+56(SP)
+	0x0070 00112 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:363)	RET
+	0x0071 00113 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:357)	MOVQ	$2, "".~r8+56(SP)
+	0x007a 00122 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:357)	RET
+	0x007b 00123 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:352)	MOVQ	$1, "".~r8+56(SP)
+	0x0084 00132 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:352)	RET
+	0x0000 48 8b 44 24 18 48 8b 4c 24 10 48 89 c2 48 0f af  H.D$.H.L$.H..H..
+	0x0010 c1 48 8b 5c 24 08 48 01 d8 48 85 c0 7c 5d 48 8b  .H.\$.H..H..|]H.
+	0x0020 44 24 20 48 0f af c2 48 01 c8 48 85 c0 7d 42 8b  D$ H...H..H..}B.
+	0x0030 44 24 30 8b 4c 24 2c 89 c2 0f af c1 8b 5c 24 28  D$0.L$,......\$(
+	0x0040 01 d8 85 c0 7f 21 8b 44 24 34 0f af c2 01 c8 85  .....!.D$4......
+	0x0050 c0 7f 0a 48 c7 44 24 38 06 00 00 00 c3 48 c7 44  ...H.D$8.....H.D
+	0x0060 24 38 00 00 00 00 c3 48 c7 44 24 38 05 00 00 00  $8.....H.D$8....
+	0x0070 c3 48 c7 44 24 38 02 00 00 00 c3 48 c7 44 24 38  .H.D$8.....H.D$8
+	0x0080 01 00 00 00 c3                                   .....
+"".CmpToZero_ex4<1> STEXT nosplit size=133 args=0x38 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:375)	TEXT	"".CmpToZero_ex4(SB), NOSPLIT|ABIInternal, $0-56
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:375)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:375)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:377)	MOVQ	"".c+24(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:377)	MOVQ	"".b+16(SP), CX
+	0x000a 00010 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:377)	MOVQ	AX, DX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:377)	IMULQ	CX, AX
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:377)	MOVQ	"".a+8(SP), BX
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:377)	SUBQ	AX, BX
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:377)	TESTQ	BX, BX
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:377)	JGT	123
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:382)	MOVQ	"".d+32(SP), AX
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:382)	IMULQ	DX, AX
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:382)	SUBQ	AX, CX
+	0x002a 00042 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:382)	TESTQ	CX, CX
+	0x002d 00045 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:382)	JGE	113
+	0x002f 00047 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:387)	MOVL	"".g+48(SP), AX
+	0x0033 00051 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:387)	MOVL	"".f+44(SP), CX
+	0x0037 00055 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:387)	MOVL	AX, DX
+	0x0039 00057 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:387)	IMULL	CX, AX
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:387)	MOVL	"".e+40(SP), BX
+	0x0040 00064 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:387)	SUBL	AX, BX
+	0x0042 00066 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:387)	TESTL	BX, BX
+	0x0044 00068 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:387)	JLT	103
+	0x0046 00070 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:392)	MOVL	"".h+52(SP), AX
+	0x004a 00074 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:392)	IMULL	DX, AX
+	0x004d 00077 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:392)	SUBL	AX, CX
+	0x004f 00079 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:392)	TESTL	CX, CX
+	0x0051 00081 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:392)	JLT	93
+	0x0053 00083 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:393)	MOVQ	$6, "".~r8+56(SP)
+	0x005c 00092 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:393)	RET
+	0x005d 00093 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:395)	MOVQ	$0, "".~r8+56(SP)
+	0x0066 00102 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:395)	RET
+	0x0067 00103 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:388)	MOVQ	$5, "".~r8+56(SP)
+	0x0070 00112 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:388)	RET
+	0x0071 00113 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:383)	MOVQ	$2, "".~r8+56(SP)
+	0x007a 00122 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:383)	RET
+	0x007b 00123 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:378)	MOVQ	$1, "".~r8+56(SP)
+	0x0084 00132 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:378)	RET
+	0x0000 48 8b 44 24 18 48 8b 4c 24 10 48 89 c2 48 0f af  H.D$.H.L$.H..H..
+	0x0010 c1 48 8b 5c 24 08 48 29 c3 48 85 db 7f 5d 48 8b  .H.\$.H).H...]H.
+	0x0020 44 24 20 48 0f af c2 48 29 c1 48 85 c9 7d 42 8b  D$ H...H).H..}B.
+	0x0030 44 24 30 8b 4c 24 2c 89 c2 0f af c1 8b 5c 24 28  D$0.L$,......\$(
+	0x0040 29 c3 85 db 7c 21 8b 44 24 34 0f af c2 29 c1 85  )...|!.D$4...)..
+	0x0050 c9 7c 0a 48 c7 44 24 38 06 00 00 00 c3 48 c7 44  .|.H.D$8.....H.D
+	0x0060 24 38 00 00 00 00 c3 48 c7 44 24 38 05 00 00 00  $8.....H.D$8....
+	0x0070 c3 48 c7 44 24 38 02 00 00 00 c3 48 c7 44 24 38  .H.D$8.....H.D$8
+	0x0080 01 00 00 00 c3                                   .....
+"".CmpToZero_ex5<1> STEXT nosplit size=58 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:398)	TEXT	"".CmpToZero_ex5(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:398)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:398)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:400)	MOVL	"".f+12(SP), AX
+	0x0004 00004 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:400)	MOVL	"".e+8(SP), CX
+	0x0008 00008 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:400)	LEAL	(CX)(AX*2), CX
+	0x000b 00011 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:400)	TESTL	CX, CX
+	0x000d 00013 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:400)	JGT	48
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:405)	MOVL	"".u+16(SP), CX
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:405)	SHRL	$2, CX
+	0x0016 00022 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:405)	SUBL	CX, AX
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:405)	TESTL	AX, AX
+	0x001a 00026 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:405)	JLT	38
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:406)	MOVQ	$2, "".~r3+24(SP)
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:406)	RET
+	0x0026 00038 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:408)	MOVQ	$0, "".~r3+24(SP)
+	0x002f 00047 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:408)	RET
+	0x0030 00048 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:401)	MOVQ	$1, "".~r3+24(SP)
+	0x0039 00057 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:401)	RET
+	0x0000 8b 44 24 0c 8b 4c 24 08 8d 0c 41 85 c9 7f 21 8b  .D$..L$...A...!.
+	0x0010 4c 24 10 c1 e9 02 29 c8 85 c0 7c 0a 48 c7 44 24  L$....)...|.H.D$
+	0x0020 18 02 00 00 00 c3 48 c7 44 24 18 00 00 00 00 c3  ......H.D$......
+	0x0030 48 c7 44 24 18 01 00 00 00 c3                    H.D$......
+"".UintLtZero<1> STEXT nosplit size=10 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:410)	TEXT	"".UintLtZero(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:410)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:410)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:416)	MOVQ	$0, "".~r4+24(SP)
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:416)	RET
+	0x0000 48 c7 44 24 18 00 00 00 00 c3                    H.D$......
+"".UintGeqZero<1> STEXT nosplit size=10 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:419)	TEXT	"".UintGeqZero(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:419)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:419)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:423)	MOVQ	$1, "".~r4+24(SP)
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:423)	RET
+	0x0000 48 c7 44 24 18 01 00 00 00 c3                    H.D$......
+"".UintGtZero<1> STEXT nosplit size=57 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:428)	TEXT	"".UintGtZero(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:428)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:428)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	MOVBLZX	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	TESTB	AL, AL
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	JLS	19
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:431)	MOVQ	$1, "".~r4+24(SP)
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:431)	RET
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	MOVWLZX	"".b+10(SP), AX
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	TESTW	AX, AX
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	JHI	9
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	MOVL	"".c+12(SP), AX
+	0x0021 00033 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	TESTL	AX, AX
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	JHI	9
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	MOVQ	"".d+16(SP), AX
+	0x002a 00042 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	TESTQ	AX, AX
+	0x002d 00045 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:430)	JHI	9
+	0x002f 00047 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:433)	MOVQ	$0, "".~r4+24(SP)
+	0x0038 00056 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:433)	RET
+	0x0000 0f b6 44 24 08 84 c0 76 0a 48 c7 44 24 18 01 00  ..D$...v.H.D$...
+	0x0010 00 00 c3 0f b7 44 24 0a 66 85 c0 77 ec 8b 44 24  .....D$.f..w..D$
+	0x0020 0c 85 c0 77 e4 48 8b 44 24 10 48 85 c0 77 da 48  ...w.H.D$.H..w.H
+	0x0030 c7 44 24 18 00 00 00 00 c3                       .D$......
+"".UintLeqZero<1> STEXT nosplit size=57 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:436)	TEXT	"".UintLeqZero(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:436)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:436)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	MOVBLZX	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	TESTB	AL, AL
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	JHI	19
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:439)	MOVQ	$1, "".~r4+24(SP)
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:439)	RET
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	MOVWLZX	"".b+10(SP), AX
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	TESTW	AX, AX
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	JLS	9
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	MOVL	"".c+12(SP), AX
+	0x0021 00033 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	TESTL	AX, AX
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	JLS	9
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	MOVQ	"".d+16(SP), AX
+	0x002a 00042 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	TESTQ	AX, AX
+	0x002d 00045 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:438)	JLS	9
+	0x002f 00047 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:441)	MOVQ	$0, "".~r4+24(SP)
+	0x0038 00056 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:441)	RET
+	0x0000 0f b6 44 24 08 84 c0 77 0a 48 c7 44 24 18 01 00  ..D$...w.H.D$...
+	0x0010 00 00 c3 0f b7 44 24 0a 66 85 c0 76 ec 8b 44 24  .....D$.f..v..D$
+	0x0020 0c 85 c0 76 e4 48 8b 44 24 10 48 85 c0 76 da 48  ...v.H.D$.H..v.H
+	0x0030 c7 44 24 18 00 00 00 00 c3                       .D$......
+"".UintLtOne<1> STEXT nosplit size=60 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:444)	TEXT	"".UintLtOne(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:444)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:444)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	MOVBLZX	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	CMPB	AL, $1
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	JCC	19
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:447)	MOVQ	$1, "".~r4+24(SP)
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:447)	RET
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	MOVWLZX	"".b+10(SP), AX
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	CMPW	AX, $1
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	JCS	9
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	MOVL	"".c+12(SP), AX
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	CMPL	AX, $1
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	JCS	9
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	MOVQ	"".d+16(SP), AX
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	CMPQ	AX, $1
+	0x0030 00048 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:446)	JCS	9
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:449)	MOVQ	$0, "".~r4+24(SP)
+	0x003b 00059 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:449)	RET
+	0x0000 0f b6 44 24 08 3c 01 73 0a 48 c7 44 24 18 01 00  ..D$.<.s.H.D$...
+	0x0010 00 00 c3 0f b7 44 24 0a 66 83 f8 01 72 eb 8b 44  .....D$.f...r..D
+	0x0020 24 0c 83 f8 01 72 e2 48 8b 44 24 10 48 83 f8 01  $....r.H.D$.H...
+	0x0030 72 d7 48 c7 44 24 18 00 00 00 00 c3              r.H.D$......
+"".UintGeqOne<1> STEXT nosplit size=60 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:452)	TEXT	"".UintGeqOne(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:452)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:452)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	MOVBLZX	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	CMPB	AL, $1
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	JCS	19
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:455)	MOVQ	$1, "".~r4+24(SP)
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:455)	RET
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	MOVWLZX	"".b+10(SP), AX
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	CMPW	AX, $1
+	0x001c 00028 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	JCC	9
+	0x001e 00030 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	MOVL	"".c+12(SP), AX
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	CMPL	AX, $1
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	JCC	9
+	0x0027 00039 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	MOVQ	"".d+16(SP), AX
+	0x002c 00044 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	CMPQ	AX, $1
+	0x0030 00048 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:454)	JCC	9
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:457)	MOVQ	$0, "".~r4+24(SP)
+	0x003b 00059 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:457)	RET
+	0x0000 0f b6 44 24 08 3c 01 72 0a 48 c7 44 24 18 01 00  ..D$.<.r.H.D$...
+	0x0010 00 00 c3 0f b7 44 24 0a 66 83 f8 01 73 eb 8b 44  .....D$.f...s..D
+	0x0020 24 0c 83 f8 01 73 e2 48 8b 44 24 10 48 83 f8 01  $....s.H.D$.H...
+	0x0030 73 d7 48 c7 44 24 18 00 00 00 00 c3              s.H.D$......
+"".CmpToZeroU_ex1<1> STEXT nosplit size=87 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:460)	TEXT	"".CmpToZeroU_ex1(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:460)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:460)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:462)	MOVBLZX	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:462)	TESTB	AL, AL
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:462)	JHI	77
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:466)	MOVWLZX	"".b+10(SP), AX
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:466)	TESTW	AX, AX
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:466)	JHI	67
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:470)	MOVL	"".c+12(SP), AX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:470)	TESTL	AX, AX
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:470)	JHI	57
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:474)	MOVQ	"".d+16(SP), AX
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:474)	TESTQ	AX, AX
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:474)	JLS	47
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:475)	MOVQ	$1, "".~r4+24(SP)
+	0x002e 00046 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:475)	RET
+	0x002f 00047 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:477)	MOVQ	$0, "".~r4+24(SP)
+	0x0038 00056 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:477)	RET
+	0x0039 00057 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:471)	MOVQ	$1, "".~r4+24(SP)
+	0x0042 00066 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:471)	RET
+	0x0043 00067 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:467)	MOVQ	$1, "".~r4+24(SP)
+	0x004c 00076 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:467)	RET
+	0x004d 00077 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:463)	MOVQ	$1, "".~r4+24(SP)
+	0x0056 00086 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:463)	RET
+	0x0000 0f b6 44 24 08 84 c0 77 44 0f b7 44 24 0a 66 85  ..D$...wD..D$.f.
+	0x0010 c0 77 30 8b 44 24 0c 85 c0 77 1e 48 8b 44 24 10  .w0.D$...w.H.D$.
+	0x0020 48 85 c0 76 0a 48 c7 44 24 18 01 00 00 00 c3 48  H..v.H.D$......H
+	0x0030 c7 44 24 18 00 00 00 00 c3 48 c7 44 24 18 01 00  .D$......H.D$...
+	0x0040 00 00 c3 48 c7 44 24 18 01 00 00 00 c3 48 c7 44  ...H.D$......H.D
+	0x0050 24 18 01 00 00 00 c3                             $......
+"".CmpToZeroU_ex2<1> STEXT nosplit size=87 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:480)	TEXT	"".CmpToZeroU_ex2(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:480)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:480)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:482)	MOVBLZX	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:482)	TESTB	AL, AL
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:482)	JLS	77
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:486)	MOVWLZX	"".b+10(SP), AX
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:486)	TESTW	AX, AX
+	0x0011 00017 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:486)	JLS	67
+	0x0013 00019 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:490)	MOVL	"".c+12(SP), AX
+	0x0017 00023 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:490)	TESTL	AX, AX
+	0x0019 00025 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:490)	JLS	57
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:494)	MOVQ	"".d+16(SP), AX
+	0x0020 00032 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:494)	TESTQ	AX, AX
+	0x0023 00035 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:494)	JHI	47
+	0x0025 00037 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:495)	MOVQ	$1, "".~r4+24(SP)
+	0x002e 00046 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:495)	RET
+	0x002f 00047 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:497)	MOVQ	$0, "".~r4+24(SP)
+	0x0038 00056 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:497)	RET
+	0x0039 00057 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:491)	MOVQ	$1, "".~r4+24(SP)
+	0x0042 00066 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:491)	RET
+	0x0043 00067 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:487)	MOVQ	$1, "".~r4+24(SP)
+	0x004c 00076 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:487)	RET
+	0x004d 00077 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:483)	MOVQ	$1, "".~r4+24(SP)
+	0x0056 00086 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:483)	RET
+	0x0000 0f b6 44 24 08 84 c0 76 44 0f b7 44 24 0a 66 85  ..D$...vD..D$.f.
+	0x0010 c0 76 30 8b 44 24 0c 85 c0 76 1e 48 8b 44 24 10  .v0.D$...v.H.D$.
+	0x0020 48 85 c0 77 0a 48 c7 44 24 18 01 00 00 00 c3 48  H..w.H.D$......H
+	0x0030 c7 44 24 18 00 00 00 00 c3 48 c7 44 24 18 01 00  .D$......H.D$...
+	0x0040 00 00 c3 48 c7 44 24 18 01 00 00 00 c3 48 c7 44  ...H.D$......H.D
+	0x0050 24 18 01 00 00 00 c3                             $......
+"".CmpToOneU_ex1<1> STEXT nosplit size=90 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:500)	TEXT	"".CmpToOneU_ex1(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:500)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:500)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:502)	MOVBLZX	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:502)	CMPB	AL, $1
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:502)	JCS	80
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:506)	MOVWLZX	"".b+10(SP), AX
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:506)	CMPW	AX, $1
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:506)	JCS	70
+	0x0014 00020 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:510)	MOVL	"".c+12(SP), AX
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:510)	CMPL	AX, $1
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:510)	JCS	60
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:514)	MOVQ	"".d+16(SP), AX
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:514)	CMPQ	AX, $1
+	0x0026 00038 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:514)	JCC	50
+	0x0028 00040 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:515)	MOVQ	$1, "".~r4+24(SP)
+	0x0031 00049 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:515)	RET
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:517)	MOVQ	$0, "".~r4+24(SP)
+	0x003b 00059 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:517)	RET
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:511)	MOVQ	$1, "".~r4+24(SP)
+	0x0045 00069 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:511)	RET
+	0x0046 00070 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:507)	MOVQ	$1, "".~r4+24(SP)
+	0x004f 00079 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:507)	RET
+	0x0050 00080 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:503)	MOVQ	$1, "".~r4+24(SP)
+	0x0059 00089 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:503)	RET
+	0x0000 0f b6 44 24 08 3c 01 72 47 0f b7 44 24 0a 66 83  ..D$.<.rG..D$.f.
+	0x0010 f8 01 72 32 8b 44 24 0c 83 f8 01 72 1f 48 8b 44  ..r2.D$....r.H.D
+	0x0020 24 10 48 83 f8 01 73 0a 48 c7 44 24 18 01 00 00  $.H...s.H.D$....
+	0x0030 00 c3 48 c7 44 24 18 00 00 00 00 c3 48 c7 44 24  ..H.D$......H.D$
+	0x0040 18 01 00 00 00 c3 48 c7 44 24 18 01 00 00 00 c3  ......H.D$......
+	0x0050 48 c7 44 24 18 01 00 00 00 c3                    H.D$......
+"".CmpToOneU_ex2<1> STEXT nosplit size=90 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:520)	TEXT	"".CmpToOneU_ex2(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:520)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:520)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:522)	MOVBLZX	"".a+8(SP), AX
+	0x0005 00005 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:522)	CMPB	AL, $1
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:522)	JCC	80
+	0x0009 00009 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:526)	MOVWLZX	"".b+10(SP), AX
+	0x000e 00014 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:526)	CMPW	AX, $1
+	0x0012 00018 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:526)	JCC	70
+	0x0014 00020 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:530)	MOVL	"".c+12(SP), AX
+	0x0018 00024 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:530)	CMPL	AX, $1
+	0x001b 00027 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:530)	JCC	60
+	0x001d 00029 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:534)	MOVQ	"".d+16(SP), AX
+	0x0022 00034 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:534)	CMPQ	AX, $1
+	0x0026 00038 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:534)	JCS	50
+	0x0028 00040 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:535)	MOVQ	$1, "".~r4+24(SP)
+	0x0031 00049 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:535)	RET
+	0x0032 00050 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:537)	MOVQ	$0, "".~r4+24(SP)
+	0x003b 00059 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:537)	RET
+	0x003c 00060 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:531)	MOVQ	$1, "".~r4+24(SP)
+	0x0045 00069 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:531)	RET
+	0x0046 00070 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:527)	MOVQ	$1, "".~r4+24(SP)
+	0x004f 00079 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:527)	RET
+	0x0050 00080 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:523)	MOVQ	$1, "".~r4+24(SP)
+	0x0059 00089 (/home/laijh/go/src/source-notes/go1.16/test/codegen/comparisons.go:523)	RET
+	0x0000 0f b6 44 24 08 3c 01 73 47 0f b7 44 24 0a 66 83  ..D$.<.sG..D$.f.
+	0x0010 f8 01 73 32 8b 44 24 0c 83 f8 01 73 1f 48 8b 44  ..s2.D$....s.H.D
+	0x0020 24 10 48 83 f8 01 72 0a 48 c7 44 24 18 01 00 00  $.H...r.H.D$....
+	0x0030 00 c3 48 c7 44 24 18 00 00 00 00 c3 48 c7 44 24  ..H.D$......H.D$
+	0x0040 18 01 00 00 00 c3 48 c7 44 24 18 01 00 00 00 c3  ......H.D$......
+	0x0050 48 c7 44 24 18 01 00 00 00 c3                    H.D$......
+go.cuinfo.packagename.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 63 6f 64 65 67 65 6e                             codegen
+runtime.memequal64·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal64<1>+0
+runtime.gcbits.01<0> SRODATA dupok size=1
+	0x0000 01                                               .
+type..namedata.**int-<0> SRODATA dupok size=8
+	0x0000 00 00 05 2a 2a 69 6e 74                          ...**int
+type.**int<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 75 9c 95 05 08 08 08 36 00 00 00 00 00 00 00 00  u......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.**int-<0>+0
+	rel 48+8 t=1 type.*int<0>+0
+type..namedata.*[]int8-<0> SRODATA dupok size=10
+	0x0000 00 00 07 2a 5b 5d 69 6e 74 38                    ...*[]int8
+type.*[]int8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 79 41 cb 25 08 08 08 36 00 00 00 00 00 00 00 00  yA.%...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]int8-<0>+0
+	rel 48+8 t=1 type.[]int8<0>+0
+type.[]int8<0> SRODATA dupok size=56
+	0x0000 18 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 62 1d c3 30 02 08 08 17 00 00 00 00 00 00 00 00  b..0............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]int8-<0>+0
+	rel 44+4 t=6 type.*[]int8<0>+0
+	rel 48+8 t=1 type.int8<0>+0
+type..eqfunc12<0> SRODATA dupok size=16
+	0x0000 00 00 00 00 00 00 00 00 0c 00 00 00 00 00 00 00  ................
+	rel 0+8 t=1 runtime.memequal_varlen<0>+0
+type..namedata.*[12]int8-<0> SRODATA dupok size=12
+	0x0000 00 00 09 2a 5b 31 32 5d 69 6e 74 38              ...*[12]int8
+type.*[12]int8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 1b cb 93 5b 08 08 08 36 00 00 00 00 00 00 00 00  ...[...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[12]int8-<0>+0
+	rel 48+8 t=1 type.[12]int8<0>+0
+runtime.gcbits.<0> SRODATA dupok size=0
+type.[12]int8<0> SRODATA dupok size=72
+	0x0000 0c 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 a7 ab 33 77 0a 01 01 11 00 00 00 00 00 00 00 00  ..3w............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 0c 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc12<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[12]int8-<0>+0
+	rel 44+4 t=6 type.*[12]int8<0>+0
+	rel 48+8 t=1 type.int8<0>+0
+	rel 56+8 t=1 type.[]int8<0>+0
+type..namedata.*[]uint8-<0> SRODATA dupok size=11
+	0x0000 00 00 08 2a 5b 5d 75 69 6e 74 38                 ...*[]uint8
+type.*[]uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 a5 8e d0 69 08 08 08 36 00 00 00 00 00 00 00 00  ...i...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]uint8-<0>+0
+	rel 48+8 t=1 type.[]uint8<0>+0
+type.[]uint8<0> SRODATA dupok size=56
+	0x0000 18 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 df 7e 2e 38 02 08 08 17 00 00 00 00 00 00 00 00  .~.8............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]uint8-<0>+0
+	rel 44+4 t=6 type.*[]uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+type..eqfunc15<0> SRODATA dupok size=16
+	0x0000 00 00 00 00 00 00 00 00 0f 00 00 00 00 00 00 00  ................
+	rel 0+8 t=1 runtime.memequal_varlen<0>+0
+type..namedata.*[15]uint8-<0> SRODATA dupok size=13
+	0x0000 00 00 0a 2a 5b 31 35 5d 75 69 6e 74 38           ...*[15]uint8
+type.*[15]uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 3f 84 a5 e5 08 08 08 36 00 00 00 00 00 00 00 00  ?......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[15]uint8-<0>+0
+	rel 48+8 t=1 type.[15]uint8<0>+0
+type.[15]uint8<0> SRODATA dupok size=72
+	0x0000 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 d1 0b b5 28 0a 01 01 11 00 00 00 00 00 00 00 00  ...(............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 0f 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc15<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[15]uint8-<0>+0
+	rel 44+4 t=6 type.*[15]uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+	rel 56+8 t=1 type.[]uint8<0>+0
+runtime.memequal16·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal16<1>+0
+type..namedata.*[2]uint8-<0> SRODATA dupok size=12
+	0x0000 00 00 09 2a 5b 32 5d 75 69 6e 74 38              ...*[2]uint8
+type.*[2]uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 02 9e fe b0 08 08 08 36 00 00 00 00 00 00 00 00  .......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[2]uint8-<0>+0
+	rel 48+8 t=1 type.[2]uint8<0>+0
+type.[2]uint8<0> SRODATA dupok size=72
+	0x0000 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 a2 81 fb 46 0a 01 01 11 00 00 00 00 00 00 00 00  ...F............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 02 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal16·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[2]uint8-<0>+0
+	rel 44+4 t=6 type.*[2]uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+	rel 56+8 t=1 type.[]uint8<0>+0
+type..namedata.*[]int16-<0> SRODATA dupok size=11
+	0x0000 00 00 08 2a 5b 5d 69 6e 74 31 36                 ...*[]int16
+type.*[]int16<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 23 59 62 62 08 08 08 36 00 00 00 00 00 00 00 00  #Ybb...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]int16-<0>+0
+	rel 48+8 t=1 type.[]int16<0>+0
+type.[]int16<0> SRODATA dupok size=56
+	0x0000 18 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 0c d0 37 82 02 08 08 17 00 00 00 00 00 00 00 00  ..7.............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]int16-<0>+0
+	rel 44+4 t=6 type.*[]int16<0>+0
+	rel 48+8 t=1 type.int16<0>+0
+type..eqfunc6<0> SRODATA dupok size=16
+	0x0000 00 00 00 00 00 00 00 00 06 00 00 00 00 00 00 00  ................
+	rel 0+8 t=1 runtime.memequal_varlen<0>+0
+type..namedata.*[3]int16-<0> SRODATA dupok size=12
+	0x0000 00 00 09 2a 5b 33 5d 69 6e 74 31 36              ...*[3]int16
+type.*[3]int16<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 8f f6 d3 e6 08 08 08 36 00 00 00 00 00 00 00 00  .......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[3]int16-<0>+0
+	rel 48+8 t=1 type.[3]int16<0>+0
+type.[3]int16<0> SRODATA dupok size=72
+	0x0000 06 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 a6 0b 18 d9 0a 02 02 11 00 00 00 00 00 00 00 00  ................
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 03 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc6<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[3]int16-<0>+0
+	rel 44+4 t=6 type.*[3]int16<0>+0
+	rel 48+8 t=1 type.int16<0>+0
+	rel 56+8 t=1 type.[]int16<0>+0
+type..namedata.*[]uint16-<0> SRODATA dupok size=12
+	0x0000 00 00 09 2a 5b 5d 75 69 6e 74 31 36              ...*[]uint16
+type.*[]uint16<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 5f 18 a0 4c 08 08 08 36 00 00 00 00 00 00 00 00  _..L...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]uint16-<0>+0
+	rel 48+8 t=1 type.[]uint16<0>+0
+type.[]uint16<0> SRODATA dupok size=56
+	0x0000 18 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 e7 8e e3 20 02 08 08 17 00 00 00 00 00 00 00 00  ... ............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]uint16-<0>+0
+	rel 44+4 t=6 type.*[]uint16<0>+0
+	rel 48+8 t=1 type.uint16<0>+0
+type..namedata.*[3]uint16-<0> SRODATA dupok size=13
+	0x0000 00 00 0a 2a 5b 33 5d 75 69 6e 74 31 36           ...*[3]uint16
+type.*[3]uint16<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 43 9d 01 6a 08 08 08 36 00 00 00 00 00 00 00 00  C..j...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[3]uint16-<0>+0
+	rel 48+8 t=1 type.[3]uint16<0>+0
+type.[3]uint16<0> SRODATA dupok size=72
+	0x0000 06 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 df 71 7c 2e 0a 02 02 11 00 00 00 00 00 00 00 00  .q|.............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 03 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc6<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[3]uint16-<0>+0
+	rel 44+4 t=6 type.*[3]uint16<0>+0
+	rel 48+8 t=1 type.uint16<0>+0
+	rel 56+8 t=1 type.[]uint16<0>+0
+type..namedata.*[]int-<0> SRODATA dupok size=9
+	0x0000 00 00 06 2a 5b 5d 69 6e 74                       ...*[]int
+type.*[]int<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 1b 31 52 88 08 08 08 36 00 00 00 00 00 00 00 00  .1R....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]int-<0>+0
+	rel 48+8 t=1 type.[]int<0>+0
+type.[]int<0> SRODATA dupok size=56
+	0x0000 18 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 8e 66 f9 1b 02 08 08 17 00 00 00 00 00 00 00 00  .f..............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]int-<0>+0
+	rel 44+4 t=6 type.*[]int<0>+0
+	rel 48+8 t=1 type.int<0>+0
+type..importpath.unsafe.<0> SRODATA dupok size=9
+	0x0000 00 00 06 75 6e 73 61 66 65                       ...unsafe
+gclocals·1a65e721a2ccc325b382662e7ffee780<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 01 00 00 00 01 00                    ..........
+gclocals·69c1753bd5f81501d95132d08af04464<0> SRODATA dupok size=8
+	0x0000 02 00 00 00 00 00 00 00                          ........
+gclocals·33cdeccccebe80329f1fdbee7f5874cb<0> SRODATA dupok size=8
+	0x0000 01 00 00 00 00 00 00 00                          ........
+gclocals·dc9b0298814590ca3ffc3a889546fc8b<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 02 00 00 00 03 00                    ..........
+gclocals·09cf9819fc716118c209c2d2155a3632<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 02 00 00 00 02 00                    ..........
+aux for "".CompareString1<0> SDWARFLOC size=58
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 22 00 00 00 00 00 00 00  ........".......
+	0x0020 08 00 91 08 93 08 91 08 93 08 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".CompareString1<1>+0
+aux for "".CompareString1<0> SDWARFLINES size=27
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 13 14  ................
+	0x0010 06 41 06 cd 06 37 02 06 00 01 01                 .A...7.....
+	rel 3+8 t=1 "".CompareString1<1>+0
+aux for "".CompareString1<0> SDWARFFCN size=88
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 6d 70 61 72 65 53  guments.CompareS
+	0x0020 74 72 69 6e 67 31 00 00 00 00 00 00 00 00 00 00  tring1..........
+	0x0030 00 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 73  ...............s
+	0x0040 00 00 14 00 00 00 00 00 00 00 00 0f 7e 72 31 00  ............~r1.
+	0x0050 01 14 00 00 00 00 00 00                          ........
+	rel 0+0 t=24 type.bool<0>+0
+	rel 39+8 t=1 "".CompareString1<1>+0
+	rel 47+8 t=1 "".CompareString1<1>+34
+	rel 67+4 t=31 go.info.string<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 82+4 t=31 go.info.bool<0>+0
+aux for "".CompareString2<0> SDWARFLOC size=58
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 22 00 00 00 00 00 00 00  ........".......
+	0x0020 08 00 91 08 93 08 91 08 93 08 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".CompareString2<1>+0
+aux for "".CompareString2<0> SDWARFLINES size=27
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 1b 14  ................
+	0x0010 06 41 06 d7 06 37 02 05 00 01 01                 .A...7.....
+	rel 3+8 t=1 "".CompareString2<1>+0
+aux for "".CompareString2<0> SDWARFFCN size=88
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 6d 70 61 72 65 53  guments.CompareS
+	0x0020 74 72 69 6e 67 32 00 00 00 00 00 00 00 00 00 00  tring2..........
+	0x0030 00 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 73  ...............s
+	0x0040 00 00 1c 00 00 00 00 00 00 00 00 0f 7e 72 31 00  ............~r1.
+	0x0050 01 1c 00 00 00 00 00 00                          ........
+	rel 0+0 t=24 type.bool<0>+0
+	rel 39+8 t=1 "".CompareString2<1>+0
+	rel 47+8 t=1 "".CompareString2<1>+34
+	rel 67+4 t=31 go.info.string<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 82+4 t=31 go.info.bool<0>+0
+aux for "".CompareString3<0> SDWARFLOC size=58
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 29 00 00 00 00 00 00 00  ........).......
+	0x0020 08 00 91 08 93 08 91 08 93 08 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".CompareString3<1>+0
+aux for "".CompareString3<0> SDWARFLINES size=28
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 24 14  ..............$.
+	0x0010 06 41 06 08 2d 06 37 02 05 00 01 01              .A..-.7.....
+	rel 3+8 t=1 "".CompareString3<1>+0
+aux for "".CompareString3<0> SDWARFFCN size=88
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 6d 70 61 72 65 53  guments.CompareS
+	0x0020 74 72 69 6e 67 33 00 00 00 00 00 00 00 00 00 00  tring3..........
+	0x0030 00 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 73  ...............s
+	0x0040 00 00 24 00 00 00 00 00 00 00 00 0f 7e 72 31 00  ..$.........~r1.
+	0x0050 01 24 00 00 00 00 00 00                          .$......
+	rel 0+0 t=24 type.bool<0>+0
+	rel 39+8 t=1 "".CompareString3<1>+0
+	rel 47+8 t=1 "".CompareString3<1>+41
+	rel 67+4 t=31 go.info.string<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 82+4 t=31 go.info.bool<0>+0
+aux for "".CompareArray1<0> SDWARFLINES size=25
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 0a 03 29  ...............)
+	0x0010 14 a0 06 41 02 1e 00 01 01                       ...A.....
+	rel 3+8 t=1 "".CompareArray1<1>+0
+aux for "".CompareArray1<0> SDWARFFCN size=97
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 6d 70 61 72 65 41  guments.CompareA
+	0x0020 72 72 61 79 31 00 00 00 00 00 00 00 00 00 00 00  rray1...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0f 61 00  ..............a.
+	0x0040 00 2f 00 00 00 00 01 9c 0f 62 00 00 2f 00 00 00  ./.......b../...
+	0x0050 00 02 91 02 0f 7e 72 32 00 01 2f 00 00 00 00 00  .....~r2../.....
+	0x0060 00                                               .
+	rel 0+0 t=24 type.bool<0>+0
+	rel 38+8 t=1 "".CompareArray1<1>+0
+	rel 46+8 t=1 "".CompareArray1<1>+49
+	rel 66+4 t=31 go.info.[2]uint8<0>+0
+	rel 77+4 t=31 go.info.[2]uint8<0>+0
+	rel 91+4 t=31 go.info.bool<0>+0
+aux for "".CompareArray2<0> SDWARFLINES size=31
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 0a 03 31  ...............1
+	0x0010 14 9e 06 37 06 02 1a ff 06 37 02 0e 00 01 01     ...7.....7.....
+	rel 3+8 t=1 "".CompareArray2<1>+0
+aux for "".CompareArray2<0> SDWARFFCN size=97
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 6d 70 61 72 65 41  guments.CompareA
+	0x0020 72 72 61 79 32 00 00 00 00 00 00 00 00 00 00 00  rray2...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0f 61 00  ..............a.
+	0x0040 00 37 00 00 00 00 01 9c 0f 62 00 00 37 00 00 00  .7.......b..7...
+	0x0050 00 02 91 06 0f 7e 72 32 00 01 37 00 00 00 00 00  .....~r2..7.....
+	0x0060 00                                               .
+	rel 0+0 t=24 type.bool<0>+0
+	rel 38+8 t=1 "".CompareArray2<1>+0
+	rel 46+8 t=1 "".CompareArray2<1>+86
+	rel 66+4 t=31 go.info.[3]uint16<0>+0
+	rel 77+4 t=31 go.info.[3]uint16<0>+0
+	rel 91+4 t=31 go.info.bool<0>+0
+aux for "".CompareArray3<0> SDWARFLINES size=31
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 0a 03 37  ...............7
+	0x0010 14 9e 06 37 06 02 1a ff 06 37 02 0e 00 01 01     ...7.....7.....
+	rel 3+8 t=1 "".CompareArray3<1>+0
+aux for "".CompareArray3<0> SDWARFFCN size=97
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 6d 70 61 72 65 41  guments.CompareA
+	0x0020 72 72 61 79 33 00 00 00 00 00 00 00 00 00 00 00  rray3...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0f 61 00  ..............a.
+	0x0040 00 3d 00 00 00 00 01 9c 0f 62 00 00 3d 00 00 00  .=.......b..=...
+	0x0050 00 02 91 06 0f 7e 72 32 00 01 3d 00 00 00 00 00  .....~r2..=.....
+	0x0060 00                                               .
+	rel 0+0 t=24 type.bool<0>+0
+	rel 38+8 t=1 "".CompareArray3<1>+0
+	rel 46+8 t=1 "".CompareArray3<1>+86
+	rel 66+4 t=31 go.info.[3]int16<0>+0
+	rel 77+4 t=31 go.info.[3]int16<0>+0
+	rel 91+4 t=31 go.info.bool<0>+0
+aux for "".CompareArray4<0> SDWARFLINES size=30
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 0a 03 3d  ...............=
+	0x0010 14 9e 06 41 06 08 ff 06 37 02 0e 00 01 01        ...A....7.....
+	rel 3+8 t=1 "".CompareArray4<1>+0
+aux for "".CompareArray4<0> SDWARFFCN size=97
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 6d 70 61 72 65 41  guments.CompareA
+	0x0020 72 72 61 79 34 00 00 00 00 00 00 00 00 00 00 00  rray4...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0f 61 00  ..............a.
+	0x0040 00 43 00 00 00 00 01 9c 0f 62 00 00 43 00 00 00  .C.......b..C...
+	0x0050 00 02 91 0c 0f 7e 72 32 00 01 43 00 00 00 00 00  .....~r2..C.....
+	0x0060 00                                               .
+	rel 0+0 t=24 type.bool<0>+0
+	rel 38+8 t=1 "".CompareArray4<1>+0
+	rel 46+8 t=1 "".CompareArray4<1>+85
+	rel 66+4 t=31 go.info.[12]int8<0>+0
+	rel 77+4 t=31 go.info.[12]int8<0>+0
+	rel 91+4 t=31 go.info.bool<0>+0
+aux for "".CompareArray5<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 0a 03 c3  ................
+	0x0010 00 14 9d 06 41 06 02 3e ff 06 37 02 0e 00 01 01  ....A..>..7.....
+	rel 3+8 t=1 "".CompareArray5<1>+0
+aux for "".CompareArray5<0> SDWARFFCN size=97
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 6d 70 61 72 65 41  guments.CompareA
+	0x0020 72 72 61 79 35 00 00 00 00 00 00 00 00 00 00 00  rray5...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0f 61 00  ..............a.
+	0x0040 00 49 00 00 00 00 01 9c 0f 62 00 00 49 00 00 00  .I.......b..I...
+	0x0050 00 02 91 0f 0f 7e 72 32 00 01 49 00 00 00 00 00  .....~r2..I.....
+	0x0060 00                                               .
+	rel 0+0 t=24 type.bool<0>+0
+	rel 38+8 t=1 "".CompareArray5<1>+0
+	rel 46+8 t=1 "".CompareArray5<1>+123
+	rel 66+4 t=31 go.info.[15]uint8<0>+0
+	rel 77+4 t=31 go.info.[15]uint8<0>+0
+	rel 91+4 t=31 go.info.bool<0>+0
+aux for "".CompareArray6<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 14 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".CompareArray6<1>+0
+	rel 59+8 t=1 "".CompareArray6<1>+0
+aux for "".CompareArray6<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 ce 00  ................
+	0x0010 14 06 41 02 0f 00 01 01                          ..A.....
+	rel 3+8 t=1 "".CompareArray6<1>+0
+aux for "".CompareArray6<0> SDWARFFCN size=100
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 6d 70 61 72 65 41  guments.CompareA
+	0x0020 72 72 61 79 36 00 00 00 00 00 00 00 00 00 00 00  rray6...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 61 00  ..............a.
+	0x0040 00 4f 00 00 00 00 00 00 00 00 10 62 00 00 4f 00  .O.........b..O.
+	0x0050 00 00 00 00 00 00 00 0f 7e 72 32 00 01 4f 00 00  ........~r2..O..
+	0x0060 00 00 00 00                                      ....
+	rel 0+0 t=24 type.bool<0>+0
+	rel 38+8 t=1 "".CompareArray6<1>+0
+	rel 46+8 t=1 "".CompareArray6<1>+20
+	rel 66+4 t=31 go.info.unsafe.Pointer<0>+0
+	rel 70+4 t=31 <0>+0
+	rel 79+4 t=31 go.info.unsafe.Pointer<0>+0
+	rel 83+4 t=31 <0>+51
+	rel 94+4 t=31 go.info.bool<0>+0
+aux for "".CmpFold<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 0d 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".CmpFold<1>+0
+aux for "".CmpFold<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 d9 00  ................
+	0x0010 14 06 37 02 09 00 01 01                          ..7.....
+	rel 3+8 t=1 "".CmpFold<1>+0
+aux for "".CmpFold<0> SDWARFFCN size=81
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 46 6f 6c 64 00  guments.CmpFold.
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 01 9c 02 00 00 00 01 10 78 00 00 5d 00 00 00 00  ........x..]....
+	0x0040 00 00 00 00 0f 7e 72 31 00 01 5d 00 00 00 00 00  .....~r1..].....
+	0x0050 00                                               .
+	rel 0+0 t=24 type.bool<0>+0
+	rel 32+8 t=1 "".CmpFold<1>+0
+	rel 40+8 t=1 "".CmpFold<1>+13
+	rel 60+4 t=31 go.info.uint32<0>+0
+	rel 64+4 t=31 <0>+0
+	rel 75+4 t=31 go.info.bool<0>+0
+aux for "".CmpMem1<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 13 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 13 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".CmpMem1<1>+0
+	rel 59+8 t=1 "".CmpMem1<1>+0
+aux for "".CmpMem1<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 e1 00  ................
+	0x0010 14 06 41 02 0e 00 01 01                          ..A.....
+	rel 3+8 t=1 "".CmpMem1<1>+0
+aux for "".CmpMem1<0> SDWARFFCN size=94
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 4d 65 6d 31 00  guments.CmpMem1.
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 01 9c 02 00 00 00 01 10 70 00 00 65 00 00 00 00  ........p..e....
+	0x0040 00 00 00 00 10 71 00 00 65 00 00 00 00 00 00 00  .....q..e.......
+	0x0050 00 0f 7e 72 32 00 01 65 00 00 00 00 00 00        ..~r2..e......
+	rel 0+0 t=24 type.bool<0>+0
+	rel 32+8 t=1 "".CmpMem1<1>+0
+	rel 40+8 t=1 "".CmpMem1<1>+19
+	rel 60+4 t=31 go.info.int<0>+0
+	rel 64+4 t=31 <0>+0
+	rel 73+4 t=31 go.info.*int<0>+0
+	rel 77+4 t=31 <0>+51
+	rel 88+4 t=31 go.info.bool<0>+0
+aux for "".CmpMem2<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 13 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 13 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".CmpMem2<1>+0
+	rel 59+8 t=1 "".CmpMem2<1>+0
+aux for "".CmpMem2<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 e6 00  ................
+	0x0010 14 06 41 02 0e 00 01 01                          ..A.....
+	rel 3+8 t=1 "".CmpMem2<1>+0
+aux for "".CmpMem2<0> SDWARFFCN size=94
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 4d 65 6d 32 00  guments.CmpMem2.
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 01 9c 02 00 00 00 01 10 70 00 00 6a 00 00 00 00  ........p..j....
+	0x0040 00 00 00 00 10 71 00 00 6a 00 00 00 00 00 00 00  .....q..j.......
+	0x0050 00 0f 7e 72 32 00 01 6a 00 00 00 00 00 00        ..~r2..j......
+	rel 0+0 t=24 type.bool<0>+0
+	rel 32+8 t=1 "".CmpMem2<1>+0
+	rel 40+8 t=1 "".CmpMem2<1>+19
+	rel 60+4 t=31 go.info.*int<0>+0
+	rel 64+4 t=31 <0>+0
+	rel 73+4 t=31 go.info.int<0>+0
+	rel 77+4 t=31 <0>+51
+	rel 88+4 t=31 go.info.bool<0>+0
+aux for "".CmpMem3<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 0f 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".CmpMem3<1>+0
+aux for "".CmpMem3<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 eb 00  ................
+	0x0010 14 06 41 02 0a 00 01 01                          ..A.....
+	rel 3+8 t=1 "".CmpMem3<1>+0
+aux for "".CmpMem3<0> SDWARFFCN size=81
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 4d 65 6d 33 00  guments.CmpMem3.
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 01 9c 02 00 00 00 01 10 70 00 00 6f 00 00 00 00  ........p..o....
+	0x0040 00 00 00 00 0f 7e 72 31 00 01 6f 00 00 00 00 00  .....~r1..o.....
+	0x0050 00                                               .
+	rel 0+0 t=24 type.bool<0>+0
+	rel 32+8 t=1 "".CmpMem3<1>+0
+	rel 40+8 t=1 "".CmpMem3<1>+15
+	rel 60+4 t=31 go.info.*int<0>+0
+	rel 64+4 t=31 <0>+0
+	rel 75+4 t=31 go.info.bool<0>+0
+aux for "".CmpMem4<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 0f 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".CmpMem4<1>+0
+aux for "".CmpMem4<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 f0 00  ................
+	0x0010 14 06 41 02 0a 00 01 01                          ..A.....
+	rel 3+8 t=1 "".CmpMem4<1>+0
+aux for "".CmpMem4<0> SDWARFFCN size=81
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 4d 65 6d 34 00  guments.CmpMem4.
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 01 9c 02 00 00 00 01 10 70 00 00 74 00 00 00 00  ........p..t....
+	0x0040 00 00 00 00 0f 7e 72 31 00 01 74 00 00 00 00 00  .....~r1..t.....
+	0x0050 00                                               .
+	rel 0+0 t=24 type.bool<0>+0
+	rel 32+8 t=1 "".CmpMem4<1>+0
+	rel 40+8 t=1 "".CmpMem4<1>+15
+	rel 60+4 t=31 go.info.*int<0>+0
+	rel 64+4 t=31 <0>+0
+	rel 75+4 t=31 go.info.bool<0>+0
+aux for "".CmpMem5<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 4e 00 00 00 00 00 00 00  ........N.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".CmpMem5<1>+0
+aux for "".CmpMem5<0> SDWARFLINES size=33
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 f3 00  ................
+	0x0010 14 0a a5 89 06 41 06 c4 06 68 06 85 02 07 00 01  .....A...h......
+	0x0020 01                                               .
+	rel 3+8 t=1 "".CmpMem5<1>+0
+aux for "".CmpMem5<0> SDWARFFCN size=69
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 4d 65 6d 35 00  guments.CmpMem5.
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 01 9c 02 00 00 00 01 10 70 00 00 79 00 00 00 00  ........p..y....
+	0x0040 00 00 00 00 00                                   .....
+	rel 32+8 t=1 "".CmpMem5<1>+0
+	rel 40+8 t=1 "".CmpMem5<1>+78
+	rel 60+4 t=31 go.info.**int<0>+0
+	rel 64+4 t=31 <0>+0
+aux for "".CmpMem6<0> SDWARFLOC size=58
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 69 00 00 00 00 00 00 00  ........i.......
+	0x0020 08 00 91 08 93 08 91 08 93 08 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".CmpMem6<1>+0
+aux for "".CmpMem6<0> SDWARFLINES size=38
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 0a 03 f8  ................
+	0x0010 00 14 9e 06 41 06 08 2e 06 69 06 75 06 69 70 06  ....A....i.u.ip.
+	0x0020 d7 02 01 00 01 01                                ......
+	rel 3+8 t=1 "".CmpMem6<1>+0
+aux for "".CmpMem6<0> SDWARFFCN size=81
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 4d 65 6d 36 00  guments.CmpMem6.
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 01 9c 02 00 00 00 01 10 61 00 00 7e 00 00 00 00  ........a..~....
+	0x0040 00 00 00 00 0f 7e 72 31 00 01 7e 00 00 00 00 00  .....~r1..~.....
+	0x0050 00                                               .
+	rel 0+0 t=24 type.int<0>+0
+	rel 32+8 t=1 "".CmpMem6<1>+0
+	rel 40+8 t=1 "".CmpMem6<1>+105
+	rel 60+4 t=31 go.info.[]int<0>+0
+	rel 64+4 t=31 <0>+0
+	rel 75+4 t=31 go.info.int<0>+0
+aux for "".CmpZero1<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 15 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 15 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".CmpZero1<1>+0
+	rel 59+8 t=1 "".CmpZero1<1>+0
+aux for "".CmpZero1<0> SDWARFLINES size=28
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 85 01  ................
+	0x0010 14 06 37 06 38 06 41 02 08 00 01 01              ..7.8.A.....
+	rel 3+8 t=1 "".CmpZero1<1>+0
+aux for "".CmpZero1<0> SDWARFFCN size=87
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 5a 65 72 6f 31  guments.CmpZero1
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 01 9c 02 00 00 00 01 10 61 00 00 8a 01 00 00  .........a......
+	0x0040 00 00 00 00 00 00 10 70 74 72 00 00 8a 01 00 00  .......ptr......
+	0x0050 00 00 00 00 00 00 00                             .......
+	rel 33+8 t=1 "".CmpZero1<1>+0
+	rel 41+8 t=1 "".CmpZero1<1>+21
+	rel 62+4 t=31 go.info.int32<0>+0
+	rel 66+4 t=31 <0>+0
+	rel 78+4 t=31 go.info.*int<0>+0
+	rel 82+4 t=31 <0>+51
+aux for "".CmpZero2<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 17 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 17 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".CmpZero2<1>+0
+	rel 59+8 t=1 "".CmpZero2<1>+0
+aux for "".CmpZero2<0> SDWARFLINES size=28
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 8b 01  ................
+	0x0010 14 06 41 06 42 06 41 02 08 00 01 01              ..A.B.A.....
+	rel 3+8 t=1 "".CmpZero2<1>+0
+aux for "".CmpZero2<0> SDWARFFCN size=87
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 5a 65 72 6f 32  guments.CmpZero2
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 01 9c 02 00 00 00 01 10 61 00 00 90 01 00 00  .........a......
+	0x0040 00 00 00 00 00 00 10 70 74 72 00 00 90 01 00 00  .......ptr......
+	0x0050 00 00 00 00 00 00 00                             .......
+	rel 33+8 t=1 "".CmpZero2<1>+0
+	rel 41+8 t=1 "".CmpZero2<1>+23
+	rel 62+4 t=31 go.info.int64<0>+0
+	rel 66+4 t=31 <0>+0
+	rel 78+4 t=31 go.info.*int<0>+0
+	rel 82+4 t=31 <0>+51
+aux for "".CmpZero3<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 15 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 15 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".CmpZero3<1>+0
+	rel 59+8 t=1 "".CmpZero3<1>+0
+aux for "".CmpZero3<0> SDWARFLINES size=28
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 91 01  ................
+	0x0010 14 06 37 06 38 06 41 02 08 00 01 01              ..7.8.A.....
+	rel 3+8 t=1 "".CmpZero3<1>+0
+aux for "".CmpZero3<0> SDWARFFCN size=87
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 5a 65 72 6f 33  guments.CmpZero3
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 01 9c 02 00 00 00 01 10 61 00 00 96 01 00 00  .........a......
+	0x0040 00 00 00 00 00 00 10 70 74 72 00 00 96 01 00 00  .......ptr......
+	0x0050 00 00 00 00 00 00 00                             .......
+	rel 33+8 t=1 "".CmpZero3<1>+0
+	rel 41+8 t=1 "".CmpZero3<1>+21
+	rel 62+4 t=31 go.info.int32<0>+0
+	rel 66+4 t=31 <0>+0
+	rel 78+4 t=31 go.info.*int<0>+0
+	rel 82+4 t=31 <0>+51
+aux for "".CmpZero4<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 17 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 17 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".CmpZero4<1>+0
+	rel 59+8 t=1 "".CmpZero4<1>+0
+aux for "".CmpZero4<0> SDWARFLINES size=28
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 97 01  ................
+	0x0010 14 06 41 06 42 06 41 02 08 00 01 01              ..A.B.A.....
+	rel 3+8 t=1 "".CmpZero4<1>+0
+aux for "".CmpZero4<0> SDWARFFCN size=87
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 5a 65 72 6f 34  guments.CmpZero4
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 01 9c 02 00 00 00 01 10 61 00 00 9c 01 00 00  .........a......
+	0x0040 00 00 00 00 00 00 10 70 74 72 00 00 9c 01 00 00  .......ptr......
+	0x0050 00 00 00 00 00 00 00                             .......
+	rel 33+8 t=1 "".CmpZero4<1>+0
+	rel 41+8 t=1 "".CmpZero4<1>+23
+	rel 62+4 t=31 go.info.int64<0>+0
+	rel 66+4 t=31 <0>+0
+	rel 78+4 t=31 go.info.*int<0>+0
+	rel 82+4 t=31 <0>+51
+aux for "".CmpToZero<0> SDWARFLOC size=259
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 b1 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 b1 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 04 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 b1  ................
+	0x0080 00 00 00 00 00 00 00 02 00 91 08 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 b1 00 00 00 00 00 00 00 02 00 91 10 00  ................
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff  ................
+	0x00d0 ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00 00  ................
+	0x00e0 00 00 00 00 00 00 00 b1 00 00 00 00 00 00 00 02  ................
+	0x00f0 00 91 18 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0100 00 00 00                                         ...
+	rel 8+8 t=1 "".CmpToZero<1>+0
+	rel 59+8 t=1 "".CmpToZero<1>+0
+	rel 111+8 t=1 "".CmpToZero<1>+0
+	rel 163+8 t=1 "".CmpToZero<1>+0
+	rel 215+8 t=1 "".CmpToZero<1>+0
+aux for "".CmpToZero<0> SDWARFLINES size=148
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 a4 01  ................
+	0x0010 14 06 37 06 57 06 23 06 28 06 41 06 6d 06 41 06  ..7.W.#.(.A.m.A.
+	0x0020 3c 31 03 6d 33 03 13 28 06 03 6f 1f 06 03 12 28  <1.m3..(..o....(
+	0x0030 06 03 6f 1f 06 03 12 28 03 70 1f 03 11 32 06 23  ..o....(.p...2.#
+	0x0040 03 70 1f 06 03 11 32 06 03 72 1f 06 03 0f 32 06  .p....2..r....2.
+	0x0050 03 75 1f 06 03 0c 32 03 75 1f 06 37 06 03 0c 32  .u....2.u..7...2
+	0x0060 06 03 75 1f 06 03 0c 32 24 06 5f 06 1b 06 5f 06  ..u....2$._..._.
+	0x0070 15 06 5f 06 17 06 41 06 17 06 41 06 17 06 5f 06  .._...A...A..._.
+	0x0080 17 06 5f 06 17 06 5f 06 17 06 5f 06 17 06 5f 02  .._..._..._..._.
+	0x0090 01 00 01 01                                      ....
+	rel 3+8 t=1 "".CmpToZero<1>+0
+aux for "".CmpToZero<0> SDWARFFCN size=141
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 54 6f 5a 65 72  guments.CmpToZer
+	0x0020 6f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  o...............
+	0x0030 00 00 01 9c 02 00 00 00 01 10 61 00 00 a2 01 00  ..........a.....
+	0x0040 00 00 00 00 00 00 00 10 62 00 00 a2 01 00 00 00  ........b.......
+	0x0050 00 00 00 00 00 10 64 00 00 a2 01 00 00 00 00 00  ......d.........
+	0x0060 00 00 00 10 65 00 00 a2 01 00 00 00 00 00 00 00  ....e...........
+	0x0070 00 10 66 00 00 a2 01 00 00 00 00 00 00 00 00 0f  ..f.............
+	0x0080 7e 72 35 00 01 a2 01 00 00 00 00 00 00           ~r5..........
+	rel 0+0 t=24 type.int32<0>+0
+	rel 34+8 t=1 "".CmpToZero<1>+0
+	rel 42+8 t=1 "".CmpToZero<1>+177
+	rel 63+4 t=31 go.info.int32<0>+0
+	rel 67+4 t=31 <0>+0
+	rel 77+4 t=31 go.info.int32<0>+0
+	rel 81+4 t=31 <0>+51
+	rel 91+4 t=31 go.info.int32<0>+0
+	rel 95+4 t=31 <0>+103
+	rel 105+4 t=31 go.info.int64<0>+0
+	rel 109+4 t=31 <0>+155
+	rel 119+4 t=31 go.info.int64<0>+0
+	rel 123+4 t=31 <0>+207
+	rel 135+4 t=31 go.info.int32<0>+0
+aux for "".CmpLogicalToZero<0> SDWARFLOC size=155
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 75 00 00 00 00 00 00 00  ........u.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 75 00 00 00 00  ...........u....
+	0x0050 00 00 00 02 00 91 10 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 75  ...............u
+	0x0080 00 00 00 00 00 00 00 02 00 91 18 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00                 ...........
+	rel 8+8 t=1 "".CmpLogicalToZero<1>+0
+	rel 59+8 t=1 "".CmpLogicalToZero<1>+0
+	rel 111+8 t=1 "".CmpLogicalToZero<1>+0
+aux for "".CmpLogicalToZero<0> SDWARFLINES size=80
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 d5 01  ................
+	0x0010 14 06 37 06 03 02 5a 06 41 06 03 02 64 06 41 06  ..7...Z.A...d.A.
+	0x0020 03 01 64 06 2d 06 03 02 64 06 2d 06 42 06 69 06  ..d.-...d.-.B.i.
+	0x0030 1b 06 69 06 03 7b 15 06 69 06 03 7e 15 06 69 06  ..i..{..i..~..i.
+	0x0040 03 7d 1f 06 69 06 03 7d 15 06 69 02 01 00 01 01  .}..i..}..i.....
+	rel 3+8 t=1 "".CmpLogicalToZero<1>+0
+aux for "".CmpLogicalToZero<0> SDWARFFCN size=142
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 4c 6f 67 69 63  guments.CmpLogic
+	0x0020 61 6c 54 6f 5a 65 72 6f 00 00 00 00 00 00 00 00  alToZero........
+	0x0030 00 00 00 00 00 00 00 00 00 01 9c 02 00 00 00 01  ................
+	0x0040 10 61 00 00 d6 01 00 00 00 00 00 00 00 00 0f 62  .a.............b
+	0x0050 00 00 d6 01 00 00 00 00 00 0f 63 00 00 d6 01 00  ..........c.....
+	0x0060 00 00 00 00 10 64 00 00 d6 01 00 00 00 00 00 00  .....d..........
+	0x0070 00 00 10 65 00 00 d6 01 00 00 00 00 00 00 00 00  ...e............
+	0x0080 0f 7e 72 35 00 01 d6 01 00 00 00 00 00 00        .~r5..........
+	rel 0+0 t=24 type.uint32<0>+0
+	rel 0+0 t=24 type.uint64<0>+0
+	rel 41+8 t=1 "".CmpLogicalToZero<1>+0
+	rel 49+8 t=1 "".CmpLogicalToZero<1>+117
+	rel 70+4 t=31 go.info.uint32<0>+0
+	rel 74+4 t=31 <0>+0
+	rel 84+4 t=31 go.info.uint32<0>+0
+	rel 95+4 t=31 go.info.uint32<0>+0
+	rel 106+4 t=31 go.info.uint64<0>+0
+	rel 110+4 t=31 <0>+51
+	rel 120+4 t=31 go.info.uint64<0>+0
+	rel 124+4 t=31 <0>+103
+	rel 136+4 t=31 go.info.uint64<0>+0
+aux for "".CmpToZero_ex1<0> SDWARFLOC size=103
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 d9 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 d9 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".CmpToZero_ex1<1>+0
+	rel 59+8 t=1 "".CmpToZero_ex1<1>+0
+aux for "".CmpToZero_ex1<0> SDWARFLINES size=130
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 fe 01  ................
+	0x0010 14 06 41 06 96 06 37 06 6e 06 37 06 6e 06 37 06  ..A...7.n.7.n.7.
+	0x0020 46 06 37 06 46 06 37 06 03 01 46 06 37 06 03 01  F.7.F.7...F.7...
+	0x0030 5a 06 2d 06 03 01 3c 06 2d 06 03 01 64 06 2d 06  Z.-...<.-...d.-.
+	0x0040 38 06 69 06 1c 06 69 06 03 7b 15 06 69 06 03 7e  8.i...i..{..i..~
+	0x0050 15 06 69 06 03 7e 15 06 69 06 03 7e 15 06 69 06  ..i..~..i..~..i.
+	0x0060 03 7f 15 06 69 06 03 7f 15 06 69 06 03 7f 15 06  ....i.....i.....
+	0x0070 69 06 03 7f 15 06 69 06 03 7f 15 06 69 02 01 00  i.....i.....i...
+	0x0080 01 01                                            ..
+	rel 3+8 t=1 "".CmpToZero_ex1<1>+0
+aux for "".CmpToZero_ex1<0> SDWARFFCN size=103
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 54 6f 5a 65 72  guments.CmpToZer
+	0x0020 6f 5f 65 78 31 00 00 00 00 00 00 00 00 00 00 00  o_ex1...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 61 00  ..............a.
+	0x0040 00 82 02 00 00 00 00 00 00 00 00 10 65 00 00 82  ............e...
+	0x0050 02 00 00 00 00 00 00 00 00 0f 7e 72 32 00 01 82  ..........~r2...
+	0x0060 02 00 00 00 00 00 00                             .......
+	rel 0+0 t=24 type.int<0>+0
+	rel 38+8 t=1 "".CmpToZero_ex1<1>+0
+	rel 46+8 t=1 "".CmpToZero_ex1<1>+217
+	rel 67+4 t=31 go.info.int64<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 81+4 t=31 go.info.int32<0>+0
+	rel 85+4 t=31 <0>+51
+	rel 97+4 t=31 go.info.int<0>+0
+aux for "".CmpToZero_ex2<0> SDWARFLOC size=311
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 82 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 82 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 82  ................
+	0x0080 00 00 00 00 00 00 00 02 00 91 10 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 82 00 00 00 00 00 00 00 02 00 91 18 00  ................
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff  ................
+	0x00d0 ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00 00  ................
+	0x00e0 00 00 00 00 00 00 00 82 00 00 00 00 00 00 00 02  ................
+	0x00f0 00 91 1c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0100 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0110 00 00 00 00 00 00 00 00 00 00 00 82 00 00 00 00  ................
+	0x0120 00 00 00 02 00 91 20 00 00 00 00 00 00 00 00 00  ...... .........
+	0x0130 00 00 00 00 00 00 00                             .......
+	rel 8+8 t=1 "".CmpToZero_ex2<1>+0
+	rel 59+8 t=1 "".CmpToZero_ex2<1>+0
+	rel 111+8 t=1 "".CmpToZero_ex2<1>+0
+	rel 163+8 t=1 "".CmpToZero_ex2<1>+0
+	rel 215+8 t=1 "".CmpToZero_ex2<1>+0
+	rel 267+8 t=1 "".CmpToZero_ex2<1>+0
+aux for "".CmpToZero_ex2<0> SDWARFLINES size=76
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 ba 02  ................
+	0x0010 14 06 41 06 a0 06 41 06 96 06 37 06 03 01 46 06  ..A...A...7...F.
+	0x0020 37 06 03 01 78 06 37 06 4c 06 69 06 1b 06 69 06  7...x.7.L.i...i.
+	0x0030 03 7c 15 06 69 06 03 7e 15 06 69 06 03 7f 15 06  .|..i..~..i.....
+	0x0040 69 06 03 7f 15 06 69 02 01 00 01 01              i.....i.....
+	rel 3+8 t=1 "".CmpToZero_ex2<1>+0
+aux for "".CmpToZero_ex2<0> SDWARFFCN size=159
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 54 6f 5a 65 72  guments.CmpToZer
+	0x0020 6f 5f 65 78 32 00 00 00 00 00 00 00 00 00 00 00  o_ex2...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 61 00  ..............a.
+	0x0040 00 be 02 00 00 00 00 00 00 00 00 10 62 00 00 be  ............b...
+	0x0050 02 00 00 00 00 00 00 00 00 10 63 00 00 be 02 00  ..........c.....
+	0x0060 00 00 00 00 00 00 00 10 65 00 00 be 02 00 00 00  ........e.......
+	0x0070 00 00 00 00 00 10 66 00 00 be 02 00 00 00 00 00  ......f.........
+	0x0080 00 00 00 10 67 00 00 be 02 00 00 00 00 00 00 00  ....g...........
+	0x0090 00 0f 7e 72 36 00 01 be 02 00 00 00 00 00 00     ..~r6..........
+	rel 0+0 t=24 type.int<0>+0
+	rel 38+8 t=1 "".CmpToZero_ex2<1>+0
+	rel 46+8 t=1 "".CmpToZero_ex2<1>+130
+	rel 67+4 t=31 go.info.int64<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 81+4 t=31 go.info.int64<0>+0
+	rel 85+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.int64<0>+0
+	rel 99+4 t=31 <0>+103
+	rel 109+4 t=31 go.info.int32<0>+0
+	rel 113+4 t=31 <0>+155
+	rel 123+4 t=31 go.info.int32<0>+0
+	rel 127+4 t=31 <0>+207
+	rel 137+4 t=31 go.info.int32<0>+0
+	rel 141+4 t=31 <0>+259
+	rel 153+4 t=31 go.info.int<0>+0
+aux for "".CmpToZero_ex3<0> SDWARFLOC size=415
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 85 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 85 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 85  ................
+	0x0080 00 00 00 00 00 00 00 02 00 91 10 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 85 00 00 00 00 00 00 00 02 00 91 18 00  ................
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff  ................
+	0x00d0 ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00 00  ................
+	0x00e0 00 00 00 00 00 00 00 85 00 00 00 00 00 00 00 02  ................
+	0x00f0 00 91 20 00 00 00 00 00 00 00 00 00 00 00 00 00  .. .............
+	0x0100 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0110 00 00 00 00 00 00 00 00 00 00 00 85 00 00 00 00  ................
+	0x0120 00 00 00 02 00 91 24 00 00 00 00 00 00 00 00 00  ......$.........
+	0x0130 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0140 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 85  ................
+	0x0150 00 00 00 00 00 00 00 02 00 91 28 00 00 00 00 00  ..........(.....
+	0x0160 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x0170 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0180 00 00 00 85 00 00 00 00 00 00 00 02 00 91 2c 00  ..............,.
+	0x0190 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ...............
+	rel 8+8 t=1 "".CmpToZero_ex3<1>+0
+	rel 59+8 t=1 "".CmpToZero_ex3<1>+0
+	rel 111+8 t=1 "".CmpToZero_ex3<1>+0
+	rel 163+8 t=1 "".CmpToZero_ex3<1>+0
+	rel 215+8 t=1 "".CmpToZero_ex3<1>+0
+	rel 267+8 t=1 "".CmpToZero_ex3<1>+0
+	rel 319+8 t=1 "".CmpToZero_ex3<1>+0
+	rel 371+8 t=1 "".CmpToZero_ex3<1>+0
+aux for "".CmpToZero_ex3<0> SDWARFLINES size=67
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 d9 02  ................
+	0x0010 14 06 41 06 08 1e 06 41 06 03 01 8c 06 37 06 03  ..A....A.....7..
+	0x0020 01 d2 06 37 06 6a 06 69 06 1b 06 69 06 03 7c 15  ...7.j.i...i..|.
+	0x0030 06 69 06 03 7e 15 06 69 06 03 7f 15 06 69 02 01  .i..~..i.....i..
+	0x0040 00 01 01                                         ...
+	rel 3+8 t=1 "".CmpToZero_ex3<1>+0
+aux for "".CmpToZero_ex3<0> SDWARFFCN size=187
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 54 6f 5a 65 72  guments.CmpToZer
+	0x0020 6f 5f 65 78 33 00 00 00 00 00 00 00 00 00 00 00  o_ex3...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 61 00  ..............a.
+	0x0040 00 dd 02 00 00 00 00 00 00 00 00 10 62 00 00 dd  ............b...
+	0x0050 02 00 00 00 00 00 00 00 00 10 63 00 00 dd 02 00  ..........c.....
+	0x0060 00 00 00 00 00 00 00 10 64 00 00 dd 02 00 00 00  ........d.......
+	0x0070 00 00 00 00 00 10 65 00 00 dd 02 00 00 00 00 00  ......e.........
+	0x0080 00 00 00 10 66 00 00 dd 02 00 00 00 00 00 00 00  ....f...........
+	0x0090 00 10 67 00 00 dd 02 00 00 00 00 00 00 00 00 10  ..g.............
+	0x00a0 68 00 00 dd 02 00 00 00 00 00 00 00 00 0f 7e 72  h.............~r
+	0x00b0 38 00 01 dd 02 00 00 00 00 00 00                 8..........
+	rel 0+0 t=24 type.int<0>+0
+	rel 38+8 t=1 "".CmpToZero_ex3<1>+0
+	rel 46+8 t=1 "".CmpToZero_ex3<1>+133
+	rel 67+4 t=31 go.info.int64<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 81+4 t=31 go.info.int64<0>+0
+	rel 85+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.int64<0>+0
+	rel 99+4 t=31 <0>+103
+	rel 109+4 t=31 go.info.int64<0>+0
+	rel 113+4 t=31 <0>+155
+	rel 123+4 t=31 go.info.int32<0>+0
+	rel 127+4 t=31 <0>+207
+	rel 137+4 t=31 go.info.int32<0>+0
+	rel 141+4 t=31 <0>+259
+	rel 151+4 t=31 go.info.int32<0>+0
+	rel 155+4 t=31 <0>+311
+	rel 165+4 t=31 go.info.int32<0>+0
+	rel 169+4 t=31 <0>+363
+	rel 181+4 t=31 go.info.int<0>+0
+aux for "".CmpToZero_ex4<0> SDWARFLOC size=415
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 85 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 85 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 85  ................
+	0x0080 00 00 00 00 00 00 00 02 00 91 10 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 85 00 00 00 00 00 00 00 02 00 91 18 00  ................
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff  ................
+	0x00d0 ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00 00  ................
+	0x00e0 00 00 00 00 00 00 00 85 00 00 00 00 00 00 00 02  ................
+	0x00f0 00 91 20 00 00 00 00 00 00 00 00 00 00 00 00 00  .. .............
+	0x0100 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0110 00 00 00 00 00 00 00 00 00 00 00 85 00 00 00 00  ................
+	0x0120 00 00 00 02 00 91 24 00 00 00 00 00 00 00 00 00  ......$.........
+	0x0130 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0140 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 85  ................
+	0x0150 00 00 00 00 00 00 00 02 00 91 28 00 00 00 00 00  ..........(.....
+	0x0160 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x0170 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0180 00 00 00 85 00 00 00 00 00 00 00 02 00 91 2c 00  ..............,.
+	0x0190 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ...............
+	rel 8+8 t=1 "".CmpToZero_ex4<1>+0
+	rel 59+8 t=1 "".CmpToZero_ex4<1>+0
+	rel 111+8 t=1 "".CmpToZero_ex4<1>+0
+	rel 163+8 t=1 "".CmpToZero_ex4<1>+0
+	rel 215+8 t=1 "".CmpToZero_ex4<1>+0
+	rel 267+8 t=1 "".CmpToZero_ex4<1>+0
+	rel 319+8 t=1 "".CmpToZero_ex4<1>+0
+	rel 371+8 t=1 "".CmpToZero_ex4<1>+0
+aux for "".CmpToZero_ex4<0> SDWARFLINES size=63
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 f3 02  ................
+	0x0010 14 06 41 06 08 1e 06 41 06 8c 06 37 06 d2 06 37  ..A....A...7...7
+	0x0020 06 6a 06 69 06 1b 06 69 06 03 7d 15 06 69 06 03  .j.i...i..}..i..
+	0x0030 7f 15 06 69 06 03 7f 15 06 69 02 01 00 01 01     ...i.....i.....
+	rel 3+8 t=1 "".CmpToZero_ex4<1>+0
+aux for "".CmpToZero_ex4<0> SDWARFFCN size=187
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 54 6f 5a 65 72  guments.CmpToZer
+	0x0020 6f 5f 65 78 34 00 00 00 00 00 00 00 00 00 00 00  o_ex4...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 61 00  ..............a.
+	0x0040 00 f7 02 00 00 00 00 00 00 00 00 10 62 00 00 f7  ............b...
+	0x0050 02 00 00 00 00 00 00 00 00 10 63 00 00 f7 02 00  ..........c.....
+	0x0060 00 00 00 00 00 00 00 10 64 00 00 f7 02 00 00 00  ........d.......
+	0x0070 00 00 00 00 00 10 65 00 00 f7 02 00 00 00 00 00  ......e.........
+	0x0080 00 00 00 10 66 00 00 f7 02 00 00 00 00 00 00 00  ....f...........
+	0x0090 00 10 67 00 00 f7 02 00 00 00 00 00 00 00 00 10  ..g.............
+	0x00a0 68 00 00 f7 02 00 00 00 00 00 00 00 00 0f 7e 72  h.............~r
+	0x00b0 38 00 01 f7 02 00 00 00 00 00 00                 8..........
+	rel 0+0 t=24 type.int<0>+0
+	rel 38+8 t=1 "".CmpToZero_ex4<1>+0
+	rel 46+8 t=1 "".CmpToZero_ex4<1>+133
+	rel 67+4 t=31 go.info.int64<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 81+4 t=31 go.info.int64<0>+0
+	rel 85+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.int64<0>+0
+	rel 99+4 t=31 <0>+103
+	rel 109+4 t=31 go.info.int64<0>+0
+	rel 113+4 t=31 <0>+155
+	rel 123+4 t=31 go.info.int32<0>+0
+	rel 127+4 t=31 <0>+207
+	rel 137+4 t=31 go.info.int32<0>+0
+	rel 141+4 t=31 <0>+259
+	rel 151+4 t=31 go.info.int32<0>+0
+	rel 155+4 t=31 <0>+311
+	rel 165+4 t=31 go.info.int32<0>+0
+	rel 169+4 t=31 <0>+363
+	rel 181+4 t=31 go.info.int<0>+0
+aux for "".CmpToZero_ex5<0> SDWARFLOC size=155
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 3a 00 00 00 00 00 00 00  ........:.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 3a 00 00 00 00  ...........:....
+	0x0050 00 00 00 02 00 91 04 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 3a  ...............:
+	0x0080 00 00 00 00 00 00 00 02 00 91 08 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00                 ...........
+	rel 8+8 t=1 "".CmpToZero_ex5<1>+0
+	rel 59+8 t=1 "".CmpToZero_ex5<1>+0
+	rel 111+8 t=1 "".CmpToZero_ex5<1>+0
+aux for "".CmpToZero_ex5<0> SDWARFLINES size=42
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 8a 03  ................
+	0x0010 14 06 37 06 82 06 37 06 6a 06 69 06 1b 06 69 06  ..7...7.j.i...i.
+	0x0020 03 7d 15 06 69 02 01 00 01 01                    .}..i.....
+	rel 3+8 t=1 "".CmpToZero_ex5<1>+0
+aux for "".CmpToZero_ex5<0> SDWARFFCN size=117
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 54 6f 5a 65 72  guments.CmpToZer
+	0x0020 6f 5f 65 78 35 00 00 00 00 00 00 00 00 00 00 00  o_ex5...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 65 00  ..............e.
+	0x0040 00 8e 03 00 00 00 00 00 00 00 00 10 66 00 00 8e  ............f...
+	0x0050 03 00 00 00 00 00 00 00 00 10 75 00 00 8e 03 00  ..........u.....
+	0x0060 00 00 00 00 00 00 00 0f 7e 72 33 00 01 8e 03 00  ........~r3.....
+	0x0070 00 00 00 00 00                                   .....
+	rel 0+0 t=24 type.int<0>+0
+	rel 38+8 t=1 "".CmpToZero_ex5<1>+0
+	rel 46+8 t=1 "".CmpToZero_ex5<1>+58
+	rel 67+4 t=31 go.info.int32<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 81+4 t=31 go.info.int32<0>+0
+	rel 85+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.uint32<0>+0
+	rel 99+4 t=31 <0>+103
+	rel 111+4 t=31 go.info.int<0>+0
+aux for "".UintLtZero<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 9a 03  ................
+	0x0010 14 06 69 02 01 00 01 01                          ..i.....
+	rel 3+8 t=1 "".UintLtZero<1>+0
+aux for "".UintLtZero<0> SDWARFFCN size=116
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 55 69 6e 74 4c 74 5a 65  guments.UintLtZe
+	0x0020 72 6f 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ro..............
+	0x0030 00 00 00 01 9c 02 00 00 00 01 0f 61 00 00 9a 03  ...........a....
+	0x0040 00 00 00 00 00 0f 62 00 00 9a 03 00 00 00 00 00  ......b.........
+	0x0050 0f 63 00 00 9a 03 00 00 00 00 00 0f 64 00 00 9a  .c..........d...
+	0x0060 03 00 00 00 00 00 0f 7e 72 34 00 01 9a 03 00 00  .......~r4......
+	0x0070 00 00 00 00                                      ....
+	rel 0+0 t=24 type.int<0>+0
+	rel 0+0 t=24 type.uint16<0>+0
+	rel 0+0 t=24 type.uint32<0>+0
+	rel 0+0 t=24 type.uint64<0>+0
+	rel 0+0 t=24 type.uint8<0>+0
+	rel 35+8 t=1 "".UintLtZero<1>+0
+	rel 43+8 t=1 "".UintLtZero<1>+10
+	rel 64+4 t=31 go.info.uint8<0>+0
+	rel 75+4 t=31 go.info.uint16<0>+0
+	rel 86+4 t=31 go.info.uint32<0>+0
+	rel 97+4 t=31 go.info.uint64<0>+0
+	rel 110+4 t=31 go.info.int<0>+0
+aux for "".UintGeqZero<0> SDWARFLINES size=24
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 a1 03  ................
+	0x0010 14 06 69 02 01 00 01 01                          ..i.....
+	rel 3+8 t=1 "".UintGeqZero<1>+0
+aux for "".UintGeqZero<0> SDWARFFCN size=117
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 55 69 6e 74 47 65 71 5a  guments.UintGeqZ
+	0x0020 65 72 6f 00 00 00 00 00 00 00 00 00 00 00 00 00  ero.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 0f 61 00 00 a3  ............a...
+	0x0040 03 00 00 00 00 00 0f 62 00 00 a3 03 00 00 00 00  .......b........
+	0x0050 00 0f 63 00 00 a3 03 00 00 00 00 00 0f 64 00 00  ..c..........d..
+	0x0060 a3 03 00 00 00 00 00 0f 7e 72 34 00 01 a3 03 00  ........~r4.....
+	0x0070 00 00 00 00 00                                   .....
+	rel 0+0 t=24 type.int<0>+0
+	rel 0+0 t=24 type.uint16<0>+0
+	rel 0+0 t=24 type.uint32<0>+0
+	rel 0+0 t=24 type.uint64<0>+0
+	rel 0+0 t=24 type.uint8<0>+0
+	rel 36+8 t=1 "".UintGeqZero<1>+0
+	rel 44+8 t=1 "".UintGeqZero<1>+10
+	rel 65+4 t=31 go.info.uint8<0>+0
+	rel 76+4 t=31 go.info.uint16<0>+0
+	rel 87+4 t=31 go.info.uint32<0>+0
+	rel 98+4 t=31 go.info.uint64<0>+0
+	rel 111+4 t=31 go.info.int<0>+0
+aux for "".UintGtZero<0> SDWARFLOC size=207
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 39 00 00 00 00 00 00 00  ........9.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 39 00 00 00 00  ...........9....
+	0x0050 00 00 00 02 00 91 02 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 39  ...............9
+	0x0080 00 00 00 00 00 00 00 02 00 91 04 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 39 00 00 00 00 00 00 00 02 00 91 08 00  ...9............
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ...............
+	rel 8+8 t=1 "".UintGtZero<1>+0
+	rel 59+8 t=1 "".UintGtZero<1>+0
+	rel 111+8 t=1 "".UintGtZero<1>+0
+	rel 163+8 t=1 "".UintGtZero<1>+0
+aux for "".UintGtZero<0> SDWARFLINES size=34
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 a8 03  ................
+	0x0010 14 06 41 06 38 06 69 18 06 08 3a 06 69 02 01 00  ..A.8.i...:.i...
+	0x0020 01 01                                            ..
+	rel 3+8 t=1 "".UintGtZero<1>+0
+aux for "".UintGtZero<0> SDWARFFCN size=128
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 55 69 6e 74 47 74 5a 65  guments.UintGtZe
+	0x0020 72 6f 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ro..............
+	0x0030 00 00 00 01 9c 02 00 00 00 01 10 61 00 00 ac 03  ...........a....
+	0x0040 00 00 00 00 00 00 00 00 10 62 00 00 ac 03 00 00  .........b......
+	0x0050 00 00 00 00 00 00 10 63 00 00 ac 03 00 00 00 00  .......c........
+	0x0060 00 00 00 00 10 64 00 00 ac 03 00 00 00 00 00 00  .....d..........
+	0x0070 00 00 0f 7e 72 34 00 01 ac 03 00 00 00 00 00 00  ...~r4..........
+	rel 0+0 t=24 type.int<0>+0
+	rel 35+8 t=1 "".UintGtZero<1>+0
+	rel 43+8 t=1 "".UintGtZero<1>+57
+	rel 64+4 t=31 go.info.uint8<0>+0
+	rel 68+4 t=31 <0>+0
+	rel 78+4 t=31 go.info.uint16<0>+0
+	rel 82+4 t=31 <0>+51
+	rel 92+4 t=31 go.info.uint32<0>+0
+	rel 96+4 t=31 <0>+103
+	rel 106+4 t=31 go.info.uint64<0>+0
+	rel 110+4 t=31 <0>+155
+	rel 122+4 t=31 go.info.int<0>+0
+aux for "".UintLeqZero<0> SDWARFLOC size=207
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 39 00 00 00 00 00 00 00  ........9.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 39 00 00 00 00  ...........9....
+	0x0050 00 00 00 02 00 91 02 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 39  ...............9
+	0x0080 00 00 00 00 00 00 00 02 00 91 04 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 39 00 00 00 00 00 00 00 02 00 91 08 00  ...9............
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ...............
+	rel 8+8 t=1 "".UintLeqZero<1>+0
+	rel 59+8 t=1 "".UintLeqZero<1>+0
+	rel 111+8 t=1 "".UintLeqZero<1>+0
+	rel 163+8 t=1 "".UintLeqZero<1>+0
+aux for "".UintLeqZero<0> SDWARFLINES size=34
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 b0 03  ................
+	0x0010 14 06 41 06 38 06 69 18 06 08 3a 06 69 02 01 00  ..A.8.i...:.i...
+	0x0020 01 01                                            ..
+	rel 3+8 t=1 "".UintLeqZero<1>+0
+aux for "".UintLeqZero<0> SDWARFFCN size=129
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 55 69 6e 74 4c 65 71 5a  guments.UintLeqZ
+	0x0020 65 72 6f 00 00 00 00 00 00 00 00 00 00 00 00 00  ero.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 10 61 00 00 b4  ............a...
+	0x0040 03 00 00 00 00 00 00 00 00 10 62 00 00 b4 03 00  ..........b.....
+	0x0050 00 00 00 00 00 00 00 10 63 00 00 b4 03 00 00 00  ........c.......
+	0x0060 00 00 00 00 00 10 64 00 00 b4 03 00 00 00 00 00  ......d.........
+	0x0070 00 00 00 0f 7e 72 34 00 01 b4 03 00 00 00 00 00  ....~r4.........
+	0x0080 00                                               .
+	rel 0+0 t=24 type.int<0>+0
+	rel 36+8 t=1 "".UintLeqZero<1>+0
+	rel 44+8 t=1 "".UintLeqZero<1>+57
+	rel 65+4 t=31 go.info.uint8<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 79+4 t=31 go.info.uint16<0>+0
+	rel 83+4 t=31 <0>+51
+	rel 93+4 t=31 go.info.uint32<0>+0
+	rel 97+4 t=31 <0>+103
+	rel 107+4 t=31 go.info.uint64<0>+0
+	rel 111+4 t=31 <0>+155
+	rel 123+4 t=31 go.info.int<0>+0
+aux for "".UintLtOne<0> SDWARFLOC size=207
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 3c 00 00 00 00 00 00 00  ........<.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 3c 00 00 00 00  ...........<....
+	0x0050 00 00 00 02 00 91 02 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 3c  ...............<
+	0x0080 00 00 00 00 00 00 00 02 00 91 04 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 3c 00 00 00 00 00 00 00 02 00 91 08 00  ...<............
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ...............
+	rel 8+8 t=1 "".UintLtOne<1>+0
+	rel 59+8 t=1 "".UintLtOne<1>+0
+	rel 111+8 t=1 "".UintLtOne<1>+0
+	rel 163+8 t=1 "".UintLtOne<1>+0
+aux for "".UintLtOne<0> SDWARFLINES size=34
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 b8 03  ................
+	0x0010 14 06 41 06 38 06 69 18 06 08 58 06 69 02 01 00  ..A.8.i...X.i...
+	0x0020 01 01                                            ..
+	rel 3+8 t=1 "".UintLtOne<1>+0
+aux for "".UintLtOne<0> SDWARFFCN size=127
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 55 69 6e 74 4c 74 4f 6e  guments.UintLtOn
+	0x0020 65 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  e...............
+	0x0030 00 00 01 9c 02 00 00 00 01 10 61 00 00 bc 03 00  ..........a.....
+	0x0040 00 00 00 00 00 00 00 10 62 00 00 bc 03 00 00 00  ........b.......
+	0x0050 00 00 00 00 00 10 63 00 00 bc 03 00 00 00 00 00  ......c.........
+	0x0060 00 00 00 10 64 00 00 bc 03 00 00 00 00 00 00 00  ....d...........
+	0x0070 00 0f 7e 72 34 00 01 bc 03 00 00 00 00 00 00     ..~r4..........
+	rel 0+0 t=24 type.int<0>+0
+	rel 34+8 t=1 "".UintLtOne<1>+0
+	rel 42+8 t=1 "".UintLtOne<1>+60
+	rel 63+4 t=31 go.info.uint8<0>+0
+	rel 67+4 t=31 <0>+0
+	rel 77+4 t=31 go.info.uint16<0>+0
+	rel 81+4 t=31 <0>+51
+	rel 91+4 t=31 go.info.uint32<0>+0
+	rel 95+4 t=31 <0>+103
+	rel 105+4 t=31 go.info.uint64<0>+0
+	rel 109+4 t=31 <0>+155
+	rel 121+4 t=31 go.info.int<0>+0
+aux for "".UintGeqOne<0> SDWARFLOC size=207
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 3c 00 00 00 00 00 00 00  ........<.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 3c 00 00 00 00  ...........<....
+	0x0050 00 00 00 02 00 91 02 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 3c  ...............<
+	0x0080 00 00 00 00 00 00 00 02 00 91 04 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 3c 00 00 00 00 00 00 00 02 00 91 08 00  ...<............
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ...............
+	rel 8+8 t=1 "".UintGeqOne<1>+0
+	rel 59+8 t=1 "".UintGeqOne<1>+0
+	rel 111+8 t=1 "".UintGeqOne<1>+0
+	rel 163+8 t=1 "".UintGeqOne<1>+0
+aux for "".UintGeqOne<0> SDWARFLINES size=34
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 c0 03  ................
+	0x0010 14 06 41 06 38 06 69 18 06 08 58 06 69 02 01 00  ..A.8.i...X.i...
+	0x0020 01 01                                            ..
+	rel 3+8 t=1 "".UintGeqOne<1>+0
+aux for "".UintGeqOne<0> SDWARFFCN size=128
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 55 69 6e 74 47 65 71 4f  guments.UintGeqO
+	0x0020 6e 65 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ne..............
+	0x0030 00 00 00 01 9c 02 00 00 00 01 10 61 00 00 c4 03  ...........a....
+	0x0040 00 00 00 00 00 00 00 00 10 62 00 00 c4 03 00 00  .........b......
+	0x0050 00 00 00 00 00 00 10 63 00 00 c4 03 00 00 00 00  .......c........
+	0x0060 00 00 00 00 10 64 00 00 c4 03 00 00 00 00 00 00  .....d..........
+	0x0070 00 00 0f 7e 72 34 00 01 c4 03 00 00 00 00 00 00  ...~r4..........
+	rel 0+0 t=24 type.int<0>+0
+	rel 35+8 t=1 "".UintGeqOne<1>+0
+	rel 43+8 t=1 "".UintGeqOne<1>+60
+	rel 64+4 t=31 go.info.uint8<0>+0
+	rel 68+4 t=31 <0>+0
+	rel 78+4 t=31 go.info.uint16<0>+0
+	rel 82+4 t=31 <0>+51
+	rel 92+4 t=31 go.info.uint32<0>+0
+	rel 96+4 t=31 <0>+103
+	rel 106+4 t=31 go.info.uint64<0>+0
+	rel 110+4 t=31 <0>+155
+	rel 122+4 t=31 go.info.int<0>+0
+aux for "".CmpToZeroU_ex1<0> SDWARFLOC size=207
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 57 00 00 00 00 00 00 00  ........W.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 57 00 00 00 00  ...........W....
+	0x0050 00 00 00 02 00 91 02 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 57  ...............W
+	0x0080 00 00 00 00 00 00 00 02 00 91 04 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 57 00 00 00 00 00 00 00 02 00 91 08 00  ...W............
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ...............
+	rel 8+8 t=1 "".CmpToZeroU_ex1<1>+0
+	rel 59+8 t=1 "".CmpToZeroU_ex1<1>+0
+	rel 111+8 t=1 "".CmpToZeroU_ex1<1>+0
+	rel 163+8 t=1 "".CmpToZeroU_ex1<1>+0
+aux for "".CmpToZeroU_ex1<0> SDWARFLINES size=58
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 c8 03  ................
+	0x0010 14 06 41 06 3b 06 41 06 45 06 37 06 3b 06 41 06  ..A.;.A.E.7.;.A.
+	0x0020 42 06 69 06 1b 06 69 06 03 7e 15 06 69 06 15 06  B.i...i..~..i...
+	0x0030 69 06 15 06 69 02 01 00 01 01                    i...i.....
+	rel 3+8 t=1 "".CmpToZeroU_ex1<1>+0
+aux for "".CmpToZeroU_ex1<0> SDWARFFCN size=132
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 54 6f 5a 65 72  guments.CmpToZer
+	0x0020 6f 55 5f 65 78 31 00 00 00 00 00 00 00 00 00 00  oU_ex1..........
+	0x0030 00 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 61  ...............a
+	0x0040 00 00 cc 03 00 00 00 00 00 00 00 00 10 62 00 00  .............b..
+	0x0050 cc 03 00 00 00 00 00 00 00 00 10 63 00 00 cc 03  ...........c....
+	0x0060 00 00 00 00 00 00 00 00 10 64 00 00 cc 03 00 00  .........d......
+	0x0070 00 00 00 00 00 00 0f 7e 72 34 00 01 cc 03 00 00  .......~r4......
+	0x0080 00 00 00 00                                      ....
+	rel 0+0 t=24 type.int<0>+0
+	rel 39+8 t=1 "".CmpToZeroU_ex1<1>+0
+	rel 47+8 t=1 "".CmpToZeroU_ex1<1>+87
+	rel 68+4 t=31 go.info.uint8<0>+0
+	rel 72+4 t=31 <0>+0
+	rel 82+4 t=31 go.info.uint16<0>+0
+	rel 86+4 t=31 <0>+51
+	rel 96+4 t=31 go.info.uint32<0>+0
+	rel 100+4 t=31 <0>+103
+	rel 110+4 t=31 go.info.uint64<0>+0
+	rel 114+4 t=31 <0>+155
+	rel 126+4 t=31 go.info.int<0>+0
+aux for "".CmpToZeroU_ex2<0> SDWARFLOC size=207
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 57 00 00 00 00 00 00 00  ........W.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 57 00 00 00 00  ...........W....
+	0x0050 00 00 00 02 00 91 02 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 57  ...............W
+	0x0080 00 00 00 00 00 00 00 02 00 91 04 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 57 00 00 00 00 00 00 00 02 00 91 08 00  ...W............
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ...............
+	rel 8+8 t=1 "".CmpToZeroU_ex2<1>+0
+	rel 59+8 t=1 "".CmpToZeroU_ex2<1>+0
+	rel 111+8 t=1 "".CmpToZeroU_ex2<1>+0
+	rel 163+8 t=1 "".CmpToZeroU_ex2<1>+0
+aux for "".CmpToZeroU_ex2<0> SDWARFLINES size=58
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 dc 03  ................
+	0x0010 14 06 41 06 3b 06 41 06 45 06 37 06 3b 06 41 06  ..A.;.A.E.7.;.A.
+	0x0020 42 06 69 06 1b 06 69 06 03 7e 15 06 69 06 15 06  B.i...i..~..i...
+	0x0030 69 06 15 06 69 02 01 00 01 01                    i...i.....
+	rel 3+8 t=1 "".CmpToZeroU_ex2<1>+0
+aux for "".CmpToZeroU_ex2<0> SDWARFFCN size=132
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 54 6f 5a 65 72  guments.CmpToZer
+	0x0020 6f 55 5f 65 78 32 00 00 00 00 00 00 00 00 00 00  oU_ex2..........
+	0x0030 00 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 61  ...............a
+	0x0040 00 00 e0 03 00 00 00 00 00 00 00 00 10 62 00 00  .............b..
+	0x0050 e0 03 00 00 00 00 00 00 00 00 10 63 00 00 e0 03  ...........c....
+	0x0060 00 00 00 00 00 00 00 00 10 64 00 00 e0 03 00 00  .........d......
+	0x0070 00 00 00 00 00 00 0f 7e 72 34 00 01 e0 03 00 00  .......~r4......
+	0x0080 00 00 00 00                                      ....
+	rel 0+0 t=24 type.int<0>+0
+	rel 39+8 t=1 "".CmpToZeroU_ex2<1>+0
+	rel 47+8 t=1 "".CmpToZeroU_ex2<1>+87
+	rel 68+4 t=31 go.info.uint8<0>+0
+	rel 72+4 t=31 <0>+0
+	rel 82+4 t=31 go.info.uint16<0>+0
+	rel 86+4 t=31 <0>+51
+	rel 96+4 t=31 go.info.uint32<0>+0
+	rel 100+4 t=31 <0>+103
+	rel 110+4 t=31 go.info.uint64<0>+0
+	rel 114+4 t=31 <0>+155
+	rel 126+4 t=31 go.info.int<0>+0
+aux for "".CmpToOneU_ex1<0> SDWARFLOC size=207
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 5a 00 00 00 00 00 00 00  ........Z.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 5a 00 00 00 00  ...........Z....
+	0x0050 00 00 00 02 00 91 02 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 5a  ...............Z
+	0x0080 00 00 00 00 00 00 00 02 00 91 04 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 5a 00 00 00 00 00 00 00 02 00 91 08 00  ...Z............
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ...............
+	rel 8+8 t=1 "".CmpToOneU_ex1<1>+0
+	rel 59+8 t=1 "".CmpToOneU_ex1<1>+0
+	rel 111+8 t=1 "".CmpToOneU_ex1<1>+0
+	rel 163+8 t=1 "".CmpToOneU_ex1<1>+0
+aux for "".CmpToOneU_ex1<0> SDWARFLINES size=58
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 f0 03  ................
+	0x0010 14 06 41 06 3b 06 41 06 4f 06 37 06 45 06 41 06  ..A.;.A.O.7.E.A.
+	0x0020 4c 06 69 06 1b 06 69 06 03 7e 15 06 69 06 15 06  L.i...i..~..i...
+	0x0030 69 06 15 06 69 02 01 00 01 01                    i...i.....
+	rel 3+8 t=1 "".CmpToOneU_ex1<1>+0
+aux for "".CmpToOneU_ex1<0> SDWARFFCN size=131
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 54 6f 4f 6e 65  guments.CmpToOne
+	0x0020 55 5f 65 78 31 00 00 00 00 00 00 00 00 00 00 00  U_ex1...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 61 00  ..............a.
+	0x0040 00 f4 03 00 00 00 00 00 00 00 00 10 62 00 00 f4  ............b...
+	0x0050 03 00 00 00 00 00 00 00 00 10 63 00 00 f4 03 00  ..........c.....
+	0x0060 00 00 00 00 00 00 00 10 64 00 00 f4 03 00 00 00  ........d.......
+	0x0070 00 00 00 00 00 0f 7e 72 34 00 01 f4 03 00 00 00  ......~r4.......
+	0x0080 00 00 00                                         ...
+	rel 0+0 t=24 type.int<0>+0
+	rel 38+8 t=1 "".CmpToOneU_ex1<1>+0
+	rel 46+8 t=1 "".CmpToOneU_ex1<1>+90
+	rel 67+4 t=31 go.info.uint8<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 81+4 t=31 go.info.uint16<0>+0
+	rel 85+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.uint32<0>+0
+	rel 99+4 t=31 <0>+103
+	rel 109+4 t=31 go.info.uint64<0>+0
+	rel 113+4 t=31 <0>+155
+	rel 125+4 t=31 go.info.int<0>+0
+aux for "".CmpToOneU_ex2<0> SDWARFLOC size=207
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 5a 00 00 00 00 00 00 00  ........Z.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 5a 00 00 00 00  ...........Z....
+	0x0050 00 00 00 02 00 91 02 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 5a  ...............Z
+	0x0080 00 00 00 00 00 00 00 02 00 91 04 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff  ................
+	0x00a0 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x00b0 00 00 00 5a 00 00 00 00 00 00 00 02 00 91 08 00  ...Z............
+	0x00c0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ...............
+	rel 8+8 t=1 "".CmpToOneU_ex2<1>+0
+	rel 59+8 t=1 "".CmpToOneU_ex2<1>+0
+	rel 111+8 t=1 "".CmpToOneU_ex2<1>+0
+	rel 163+8 t=1 "".CmpToOneU_ex2<1>+0
+aux for "".CmpToOneU_ex2<0> SDWARFLINES size=58
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 84 04  ................
+	0x0010 14 06 41 06 3b 06 41 06 4f 06 37 06 45 06 41 06  ..A.;.A.O.7.E.A.
+	0x0020 4c 06 69 06 1b 06 69 06 03 7e 15 06 69 06 15 06  L.i...i..~..i...
+	0x0030 69 06 15 06 69 02 01 00 01 01                    i...i.....
+	rel 3+8 t=1 "".CmpToOneU_ex2<1>+0
+aux for "".CmpToOneU_ex2<0> SDWARFFCN size=131
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6d 70 54 6f 4f 6e 65  guments.CmpToOne
+	0x0020 55 5f 65 78 32 00 00 00 00 00 00 00 00 00 00 00  U_ex2...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 61 00  ..............a.
+	0x0040 00 88 04 00 00 00 00 00 00 00 00 10 62 00 00 88  ............b...
+	0x0050 04 00 00 00 00 00 00 00 00 10 63 00 00 88 04 00  ..........c.....
+	0x0060 00 00 00 00 00 00 00 10 64 00 00 88 04 00 00 00  ........d.......
+	0x0070 00 00 00 00 00 0f 7e 72 34 00 01 88 04 00 00 00  ......~r4.......
+	0x0080 00 00 00                                         ...
+	rel 0+0 t=24 type.int<0>+0
+	rel 38+8 t=1 "".CmpToOneU_ex2<1>+0
+	rel 46+8 t=1 "".CmpToOneU_ex2<1>+90
+	rel 67+4 t=31 go.info.uint8<0>+0
+	rel 71+4 t=31 <0>+0
+	rel 81+4 t=31 go.info.uint16<0>+0
+	rel 85+4 t=31 <0>+51
+	rel 95+4 t=31 go.info.uint32<0>+0
+	rel 99+4 t=31 <0>+103
+	rel 109+4 t=31 go.info.uint64<0>+0
+	rel 113+4 t=31 <0>+155
+	rel 125+4 t=31 go.info.int<0>+0

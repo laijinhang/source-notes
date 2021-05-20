@@ -1,0 +1,3 @@
+./arch.go
+./supported.go
+./supported_test.go

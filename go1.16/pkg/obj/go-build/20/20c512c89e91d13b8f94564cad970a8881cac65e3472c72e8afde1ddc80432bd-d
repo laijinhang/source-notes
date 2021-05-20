@@ -1,0 +1,7 @@
+./callback.go
+./callback_test.go
+_cgo_gotypes.go
+_callback_swig.cgo1.go
+_cgo_import.go
+./callback.cc
+callback_wrap.cxx

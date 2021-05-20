@@ -1,0 +1,4 @@
+./example_test.go
+./exec_linux_test.go
+./exec_posix_test.go
+./exec_test.go

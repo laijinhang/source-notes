@@ -1,0 +1,153 @@
+# command-line-arguments
+"".zeroAllocNew1<1> STEXT nosplit size=13 args=0x8 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:12)	TEXT	"".zeroAllocNew1(SB), NOSPLIT|ABIInternal, $0-8
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:12)	FUNCDATA	$0, gclocals·2a5305abe05176240e61b8620e19a815(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:12)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:17)	LEAQ	runtime.zerobase(SB), AX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:17)	MOVQ	AX, "".~r0+8(SP)
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:17)	RET
+	0x0000 48 8d 05 00 00 00 00 48 89 44 24 08 c3           H......H.D$..
+	rel 3+4 t=16 runtime.zerobase<0>+0
+"".zeroAllocNew2<1> STEXT nosplit size=13 args=0x8 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:20)	TEXT	"".zeroAllocNew2(SB), NOSPLIT|ABIInternal, $0-8
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:20)	FUNCDATA	$0, gclocals·2a5305abe05176240e61b8620e19a815(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:20)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:25)	LEAQ	runtime.zerobase(SB), AX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:25)	MOVQ	AX, "".~r0+8(SP)
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:25)	RET
+	0x0000 48 8d 05 00 00 00 00 48 89 44 24 08 c3           H......H.D$..
+	rel 3+4 t=16 runtime.zerobase<0>+0
+"".zeroAllocSliceLit<1> STEXT nosplit size=21 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:28)	TEXT	"".zeroAllocSliceLit(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:28)	FUNCDATA	$0, gclocals·2a5305abe05176240e61b8620e19a815(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:28)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:33)	LEAQ	runtime.zerobase(SB), AX
+	0x0007 00007 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:33)	MOVQ	AX, "".~r0+8(SP)
+	0x000c 00012 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:33)	XORPS	X0, X0
+	0x000f 00015 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:33)	MOVUPS	X0, "".~r0+16(SP)
+	0x0014 00020 (/home/laijh/go/src/source-notes/go1.16/test/codegen/alloc.go:33)	RET
+	0x0000 48 8d 05 00 00 00 00 48 89 44 24 08 0f 57 c0 0f  H......H.D$..W..
+	0x0010 11 44 24 10 c3                                   .D$..
+	rel 3+4 t=16 runtime.zerobase<0>+0
+go.cuinfo.packagename.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 63 6f 64 65 67 65 6e                             codegen
+runtime.memequal64·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal64<1>+0
+runtime.gcbits.01<0> SRODATA dupok size=1
+	0x0000 01                                               .
+type..namedata.*[]int-<0> SRODATA dupok size=9
+	0x0000 00 00 06 2a 5b 5d 69 6e 74                       ...*[]int
+type.*[]int<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 1b 31 52 88 08 08 08 36 00 00 00 00 00 00 00 00  .1R....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]int-<0>+0
+	rel 48+8 t=1 type.[]int<0>+0
+type.[]int<0> SRODATA dupok size=56
+	0x0000 18 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 8e 66 f9 1b 02 08 08 17 00 00 00 00 00 00 00 00  .f..............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]int-<0>+0
+	rel 44+4 t=6 type.*[]int<0>+0
+	rel 48+8 t=1 type.int<0>+0
+runtime.memequal0·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal0<1>+0
+runtime.gcbits.<0> SRODATA dupok size=0
+type..namedata.*[0]int-<0> SRODATA dupok size=10
+	0x0000 00 00 07 2a 5b 30 5d 69 6e 74                    ...*[0]int
+type.[0]int<0> SRODATA dupok size=72
+	0x0000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 c1 04 70 f1 0a 08 08 11 00 00 00 00 00 00 00 00  ..p.............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal0·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[0]int-<0>+0
+	rel 44+4 t=6 type.*[0]int<0>+0
+	rel 48+8 t=1 type.int<0>+0
+	rel 56+8 t=1 type.[]int<0>+0
+type.*[0]int<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 f4 3c 85 c0 08 08 08 36 00 00 00 00 00 00 00 00  .<.....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[0]int-<0>+0
+	rel 48+8 t=1 type.[0]int<0>+0
+type..namedata.*struct {}-<0> SRODATA dupok size=13
+	0x0000 00 00 0a 2a 73 74 72 75 63 74 20 7b 7d           ...*struct {}
+type.struct {}<0> SRODATA dupok size=80
+	0x0000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 1b ac f6 27 0a 01 01 19 00 00 00 00 00 00 00 00  ...'............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.memequal0·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*struct {}-<0>+0
+	rel 44+4 t=6 type.*struct {}<0>+0
+	rel 56+8 t=1 type.struct {}<0>+80
+type.*struct {}<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 4a 24 a9 e5 08 08 08 36 00 00 00 00 00 00 00 00  J$.....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*struct {}-<0>+0
+	rel 48+8 t=1 type.struct {}<0>+0
+gclocals·2a5305abe05176240e61b8620e19a815<0> SRODATA dupok size=9
+	0x0000 01 00 00 00 01 00 00 00 00                       .........
+gclocals·33cdeccccebe80329f1fdbee7f5874cb<0> SRODATA dupok size=8
+	0x0000 01 00 00 00 00 00 00 00                          ........
+aux for "".zeroAllocNew1<0> SDWARFLINES size=23
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 0b 14  ................
+	0x0010 06 55 02 06 00 01 01                             .U.....
+	rel 3+8 t=1 "".zeroAllocNew1<1>+0
+aux for "".zeroAllocNew1<0> SDWARFFCN size=74
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 7a 65 72 6f 41 6c 6c 6f  guments.zeroAllo
+	0x0020 63 4e 65 77 31 00 00 00 00 00 00 00 00 00 00 00  cNew1...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0f 7e 72  ..............~r
+	0x0040 30 00 01 0c 00 00 00 00 00 00                    0.........
+	rel 0+0 t=24 type.*struct {}<0>+0
+	rel 38+8 t=1 "".zeroAllocNew1<1>+0
+	rel 46+8 t=1 "".zeroAllocNew1<1>+13
+	rel 68+4 t=31 go.info.*struct {}<0>+0
+aux for "".zeroAllocNew2<0> SDWARFLINES size=23
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 13 14  ................
+	0x0010 06 55 02 06 00 01 01                             .U.....
+	rel 3+8 t=1 "".zeroAllocNew2<1>+0
+aux for "".zeroAllocNew2<0> SDWARFFCN size=74
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 7a 65 72 6f 41 6c 6c 6f  guments.zeroAllo
+	0x0020 63 4e 65 77 32 00 00 00 00 00 00 00 00 00 00 00  cNew2...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 0f 7e 72  ..............~r
+	0x0040 30 00 01 14 00 00 00 00 00 00                    0.........
+	rel 0+0 t=24 type.*[0]int<0>+0
+	rel 38+8 t=1 "".zeroAllocNew2<1>+0
+	rel 46+8 t=1 "".zeroAllocNew2<1>+13
+	rel 68+4 t=31 go.info.*[0]int<0>+0
+aux for "".zeroAllocSliceLit<0> SDWARFLINES size=23
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 1b 14  ................
+	0x0010 06 55 02 0e 00 01 01                             .U.....
+	rel 3+8 t=1 "".zeroAllocSliceLit<1>+0
+aux for "".zeroAllocSliceLit<0> SDWARFFCN size=78
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 7a 65 72 6f 41 6c 6c 6f  guments.zeroAllo
+	0x0020 63 53 6c 69 63 65 4c 69 74 00 00 00 00 00 00 00  cSliceLit.......
+	0x0030 00 00 00 00 00 00 00 00 00 00 01 9c 02 00 00 00  ................
+	0x0040 01 0f 7e 72 30 00 01 1c 00 00 00 00 00 00        ..~r0.........
+	rel 0+0 t=24 type.[]int<0>+0
+	rel 42+8 t=1 "".zeroAllocSliceLit<1>+0
+	rel 50+8 t=1 "".zeroAllocSliceLit<1>+21
+	rel 72+4 t=31 go.info.[]int<0>+0
