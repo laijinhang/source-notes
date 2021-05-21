@@ -81,6 +81,7 @@ func stat(name string) (mtime time.Time, size int64, err error) {
 }
 
 // Count occurrences in s of any bytes in t.
+// 计算s中任何字节在t中出现的次数。
 func countAnyByte(s string, t string) int {
 	n := 0
 	for i := 0; i < len(s); i++ {
@@ -92,6 +93,7 @@ func countAnyByte(s string, t string) int {
 }
 
 // Split s at any bytes in t.
+// 在t的任何字节处分割s。
 func splitAtBytes(s string, t string) []string {
 	a := make([]string, 1+countAnyByte(s, t))
 	n := 0
