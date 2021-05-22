@@ -397,7 +397,6 @@ func poll_runtime_pollUnblock(pd *pollDesc) {
 	}
 }
 
-
 // netpollready is called by the platform-specific netpoll function.
 // It declares that the fd associated with pd is ready for I/O.
 // The toRun argument is used to build a list of goroutines to return
@@ -460,6 +459,8 @@ func netpollgoready(gp *g, traceskip int) {
 
 // returns true if IO is ready, or false if timedout or closed
 // waitio - wait only for completed IO, ignore errors
+// 如果IO准备好了，则返回true；如果超时或关闭，则返回false
+// waitio - 只等待完成的IO，忽略错误
 func netpollblock(pd *pollDesc, mode int32, waitio bool) bool {
 	gpp := &pd.rg
 	if mode == 'w' {
@@ -467,6 +468,7 @@ func netpollblock(pd *pollDesc, mode int32, waitio bool) bool {
 	}
 
 	// set the gpp semaphore to pdWait
+	//将gpp信号灯设为pdWait
 	for {
 		old := *gpp
 		if old == pdReady {
@@ -484,6 +486,9 @@ func netpollblock(pd *pollDesc, mode int32, waitio bool) bool {
 	// need to recheck error states after setting gpp to pdWait
 	// this is necessary because runtime_pollUnblock/runtime_pollSetDeadline/deadlineimpl
 	// do the opposite: store to closing/rd/wd, membarrier, load of rg/wg
+	// 在将gpp设置为pdWait后需要重新检查错误状态，这是必要的，
+	// 因为runtime_pollUnblock/runtime_pollSetDeadline/deadlineimpl做的是相反的事情：
+	// 存储到closing/rd/wd，membarrier，加载rg/wg。
 	if waitio || netpollcheckerr(pd, mode) == 0 {
 		gopark(netpollblockcommit, unsafe.Pointer(gpp), waitReasonIOWait, traceEvGoBlockNet, 5)
 	}
@@ -499,7 +504,7 @@ func netpollblock(pd *pollDesc, mode int32, waitio bool) bool {
 	runtime.netpollunblock 会在读写事件发生时，将 runtime.pollDesc 中的读或者写信号量转换
 	成 pdReady 并返回其中存储的 Goroutine；如果返回的 Goroutine 不会为空，那么运行时会将该
 	Goroutine加入toRun列表，并将列表中的全部 Goroutine 加入运行队列并等待调度器的调度。
- */
+*/
 func netpollunblock(pd *pollDesc, mode int32, ioready bool) *g {
 	gpp := &pd.rg
 	if mode == 'w' {

@@ -121,6 +121,8 @@ const big = 0xFFFFFF
 
 // Decimal to integer.
 // Returns number, characters consumed, success.
+// 转为十进制整数。
+// 返回 数字、消耗的字符、是否成功。
 func dtoi(s string) (n int, i int, ok bool) {
 	n = 0
 	for i = 0; i < len(s) && '0' <= s[i] && s[i] <= '9'; i++ {
@@ -137,6 +139,8 @@ func dtoi(s string) (n int, i int, ok bool) {
 
 // Hexadecimal to integer.
 // Returns number, characters consumed, success.
+// 十六进制字符串转为整数。
+// 返回 数字、消耗的字符、是否成功。
 func xtoi(s string) (n int, i int, ok bool) {
 	n = 0
 	for i = 0; i < len(s); i++ {
@@ -175,6 +179,7 @@ func xtoi2(s string, e byte) (byte, bool) {
 }
 
 // Convert integer to decimal string.
+// 将整数转换成十进制的字符串。
 func itoa(val int) string {
 	if val < 0 {
 		return "-" + uitoa(uint(-val))
@@ -183,11 +188,12 @@ func itoa(val int) string {
 }
 
 // Convert unsigned integer to decimal string.
+// 将无符号整数转换为十进制字符串。
 func uitoa(val uint) string {
 	if val == 0 { // avoid string allocation
 		return "0"
 	}
-	var buf [20]byte // big enough for 64bit value base 10
+	var buf [20]byte // big enough for 64bit value base 10	// 足够大的64位数值，基数为10
 	i := len(buf) - 1
 	for val >= 10 {
 		q := val / 10
@@ -201,6 +207,7 @@ func uitoa(val uint) string {
 }
 
 // Convert i to a hexadecimal string. Leading zeros are not printed.
+// 将i转换为十六进制的字符串。不打印前导零。
 func appendHex(dst []byte, i uint32) []byte {
 	if i == 0 {
 		return append(dst, '0')
@@ -215,6 +222,7 @@ func appendHex(dst []byte, i uint32) []byte {
 }
 
 // Number of occurrences of b in s.
+// b在s中出现的次数。
 func count(s string, b byte) int {
 	n := 0
 	for i := 0; i < len(s); i++ {
@@ -226,6 +234,7 @@ func count(s string, b byte) int {
 }
 
 // Index of rightmost occurrence of b in s.
+// s中b的最右边出现的索引。
 func last(s string, b byte) int {
 	i := len(s)
 	for i--; i >= 0; i-- {

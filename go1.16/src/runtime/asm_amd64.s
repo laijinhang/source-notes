@@ -305,6 +305,8 @@ TEXT runtime·gogo(SB), NOSPLIT, $16-8
 // Switch to m->g0's stack, call fn(g).
 // Fn must never return. It should gogo(&g->sched)
 // to keep running g.
+// func mcall(fn func(*g)) 切换到m->g0的栈，调用fn(g)。
+// Fn决不能返回。它应该gogo(&g->sched)来继续运行g。
 TEXT runtime·mcall(SB), NOSPLIT, $0-8
 	MOVQ	fn+0(FP), DI
 
