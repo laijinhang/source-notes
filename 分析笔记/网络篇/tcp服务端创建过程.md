@@ -67,6 +67,12 @@ if err = setDefaultSockopts(s, family, sotype, ipv6only); err != nil {
 
 # 三、Accept
 
+```go
+有新的连接进来后，会创建一个新的fd，与客户端进行通信，后面进行write和read都是通过这个fd进行交互的
+```
+
+
+
 # 四、Write
 
 # 五、Read
