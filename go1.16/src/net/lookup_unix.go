@@ -19,6 +19,10 @@ var onceReadProtocols sync.Once
 
 // readProtocols loads contents of /etc/protocols into protocols map
 // for quick access.
+// readProtocols 将 /etc/protocols 的内容加载到 protocols map 中，以便快速访问。
+/*
+	针对 /etc/protocols（linux） 文件的格式数据，解析出内容，将其加载到 protocols map 中
+*/
 func readProtocols() {
 	file, err := open("/etc/protocols")
 	if err != nil {
@@ -28,13 +32,40 @@ func readProtocols() {
 
 	for line, ok := file.readLine(); ok; line, ok = file.readLine() {
 		// tcp    6   TCP    # transmission control protocol
+		/*
+			比如文件中有一行：tcp    6   TCP    # transmission control protocol
+			其数据：tcp\t6\tTCP\t# transmission control protocol
+
+			if i := bytealg.IndexByteString(line, '#'); i >= 0 {
+				line = line[0:i]
+			}
+			之后line=tcp\t6\tTCP\t"
+
+			f := getFields(line)
+			f的结果[]string{"tcp","6","TCP"}
+
+			这个for循环结束后得到的结果
+			protocols["tcp"] = 6
+			protocols["TCP"] = 6
+		*/
+		/*
+			bytealg.IndexByteString(line, '#')表示字符串line中'#'第一次出现的位置，汇编实现
+		*/
 		if i := bytealg.IndexByteString(line, '#'); i >= 0 {
 			line = line[0:i]
 		}
+		/*
+			getFields(line)对字符串line按 \r\t\n 中任何一个byte进行分割
+			比如line="123\t\n23\r12\n"，经过getFields(line)后得到的结果
+			[]string{"123","23","12"}
+		*/
 		f := getFields(line)
 		if len(f) < 2 {
 			continue
 		}
+		/*
+			dtoi(f[1]) 字符串转成数字
+		*/
 		if proto, _, ok := dtoi(f[1]); ok {
 			if _, ok := protocols[f[0]]; !ok {
 				protocols[f[0]] = proto
@@ -348,7 +379,7 @@ func (r *Resolver) lookupAddr(ctx context.Context, addr string) ([]string, error
 	1、先通过系统调用拿到进程能够打开的最大文件描述数，如果读取中有错误返回，则返回限制为500
 	2、如果进程能够打开的最大文件描述符超过500，则返回500
 	3、如果进程能够打开的最大文件描述符数小于等于500，并且大于30，则返回这个基础上减去30
- */
+*/
 func concurrentThreadsLimit() int {
 	var rlim syscall.Rlimit
 	// 读取进程能打开的最大文件描述符数，并把它放入到rlim变量里
