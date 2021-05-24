@@ -2289,18 +2289,19 @@ func RedirectHandler(url string, code int) Handler {
 // .. elements or repeated slashes to an equivalent, cleaner URL.
 // ServeMux还负责清理URL请求路径和Host头，去除端口号，并将任何含有.或.元素或重复斜线的请求重定向到一个等价的、更干净的URL。
 type ServeMux struct {
-	mu    sync.RWMutex
+	mu    sync.RWMutex		// 读写锁
 	m     map[string]muxEntry
 	es    []muxEntry // slice of entries sorted from longest to shortest. 从最长到最短排序的条目切片。
 	hosts bool       // whether any patterns contain hostnames 是否有任何模式包含主机名
 }
 
 type muxEntry struct {
-	h       Handler
-	pattern string
+	h       Handler	// 路由对应的处理方法，也就是平时写的业务接口那些
+	pattern string	// 路由，也就是匹配规则
 }
 
 // NewServeMux allocates and returns a new ServeMux.
+// NewServeMux分配并返回一个新的ServeMux。
 func NewServeMux() *ServeMux { return new(ServeMux) }
 
 // DefaultServeMux is the default ServeMux used by Serve.

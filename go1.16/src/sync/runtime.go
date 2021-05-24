@@ -7,10 +7,13 @@ package sync
 import "unsafe"
 
 // defined in package runtime
+// 定义在包的运行时间
 
 // Semacquire waits until *s > 0 and then atomically decrements it.
 // It is intended as a simple sleep primitive for use by the synchronization
 // library and should not be used directly.
+// Semacquire一直等待到*s>0，然后原子式地递减它。
+// 它的目的是作为一个简单的睡眠原语，供同步库使用，不应直接使用。
 func runtime_Semacquire(s *uint32)
 
 // SemacquireMutex is like Semacquire, but for profiling contended Mutexes.
@@ -26,6 +29,9 @@ func runtime_SemacquireMutex(s *uint32, lifo bool, skipframes int)
 // If handoff is true, pass count directly to the first waiter.
 // skipframes is the number of frames to omit during tracing, counting from
 // runtime_Semrelease's caller.
+// Semrelease以原子方式增加*s，如果Semacquire中的一个goroutine被阻塞，则通知一个等待的goroutine。
+// 它旨在作为一个简单的唤醒原语，供同步库使用，不应直接使用。如果handoff为真，则直接将计数传递给第一个等待者。
+// skipframes是在跟踪过程中要省略的帧数，从runtime_Semrelease的调用者算起。
 func runtime_Semrelease(s *uint32, handoff bool, skipframes int)
 
 // See runtime/sema.go for documentation.
