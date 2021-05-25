@@ -699,6 +699,7 @@
 // allowed, even if they refer to the same version.
 //
 // - All arguments must refer to packages in the same module at the same version.
+//
 // - No module is considered the "main" module. If the module containing
 // packages named on the command line has a go.mod file, it must not contain
 // directives (replace and exclude) that would cause it to be interpreted

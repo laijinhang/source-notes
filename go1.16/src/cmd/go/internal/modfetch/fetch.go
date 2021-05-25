@@ -189,14 +189,6 @@ func DownloadZip(ctx context.Context, mod module.Version) (zipfile string, err e
 		}
 		defer unlock()
 
-		// Double-check that the zipfile was not created while we were waiting for
-		// the lock.
-		if _, err := os.Stat(zipfile); err == nil {
-			return cached{zipfile, nil}
-		}
-		if err := os.MkdirAll(filepath.Dir(zipfile), 0777); err != nil {
-			return cached{"", err}
-		}
 		if err := downloadZip(ctx, mod, zipfile); err != nil {
 			return cached{"", err}
 		}
