@@ -1,0 +1,627 @@
+# command-line-arguments
+"".rot64<1> STEXT nosplit size=35 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:15)	TEXT	"".rot64(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:15)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:15)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:39)	MOVQ	"".x+8(SP), AX
+	0x0005 00005 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:23)	MOVQ	AX, CX
+	0x0008 00008 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:23)	ROLQ	$7, AX
+	0x000c 00012 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:30)	MOVQ	CX, DX
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:30)	ROLQ	$8, CX
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:30)	ADDQ	CX, AX
+	0x0016 00022 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:37)	ROLQ	$9, DX
+	0x001a 00026 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:37)	ADDQ	DX, AX
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:39)	MOVQ	AX, "".~r1+16(SP)
+	0x0022 00034 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:39)	RET
+	0x0000 48 8b 44 24 08 48 89 c1 48 c1 c0 07 48 89 ca 48  H.D$.H..H...H..H
+	0x0010 c1 c1 08 48 01 c8 48 c1 c2 09 48 01 d0 48 89 44  ...H..H...H..H.D
+	0x0020 24 10 c3                                         $..
+"".rot32<1> STEXT nosplit size=26 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:42)	TEXT	"".rot32(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:42)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:42)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:69)	MOVL	"".x+8(SP), AX
+	0x0004 00004 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:51)	MOVL	AX, CX
+	0x0006 00006 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:51)	ROLL	$7, AX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:59)	MOVL	CX, DX
+	0x000b 00011 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:59)	ROLL	$8, CX
+	0x000e 00014 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:59)	ADDL	CX, AX
+	0x0010 00016 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:67)	ROLL	$9, DX
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:67)	ADDL	DX, AX
+	0x0015 00021 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:69)	MOVL	AX, "".~r1+16(SP)
+	0x0019 00025 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:69)	RET
+	0x0000 8b 44 24 08 89 c1 c1 c0 07 89 ca c1 c1 08 01 c8  .D$.............
+	0x0010 c1 c2 09 01 d0 89 44 24 10 c3                    ......D$..
+"".rot16<1> STEXT nosplit size=31 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:72)	TEXT	"".rot16(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:72)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:72)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:84)	MOVWLZX	"".x+8(SP), AX
+	0x0005 00005 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:76)	MOVL	AX, CX
+	0x0007 00007 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:76)	ROLW	$7, AX
+	0x000b 00011 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:79)	MOVL	CX, DX
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:79)	ROLW	$8, CX
+	0x0011 00017 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:79)	ADDL	CX, AX
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:82)	ROLW	$9, DX
+	0x0017 00023 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:82)	ADDL	DX, AX
+	0x0019 00025 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:84)	MOVW	AX, "".~r1+16(SP)
+	0x001e 00030 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:84)	RET
+	0x0000 0f b7 44 24 08 89 c1 66 c1 c0 07 89 ca 66 c1 c1  ..D$...f.....f..
+	0x0010 08 01 c8 66 c1 c2 09 01 d0 66 89 44 24 10 c3     ...f.....f.D$..
+"".rot8<1> STEXT nosplit size=27 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:87)	TEXT	"".rot8(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:87)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:87)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:99)	MOVBLZX	"".x+8(SP), AX
+	0x0005 00005 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:91)	MOVL	AX, CX
+	0x0007 00007 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:91)	ROLB	$5, AL
+	0x000a 00010 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:94)	MOVL	CX, DX
+	0x000c 00012 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:94)	ROLB	$6, CL
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:94)	ADDL	CX, AX
+	0x0011 00017 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:97)	ROLB	$7, DL
+	0x0014 00020 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:97)	ADDL	DX, AX
+	0x0016 00022 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:99)	MOVB	AL, "".~r1+16(SP)
+	0x001a 00026 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:99)	RET
+	0x0000 0f b6 44 24 08 89 c1 c0 c0 05 89 ca c0 c1 06 01  ..D$............
+	0x0010 c8 c0 c2 07 01 d0 88 44 24 10 c3                 .......D$..
+"".rot64nc<1> STEXT nosplit size=28 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:106)	TEXT	"".rot64nc(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:106)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:106)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:119)	MOVQ	"".z+16(SP), CX
+	0x0005 00005 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:114)	MOVQ	"".x+8(SP), AX
+	0x000a 00010 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:114)	MOVQ	AX, DX
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:114)	ROLQ	CX, AX
+	0x0010 00016 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:117)	RORQ	CX, DX
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:117)	ADDQ	DX, AX
+	0x0016 00022 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:119)	MOVQ	AX, "".~r2+24(SP)
+	0x001b 00027 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:119)	RET
+	0x0000 48 8b 4c 24 10 48 8b 44 24 08 48 89 c2 48 d3 c0  H.L$.H.D$.H..H..
+	0x0010 48 d3 ca 48 01 d0 48 89 44 24 18 c3              H..H..H.D$..
+"".rot32nc<1> STEXT nosplit size=22 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:122)	TEXT	"".rot32nc(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:122)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:122)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:135)	MOVQ	"".z+16(SP), CX
+	0x0005 00005 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:130)	MOVL	"".x+8(SP), AX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:130)	MOVL	AX, DX
+	0x000b 00011 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:130)	ROLL	CX, AX
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:133)	RORL	CX, DX
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:133)	ADDL	DX, AX
+	0x0011 00017 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:135)	MOVL	AX, "".~r2+24(SP)
+	0x0015 00021 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:135)	RET
+	0x0000 48 8b 4c 24 10 8b 44 24 08 89 c2 d3 c0 d3 ca 01  H.L$..D$........
+	0x0010 d0 89 44 24 18 c3                                ..D$..
+"".rot16nc<1> STEXT nosplit size=26 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:138)	TEXT	"".rot16nc(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:138)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:138)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:149)	MOVQ	"".z+16(SP), CX
+	0x0005 00005 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:144)	MOVWLZX	"".x+8(SP), AX
+	0x000a 00010 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:144)	MOVL	AX, DX
+	0x000c 00012 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:144)	ROLW	CX, AX
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:147)	RORW	CX, DX
+	0x0012 00018 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:147)	ADDL	DX, AX
+	0x0014 00020 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:149)	MOVW	AX, "".~r2+24(SP)
+	0x0019 00025 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:149)	RET
+	0x0000 48 8b 4c 24 10 0f b7 44 24 08 89 c2 66 d3 c0 66  H.L$...D$...f..f
+	0x0010 d3 ca 01 d0 66 89 44 24 18 c3                    ....f.D$..
+"".rot8nc<1> STEXT nosplit size=23 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:152)	TEXT	"".rot8nc(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:152)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:152)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:163)	MOVQ	"".z+16(SP), CX
+	0x0005 00005 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:158)	MOVBLZX	"".x+8(SP), AX
+	0x000a 00010 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:158)	MOVL	AX, DX
+	0x000c 00012 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:158)	ROLB	CL, AL
+	0x000e 00014 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:161)	RORB	CL, DL
+	0x0010 00016 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:161)	ADDL	DX, AX
+	0x0012 00018 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:163)	MOVB	AL, "".~r2+24(SP)
+	0x0016 00022 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:163)	RET
+	0x0000 48 8b 4c 24 10 0f b6 44 24 08 89 c2 d2 c0 d2 ca  H.L$...D$.......
+	0x0010 01 d0 88 44 24 18 c3                             ...D$..
+"".f32<1> STEXT nosplit size=19 args=0x10 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:167)	TEXT	"".f32(SB), NOSPLIT|ABIInternal, $0-16
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:167)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:167)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0000 00000 (<unknown line number>)	NOP
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:169)	MOVL	"".x+8(SP), AX
+	0x0004 00004 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:169)	MOVL	AX, CX
+	0x0006 00006 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:169)	ROLL	$7, AX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:169)	ROLL	$25, CX
+	0x000c 00012 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:169)	ADDL	CX, AX
+	0x000e 00014 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:169)	MOVL	AX, "".~r1+16(SP)
+	0x0012 00018 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:169)	RET
+	0x0000 8b 44 24 08 89 c1 c1 c0 07 c1 c1 19 01 c8 89 44  .D$............D
+	0x0010 24 10 c3                                         $..
+"".checkMaskedRotate32<1> STEXT nosplit size=311 args=0x20 locals=0x18 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:176)	TEXT	"".checkMaskedRotate32(SB), NOSPLIT|ABIInternal, $24-32
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:176)	SUBQ	$24, SP
+	0x0004 00004 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:176)	MOVQ	BP, 16(SP)
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:176)	LEAQ	16(SP), BP
+	0x000e 00014 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:176)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x000e 00014 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:176)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x000e 00014 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	MOVQ	"".a+40(SP), CX
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	TESTQ	CX, CX
+	0x0016 00022 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	JLS	303
+	0x001c 00028 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	MOVQ	"".a+32(SP), DX
+	0x0021 00033 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	MOVL	(DX), BX
+	0x0023 00035 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	ROLL	$16, BX
+	0x0026 00038 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	ANDL	$16711680, BX
+	0x002c 00044 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	MOVL	BX, (DX)
+	0x002e 00046 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:185)	CMPQ	CX, $1
+	0x0032 00050 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:185)	JLS	293
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:185)	MOVBLZX	4(DX), BX
+	0x003c 00060 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:185)	ROLL	$16, BX
+	0x003f 00063 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:185)	MOVL	BX, 4(DX)
+	0x0042 00066 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:189)	CMPQ	CX, $2
+	0x0046 00070 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:189)	JLS	281
+	0x004c 00076 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:189)	MOVL	8(DX), BX
+	0x004f 00079 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:189)	ROLL	$4, BX
+	0x0052 00082 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:189)	ANDL	$4080, BX
+	0x0058 00088 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:189)	MOVL	BX, 8(DX)
+	0x005b 00091 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:189)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:193)	CMPQ	CX, $3
+	0x0064 00100 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:193)	JLS	271
+	0x006a 00106 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:193)	MOVL	12(DX), BX
+	0x006d 00109 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:193)	ANDL	$16711680, BX
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:193)	MOVL	BX, SI
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:193)	ROLL	$16, BX
+	0x0078 00120 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:193)	MOVL	BX, 12(DX)
+	0x007b 00123 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:193)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:198)	CMPQ	CX, $4
+	0x0084 00132 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:198)	JLS	261
+	0x0086 00134 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:198)	MOVL	16(DX), DI
+	0x0089 00137 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	MOVQ	CX, AX
+	0x008c 00140 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:198)	MOVQ	"".r+56(SP), CX
+	0x0091 00145 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:198)	ROLL	CX, DI
+	0x0093 00147 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:198)	ANDL	$16711680, DI
+	0x0099 00153 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:198)	MOVL	DI, 16(DX)
+	0x009c 00156 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:202)	ROLL	CX, BX
+	0x009e 00158 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:202)	NOP
+	0x00a0 00160 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:202)	CMPQ	AX, $5
+	0x00a4 00164 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:202)	JLS	246
+	0x00a6 00166 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:202)	MOVL	BX, DI
+	0x00a8 00168 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:202)	ANDL	$65280, BX
+	0x00ae 00174 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:202)	MOVL	BX, 20(DX)
+	0x00b1 00177 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:207)	CMPQ	AX, $6
+	0x00b5 00181 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:207)	JLS	233
+	0x00b7 00183 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:207)	ANDL	$-1044481, DI
+	0x00bd 00189 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:207)	MOVL	DI, 24(DX)
+	0x00c0 00192 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:211)	CMPQ	AX, $7
+	0x00c4 00196 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:211)	JLS	220
+	0x00c6 00198 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:211)	ROLL	$20, SI
+	0x00c9 00201 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:211)	ANDL	$-1044481, SI
+	0x00cf 00207 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:211)	MOVL	SI, 28(DX)
+	0x00d2 00210 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:213)	MOVQ	16(SP), BP
+	0x00d7 00215 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:213)	ADDQ	$24, SP
+	0x00db 00219 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:213)	RET
+	0x00dc 00220 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	MOVQ	AX, CX
+	0x00df 00223 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:211)	MOVL	$7, AX
+	0x00e4 00228 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:211)	PCDATA	$1, $1
+	0x00e4 00228 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:211)	CALL	runtime.panicIndex(SB)
+	0x00e9 00233 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	MOVQ	AX, CX
+	0x00ec 00236 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:207)	MOVL	$6, AX
+	0x00f1 00241 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:207)	CALL	runtime.panicIndex(SB)
+	0x00f6 00246 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	MOVQ	AX, CX
+	0x00f9 00249 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:202)	MOVL	$5, AX
+	0x00fe 00254 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:202)	NOP
+	0x0100 00256 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:202)	CALL	runtime.panicIndex(SB)
+	0x0105 00261 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:198)	MOVL	$4, AX
+	0x010a 00266 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:198)	CALL	runtime.panicIndex(SB)
+	0x010f 00271 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:193)	MOVL	$3, AX
+	0x0114 00276 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:193)	CALL	runtime.panicIndex(SB)
+	0x0119 00281 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:189)	MOVL	$2, AX
+	0x011e 00286 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:189)	NOP
+	0x0120 00288 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:189)	CALL	runtime.panicIndex(SB)
+	0x0125 00293 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:185)	MOVL	$1, AX
+	0x012a 00298 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:185)	CALL	runtime.panicIndex(SB)
+	0x012f 00303 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	XORL	AX, AX
+	0x0131 00305 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	CALL	runtime.panicIndex(SB)
+	0x0136 00310 (/home/kail/go/src/source-notes/go1.16/test/codegen/rotate.go:181)	XCHGL	AX, AX
+	0x0000 48 83 ec 18 48 89 6c 24 10 48 8d 6c 24 10 48 8b  H...H.l$.H.l$.H.
+	0x0010 4c 24 28 48 85 c9 0f 86 13 01 00 00 48 8b 54 24  L$(H........H.T$
+	0x0020 20 8b 1a c1 c3 10 81 e3 00 00 ff 00 89 1a 48 83   .............H.
+	0x0030 f9 01 0f 86 ed 00 00 00 0f b6 5a 04 c1 c3 10 89  ..........Z.....
+	0x0040 5a 04 48 83 f9 02 0f 86 cd 00 00 00 8b 5a 08 c1  Z.H..........Z..
+	0x0050 c3 04 81 e3 f0 0f 00 00 89 5a 08 0f 1f 44 00 00  .........Z...D..
+	0x0060 48 83 f9 03 0f 86 a5 00 00 00 8b 5a 0c 81 e3 00  H..........Z....
+	0x0070 00 ff 00 89 de c1 c3 10 89 5a 0c 0f 1f 44 00 00  .........Z...D..
+	0x0080 48 83 f9 04 76 7f 8b 7a 10 48 89 c8 48 8b 4c 24  H...v..z.H..H.L$
+	0x0090 38 d3 c7 81 e7 00 00 ff 00 89 7a 10 d3 c3 66 90  8.........z...f.
+	0x00a0 48 83 f8 05 76 50 89 df 81 e3 00 ff 00 00 89 5a  H...vP.........Z
+	0x00b0 14 48 83 f8 06 76 32 81 e7 ff 0f f0 ff 89 7a 18  .H...v2.......z.
+	0x00c0 48 83 f8 07 76 16 c1 c6 14 81 e6 ff 0f f0 ff 89  H...v...........
+	0x00d0 72 1c 48 8b 6c 24 10 48 83 c4 18 c3 48 89 c1 b8  r.H.l$.H....H...
+	0x00e0 07 00 00 00 e8 00 00 00 00 48 89 c1 b8 06 00 00  .........H......
+	0x00f0 00 e8 00 00 00 00 48 89 c1 b8 05 00 00 00 66 90  ......H.......f.
+	0x0100 e8 00 00 00 00 b8 04 00 00 00 e8 00 00 00 00 b8  ................
+	0x0110 03 00 00 00 e8 00 00 00 00 b8 02 00 00 00 66 90  ..............f.
+	0x0120 e8 00 00 00 00 b8 01 00 00 00 e8 00 00 00 00 31  ...............1
+	0x0130 c0 e8 00 00 00 00 90                             .......
+	rel 229+4 t=8 runtime.panicIndex<1>+0
+	rel 242+4 t=8 runtime.panicIndex<1>+0
+	rel 257+4 t=8 runtime.panicIndex<1>+0
+	rel 267+4 t=8 runtime.panicIndex<1>+0
+	rel 277+4 t=8 runtime.panicIndex<1>+0
+	rel 289+4 t=8 runtime.panicIndex<1>+0
+	rel 299+4 t=8 runtime.panicIndex<1>+0
+	rel 306+4 t=8 runtime.panicIndex<1>+0
+go.cuinfo.packagename.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 63 6f 64 65 67 65 6e                             codegen
+go.info."".rot32nc$abstract<0> SDWARFABSFCN dupok size=59
+	0x0000 04 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 72 6f 74 33 32 6e 63 00  guments.rot32nc.
+	0x0020 01 01 11 78 00 00 00 00 00 00 11 7a 00 00 00 00  ...x.......z....
+	0x0030 00 00 0c 61 00 7b 00 00 00 00 00                 ...a.{.....
+	rel 38+4 t=31 go.info.uint32<0>+0
+	rel 46+4 t=31 go.info.uint<0>+0
+	rel 54+4 t=31 go.info.uint32<0>+0
+runtime.memequal64·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal64<1>+0
+runtime.gcbits.01<0> SRODATA dupok size=1
+	0x0000 01                                               .
+type..namedata.*[]uint32-<0> SRODATA dupok size=12
+	0x0000 00 00 09 2a 5b 5d 75 69 6e 74 33 32              ...*[]uint32
+type.*[]uint32<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 a9 25 88 3f 08 08 08 36 00 00 00 00 00 00 00 00  .%.?...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]uint32-<0>+0
+	rel 48+8 t=1 type.[]uint32<0>+0
+type.[]uint32<0> SRODATA dupok size=56
+	0x0000 18 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 d4 91 1d 1f 02 08 08 17 00 00 00 00 00 00 00 00  ................
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]uint32-<0>+0
+	rel 44+4 t=6 type.*[]uint32<0>+0
+	rel 48+8 t=1 type.uint32<0>+0
+type..importpath.math/bits.<0> SRODATA dupok size=12
+	0x0000 00 00 09 6d 61 74 68 2f 62 69 74 73              ...math/bits
+gclocals·33cdeccccebe80329f1fdbee7f5874cb<0> SRODATA dupok size=8
+	0x0000 01 00 00 00 00 00 00 00                          ........
+gclocals·1a65e721a2ccc325b382662e7ffee780<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 01 00 00 00 01 00                    ..........
+gclocals·69c1753bd5f81501d95132d08af04464<0> SRODATA dupok size=8
+	0x0000 02 00 00 00 00 00 00 00                          ........
+aux for "".rot64<0> SDWARFLOC size=102
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 16 00 00 00 00 00 00 00 23 00 00 00 00 00 00 00  ........#.......
+	0x0020 01 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00  ..P.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 23 00 00 00 00  ...........#....
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00                                ......
+	rel 8+8 t=1 "".rot64<1>+0
+	rel 59+8 t=1 "".rot64<1>+0
+aux for "".rot64<0> SDWARFLINES size=35
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 21 14  ..............!.
+	0x0010 06 03 74 3d 03 02 5a 03 02 78 06 57 06 41 02 01  ..t=..Z..x.W.A..
+	0x0020 00 01 01                                         ...
+	rel 3+8 t=1 "".rot64<1>+0
+aux for "".rot64<0> SDWARFFCN size=91
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 72 6f 74 36 34 00 00 00  guments.rot64...
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c  ................
+	0x0030 02 00 00 00 01 0b 61 00 10 00 00 00 00 00 00 00  ......a.........
+	0x0040 00 10 78 00 00 0f 00 00 00 00 00 00 00 00 0f 7e  ..x............~
+	0x0050 72 31 00 01 0f 00 00 00 00 00 00                 r1.........
+	rel 0+0 t=24 type.uint64<0>+0
+	rel 30+8 t=1 "".rot64<1>+0
+	rel 38+8 t=1 "".rot64<1>+35
+	rel 57+4 t=31 go.info.uint64<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 70+4 t=31 go.info.uint64<0>+0
+	rel 74+4 t=31 <0>+51
+	rel 85+4 t=31 go.info.uint64<0>+0
+aux for "".rot32<0> SDWARFLOC size=102
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 10 00 00 00 00 00 00 00 1a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00  ..P.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 1a 00 00 00 00  ................
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00                                ......
+	rel 8+8 t=1 "".rot32<1>+0
+	rel 59+8 t=1 "".rot32<1>+0
+aux for "".rot32<0> SDWARFLINES size=35
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 3f 14  ..............?.
+	0x0010 06 03 72 33 03 03 46 03 03 5a 06 43 06 37 02 01  ..r3..F..Z.C.7..
+	0x0020 00 01 01                                         ...
+	rel 3+8 t=1 "".rot32<1>+0
+aux for "".rot32<0> SDWARFFCN size=91
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 72 6f 74 33 32 00 00 00  guments.rot32...
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c  ................
+	0x0030 02 00 00 00 01 0b 61 00 2b 00 00 00 00 00 00 00  ......a.+.......
+	0x0040 00 10 78 00 00 2a 00 00 00 00 00 00 00 00 0f 7e  ..x..*.........~
+	0x0050 72 31 00 01 2a 00 00 00 00 00 00                 r1..*......
+	rel 0+0 t=24 type.uint32<0>+0
+	rel 30+8 t=1 "".rot32<1>+0
+	rel 38+8 t=1 "".rot32<1>+26
+	rel 57+4 t=31 go.info.uint32<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 70+4 t=31 go.info.uint32<0>+0
+	rel 74+4 t=31 <0>+51
+	rel 85+4 t=31 go.info.uint32<0>+0
+aux for "".rot16<0> SDWARFLOC size=102
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 13 00 00 00 00 00 00 00 1f 00 00 00 00 00 00 00  ................
+	0x0020 01 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00  ..P.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 1f 00 00 00 00  ................
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00                                ......
+	rel 8+8 t=1 "".rot16<1>+0
+	rel 59+8 t=1 "".rot16<1>+0
+aux for "".rot16<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 ce 00  ................
+	0x0010 14 06 03 7c 3d 4e 62 06 4d 06 41 02 01 00 01 01  ...|=Nb.M.A.....
+	rel 3+8 t=1 "".rot16<1>+0
+aux for "".rot16<0> SDWARFFCN size=91
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 72 6f 74 31 36 00 00 00  guments.rot16...
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c  ................
+	0x0030 02 00 00 00 01 0b 61 00 49 00 00 00 00 00 00 00  ......a.I.......
+	0x0040 00 10 78 00 00 48 00 00 00 00 00 00 00 00 0f 7e  ..x..H.........~
+	0x0050 72 31 00 01 48 00 00 00 00 00 00                 r1..H......
+	rel 0+0 t=24 type.uint16<0>+0
+	rel 30+8 t=1 "".rot16<1>+0
+	rel 38+8 t=1 "".rot16<1>+31
+	rel 57+4 t=31 go.info.uint16<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 70+4 t=31 go.info.uint16<0>+0
+	rel 74+4 t=31 <0>+51
+	rel 85+4 t=31 go.info.uint16<0>+0
+aux for "".rot8<0> SDWARFLOC size=102
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 11 00 00 00 00 00 00 00 1b 00 00 00 00 00 00 00  ................
+	0x0020 01 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00  ..P.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 1b 00 00 00 00  ................
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00                                ......
+	rel 8+8 t=1 "".rot8<1>+0
+	rel 59+8 t=1 "".rot8<1>+0
+aux for "".rot8<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 dd 00  ................
+	0x0010 14 06 03 7c 3d 44 58 06 43 06 37 02 01 00 01 01  ...|=DX.C.7.....
+	rel 3+8 t=1 "".rot8<1>+0
+aux for "".rot8<0> SDWARFFCN size=90
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 72 6f 74 38 00 00 00 00  guments.rot8....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 0b 61 00 58 00 00 00 00 00 00 00 00  .....a.X........
+	0x0040 10 78 00 00 57 00 00 00 00 00 00 00 00 0f 7e 72  .x..W.........~r
+	0x0050 31 00 01 57 00 00 00 00 00 00                    1..W......
+	rel 0+0 t=24 type.uint8<0>+0
+	rel 29+8 t=1 "".rot8<1>+0
+	rel 37+8 t=1 "".rot8<1>+27
+	rel 56+4 t=31 go.info.uint8<0>+0
+	rel 60+4 t=31 <0>+0
+	rel 69+4 t=31 go.info.uint8<0>+0
+	rel 73+4 t=31 <0>+51
+	rel 84+4 t=31 go.info.uint8<0>+0
+aux for "".rot64nc<0> SDWARFLOC size=154
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 16 00 00 00 00 00 00 00 1c 00 00 00 00 00 00 00  ................
+	0x0020 01 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00  ..P.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 1c 00 00 00 00  ................
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 1c 00  ................
+	0x0080 00 00 00 00 00 00 02 00 91 08 00 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".rot64nc<1>+0
+	rel 59+8 t=1 "".rot64nc<1>+0
+	rel 110+8 t=1 "".rot64nc<1>+0
+aux for "".rot64nc<0> SDWARFLINES size=31
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 f1 00  ................
+	0x0010 14 06 03 7f 3d 80 06 4d 06 41 02 01 00 01 01     ....=..M.A.....
+	rel 3+8 t=1 "".rot64nc<1>+0
+aux for "".rot64nc<0> SDWARFFCN size=106
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 72 6f 74 36 34 6e 63 00  guments.rot64nc.
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 01 9c 02 00 00 00 01 0b 61 00 6b 00 00 00 00 00  ........a.k.....
+	0x0040 00 00 00 10 78 00 00 6a 00 00 00 00 00 00 00 00  ....x..j........
+	0x0050 10 7a 00 00 6a 00 00 00 00 00 00 00 00 0f 7e 72  .z..j.........~r
+	0x0060 32 00 01 6a 00 00 00 00 00 00                    2..j......
+	rel 0+0 t=24 type.uint64<0>+0
+	rel 32+8 t=1 "".rot64nc<1>+0
+	rel 40+8 t=1 "".rot64nc<1>+28
+	rel 59+4 t=31 go.info.uint64<0>+0
+	rel 63+4 t=31 <0>+0
+	rel 72+4 t=31 go.info.uint64<0>+0
+	rel 76+4 t=31 <0>+51
+	rel 85+4 t=31 go.info.uint<0>+0
+	rel 89+4 t=31 <0>+102
+	rel 100+4 t=31 go.info.uint64<0>+0
+aux for "".rot32nc<0> SDWARFLOC size=154
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 16 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 16 00 00 00 00  ................
+	0x0050 00 00 00 02 00 91 08 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00  ................
+	0x0070 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 16  ................
+	0x0080 00 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00  .........P......
+	0x0090 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".rot32nc<1>+0
+	rel 59+8 t=1 "".rot32nc<1>+0
+	rel 111+8 t=1 "".rot32nc<1>+0
+aux for "".rot32nc<0> SDWARFLINES size=31
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 81 01  ................
+	0x0010 14 06 03 7f 3d 62 06 39 06 37 02 01 00 01 01     ....=b.9.7.....
+	rel 3+8 t=1 "".rot32nc<1>+0
+aux for "".rot32nc<0> SDWARFFCN size=63
+	0x0000 05 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 01 9c 13 00 00 00 00 00 00 00 00  ................
+	0x0020 13 00 00 00 00 00 00 00 00 0f 7e 72 32 00 01 7a  ..........~r2..z
+	0x0030 00 00 00 00 00 0e 00 00 00 00 00 00 00 00 00     ...............
+	rel 0+0 t=24 type.uint32<0>+0
+	rel 1+4 t=31 go.info."".rot32nc$abstract<0>+0
+	rel 5+8 t=1 "".rot32nc<1>+0
+	rel 13+8 t=1 "".rot32nc<1>+22
+	rel 24+4 t=31 go.info."".rot32nc$abstract<0>+34
+	rel 28+4 t=31 <0>+0
+	rel 33+4 t=31 go.info."".rot32nc$abstract<0>+42
+	rel 37+4 t=31 <0>+51
+	rel 48+4 t=31 go.info.uint32<0>+0
+	rel 54+4 t=31 go.info."".rot32nc$abstract<0>+50
+	rel 58+4 t=31 <0>+103
+aux for "".rot16nc<0> SDWARFLOC size=154
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 14 00 00 00 00 00 00 00 1a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00  ..P.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 1a 00 00 00 00  ................
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 1a 00  ................
+	0x0080 00 00 00 00 00 00 02 00 91 08 00 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".rot16nc<1>+0
+	rel 59+8 t=1 "".rot16nc<1>+0
+	rel 110+8 t=1 "".rot16nc<1>+0
+aux for "".rot16nc<0> SDWARFLINES size=31
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 8f 01  ................
+	0x0010 14 06 03 7f 3d 76 06 43 06 41 02 01 00 01 01     ....=v.C.A.....
+	rel 3+8 t=1 "".rot16nc<1>+0
+aux for "".rot16nc<0> SDWARFFCN size=110
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 72 6f 74 31 36 6e 63 00  guments.rot16nc.
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 01 9c 02 00 00 00 01 0b 61 00 8b 01 00 00 00 00  ........a.......
+	0x0040 00 00 00 00 10 78 00 00 8a 01 00 00 00 00 00 00  .....x..........
+	0x0050 00 00 10 7a 00 00 8a 01 00 00 00 00 00 00 00 00  ...z............
+	0x0060 0f 7e 72 32 00 01 8a 01 00 00 00 00 00 00        .~r2..........
+	rel 0+0 t=24 type.uint16<0>+0
+	rel 32+8 t=1 "".rot16nc<1>+0
+	rel 40+8 t=1 "".rot16nc<1>+26
+	rel 60+4 t=31 go.info.uint16<0>+0
+	rel 64+4 t=31 <0>+0
+	rel 74+4 t=31 go.info.uint16<0>+0
+	rel 78+4 t=31 <0>+51
+	rel 88+4 t=31 go.info.uint<0>+0
+	rel 92+4 t=31 <0>+102
+	rel 104+4 t=31 go.info.uint16<0>+0
+aux for "".rot8nc<0> SDWARFLOC size=154
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 12 00 00 00 00 00 00 00 17 00 00 00 00 00 00 00  ................
+	0x0020 01 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00  ..P.............
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 17 00 00 00 00  ................
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00  ................
+	0x0070 00 00 00 00 00 00 00 00 00 00 00 00 00 00 17 00  ................
+	0x0080 00 00 00 00 00 00 02 00 91 08 00 00 00 00 00 00  ................
+	0x0090 00 00 00 00 00 00 00 00 00 00                    ..........
+	rel 8+8 t=1 "".rot8nc<1>+0
+	rel 59+8 t=1 "".rot8nc<1>+0
+	rel 110+8 t=1 "".rot8nc<1>+0
+aux for "".rot8nc<0> SDWARFLINES size=31
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 9d 01  ................
+	0x0010 14 06 03 7f 3d 6c 06 39 06 37 02 01 00 01 01     ....=l.9.7.....
+	rel 3+8 t=1 "".rot8nc<1>+0
+aux for "".rot8nc<0> SDWARFFCN size=109
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 72 6f 74 38 6e 63 00 00  guments.rot8nc..
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01  ................
+	0x0030 9c 02 00 00 00 01 0b 61 00 99 01 00 00 00 00 00  .......a........
+	0x0040 00 00 00 10 78 00 00 98 01 00 00 00 00 00 00 00  ....x...........
+	0x0050 00 10 7a 00 00 98 01 00 00 00 00 00 00 00 00 0f  ..z.............
+	0x0060 7e 72 32 00 01 98 01 00 00 00 00 00 00           ~r2..........
+	rel 0+0 t=24 type.uint8<0>+0
+	rel 31+8 t=1 "".rot8nc<1>+0
+	rel 39+8 t=1 "".rot8nc<1>+23
+	rel 59+4 t=31 go.info.uint8<0>+0
+	rel 63+4 t=31 <0>+0
+	rel 73+4 t=31 go.info.uint8<0>+0
+	rel 77+4 t=31 <0>+51
+	rel 87+4 t=31 go.info.uint<0>+0
+	rel 91+4 t=31 <0>+102
+	rel 103+4 t=31 go.info.uint8<0>+0
+aux for "".f32<0> SDWARFLOC size=153
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 13 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 13 00 00 00 00  ................
+	0x0050 00 00 00 01 00 9c 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00  ................
+	0x0070 00 00 00 00 00 00 0e 00 00 00 00 00 00 00 13 00  ................
+	0x0080 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0090 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".f32<1>+0
+	rel 59+8 t=1 "".f32<1>+0
+	rel 110+8 t=1 "".f32<1>+0
+aux for "".f32<0> SDWARFLINES size=33
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 a3 01  ................
+	0x0010 14 06 03 5d 33 44 06 03 1f 46 06 37 02 01 00 01  ...]3D...F.7....
+	0x0020 01                                               .
+	rel 3+8 t=1 "".f32<1>+0
+aux for "".f32<0> SDWARFFCN size=125
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 66 33 32 00 00 00 00 00  guments.f32.....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02 00  ................
+	0x0030 00 00 01 10 78 00 00 a7 01 00 00 00 00 00 00 00  ....x...........
+	0x0040 00 0f 7e 72 31 00 01 a7 01 00 00 00 00 00 06 00  ..~r1...........
+	0x0050 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0060 00 00 00 02 00 00 00 a9 01 13 00 00 00 00 00 00  ................
+	0x0070 00 00 0e 00 00 00 00 00 00 00 00 00 00           .............
+	rel 0+0 t=24 type.uint32<0>+0
+	rel 28+8 t=1 "".f32<1>+0
+	rel 36+8 t=1 "".f32<1>+19
+	rel 57+4 t=31 go.info.uint32<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 73+4 t=31 go.info.uint32<0>+0
+	rel 79+4 t=31 go.info."".rot32nc$abstract<0>+0
+	rel 83+8 t=1 "".f32<1>+4
+	rel 91+8 t=1 "".f32<1>+14
+	rel 106+4 t=31 go.info."".rot32nc$abstract<0>+34
+	rel 110+4 t=31 <0>+51
+	rel 115+4 t=31 go.info."".rot32nc$abstract<0>+50
+	rel 119+4 t=31 <0>+102
+aux for "".checkMaskedRotate32<0> SDWARFLOC size=110
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 37 01 00 00 00 00 00 00  ........7.......
+	0x0020 08 00 91 08 93 08 91 08 93 08 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff ff  ................
+	0x0040 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 37 01 00 00 00 00 00 00 02 00 91 18 00 00  ..7.............
+	0x0060 00 00 00 00 00 00 00 00 00 00 00 00 00 00        ..............
+	rel 8+8 t=1 "".checkMaskedRotate32<1>+0
+	rel 66+8 t=1 "".checkMaskedRotate32<1>+0
+aux for "".checkMaskedRotate32<0> SDWARFLINES size=108
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 0a 03 aa  ................
+	0x0010 01 14 a0 06 41 06 08 31 06 37 06 4b 06 37 06 4f  ....A..1.7.K.7.O
+	0x0020 06 37 06 4b 06 2d 06 bd 06 37 06 4b 06 2d 06 d2  .7.K.-...7.K.-..
+	0x0030 06 37 03 73 3d 06 03 0c 32 06 41 06 81 06 23 d2  .7.s=...2.A...#.
+	0x0040 06 4b 06 4b 31 06 4b 06 2d 06 6b 06 03 64 6f 03  .K.K1.K.-.k..do.
+	0x0050 19 32 03 66 6f 03 15 32 03 6a 6f 03 10 32 83 03  .2.fo..2.jo..2..
+	0x0060 7f 6f 6f 83 6f 06 55 02 01 00 01 01              .oo.o.U.....
+	rel 3+8 t=1 "".checkMaskedRotate32<1>+0
+aux for "".checkMaskedRotate32<0> SDWARFFCN size=106
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 63 68 65 63 6b 4d 61 73  guments.checkMas
+	0x0020 6b 65 64 52 6f 74 61 74 65 33 32 00 00 00 00 00  kedRotate32.....
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02 00  ................
+	0x0040 00 00 01 0a 69 00 b1 01 00 00 00 00 00 10 61 00  ....i.........a.
+	0x0050 00 b0 01 00 00 00 00 00 00 00 00 10 72 00 00 b0  ............r...
+	0x0060 01 00 00 00 00 00 00 00 00 00                    ..........
+	rel 44+8 t=1 "".checkMaskedRotate32<1>+0
+	rel 52+8 t=1 "".checkMaskedRotate32<1>+311
+	rel 72+4 t=31 go.info.int<0>+0
+	rel 83+4 t=31 go.info.[]uint32<0>+0
+	rel 87+4 t=31 <0>+0
+	rel 97+4 t=31 go.info.int<0>+0
+	rel 101+4 t=31 <0>+58

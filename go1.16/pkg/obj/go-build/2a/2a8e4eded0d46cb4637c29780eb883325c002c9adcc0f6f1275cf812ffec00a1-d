@@ -1,0 +1,5 @@
+# test log
+stat .
+open .
+open /dev/null
+open /home/kail/go/src/source-notes/go1.16/bin/go

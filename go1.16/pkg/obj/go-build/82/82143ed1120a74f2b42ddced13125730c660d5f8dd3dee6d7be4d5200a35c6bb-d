@@ -1,0 +1,553 @@
+# command-line-arguments
+"".CountRunes<1> STEXT size=80 args=0x18 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	TEXT	"".CountRunes(SB), ABIInternal, $32-24
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	JLS	73
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	MOVQ	"".s+40(SP), AX
+	0x0022 00034 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	MOVQ	AX, (SP)
+	0x0026 00038 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	MOVQ	"".s+48(SP), AX
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	MOVQ	AX, 8(SP)
+	0x0030 00048 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	PCDATA	$1, $1
+	0x0030 00048 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	CALL	runtime.countrunes(SB)
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	MOVQ	16(SP), AX
+	0x003a 00058 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	MOVQ	AX, "".~r1+56(SP)
+	0x003f 00063 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	MOVQ	24(SP), BP
+	0x0044 00068 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	ADDQ	$32, SP
+	0x0048 00072 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	RET
+	0x0049 00073 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:14)	NOP
+	0x0049 00073 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	PCDATA	$1, $-1
+	0x0049 00073 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	PCDATA	$0, $-2
+	0x0049 00073 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	CALL	runtime.morestack_noctxt(SB)
+	0x004e 00078 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	PCDATA	$0, $-1
+	0x004e 00078 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:12)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 3a 48  dH..%....H;a.v:H
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 48 8b 44  .. H.l$.H.l$.H.D
+	0x0020 24 28 48 89 04 24 48 8b 44 24 30 48 89 44 24 08  $(H..$H.D$0H.D$.
+	0x0030 e8 00 00 00 00 48 8b 44 24 10 48 89 44 24 38 48  .....H.D$.H.D$8H
+	0x0040 8b 6c 24 18 48 83 c4 20 c3 e8 00 00 00 00 eb b0  .l$.H.. ........
+	rel 5+4 t=17 TLS+0
+	rel 49+4 t=8 runtime.countrunes<1>+0
+	rel 74+4 t=8 runtime.morestack_noctxt<0>+0
+"".ToByteSlice<1> STEXT size=103 args=0x18 locals=0x18 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	TEXT	"".ToByteSlice(SB), ABIInternal, $24-24
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	JLS	96
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	SUBQ	$24, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	MOVQ	BP, 16(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	LEAQ	16(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	FUNCDATA	$0, gclocals·2a5305abe05176240e61b8620e19a815(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	LEAQ	type.[3]uint8(SB), AX
+	0x0024 00036 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	MOVQ	AX, (SP)
+	0x0028 00040 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	PCDATA	$1, $0
+	0x0028 00040 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	CALL	runtime.newobject(SB)
+	0x002d 00045 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	MOVQ	8(SP), AX
+	0x0032 00050 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	MOVW	$28518, (AX)
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	MOVB	$111, 2(AX)
+	0x003b 00059 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	MOVQ	AX, "".~r0+32(SP)
+	0x0040 00064 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	MOVQ	$3, "".~r0+40(SP)
+	0x0049 00073 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	MOVQ	$3, "".~r0+48(SP)
+	0x0052 00082 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	MOVQ	16(SP), BP
+	0x0057 00087 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	ADDQ	$24, SP
+	0x005b 00091 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	RET
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:21)	NOP
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	PCDATA	$1, $-1
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	PCDATA	$0, $-2
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	CALL	runtime.morestack_noctxt(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	PCDATA	$0, $-1
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:17)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 51 48  dH..%....H;a.vQH
+	0x0010 83 ec 18 48 89 6c 24 10 48 8d 6c 24 10 48 8d 05  ...H.l$.H.l$.H..
+	0x0020 00 00 00 00 48 89 04 24 e8 00 00 00 00 48 8b 44  ....H..$.....H.D
+	0x0030 24 08 66 c7 00 66 6f c6 40 02 6f 48 89 44 24 20  $.f..fo.@.oH.D$ 
+	0x0040 48 c7 44 24 28 03 00 00 00 48 c7 44 24 30 03 00  H.D$(....H.D$0..
+	0x0050 00 00 48 8b 6c 24 10 48 83 c4 18 c3 0f 1f 40 00  ..H.l$.H......@.
+	0x0060 e8 00 00 00 00 eb 99                             .......
+	rel 5+4 t=17 TLS+0
+	rel 32+4 t=16 type.[3]uint8<0>+0
+	rel 41+4 t=8 runtime.newobject<1>+0
+	rel 97+4 t=8 runtime.morestack_noctxt<0>+0
+"".ConstantLoad<1> STEXT size=632 args=0x0 locals=0x18 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	TEXT	"".ConstantLoad(SB), ABIInternal, $24-0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	JLS	622
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	PCDATA	$0, $-1
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	SUBQ	$24, SP
+	0x0017 00023 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	MOVQ	BP, 16(SP)
+	0x001c 00028 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	LEAQ	16(SP), BP
+	0x0021 00033 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0021 00033 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	0x0021 00033 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	LEAQ	type.[3]uint8(SB), AX
+	0x0028 00040 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	MOVQ	AX, (SP)
+	0x002c 00044 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	PCDATA	$1, $0
+	0x002c 00044 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	CALL	runtime.newobject(SB)
+	0x0031 00049 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	MOVQ	8(SP), AX
+	0x0036 00054 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	MOVW	$12592, (AX)
+	0x003b 00059 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	MOVB	$50, 2(AX)
+	0x003f 00063 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	MOVQ	$3, "".bsink+8(SB)
+	0x004a 00074 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	MOVQ	$3, "".bsink+16(SB)
+	0x0055 00085 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	PCDATA	$0, $-2
+	0x0055 00085 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	CMPL	runtime.writeBarrier(SB), $0
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	JNE	605
+	0x0066 00102 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	MOVQ	AX, "".bsink(SB)
+	0x006d 00109 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	PCDATA	$0, $-1
+	0x006d 00109 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	LEAQ	type.[6]uint8(SB), AX
+	0x0074 00116 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	MOVQ	AX, (SP)
+	0x0078 00120 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	CALL	runtime.newobject(SB)
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	MOVQ	8(SP), AX
+	0x0082 00130 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	MOVL	$858927408, (AX)
+	0x0088 00136 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	MOVW	$13620, 4(AX)
+	0x008e 00142 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	MOVQ	$6, "".bsink+8(SB)
+	0x0099 00153 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	MOVQ	$6, "".bsink+16(SB)
+	0x00a4 00164 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	PCDATA	$0, $-2
+	0x00a4 00164 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	CMPL	runtime.writeBarrier(SB), $0
+	0x00ab 00171 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	JNE	588
+	0x00b1 00177 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	MOVQ	AX, "".bsink(SB)
+	0x00b8 00184 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	PCDATA	$0, $-1
+	0x00b8 00184 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	LEAQ	type.[15]uint8(SB), AX
+	0x00bf 00191 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	MOVQ	AX, (SP)
+	0x00c3 00195 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	CALL	runtime.newobject(SB)
+	0x00c8 00200 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	MOVQ	8(SP), AX
+	0x00cd 00205 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	MOVQ	$3978425819141910832, CX
+	0x00d7 00215 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	MOVQ	CX, (AX)
+	0x00da 00218 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	MOVQ	$7306073769690871863, DX
+	0x00e4 00228 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	MOVQ	DX, 7(AX)
+	0x00e8 00232 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	MOVQ	$15, "".bsink+8(SB)
+	0x00f3 00243 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	MOVQ	$15, "".bsink+16(SB)
+	0x00fe 00254 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	PCDATA	$0, $-2
+	0x00fe 00254 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	CMPL	runtime.writeBarrier(SB), $0
+	0x0105 00261 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	JNE	571
+	0x010b 00267 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	MOVQ	AX, "".bsink(SB)
+	0x0112 00274 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	PCDATA	$0, $-1
+	0x0112 00274 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	LEAQ	type.[9]uint8(SB), AX
+	0x0119 00281 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	MOVQ	AX, (SP)
+	0x011d 00285 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	NOP
+	0x0120 00288 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	CALL	runtime.newobject(SB)
+	0x0125 00293 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	MOVQ	8(SP), AX
+	0x012a 00298 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	MOVQ	$3978425819141910832, CX
+	0x0134 00308 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	MOVQ	CX, (AX)
+	0x0137 00311 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	MOVB	$56, 8(AX)
+	0x013b 00315 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	MOVQ	$9, "".bsink+8(SB)
+	0x0146 00326 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	MOVQ	$9, "".bsink+16(SB)
+	0x0151 00337 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	PCDATA	$0, $-2
+	0x0151 00337 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	CMPL	runtime.writeBarrier(SB), $0
+	0x0158 00344 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	JNE	554
+	0x015e 00350 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	MOVQ	AX, "".bsink(SB)
+	0x0165 00357 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	PCDATA	$0, $-1
+	0x0165 00357 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	LEAQ	type.[10]uint8(SB), AX
+	0x016c 00364 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	MOVQ	AX, (SP)
+	0x0170 00368 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	CALL	runtime.newobject(SB)
+	0x0175 00373 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	MOVQ	8(SP), AX
+	0x017a 00378 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	MOVQ	$3978425819141910832, CX
+	0x0184 00388 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	MOVQ	CX, (AX)
+	0x0187 00391 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	MOVW	$14648, 8(AX)
+	0x018d 00397 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	MOVQ	$10, "".bsink+8(SB)
+	0x0198 00408 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	MOVQ	$10, "".bsink+16(SB)
+	0x01a3 00419 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	PCDATA	$0, $-2
+	0x01a3 00419 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	CMPL	runtime.writeBarrier(SB), $0
+	0x01aa 00426 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	JNE	540
+	0x01ac 00428 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	MOVQ	AX, "".bsink(SB)
+	0x01b3 00435 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	PCDATA	$0, $-1
+	0x01b3 00435 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	LEAQ	type.[12]uint8(SB), AX
+	0x01ba 00442 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	MOVQ	AX, (SP)
+	0x01be 00446 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	NOP
+	0x01c0 00448 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	CALL	runtime.newobject(SB)
+	0x01c5 00453 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	MOVQ	8(SP), AX
+	0x01ca 00458 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	MOVQ	$3978425819141910832, CX
+	0x01d4 00468 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	MOVQ	CX, (AX)
+	0x01d7 00471 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	MOVL	$1650538808, 8(AX)
+	0x01de 00478 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	MOVQ	$12, "".bsink+8(SB)
+	0x01e9 00489 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	MOVQ	$12, "".bsink+16(SB)
+	0x01f4 00500 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	PCDATA	$0, $-2
+	0x01f4 00500 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	CMPL	runtime.writeBarrier(SB), $0
+	0x01fb 00507 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	JNE	526
+	0x01fd 00509 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	MOVQ	AX, "".bsink(SB)
+	0x0204 00516 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:62)	PCDATA	$0, $-1
+	0x0204 00516 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:62)	PCDATA	$1, $-1
+	0x0204 00516 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:62)	MOVQ	16(SP), BP
+	0x0209 00521 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:62)	ADDQ	$24, SP
+	0x020d 00525 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:62)	RET
+	0x020e 00526 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	PCDATA	$0, $-2
+	0x020e 00526 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	LEAQ	"".bsink(SB), DI
+	0x0215 00533 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	CALL	runtime.gcWriteBarrier(SB)
+	0x021a 00538 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:61)	JMP	516
+	0x021c 00540 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	LEAQ	"".bsink(SB), DI
+	0x0223 00547 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	CALL	runtime.gcWriteBarrier(SB)
+	0x0228 00552 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:57)	JMP	435
+	0x022a 00554 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	LEAQ	"".bsink(SB), DI
+	0x0231 00561 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	CALL	runtime.gcWriteBarrier(SB)
+	0x0236 00566 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:53)	JMP	357
+	0x023b 00571 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	LEAQ	"".bsink(SB), DI
+	0x0242 00578 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	CALL	runtime.gcWriteBarrier(SB)
+	0x0247 00583 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:49)	JMP	274
+	0x024c 00588 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	LEAQ	"".bsink(SB), DI
+	0x0253 00595 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	CALL	runtime.gcWriteBarrier(SB)
+	0x0258 00600 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:41)	JMP	184
+	0x025d 00605 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	LEAQ	"".bsink(SB), DI
+	0x0264 00612 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	CALL	runtime.gcWriteBarrier(SB)
+	0x0269 00617 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	JMP	109
+	0x026e 00622 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:33)	NOP
+	0x026e 00622 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	PCDATA	$1, $-1
+	0x026e 00622 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	PCDATA	$0, $-2
+	0x026e 00622 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	CALL	runtime.morestack_noctxt(SB)
+	0x0273 00627 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	PCDATA	$0, $-1
+	0x0273 00627 (/home/kail/go/src/source-notes/go1.16/test/codegen/strings.go:25)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 0f 86 5b  dH..%....H;a...[
+	0x0010 02 00 00 48 83 ec 18 48 89 6c 24 10 48 8d 6c 24  ...H...H.l$.H.l$
+	0x0020 10 48 8d 05 00 00 00 00 48 89 04 24 e8 00 00 00  .H......H..$....
+	0x0030 00 48 8b 44 24 08 66 c7 00 30 31 c6 40 02 32 48  .H.D$.f..01.@.2H
+	0x0040 c7 05 00 00 00 00 03 00 00 00 48 c7 05 00 00 00  ..........H.....
+	0x0050 00 03 00 00 00 83 3d 00 00 00 00 00 0f 1f 40 00  ......=.......@.
+	0x0060 0f 85 f7 01 00 00 48 89 05 00 00 00 00 48 8d 05  ......H......H..
+	0x0070 00 00 00 00 48 89 04 24 e8 00 00 00 00 48 8b 44  ....H..$.....H.D
+	0x0080 24 08 c7 00 30 31 32 33 66 c7 40 04 34 35 48 c7  $...0123f.@.45H.
+	0x0090 05 00 00 00 00 06 00 00 00 48 c7 05 00 00 00 00  .........H......
+	0x00a0 06 00 00 00 83 3d 00 00 00 00 00 0f 85 9b 01 00  .....=..........
+	0x00b0 00 48 89 05 00 00 00 00 48 8d 05 00 00 00 00 48  .H......H......H
+	0x00c0 89 04 24 e8 00 00 00 00 48 8b 44 24 08 48 b9 30  ..$.....H.D$.H.0
+	0x00d0 31 32 33 34 35 36 37 48 89 08 48 ba 37 38 39 61  1234567H..H.789a
+	0x00e0 62 63 64 65 48 89 50 07 48 c7 05 00 00 00 00 0f  bcdeH.P.H.......
+	0x00f0 00 00 00 48 c7 05 00 00 00 00 0f 00 00 00 83 3d  ...H...........=
+	0x0100 00 00 00 00 00 0f 85 30 01 00 00 48 89 05 00 00  .......0...H....
+	0x0110 00 00 48 8d 05 00 00 00 00 48 89 04 24 0f 1f 00  ..H......H..$...
+	0x0120 e8 00 00 00 00 48 8b 44 24 08 48 b9 30 31 32 33  .....H.D$.H.0123
+	0x0130 34 35 36 37 48 89 08 c6 40 08 38 48 c7 05 00 00  4567H...@.8H....
+	0x0140 00 00 09 00 00 00 48 c7 05 00 00 00 00 09 00 00  ......H.........
+	0x0150 00 83 3d 00 00 00 00 00 0f 85 cc 00 00 00 48 89  ..=...........H.
+	0x0160 05 00 00 00 00 48 8d 05 00 00 00 00 48 89 04 24  .....H......H..$
+	0x0170 e8 00 00 00 00 48 8b 44 24 08 48 b9 30 31 32 33  .....H.D$.H.0123
+	0x0180 34 35 36 37 48 89 08 66 c7 40 08 38 39 48 c7 05  4567H..f.@.89H..
+	0x0190 00 00 00 00 0a 00 00 00 48 c7 05 00 00 00 00 0a  ........H.......
+	0x01a0 00 00 00 83 3d 00 00 00 00 00 75 70 48 89 05 00  ....=.....upH...
+	0x01b0 00 00 00 48 8d 05 00 00 00 00 48 89 04 24 66 90  ...H......H..$f.
+	0x01c0 e8 00 00 00 00 48 8b 44 24 08 48 b9 30 31 32 33  .....H.D$.H.0123
+	0x01d0 34 35 36 37 48 89 08 c7 40 08 38 39 61 62 48 c7  4567H...@.89abH.
+	0x01e0 05 00 00 00 00 0c 00 00 00 48 c7 05 00 00 00 00  .........H......
+	0x01f0 0c 00 00 00 83 3d 00 00 00 00 00 75 11 48 89 05  .....=.....u.H..
+	0x0200 00 00 00 00 48 8b 6c 24 10 48 83 c4 18 c3 48 8d  ....H.l$.H....H.
+	0x0210 3d 00 00 00 00 e8 00 00 00 00 eb e8 48 8d 3d 00  =...........H.=.
+	0x0220 00 00 00 e8 00 00 00 00 eb 89 48 8d 3d 00 00 00  ..........H.=...
+	0x0230 00 e8 00 00 00 00 e9 2a ff ff ff 48 8d 3d 00 00  .......*...H.=..
+	0x0240 00 00 e8 00 00 00 00 e9 c6 fe ff ff 48 8d 3d 00  ............H.=.
+	0x0250 00 00 00 e8 00 00 00 00 e9 5b fe ff ff 48 8d 3d  .........[...H.=
+	0x0260 00 00 00 00 e8 00 00 00 00 e9 ff fd ff ff e8 00  ................
+	0x0270 00 00 00 e9 88 fd ff ff                          ........
+	rel 5+4 t=17 TLS+0
+	rel 36+4 t=16 type.[3]uint8<0>+0
+	rel 45+4 t=8 runtime.newobject<1>+0
+	rel 66+4 t=16 "".bsink<0>+4
+	rel 77+4 t=16 "".bsink<0>+12
+	rel 87+4 t=16 runtime.writeBarrier<0>+-1
+	rel 105+4 t=16 "".bsink<0>+0
+	rel 112+4 t=16 type.[6]uint8<0>+0
+	rel 121+4 t=8 runtime.newobject<1>+0
+	rel 145+4 t=16 "".bsink<0>+4
+	rel 156+4 t=16 "".bsink<0>+12
+	rel 166+4 t=16 runtime.writeBarrier<0>+-1
+	rel 180+4 t=16 "".bsink<0>+0
+	rel 187+4 t=16 type.[15]uint8<0>+0
+	rel 196+4 t=8 runtime.newobject<1>+0
+	rel 235+4 t=16 "".bsink<0>+4
+	rel 246+4 t=16 "".bsink<0>+12
+	rel 256+4 t=16 runtime.writeBarrier<0>+-1
+	rel 270+4 t=16 "".bsink<0>+0
+	rel 277+4 t=16 type.[9]uint8<0>+0
+	rel 289+4 t=8 runtime.newobject<1>+0
+	rel 318+4 t=16 "".bsink<0>+4
+	rel 329+4 t=16 "".bsink<0>+12
+	rel 339+4 t=16 runtime.writeBarrier<0>+-1
+	rel 353+4 t=16 "".bsink<0>+0
+	rel 360+4 t=16 type.[10]uint8<0>+0
+	rel 369+4 t=8 runtime.newobject<1>+0
+	rel 400+4 t=16 "".bsink<0>+4
+	rel 411+4 t=16 "".bsink<0>+12
+	rel 421+4 t=16 runtime.writeBarrier<0>+-1
+	rel 431+4 t=16 "".bsink<0>+0
+	rel 438+4 t=16 type.[12]uint8<0>+0
+	rel 449+4 t=8 runtime.newobject<1>+0
+	rel 481+4 t=16 "".bsink<0>+4
+	rel 492+4 t=16 "".bsink<0>+12
+	rel 502+4 t=16 runtime.writeBarrier<0>+-1
+	rel 512+4 t=16 "".bsink<0>+0
+	rel 529+4 t=16 "".bsink<0>+0
+	rel 534+4 t=8 runtime.gcWriteBarrier<1>+0
+	rel 543+4 t=16 "".bsink<0>+0
+	rel 548+4 t=8 runtime.gcWriteBarrier<1>+0
+	rel 557+4 t=16 "".bsink<0>+0
+	rel 562+4 t=8 runtime.gcWriteBarrier<1>+0
+	rel 574+4 t=16 "".bsink<0>+0
+	rel 579+4 t=8 runtime.gcWriteBarrier<1>+0
+	rel 591+4 t=16 "".bsink<0>+0
+	rel 596+4 t=8 runtime.gcWriteBarrier<1>+0
+	rel 608+4 t=16 "".bsink<0>+0
+	rel 613+4 t=8 runtime.gcWriteBarrier<1>+0
+	rel 623+4 t=8 runtime.morestack_noctxt<0>+0
+go.cuinfo.packagename.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 63 6f 64 65 67 65 6e                             codegen
+go.string."foo"<0> SRODATA dupok size=3
+	0x0000 66 6f 6f                                         foo
+go.string."012"<0> SRODATA dupok size=3
+	0x0000 30 31 32                                         012
+go.string."012345"<0> SRODATA dupok size=6
+	0x0000 30 31 32 33 34 35                                012345
+go.string."0123456789abcde"<0> SRODATA dupok size=15
+	0x0000 30 31 32 33 34 35 36 37 38 39 61 62 63 64 65     0123456789abcde
+go.string."012345678"<0> SRODATA dupok size=9
+	0x0000 30 31 32 33 34 35 36 37 38                       012345678
+go.string."0123456789"<0> SRODATA dupok size=10
+	0x0000 30 31 32 33 34 35 36 37 38 39                    0123456789
+go.string."0123456789ab"<0> SRODATA dupok size=12
+	0x0000 30 31 32 33 34 35 36 37 38 39 61 62              0123456789ab
+"".bsink<0> SBSS size=24
+runtime.memequal64·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal64<1>+0
+runtime.gcbits.01<0> SRODATA dupok size=1
+	0x0000 01                                               .
+type..namedata.*[]uint8-<0> SRODATA dupok size=11
+	0x0000 00 00 08 2a 5b 5d 75 69 6e 74 38                 ...*[]uint8
+type.*[]uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 a5 8e d0 69 08 08 08 36 00 00 00 00 00 00 00 00  ...i...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]uint8-<0>+0
+	rel 48+8 t=1 type.[]uint8<0>+0
+type.[]uint8<0> SRODATA dupok size=56
+	0x0000 18 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 df 7e 2e 38 02 08 08 17 00 00 00 00 00 00 00 00  .~.8............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[]uint8-<0>+0
+	rel 44+4 t=6 type.*[]uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+type..eqfunc10<0> SRODATA dupok size=16
+	0x0000 00 00 00 00 00 00 00 00 0a 00 00 00 00 00 00 00  ................
+	rel 0+8 t=1 runtime.memequal_varlen<0>+0
+type..namedata.*[10]uint8-<0> SRODATA dupok size=13
+	0x0000 00 00 0a 2a 5b 31 30 5d 75 69 6e 74 38           ...*[10]uint8
+type.*[10]uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 c0 e4 a1 72 08 08 08 36 00 00 00 00 00 00 00 00  ...r...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[10]uint8-<0>+0
+	rel 48+8 t=1 type.[10]uint8<0>+0
+runtime.gcbits.<0> SRODATA dupok size=0
+type.[10]uint8<0> SRODATA dupok size=72
+	0x0000 0a 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 83 76 a9 78 0a 01 01 11 00 00 00 00 00 00 00 00  .v.x............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 0a 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc10<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[10]uint8-<0>+0
+	rel 44+4 t=6 type.*[10]uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+	rel 56+8 t=1 type.[]uint8<0>+0
+type..eqfunc12<0> SRODATA dupok size=16
+	0x0000 00 00 00 00 00 00 00 00 0c 00 00 00 00 00 00 00  ................
+	rel 0+8 t=1 runtime.memequal_varlen<0>+0
+type..namedata.*[12]uint8-<0> SRODATA dupok size=13
+	0x0000 00 00 0a 2a 5b 31 32 5d 75 69 6e 74 38           ...*[12]uint8
+type.*[12]uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 de 64 6e b2 08 08 08 36 00 00 00 00 00 00 00 00  .dn....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[12]uint8-<0>+0
+	rel 48+8 t=1 type.[12]uint8<0>+0
+type.[12]uint8<0> SRODATA dupok size=72
+	0x0000 0c 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 be 7e 78 82 0a 01 01 11 00 00 00 00 00 00 00 00  .~x.............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 0c 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc12<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[12]uint8-<0>+0
+	rel 44+4 t=6 type.*[12]uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+	rel 56+8 t=1 type.[]uint8<0>+0
+type..eqfunc15<0> SRODATA dupok size=16
+	0x0000 00 00 00 00 00 00 00 00 0f 00 00 00 00 00 00 00  ................
+	rel 0+8 t=1 runtime.memequal_varlen<0>+0
+type..namedata.*[15]uint8-<0> SRODATA dupok size=13
+	0x0000 00 00 0a 2a 5b 31 35 5d 75 69 6e 74 38           ...*[15]uint8
+type.*[15]uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 3f 84 a5 e5 08 08 08 36 00 00 00 00 00 00 00 00  ?......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[15]uint8-<0>+0
+	rel 48+8 t=1 type.[15]uint8<0>+0
+type.[15]uint8<0> SRODATA dupok size=72
+	0x0000 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 d1 0b b5 28 0a 01 01 11 00 00 00 00 00 00 00 00  ...(............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 0f 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc15<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[15]uint8-<0>+0
+	rel 44+4 t=6 type.*[15]uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+	rel 56+8 t=1 type.[]uint8<0>+0
+type..eqfunc3<0> SRODATA dupok size=16
+	0x0000 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00  ................
+	rel 0+8 t=1 runtime.memequal_varlen<0>+0
+type..namedata.*[3]uint8-<0> SRODATA dupok size=12
+	0x0000 00 00 09 2a 5b 33 5d 75 69 6e 74 38              ...*[3]uint8
+type.*[3]uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 69 04 66 6c 08 08 08 36 00 00 00 00 00 00 00 00  i.fl...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[3]uint8-<0>+0
+	rel 48+8 t=1 type.[3]uint8<0>+0
+type.[3]uint8<0> SRODATA dupok size=72
+	0x0000 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 c2 b9 52 dd 0a 01 01 11 00 00 00 00 00 00 00 00  ..R.............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 03 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc3<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[3]uint8-<0>+0
+	rel 44+4 t=6 type.*[3]uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+	rel 56+8 t=1 type.[]uint8<0>+0
+type..eqfunc6<0> SRODATA dupok size=16
+	0x0000 00 00 00 00 00 00 00 00 06 00 00 00 00 00 00 00  ................
+	rel 0+8 t=1 runtime.memequal_varlen<0>+0
+type..namedata.*[6]uint8-<0> SRODATA dupok size=12
+	0x0000 00 00 09 2a 5b 36 5d 75 69 6e 74 38              ...*[6]uint8
+type.*[6]uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 80 aa 48 e8 08 08 08 36 00 00 00 00 00 00 00 00  ..H....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[6]uint8-<0>+0
+	rel 48+8 t=1 type.[6]uint8<0>+0
+type.[6]uint8<0> SRODATA dupok size=72
+	0x0000 06 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 af 5c 5d c5 0a 01 01 11 00 00 00 00 00 00 00 00  .\].............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 06 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc6<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[6]uint8-<0>+0
+	rel 44+4 t=6 type.*[6]uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+	rel 56+8 t=1 type.[]uint8<0>+0
+type..eqfunc9<0> SRODATA dupok size=16
+	0x0000 00 00 00 00 00 00 00 00 09 00 00 00 00 00 00 00  ................
+	rel 0+8 t=1 runtime.memequal_varlen<0>+0
+type..namedata.*[9]uint8-<0> SRODATA dupok size=12
+	0x0000 00 00 09 2a 5b 39 5d 75 69 6e 74 38              ...*[9]uint8
+type.*[9]uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 96 68 d0 ba 08 08 08 36 00 00 00 00 00 00 00 00  .h.....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*[9]uint8-<0>+0
+	rel 48+8 t=1 type.[9]uint8<0>+0
+type.[9]uint8<0> SRODATA dupok size=72
+	0x0000 09 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0010 49 30 1c 01 0a 01 01 11 00 00 00 00 00 00 00 00  I0..............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 09 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 type..eqfunc9<0>+0
+	rel 32+8 t=1 runtime.gcbits.<0>+0
+	rel 40+4 t=5 type..namedata.*[9]uint8-<0>+0
+	rel 44+4 t=6 type.*[9]uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+	rel 56+8 t=1 type.[]uint8<0>+0
+gclocals·1a65e721a2ccc325b382662e7ffee780<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 01 00 00 00 01 00                    ..........
+gclocals·69c1753bd5f81501d95132d08af04464<0> SRODATA dupok size=8
+	0x0000 02 00 00 00 00 00 00 00                          ........
+gclocals·2a5305abe05176240e61b8620e19a815<0> SRODATA dupok size=9
+	0x0000 01 00 00 00 01 00 00 00 00                       .........
+gclocals·33cdeccccebe80329f1fdbee7f5874cb<0> SRODATA dupok size=8
+	0x0000 01 00 00 00 00 00 00 00                          ........
+aux for "".CountRunes<0> SDWARFLINES size=29
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 06 14  ................
+	0x0010 0a a5 9d 06 41 06 08 a3 02 07 00 01 01           ....A........
+	rel 3+8 t=1 "".CountRunes<1>+0
+aux for "".CountRunes<0> SDWARFFCN size=81
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 75 6e 74 52 75 6e  guments.CountRun
+	0x0020 65 73 00 00 00 00 00 00 00 00 00 00 00 00 00 00  es..............
+	0x0030 00 00 00 01 9c 02 00 00 00 01 0f 73 00 00 0c 00  ...........s....
+	0x0040 00 00 00 00 0f 7e 72 31 00 01 0c 00 00 00 00 00  .....~r1........
+	0x0050 00                                               .
+	rel 0+0 t=24 type.int<0>+0
+	rel 0+0 t=24 type.string<0>+0
+	rel 35+8 t=1 "".CountRunes<1>+0
+	rel 43+8 t=1 "".CountRunes<1>+80
+	rel 63+4 t=31 go.info.string<0>+0
+	rel 75+4 t=31 go.info.int<0>+0
+aux for "".ToByteSlice<0> SDWARFLINES size=31
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 0b 14  ................
+	0x0010 0a a5 9f 06 55 02 20 fb 06 37 02 07 00 01 01     ....U. ..7.....
+	rel 3+8 t=1 "".ToByteSlice<1>+0
+aux for "".ToByteSlice<0> SDWARFFCN size=72
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 54 6f 42 79 74 65 53 6c  guments.ToByteSl
+	0x0020 69 63 65 00 00 00 00 00 00 00 00 00 00 00 00 00  ice.............
+	0x0030 00 00 00 00 01 9c 02 00 00 00 01 0f 7e 72 30 00  ............~r0.
+	0x0040 01 11 00 00 00 00 00 00                          ........
+	rel 0+0 t=24 type.[]uint8<0>+0
+	rel 36+8 t=1 "".ToByteSlice<1>+0
+	rel 44+8 t=1 "".ToByteSlice<1>+103
+	rel 66+4 t=31 go.info.[]uint8<0>+0
+aux for "".ConstantLoad<0> SDWARFLINES size=101
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 13 14  ................
+	0x0010 0a cd 03 03 a0 06 55 06 02 2e 03 03 fa 06 55 06  ......U.......U.
+	0x0020 37 06 41 06 02 24 03 03 fa 06 55 06 37 06 41 06  7.A..$....U.7.A.
+	0x0030 02 33 f9 06 55 06 55 06 41 06 02 29 f9 06 55 06  .3..U.U.A..)..U.
+	0x0040 37 06 41 06 02 27 f9 06 55 06 4b 06 41 06 02 28  7.A..'..U.K.A..(
+	0x0050 f6 06 72 97 97 b5 03 7c b5 03 7c b5 06 03 7c b5  ..r....|..|...|.
+	0x0060 02 0a 00 01 01                                   .....
+	rel 3+8 t=1 "".ConstantLoad<1>+0
+aux for "".ConstantLoad<0> SDWARFFCN size=61
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 6f 6e 73 74 61 6e 74  guments.Constant
+	0x0020 4c 6f 61 64 00 00 00 00 00 00 00 00 00 00 00 00  Load............
+	0x0030 00 00 00 00 00 01 9c 02 00 00 00 01 00           .............
+	rel 37+8 t=1 "".ConstantLoad<1>+0
+	rel 45+8 t=1 "".ConstantLoad<1>+632

@@ -1,5 +1,0 @@
-# test log
-stat .
-open .
-open /dev/null
-open /home/laijh/go/src/source-notes/go1.16/bin/go

@@ -1,0 +1,2250 @@
+# command-line-arguments
+"".si1c<1> STEXT size=138 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	TEXT	"".si1c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	JLS	128
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x0026 00038 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	"".c+40(SP), AX
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	AX, (SP)
+	0x002f 00047 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	LEAQ	""..autotmp_2+16(SP), CX
+	0x0034 00052 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	CX, 8(SP)
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	PCDATA	$1, $0
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	CALL	runtime.chanrecv1(SB)
+	0x003e 00062 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	""..autotmp_2+16(SP), AX
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	JMP	107
+	0x0045 00069 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x004e 00078 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	"".c+40(SP), AX
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	AX, (SP)
+	0x0057 00087 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	LEAQ	""..autotmp_2+16(SP), CX
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	CX, 8(SP)
+	0x0061 00097 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	CALL	runtime.chanrecv1(SB)
+	0x0066 00102 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	""..autotmp_2+16(SP), AX
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	CMPQ	AX, $256
+	0x0071 00113 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	JCS	69
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	PCDATA	$1, $-1
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	MOVQ	24(SP), BP
+	0x0078 00120 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	ADDQ	$32, SP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	RET
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:22)	NOP
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	PCDATA	$1, $-1
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	PCDATA	$0, $-2
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	CALL	runtime.morestack_noctxt(SB)
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	PCDATA	$0, $-1
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:19)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 71 48  dH..%....H;a.vqH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 48 c7 44  .. H.l$.H.l$.H.D
+	0x0020 24 10 00 00 00 00 48 8b 44 24 28 48 89 04 24 48  $.....H.D$(H..$H
+	0x0030 8d 4c 24 10 48 89 4c 24 08 e8 00 00 00 00 48 8b  .L$.H.L$......H.
+	0x0040 44 24 10 eb 26 48 c7 44 24 10 00 00 00 00 48 8b  D$..&H.D$.....H.
+	0x0050 44 24 28 48 89 04 24 48 8d 4c 24 10 48 89 4c 24  D$(H..$H.L$.H.L$
+	0x0060 08 e8 00 00 00 00 48 8b 44 24 10 48 3d 00 01 00  ......H.D$.H=...
+	0x0070 00 72 d2 48 8b 6c 24 18 48 83 c4 20 c3 0f 1f 00  .r.H.l$.H.. ....
+	0x0080 e8 00 00 00 00 e9 76 ff ff ff                    ......v...
+	rel 5+4 t=17 TLS+0
+	rel 58+4 t=8 runtime.chanrecv1<1>+0
+	rel 98+4 t=8 runtime.chanrecv1<1>+0
+	rel 129+4 t=8 runtime.morestack_noctxt<0>+0
+"".si2c<1> STEXT size=133 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	TEXT	"".si2c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	JLS	122
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x0025 00037 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVQ	"".c+40(SP), AX
+	0x002a 00042 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVQ	AX, (SP)
+	0x002e 00046 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0033 00051 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVQ	CX, 8(SP)
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	PCDATA	$1, $0
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	CALL	runtime.chanrecv1(SB)
+	0x003d 00061 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVL	""..autotmp_2+20(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	JMP	105
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x004b 00075 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVQ	"".c+40(SP), AX
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVQ	AX, (SP)
+	0x0054 00084 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0059 00089 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVQ	CX, 8(SP)
+	0x005e 00094 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVL	""..autotmp_2+20(SP), AX
+	0x0069 00105 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	CMPL	AX, $256
+	0x006e 00110 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	JCS	67
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	PCDATA	$1, $-1
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	MOVQ	24(SP), BP
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	ADDQ	$32, SP
+	0x0079 00121 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	RET
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:29)	NOP
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	PCDATA	$1, $-1
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	PCDATA	$0, $-2
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	CALL	runtime.morestack_noctxt(SB)
+	0x007f 00127 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	PCDATA	$0, $-1
+	0x007f 00127 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:26)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 6b 48  dH..%....H;a.vkH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c7 44 24  .. H.l$.H.l$..D$
+	0x0020 14 00 00 00 00 48 8b 44 24 28 48 89 04 24 48 8d  .....H.D$(H..$H.
+	0x0030 4c 24 14 48 89 4c 24 08 e8 00 00 00 00 8b 44 24  L$.H.L$.......D$
+	0x0040 14 eb 26 c7 44 24 14 00 00 00 00 48 8b 44 24 28  ..&.D$.....H.D$(
+	0x0050 48 89 04 24 48 8d 4c 24 14 48 89 4c 24 08 66 90  H..$H.L$.H.L$.f.
+	0x0060 e8 00 00 00 00 8b 44 24 14 3d 00 01 00 00 72 d3  ......D$.=....r.
+	0x0070 48 8b 6c 24 18 48 83 c4 20 c3 e8 00 00 00 00 90  H.l$.H.. .......
+	0x0080 e9 7b ff ff ff                                   .{...
+	rel 5+4 t=17 TLS+0
+	rel 57+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 123+4 t=8 runtime.morestack_noctxt<0>+0
+"".si3c<1> STEXT size=133 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	TEXT	"".si3c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	JLS	122
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x0024 00036 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVQ	"".c+40(SP), AX
+	0x0029 00041 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVQ	AX, (SP)
+	0x002d 00045 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0032 00050 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVQ	CX, 8(SP)
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	PCDATA	$1, $0
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	CALL	runtime.chanrecv1(SB)
+	0x003c 00060 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	JMP	106
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x004a 00074 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVQ	"".c+40(SP), AX
+	0x004f 00079 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVQ	AX, (SP)
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0058 00088 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVQ	CX, 8(SP)
+	0x005d 00093 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x006a 00106 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	CMPW	AX, $256
+	0x006e 00110 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	JCS	67
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	PCDATA	$1, $-1
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	MOVQ	24(SP), BP
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	ADDQ	$32, SP
+	0x0079 00121 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	RET
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:36)	NOP
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	PCDATA	$1, $-1
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	PCDATA	$0, $-2
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	CALL	runtime.morestack_noctxt(SB)
+	0x007f 00127 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	PCDATA	$0, $-1
+	0x007f 00127 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:33)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 6b 48  dH..%....H;a.vkH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 66 c7 44  .. H.l$.H.l$.f.D
+	0x0020 24 16 00 00 48 8b 44 24 28 48 89 04 24 48 8d 4c  $...H.D$(H..$H.L
+	0x0030 24 16 48 89 4c 24 08 e8 00 00 00 00 0f b7 44 24  $.H.L$........D$
+	0x0040 16 eb 27 66 c7 44 24 16 00 00 48 8b 44 24 28 48  ..'f.D$...H.D$(H
+	0x0050 89 04 24 48 8d 4c 24 16 48 89 4c 24 08 0f 1f 00  ..$H.L$.H.L$....
+	0x0060 e8 00 00 00 00 0f b7 44 24 16 66 3d 00 01 72 d3  .......D$.f=..r.
+	0x0070 48 8b 6c 24 18 48 83 c4 20 c3 e8 00 00 00 00 90  H.l$.H.. .......
+	0x0080 e9 7b ff ff ff                                   .{...
+	rel 5+4 t=17 TLS+0
+	rel 56+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 123+4 t=8 runtime.morestack_noctxt<0>+0
+"".si4c<1> STEXT size=121 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	TEXT	"".si4c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	JLS	114
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0022 00034 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVQ	"".c+40(SP), AX
+	0x0027 00039 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVQ	AX, (SP)
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0030 00048 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVQ	CX, 8(SP)
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	PCDATA	$1, $0
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	CALL	runtime.chanrecv1(SB)
+	0x003a 00058 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x003f 00063 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	NOP
+	0x0040 00064 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	JMP	100
+	0x0042 00066 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0047 00071 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVQ	"".c+40(SP), AX
+	0x004c 00076 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVQ	AX, (SP)
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0055 00085 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVQ	CX, 8(SP)
+	0x005a 00090 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	CALL	runtime.chanrecv1(SB)
+	0x005f 00095 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x0064 00100 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	CMPB	AL, $10
+	0x0066 00102 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	JCS	66
+	0x0068 00104 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	PCDATA	$1, $-1
+	0x0068 00104 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	MOVQ	24(SP), BP
+	0x006d 00109 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	ADDQ	$32, SP
+	0x0071 00113 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	RET
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:43)	NOP
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	PCDATA	$1, $-1
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	PCDATA	$0, $-2
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	CALL	runtime.morestack_noctxt(SB)
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	PCDATA	$0, $-1
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:40)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 63 48  dH..%....H;a.vcH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c6 44 24  .. H.l$.H.l$..D$
+	0x0020 17 00 48 8b 44 24 28 48 89 04 24 48 8d 4c 24 17  ..H.D$(H..$H.L$.
+	0x0030 48 89 4c 24 08 e8 00 00 00 00 0f b6 44 24 17 90  H.L$........D$..
+	0x0040 eb 22 c6 44 24 17 00 48 8b 44 24 28 48 89 04 24  .".D$..H.D$(H..$
+	0x0050 48 8d 4c 24 17 48 89 4c 24 08 e8 00 00 00 00 0f  H.L$.H.L$.......
+	0x0060 b6 44 24 17 3c 0a 72 da 48 8b 6c 24 18 48 83 c4  .D$.<.r.H.l$.H..
+	0x0070 20 c3 e8 00 00 00 00 eb 87                        ........
+	rel 5+4 t=17 TLS+0
+	rel 54+4 t=8 runtime.chanrecv1<1>+0
+	rel 91+4 t=8 runtime.chanrecv1<1>+0
+	rel 115+4 t=8 runtime.morestack_noctxt<0>+0
+"".si5c<1> STEXT size=139 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	TEXT	"".si5c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	JLS	129
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x0026 00038 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	"".c+40(SP), AX
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	AX, (SP)
+	0x002f 00047 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	LEAQ	""..autotmp_2+16(SP), CX
+	0x0034 00052 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	CX, 8(SP)
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	PCDATA	$1, $0
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	CALL	runtime.chanrecv1(SB)
+	0x003e 00062 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	""..autotmp_2+16(SP), AX
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	JMP	107
+	0x0045 00069 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x004e 00078 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	"".c+40(SP), AX
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	AX, (SP)
+	0x0057 00087 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	LEAQ	""..autotmp_2+16(SP), CX
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	CX, 8(SP)
+	0x0061 00097 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	CALL	runtime.chanrecv1(SB)
+	0x0066 00102 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	""..autotmp_2+16(SP), AX
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	ADDQ	$-5, AX
+	0x006f 00111 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	CMPQ	AX, $251
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	JCS	69
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	PCDATA	$1, $-1
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	MOVQ	24(SP), BP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	ADDQ	$32, SP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	RET
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:50)	NOP
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	PCDATA	$1, $-1
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	PCDATA	$0, $-2
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	CALL	runtime.morestack_noctxt(SB)
+	0x0086 00134 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	PCDATA	$0, $-1
+	0x0086 00134 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:47)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 72 48  dH..%....H;a.vrH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 48 c7 44  .. H.l$.H.l$.H.D
+	0x0020 24 10 00 00 00 00 48 8b 44 24 28 48 89 04 24 48  $.....H.D$(H..$H
+	0x0030 8d 4c 24 10 48 89 4c 24 08 e8 00 00 00 00 48 8b  .L$.H.L$......H.
+	0x0040 44 24 10 eb 26 48 c7 44 24 10 00 00 00 00 48 8b  D$..&H.D$.....H.
+	0x0050 44 24 28 48 89 04 24 48 8d 4c 24 10 48 89 4c 24  D$(H..$H.L$.H.L$
+	0x0060 08 e8 00 00 00 00 48 8b 44 24 10 48 83 c0 fb 48  ......H.D$.H...H
+	0x0070 3d fb 00 00 00 72 ce 48 8b 6c 24 18 48 83 c4 20  =....r.H.l$.H.. 
+	0x0080 c3 e8 00 00 00 00 e9 75 ff ff ff                 .......u...
+	rel 5+4 t=17 TLS+0
+	rel 58+4 t=8 runtime.chanrecv1<1>+0
+	rel 98+4 t=8 runtime.chanrecv1<1>+0
+	rel 130+4 t=8 runtime.morestack_noctxt<0>+0
+"".si6c<1> STEXT size=138 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	TEXT	"".si6c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	JLS	128
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x0025 00037 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVQ	"".c+40(SP), AX
+	0x002a 00042 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVQ	AX, (SP)
+	0x002e 00046 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0033 00051 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVQ	CX, 8(SP)
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	PCDATA	$1, $0
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	CALL	runtime.chanrecv1(SB)
+	0x003d 00061 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVL	""..autotmp_2+20(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	JMP	105
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x004b 00075 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVQ	"".c+40(SP), AX
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVQ	AX, (SP)
+	0x0054 00084 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0059 00089 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVQ	CX, 8(SP)
+	0x005e 00094 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVL	""..autotmp_2+20(SP), AX
+	0x0069 00105 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	DECL	AX
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	CMPL	AX, $255
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	JLS	67
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	PCDATA	$1, $-1
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	MOVQ	24(SP), BP
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	ADDQ	$32, SP
+	0x007b 00123 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	RET
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:57)	NOP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	PCDATA	$1, $-1
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	PCDATA	$0, $-2
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	CALL	runtime.morestack_noctxt(SB)
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	PCDATA	$0, $-1
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:54)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 71 48  dH..%....H;a.vqH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c7 44 24  .. H.l$.H.l$..D$
+	0x0020 14 00 00 00 00 48 8b 44 24 28 48 89 04 24 48 8d  .....H.D$(H..$H.
+	0x0030 4c 24 14 48 89 4c 24 08 e8 00 00 00 00 8b 44 24  L$.H.L$.......D$
+	0x0040 14 eb 26 c7 44 24 14 00 00 00 00 48 8b 44 24 28  ..&.D$.....H.D$(
+	0x0050 48 89 04 24 48 8d 4c 24 14 48 89 4c 24 08 66 90  H..$H.L$.H.L$.f.
+	0x0060 e8 00 00 00 00 8b 44 24 14 ff c8 3d ff 00 00 00  ......D$...=....
+	0x0070 76 d1 48 8b 6c 24 18 48 83 c4 20 c3 0f 1f 40 00  v.H.l$.H.. ...@.
+	0x0080 e8 00 00 00 00 e9 76 ff ff ff                    ......v...
+	rel 5+4 t=17 TLS+0
+	rel 57+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 129+4 t=8 runtime.morestack_noctxt<0>+0
+"".si7c<1> STEXT size=138 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	TEXT	"".si7c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	JLS	128
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x0024 00036 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVQ	"".c+40(SP), AX
+	0x0029 00041 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVQ	AX, (SP)
+	0x002d 00045 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0032 00050 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVQ	CX, 8(SP)
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	PCDATA	$1, $0
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	CALL	runtime.chanrecv1(SB)
+	0x003c 00060 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	JMP	106
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x004a 00074 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVQ	"".c+40(SP), AX
+	0x004f 00079 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVQ	AX, (SP)
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0058 00088 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVQ	CX, 8(SP)
+	0x005d 00093 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x006a 00106 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	ADDL	$10, AX
+	0x006d 00109 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	CMPW	AX, $60
+	0x0071 00113 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	JLS	67
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	PCDATA	$1, $-1
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	MOVQ	24(SP), BP
+	0x0078 00120 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	ADDQ	$32, SP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	RET
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:64)	NOP
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	PCDATA	$1, $-1
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	PCDATA	$0, $-2
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	CALL	runtime.morestack_noctxt(SB)
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	PCDATA	$0, $-1
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:61)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 71 48  dH..%....H;a.vqH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 66 c7 44  .. H.l$.H.l$.f.D
+	0x0020 24 16 00 00 48 8b 44 24 28 48 89 04 24 48 8d 4c  $...H.D$(H..$H.L
+	0x0030 24 16 48 89 4c 24 08 e8 00 00 00 00 0f b7 44 24  $.H.L$........D$
+	0x0040 16 eb 27 66 c7 44 24 16 00 00 48 8b 44 24 28 48  ..'f.D$...H.D$(H
+	0x0050 89 04 24 48 8d 4c 24 16 48 89 4c 24 08 0f 1f 00  ..$H.L$.H.L$....
+	0x0060 e8 00 00 00 00 0f b7 44 24 16 83 c0 0a 66 83 f8  .......D$....f..
+	0x0070 3c 76 d0 48 8b 6c 24 18 48 83 c4 20 c3 0f 1f 00  <v.H.l$.H.. ....
+	0x0080 e8 00 00 00 00 e9 76 ff ff ff                    ......v...
+	rel 5+4 t=17 TLS+0
+	rel 56+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 129+4 t=8 runtime.morestack_noctxt<0>+0
+"".si8c<1> STEXT size=124 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	TEXT	"".si8c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	JLS	117
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0022 00034 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVQ	"".c+40(SP), AX
+	0x0027 00039 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVQ	AX, (SP)
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0030 00048 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVQ	CX, 8(SP)
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	PCDATA	$1, $0
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	CALL	runtime.chanrecv1(SB)
+	0x003a 00058 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x003f 00063 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	NOP
+	0x0040 00064 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	JMP	100
+	0x0042 00066 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0047 00071 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVQ	"".c+40(SP), AX
+	0x004c 00076 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVQ	AX, (SP)
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0055 00085 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVQ	CX, 8(SP)
+	0x005a 00090 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	CALL	runtime.chanrecv1(SB)
+	0x005f 00095 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x0064 00100 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	ADDL	$126, AX
+	0x0067 00103 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	CMPB	AL, $126
+	0x0069 00105 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	JCS	66
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	PCDATA	$1, $-1
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	MOVQ	24(SP), BP
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	ADDQ	$32, SP
+	0x0074 00116 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	RET
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:71)	NOP
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	PCDATA	$1, $-1
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	PCDATA	$0, $-2
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	CALL	runtime.morestack_noctxt(SB)
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	PCDATA	$0, $-1
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:68)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 66 48  dH..%....H;a.vfH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c6 44 24  .. H.l$.H.l$..D$
+	0x0020 17 00 48 8b 44 24 28 48 89 04 24 48 8d 4c 24 17  ..H.D$(H..$H.L$.
+	0x0030 48 89 4c 24 08 e8 00 00 00 00 0f b6 44 24 17 90  H.L$........D$..
+	0x0040 eb 22 c6 44 24 17 00 48 8b 44 24 28 48 89 04 24  .".D$..H.D$(H..$
+	0x0050 48 8d 4c 24 17 48 89 4c 24 08 e8 00 00 00 00 0f  H.L$.H.L$.......
+	0x0060 b6 44 24 17 83 c0 7e 3c 7e 72 d7 48 8b 6c 24 18  .D$...~<~r.H.l$.
+	0x0070 48 83 c4 20 c3 e8 00 00 00 00 eb 84              H.. ........
+	rel 5+4 t=17 TLS+0
+	rel 54+4 t=8 runtime.chanrecv1<1>+0
+	rel 91+4 t=8 runtime.chanrecv1<1>+0
+	rel 118+4 t=8 runtime.morestack_noctxt<0>+0
+"".si1d<1> STEXT size=138 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	TEXT	"".si1d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	JLS	128
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x0026 00038 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	"".c+40(SP), AX
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	AX, (SP)
+	0x002f 00047 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	LEAQ	""..autotmp_2+16(SP), CX
+	0x0034 00052 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	CX, 8(SP)
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	PCDATA	$1, $0
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	CALL	runtime.chanrecv1(SB)
+	0x003e 00062 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	""..autotmp_2+16(SP), AX
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	JMP	107
+	0x0045 00069 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x004e 00078 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	"".c+40(SP), AX
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	AX, (SP)
+	0x0057 00087 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	LEAQ	""..autotmp_2+16(SP), CX
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	CX, 8(SP)
+	0x0061 00097 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	CALL	runtime.chanrecv1(SB)
+	0x0066 00102 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	""..autotmp_2+16(SP), AX
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	CMPQ	AX, $256
+	0x0071 00113 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	JCC	69
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	PCDATA	$1, $-1
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	MOVQ	24(SP), BP
+	0x0078 00120 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	ADDQ	$32, SP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	RET
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:82)	NOP
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	PCDATA	$1, $-1
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	PCDATA	$0, $-2
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	CALL	runtime.morestack_noctxt(SB)
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	PCDATA	$0, $-1
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:79)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 71 48  dH..%....H;a.vqH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 48 c7 44  .. H.l$.H.l$.H.D
+	0x0020 24 10 00 00 00 00 48 8b 44 24 28 48 89 04 24 48  $.....H.D$(H..$H
+	0x0030 8d 4c 24 10 48 89 4c 24 08 e8 00 00 00 00 48 8b  .L$.H.L$......H.
+	0x0040 44 24 10 eb 26 48 c7 44 24 10 00 00 00 00 48 8b  D$..&H.D$.....H.
+	0x0050 44 24 28 48 89 04 24 48 8d 4c 24 10 48 89 4c 24  D$(H..$H.L$.H.L$
+	0x0060 08 e8 00 00 00 00 48 8b 44 24 10 48 3d 00 01 00  ......H.D$.H=...
+	0x0070 00 73 d2 48 8b 6c 24 18 48 83 c4 20 c3 0f 1f 00  .s.H.l$.H.. ....
+	0x0080 e8 00 00 00 00 e9 76 ff ff ff                    ......v...
+	rel 5+4 t=17 TLS+0
+	rel 58+4 t=8 runtime.chanrecv1<1>+0
+	rel 98+4 t=8 runtime.chanrecv1<1>+0
+	rel 129+4 t=8 runtime.morestack_noctxt<0>+0
+"".si2d<1> STEXT size=133 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	TEXT	"".si2d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	JLS	122
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x0025 00037 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVQ	"".c+40(SP), AX
+	0x002a 00042 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVQ	AX, (SP)
+	0x002e 00046 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0033 00051 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVQ	CX, 8(SP)
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	PCDATA	$1, $0
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	CALL	runtime.chanrecv1(SB)
+	0x003d 00061 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVL	""..autotmp_2+20(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	JMP	105
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x004b 00075 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVQ	"".c+40(SP), AX
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVQ	AX, (SP)
+	0x0054 00084 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0059 00089 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVQ	CX, 8(SP)
+	0x005e 00094 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVL	""..autotmp_2+20(SP), AX
+	0x0069 00105 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	CMPL	AX, $256
+	0x006e 00110 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	JCC	67
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	PCDATA	$1, $-1
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	MOVQ	24(SP), BP
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	ADDQ	$32, SP
+	0x0079 00121 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	RET
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:89)	NOP
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	PCDATA	$1, $-1
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	PCDATA	$0, $-2
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	CALL	runtime.morestack_noctxt(SB)
+	0x007f 00127 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	PCDATA	$0, $-1
+	0x007f 00127 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:86)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 6b 48  dH..%....H;a.vkH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c7 44 24  .. H.l$.H.l$..D$
+	0x0020 14 00 00 00 00 48 8b 44 24 28 48 89 04 24 48 8d  .....H.D$(H..$H.
+	0x0030 4c 24 14 48 89 4c 24 08 e8 00 00 00 00 8b 44 24  L$.H.L$.......D$
+	0x0040 14 eb 26 c7 44 24 14 00 00 00 00 48 8b 44 24 28  ..&.D$.....H.D$(
+	0x0050 48 89 04 24 48 8d 4c 24 14 48 89 4c 24 08 66 90  H..$H.L$.H.L$.f.
+	0x0060 e8 00 00 00 00 8b 44 24 14 3d 00 01 00 00 73 d3  ......D$.=....s.
+	0x0070 48 8b 6c 24 18 48 83 c4 20 c3 e8 00 00 00 00 90  H.l$.H.. .......
+	0x0080 e9 7b ff ff ff                                   .{...
+	rel 5+4 t=17 TLS+0
+	rel 57+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 123+4 t=8 runtime.morestack_noctxt<0>+0
+"".si3d<1> STEXT size=133 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	TEXT	"".si3d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	JLS	122
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x0024 00036 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVQ	"".c+40(SP), AX
+	0x0029 00041 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVQ	AX, (SP)
+	0x002d 00045 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0032 00050 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVQ	CX, 8(SP)
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	PCDATA	$1, $0
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	CALL	runtime.chanrecv1(SB)
+	0x003c 00060 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	JMP	106
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x004a 00074 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVQ	"".c+40(SP), AX
+	0x004f 00079 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVQ	AX, (SP)
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0058 00088 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVQ	CX, 8(SP)
+	0x005d 00093 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x006a 00106 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	CMPW	AX, $256
+	0x006e 00110 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	JCC	67
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	PCDATA	$1, $-1
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	MOVQ	24(SP), BP
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	ADDQ	$32, SP
+	0x0079 00121 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	RET
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:96)	NOP
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	PCDATA	$1, $-1
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	PCDATA	$0, $-2
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	CALL	runtime.morestack_noctxt(SB)
+	0x007f 00127 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	PCDATA	$0, $-1
+	0x007f 00127 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:93)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 6b 48  dH..%....H;a.vkH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 66 c7 44  .. H.l$.H.l$.f.D
+	0x0020 24 16 00 00 48 8b 44 24 28 48 89 04 24 48 8d 4c  $...H.D$(H..$H.L
+	0x0030 24 16 48 89 4c 24 08 e8 00 00 00 00 0f b7 44 24  $.H.L$........D$
+	0x0040 16 eb 27 66 c7 44 24 16 00 00 48 8b 44 24 28 48  ..'f.D$...H.D$(H
+	0x0050 89 04 24 48 8d 4c 24 16 48 89 4c 24 08 0f 1f 00  ..$H.L$.H.L$....
+	0x0060 e8 00 00 00 00 0f b7 44 24 16 66 3d 00 01 73 d3  .......D$.f=..s.
+	0x0070 48 8b 6c 24 18 48 83 c4 20 c3 e8 00 00 00 00 90  H.l$.H.. .......
+	0x0080 e9 7b ff ff ff                                   .{...
+	rel 5+4 t=17 TLS+0
+	rel 56+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 123+4 t=8 runtime.morestack_noctxt<0>+0
+"".si4d<1> STEXT size=121 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	TEXT	"".si4d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	JLS	114
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0022 00034 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVQ	"".c+40(SP), AX
+	0x0027 00039 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVQ	AX, (SP)
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0030 00048 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVQ	CX, 8(SP)
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	PCDATA	$1, $0
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	CALL	runtime.chanrecv1(SB)
+	0x003a 00058 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x003f 00063 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	NOP
+	0x0040 00064 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	JMP	100
+	0x0042 00066 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0047 00071 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVQ	"".c+40(SP), AX
+	0x004c 00076 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVQ	AX, (SP)
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0055 00085 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVQ	CX, 8(SP)
+	0x005a 00090 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	CALL	runtime.chanrecv1(SB)
+	0x005f 00095 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x0064 00100 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	CMPB	AL, $10
+	0x0066 00102 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	JCC	66
+	0x0068 00104 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	PCDATA	$1, $-1
+	0x0068 00104 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	MOVQ	24(SP), BP
+	0x006d 00109 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	ADDQ	$32, SP
+	0x0071 00113 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	RET
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:103)	NOP
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	PCDATA	$1, $-1
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	PCDATA	$0, $-2
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	CALL	runtime.morestack_noctxt(SB)
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	PCDATA	$0, $-1
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:100)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 63 48  dH..%....H;a.vcH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c6 44 24  .. H.l$.H.l$..D$
+	0x0020 17 00 48 8b 44 24 28 48 89 04 24 48 8d 4c 24 17  ..H.D$(H..$H.L$.
+	0x0030 48 89 4c 24 08 e8 00 00 00 00 0f b6 44 24 17 90  H.L$........D$..
+	0x0040 eb 22 c6 44 24 17 00 48 8b 44 24 28 48 89 04 24  .".D$..H.D$(H..$
+	0x0050 48 8d 4c 24 17 48 89 4c 24 08 e8 00 00 00 00 0f  H.L$.H.L$.......
+	0x0060 b6 44 24 17 3c 0a 73 da 48 8b 6c 24 18 48 83 c4  .D$.<.s.H.l$.H..
+	0x0070 20 c3 e8 00 00 00 00 eb 87                        ........
+	rel 5+4 t=17 TLS+0
+	rel 54+4 t=8 runtime.chanrecv1<1>+0
+	rel 91+4 t=8 runtime.chanrecv1<1>+0
+	rel 115+4 t=8 runtime.morestack_noctxt<0>+0
+"".si5d<1> STEXT size=139 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	TEXT	"".si5d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	JLS	129
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x0026 00038 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	"".c+40(SP), AX
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	AX, (SP)
+	0x002f 00047 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	LEAQ	""..autotmp_2+16(SP), CX
+	0x0034 00052 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	CX, 8(SP)
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	PCDATA	$1, $0
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	CALL	runtime.chanrecv1(SB)
+	0x003e 00062 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	""..autotmp_2+16(SP), AX
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	JMP	107
+	0x0045 00069 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x004e 00078 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	"".c+40(SP), AX
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	AX, (SP)
+	0x0057 00087 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	LEAQ	""..autotmp_2+16(SP), CX
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	CX, 8(SP)
+	0x0061 00097 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	CALL	runtime.chanrecv1(SB)
+	0x0066 00102 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	""..autotmp_2+16(SP), AX
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	ADDQ	$-5, AX
+	0x006f 00111 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	CMPQ	AX, $251
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	JCC	69
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	PCDATA	$1, $-1
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	MOVQ	24(SP), BP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	ADDQ	$32, SP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	RET
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:110)	NOP
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	PCDATA	$1, $-1
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	PCDATA	$0, $-2
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	CALL	runtime.morestack_noctxt(SB)
+	0x0086 00134 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	PCDATA	$0, $-1
+	0x0086 00134 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:107)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 72 48  dH..%....H;a.vrH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 48 c7 44  .. H.l$.H.l$.H.D
+	0x0020 24 10 00 00 00 00 48 8b 44 24 28 48 89 04 24 48  $.....H.D$(H..$H
+	0x0030 8d 4c 24 10 48 89 4c 24 08 e8 00 00 00 00 48 8b  .L$.H.L$......H.
+	0x0040 44 24 10 eb 26 48 c7 44 24 10 00 00 00 00 48 8b  D$..&H.D$.....H.
+	0x0050 44 24 28 48 89 04 24 48 8d 4c 24 10 48 89 4c 24  D$(H..$H.L$.H.L$
+	0x0060 08 e8 00 00 00 00 48 8b 44 24 10 48 83 c0 fb 48  ......H.D$.H...H
+	0x0070 3d fb 00 00 00 73 ce 48 8b 6c 24 18 48 83 c4 20  =....s.H.l$.H.. 
+	0x0080 c3 e8 00 00 00 00 e9 75 ff ff ff                 .......u...
+	rel 5+4 t=17 TLS+0
+	rel 58+4 t=8 runtime.chanrecv1<1>+0
+	rel 98+4 t=8 runtime.chanrecv1<1>+0
+	rel 130+4 t=8 runtime.morestack_noctxt<0>+0
+"".si6d<1> STEXT size=138 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	TEXT	"".si6d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	JLS	128
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x0025 00037 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVQ	"".c+40(SP), AX
+	0x002a 00042 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVQ	AX, (SP)
+	0x002e 00046 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0033 00051 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVQ	CX, 8(SP)
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	PCDATA	$1, $0
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	CALL	runtime.chanrecv1(SB)
+	0x003d 00061 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVL	""..autotmp_2+20(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	JMP	105
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x004b 00075 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVQ	"".c+40(SP), AX
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVQ	AX, (SP)
+	0x0054 00084 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0059 00089 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVQ	CX, 8(SP)
+	0x005e 00094 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVL	""..autotmp_2+20(SP), AX
+	0x0069 00105 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	DECL	AX
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	CMPL	AX, $255
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	JHI	67
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	PCDATA	$1, $-1
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	MOVQ	24(SP), BP
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	ADDQ	$32, SP
+	0x007b 00123 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	RET
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:117)	NOP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	PCDATA	$1, $-1
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	PCDATA	$0, $-2
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	CALL	runtime.morestack_noctxt(SB)
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	PCDATA	$0, $-1
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:114)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 71 48  dH..%....H;a.vqH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c7 44 24  .. H.l$.H.l$..D$
+	0x0020 14 00 00 00 00 48 8b 44 24 28 48 89 04 24 48 8d  .....H.D$(H..$H.
+	0x0030 4c 24 14 48 89 4c 24 08 e8 00 00 00 00 8b 44 24  L$.H.L$.......D$
+	0x0040 14 eb 26 c7 44 24 14 00 00 00 00 48 8b 44 24 28  ..&.D$.....H.D$(
+	0x0050 48 89 04 24 48 8d 4c 24 14 48 89 4c 24 08 66 90  H..$H.L$.H.L$.f.
+	0x0060 e8 00 00 00 00 8b 44 24 14 ff c8 3d ff 00 00 00  ......D$...=....
+	0x0070 77 d1 48 8b 6c 24 18 48 83 c4 20 c3 0f 1f 40 00  w.H.l$.H.. ...@.
+	0x0080 e8 00 00 00 00 e9 76 ff ff ff                    ......v...
+	rel 5+4 t=17 TLS+0
+	rel 57+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 129+4 t=8 runtime.morestack_noctxt<0>+0
+"".si7d<1> STEXT size=138 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	TEXT	"".si7d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	JLS	128
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x0024 00036 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVQ	"".c+40(SP), AX
+	0x0029 00041 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVQ	AX, (SP)
+	0x002d 00045 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0032 00050 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVQ	CX, 8(SP)
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	PCDATA	$1, $0
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	CALL	runtime.chanrecv1(SB)
+	0x003c 00060 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	JMP	106
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x004a 00074 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVQ	"".c+40(SP), AX
+	0x004f 00079 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVQ	AX, (SP)
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0058 00088 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVQ	CX, 8(SP)
+	0x005d 00093 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x006a 00106 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	ADDL	$10, AX
+	0x006d 00109 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	CMPW	AX, $60
+	0x0071 00113 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	JHI	67
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	PCDATA	$1, $-1
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	MOVQ	24(SP), BP
+	0x0078 00120 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	ADDQ	$32, SP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	RET
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:124)	NOP
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	PCDATA	$1, $-1
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	PCDATA	$0, $-2
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	CALL	runtime.morestack_noctxt(SB)
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	PCDATA	$0, $-1
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:121)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 71 48  dH..%....H;a.vqH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 66 c7 44  .. H.l$.H.l$.f.D
+	0x0020 24 16 00 00 48 8b 44 24 28 48 89 04 24 48 8d 4c  $...H.D$(H..$H.L
+	0x0030 24 16 48 89 4c 24 08 e8 00 00 00 00 0f b7 44 24  $.H.L$........D$
+	0x0040 16 eb 27 66 c7 44 24 16 00 00 48 8b 44 24 28 48  ..'f.D$...H.D$(H
+	0x0050 89 04 24 48 8d 4c 24 16 48 89 4c 24 08 0f 1f 00  ..$H.L$.H.L$....
+	0x0060 e8 00 00 00 00 0f b7 44 24 16 83 c0 0a 66 83 f8  .......D$....f..
+	0x0070 3c 77 d0 48 8b 6c 24 18 48 83 c4 20 c3 0f 1f 00  <w.H.l$.H.. ....
+	0x0080 e8 00 00 00 00 e9 76 ff ff ff                    ......v...
+	rel 5+4 t=17 TLS+0
+	rel 56+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 129+4 t=8 runtime.morestack_noctxt<0>+0
+"".si8d<1> STEXT size=124 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	TEXT	"".si8d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	JLS	117
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0022 00034 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVQ	"".c+40(SP), AX
+	0x0027 00039 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVQ	AX, (SP)
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0030 00048 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVQ	CX, 8(SP)
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	PCDATA	$1, $0
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	CALL	runtime.chanrecv1(SB)
+	0x003a 00058 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x003f 00063 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	NOP
+	0x0040 00064 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	JMP	100
+	0x0042 00066 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0047 00071 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVQ	"".c+40(SP), AX
+	0x004c 00076 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVQ	AX, (SP)
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0055 00085 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVQ	CX, 8(SP)
+	0x005a 00090 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	CALL	runtime.chanrecv1(SB)
+	0x005f 00095 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x0064 00100 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	ADDL	$126, AX
+	0x0067 00103 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	CMPB	AL, $126
+	0x0069 00105 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	JCC	66
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	PCDATA	$1, $-1
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	MOVQ	24(SP), BP
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	ADDQ	$32, SP
+	0x0074 00116 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	RET
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:131)	NOP
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	PCDATA	$1, $-1
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	PCDATA	$0, $-2
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	CALL	runtime.morestack_noctxt(SB)
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	PCDATA	$0, $-1
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:128)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 66 48  dH..%....H;a.vfH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c6 44 24  .. H.l$.H.l$..D$
+	0x0020 17 00 48 8b 44 24 28 48 89 04 24 48 8d 4c 24 17  ..H.D$(H..$H.L$.
+	0x0030 48 89 4c 24 08 e8 00 00 00 00 0f b6 44 24 17 90  H.L$........D$..
+	0x0040 eb 22 c6 44 24 17 00 48 8b 44 24 28 48 89 04 24  .".D$..H.D$(H..$
+	0x0050 48 8d 4c 24 17 48 89 4c 24 08 e8 00 00 00 00 0f  H.L$.H.L$.......
+	0x0060 b6 44 24 17 83 c0 7e 3c 7e 73 d7 48 8b 6c 24 18  .D$...~<~s.H.l$.
+	0x0070 48 83 c4 20 c3 e8 00 00 00 00 eb 84              H.. ........
+	rel 5+4 t=17 TLS+0
+	rel 54+4 t=8 runtime.chanrecv1<1>+0
+	rel 91+4 t=8 runtime.chanrecv1<1>+0
+	rel 118+4 t=8 runtime.morestack_noctxt<0>+0
+"".ui1c<1> STEXT size=139 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	TEXT	"".ui1c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	JLS	129
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x0026 00038 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	"".c+40(SP), AX
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	AX, (SP)
+	0x002f 00047 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	LEAQ	""..autotmp_2+16(SP), CX
+	0x0034 00052 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	CX, 8(SP)
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	PCDATA	$1, $0
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	CALL	runtime.chanrecv1(SB)
+	0x003e 00062 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	""..autotmp_2+16(SP), AX
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	JMP	107
+	0x0045 00069 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x004e 00078 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	"".c+40(SP), AX
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	AX, (SP)
+	0x0057 00087 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	LEAQ	""..autotmp_2+16(SP), CX
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	CX, 8(SP)
+	0x0061 00097 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	CALL	runtime.chanrecv1(SB)
+	0x0066 00102 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	""..autotmp_2+16(SP), AX
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	ADDQ	$-5, AX
+	0x006f 00111 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	CMPQ	AX, $251
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	JCS	69
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	PCDATA	$1, $-1
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	MOVQ	24(SP), BP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	ADDQ	$32, SP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	RET
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:142)	NOP
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	PCDATA	$1, $-1
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	PCDATA	$0, $-2
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	CALL	runtime.morestack_noctxt(SB)
+	0x0086 00134 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	PCDATA	$0, $-1
+	0x0086 00134 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:139)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 72 48  dH..%....H;a.vrH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 48 c7 44  .. H.l$.H.l$.H.D
+	0x0020 24 10 00 00 00 00 48 8b 44 24 28 48 89 04 24 48  $.....H.D$(H..$H
+	0x0030 8d 4c 24 10 48 89 4c 24 08 e8 00 00 00 00 48 8b  .L$.H.L$......H.
+	0x0040 44 24 10 eb 26 48 c7 44 24 10 00 00 00 00 48 8b  D$..&H.D$.....H.
+	0x0050 44 24 28 48 89 04 24 48 8d 4c 24 10 48 89 4c 24  D$(H..$H.L$.H.L$
+	0x0060 08 e8 00 00 00 00 48 8b 44 24 10 48 83 c0 fb 48  ......H.D$.H...H
+	0x0070 3d fb 00 00 00 72 ce 48 8b 6c 24 18 48 83 c4 20  =....r.H.l$.H.. 
+	0x0080 c3 e8 00 00 00 00 e9 75 ff ff ff                 .......u...
+	rel 5+4 t=17 TLS+0
+	rel 58+4 t=8 runtime.chanrecv1<1>+0
+	rel 98+4 t=8 runtime.chanrecv1<1>+0
+	rel 130+4 t=8 runtime.morestack_noctxt<0>+0
+"".ui2c<1> STEXT size=138 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	TEXT	"".ui2c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	JLS	128
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x0025 00037 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVQ	"".c+40(SP), AX
+	0x002a 00042 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVQ	AX, (SP)
+	0x002e 00046 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0033 00051 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVQ	CX, 8(SP)
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	PCDATA	$1, $0
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	CALL	runtime.chanrecv1(SB)
+	0x003d 00061 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVL	""..autotmp_2+20(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	JMP	105
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x004b 00075 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVQ	"".c+40(SP), AX
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVQ	AX, (SP)
+	0x0054 00084 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0059 00089 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVQ	CX, 8(SP)
+	0x005e 00094 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVL	""..autotmp_2+20(SP), AX
+	0x0069 00105 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	DECL	AX
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	CMPL	AX, $255
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	JLS	67
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	PCDATA	$1, $-1
+	0x0072 00114 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	MOVQ	24(SP), BP
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	ADDQ	$32, SP
+	0x007b 00123 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	RET
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:149)	NOP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	PCDATA	$1, $-1
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	PCDATA	$0, $-2
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	CALL	runtime.morestack_noctxt(SB)
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	PCDATA	$0, $-1
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:146)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 71 48  dH..%....H;a.vqH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c7 44 24  .. H.l$.H.l$..D$
+	0x0020 14 00 00 00 00 48 8b 44 24 28 48 89 04 24 48 8d  .....H.D$(H..$H.
+	0x0030 4c 24 14 48 89 4c 24 08 e8 00 00 00 00 8b 44 24  L$.H.L$.......D$
+	0x0040 14 eb 26 c7 44 24 14 00 00 00 00 48 8b 44 24 28  ..&.D$.....H.D$(
+	0x0050 48 89 04 24 48 8d 4c 24 14 48 89 4c 24 08 66 90  H..$H.L$.H.L$.f.
+	0x0060 e8 00 00 00 00 8b 44 24 14 ff c8 3d ff 00 00 00  ......D$...=....
+	0x0070 76 d1 48 8b 6c 24 18 48 83 c4 20 c3 0f 1f 40 00  v.H.l$.H.. ...@.
+	0x0080 e8 00 00 00 00 e9 76 ff ff ff                    ......v...
+	rel 5+4 t=17 TLS+0
+	rel 57+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 129+4 t=8 runtime.morestack_noctxt<0>+0
+"".ui3c<1> STEXT size=138 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	TEXT	"".ui3c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	JLS	128
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x0024 00036 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVQ	"".c+40(SP), AX
+	0x0029 00041 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVQ	AX, (SP)
+	0x002d 00045 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0032 00050 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVQ	CX, 8(SP)
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	PCDATA	$1, $0
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	CALL	runtime.chanrecv1(SB)
+	0x003c 00060 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	JMP	106
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x004a 00074 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVQ	"".c+40(SP), AX
+	0x004f 00079 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVQ	AX, (SP)
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0058 00088 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVQ	CX, 8(SP)
+	0x005d 00093 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x006a 00106 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	ADDL	$-10, AX
+	0x006d 00109 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	CMPW	AX, $40
+	0x0071 00113 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	JLS	67
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	PCDATA	$1, $-1
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	MOVQ	24(SP), BP
+	0x0078 00120 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	ADDQ	$32, SP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	RET
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:156)	NOP
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	PCDATA	$1, $-1
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	PCDATA	$0, $-2
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	CALL	runtime.morestack_noctxt(SB)
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	PCDATA	$0, $-1
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:153)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 71 48  dH..%....H;a.vqH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 66 c7 44  .. H.l$.H.l$.f.D
+	0x0020 24 16 00 00 48 8b 44 24 28 48 89 04 24 48 8d 4c  $...H.D$(H..$H.L
+	0x0030 24 16 48 89 4c 24 08 e8 00 00 00 00 0f b7 44 24  $.H.L$........D$
+	0x0040 16 eb 27 66 c7 44 24 16 00 00 48 8b 44 24 28 48  ..'f.D$...H.D$(H
+	0x0050 89 04 24 48 8d 4c 24 16 48 89 4c 24 08 0f 1f 00  ..$H.L$.H.L$....
+	0x0060 e8 00 00 00 00 0f b7 44 24 16 83 c0 f6 66 83 f8  .......D$....f..
+	0x0070 28 76 d0 48 8b 6c 24 18 48 83 c4 20 c3 0f 1f 00  (v.H.l$.H.. ....
+	0x0080 e8 00 00 00 00 e9 76 ff ff ff                    ......v...
+	rel 5+4 t=17 TLS+0
+	rel 56+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 129+4 t=8 runtime.morestack_noctxt<0>+0
+"".ui4c<1> STEXT size=124 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	TEXT	"".ui4c(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	JLS	117
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0022 00034 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVQ	"".c+40(SP), AX
+	0x0027 00039 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVQ	AX, (SP)
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0030 00048 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVQ	CX, 8(SP)
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	PCDATA	$1, $0
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	CALL	runtime.chanrecv1(SB)
+	0x003a 00058 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x003f 00063 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	NOP
+	0x0040 00064 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	JMP	100
+	0x0042 00066 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0047 00071 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVQ	"".c+40(SP), AX
+	0x004c 00076 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVQ	AX, (SP)
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0055 00085 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVQ	CX, 8(SP)
+	0x005a 00090 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	CALL	runtime.chanrecv1(SB)
+	0x005f 00095 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x0064 00100 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	ADDL	$-126, AX
+	0x0067 00103 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	CMPB	AL, $2
+	0x0069 00105 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	JCS	66
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	PCDATA	$1, $-1
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	MOVQ	24(SP), BP
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	ADDQ	$32, SP
+	0x0074 00116 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	RET
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:163)	NOP
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	PCDATA	$1, $-1
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	PCDATA	$0, $-2
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	CALL	runtime.morestack_noctxt(SB)
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	PCDATA	$0, $-1
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:160)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 66 48  dH..%....H;a.vfH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c6 44 24  .. H.l$.H.l$..D$
+	0x0020 17 00 48 8b 44 24 28 48 89 04 24 48 8d 4c 24 17  ..H.D$(H..$H.L$.
+	0x0030 48 89 4c 24 08 e8 00 00 00 00 0f b6 44 24 17 90  H.L$........D$..
+	0x0040 eb 22 c6 44 24 17 00 48 8b 44 24 28 48 89 04 24  .".D$..H.D$(H..$
+	0x0050 48 8d 4c 24 17 48 89 4c 24 08 e8 00 00 00 00 0f  H.L$.H.L$.......
+	0x0060 b6 44 24 17 83 c0 82 3c 02 72 d7 48 8b 6c 24 18  .D$....<.r.H.l$.
+	0x0070 48 83 c4 20 c3 e8 00 00 00 00 eb 84              H.. ........
+	rel 5+4 t=17 TLS+0
+	rel 54+4 t=8 runtime.chanrecv1<1>+0
+	rel 91+4 t=8 runtime.chanrecv1<1>+0
+	rel 118+4 t=8 runtime.morestack_noctxt<0>+0
+"".ui1d<1> STEXT size=139 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	TEXT	"".ui1d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	JLS	129
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x0026 00038 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	"".c+40(SP), AX
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	AX, (SP)
+	0x002f 00047 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	LEAQ	""..autotmp_2+16(SP), CX
+	0x0034 00052 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	CX, 8(SP)
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	PCDATA	$1, $0
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	CALL	runtime.chanrecv1(SB)
+	0x003e 00062 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	""..autotmp_2+16(SP), AX
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	JMP	107
+	0x0045 00069 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	$0, ""..autotmp_2+16(SP)
+	0x004e 00078 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	"".c+40(SP), AX
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	AX, (SP)
+	0x0057 00087 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	LEAQ	""..autotmp_2+16(SP), CX
+	0x005c 00092 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	CX, 8(SP)
+	0x0061 00097 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	CALL	runtime.chanrecv1(SB)
+	0x0066 00102 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	""..autotmp_2+16(SP), AX
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	ADDQ	$-5, AX
+	0x006f 00111 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	CMPQ	AX, $251
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	JCC	69
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	PCDATA	$1, $-1
+	0x0077 00119 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	MOVQ	24(SP), BP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	ADDQ	$32, SP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	RET
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:174)	NOP
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	PCDATA	$1, $-1
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	PCDATA	$0, $-2
+	0x0081 00129 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	CALL	runtime.morestack_noctxt(SB)
+	0x0086 00134 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	PCDATA	$0, $-1
+	0x0086 00134 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:171)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 72 48  dH..%....H;a.vrH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 48 c7 44  .. H.l$.H.l$.H.D
+	0x0020 24 10 00 00 00 00 48 8b 44 24 28 48 89 04 24 48  $.....H.D$(H..$H
+	0x0030 8d 4c 24 10 48 89 4c 24 08 e8 00 00 00 00 48 8b  .L$.H.L$......H.
+	0x0040 44 24 10 eb 26 48 c7 44 24 10 00 00 00 00 48 8b  D$..&H.D$.....H.
+	0x0050 44 24 28 48 89 04 24 48 8d 4c 24 10 48 89 4c 24  D$(H..$H.L$.H.L$
+	0x0060 08 e8 00 00 00 00 48 8b 44 24 10 48 83 c0 fb 48  ......H.D$.H...H
+	0x0070 3d fb 00 00 00 73 ce 48 8b 6c 24 18 48 83 c4 20  =....s.H.l$.H.. 
+	0x0080 c3 e8 00 00 00 00 e9 75 ff ff ff                 .......u...
+	rel 5+4 t=17 TLS+0
+	rel 58+4 t=8 runtime.chanrecv1<1>+0
+	rel 98+4 t=8 runtime.chanrecv1<1>+0
+	rel 130+4 t=8 runtime.morestack_noctxt<0>+0
+"".ui2d<1> STEXT size=138 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	TEXT	"".ui2d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	JLS	128
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x0025 00037 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVQ	"".c+40(SP), AX
+	0x002a 00042 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVQ	AX, (SP)
+	0x002e 00046 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0033 00051 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVQ	CX, 8(SP)
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	PCDATA	$1, $0
+	0x0038 00056 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	CALL	runtime.chanrecv1(SB)
+	0x003d 00061 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVL	""..autotmp_2+20(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	JMP	105
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVL	$0, ""..autotmp_2+20(SP)
+	0x004b 00075 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVQ	"".c+40(SP), AX
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVQ	AX, (SP)
+	0x0054 00084 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	LEAQ	""..autotmp_2+20(SP), CX
+	0x0059 00089 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVQ	CX, 8(SP)
+	0x005e 00094 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVL	""..autotmp_2+20(SP), AX
+	0x0069 00105 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	ADDL	$-2, AX
+	0x006c 00108 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	CMPL	AX, $254
+	0x0071 00113 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	JHI	67
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	PCDATA	$1, $-1
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	MOVQ	24(SP), BP
+	0x0078 00120 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	ADDQ	$32, SP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	RET
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:181)	NOP
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	PCDATA	$1, $-1
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	PCDATA	$0, $-2
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	CALL	runtime.morestack_noctxt(SB)
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	PCDATA	$0, $-1
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:178)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 71 48  dH..%....H;a.vqH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c7 44 24  .. H.l$.H.l$..D$
+	0x0020 14 00 00 00 00 48 8b 44 24 28 48 89 04 24 48 8d  .....H.D$(H..$H.
+	0x0030 4c 24 14 48 89 4c 24 08 e8 00 00 00 00 8b 44 24  L$.H.L$.......D$
+	0x0040 14 eb 26 c7 44 24 14 00 00 00 00 48 8b 44 24 28  ..&.D$.....H.D$(
+	0x0050 48 89 04 24 48 8d 4c 24 14 48 89 4c 24 08 66 90  H..$H.L$.H.L$.f.
+	0x0060 e8 00 00 00 00 8b 44 24 14 83 c0 fe 3d fe 00 00  ......D$....=...
+	0x0070 00 77 d0 48 8b 6c 24 18 48 83 c4 20 c3 0f 1f 00  .w.H.l$.H.. ....
+	0x0080 e8 00 00 00 00 e9 76 ff ff ff                    ......v...
+	rel 5+4 t=17 TLS+0
+	rel 57+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 129+4 t=8 runtime.morestack_noctxt<0>+0
+"".ui3d<1> STEXT size=138 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	TEXT	"".ui3d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	JLS	128
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x0024 00036 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVQ	"".c+40(SP), AX
+	0x0029 00041 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVQ	AX, (SP)
+	0x002d 00045 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0032 00050 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVQ	CX, 8(SP)
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	PCDATA	$1, $0
+	0x0037 00055 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	CALL	runtime.chanrecv1(SB)
+	0x003c 00060 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x0041 00065 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	JMP	106
+	0x0043 00067 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVW	$0, ""..autotmp_2+22(SP)
+	0x004a 00074 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVQ	"".c+40(SP), AX
+	0x004f 00079 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVQ	AX, (SP)
+	0x0053 00083 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	LEAQ	""..autotmp_2+22(SP), CX
+	0x0058 00088 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVQ	CX, 8(SP)
+	0x005d 00093 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	NOP
+	0x0060 00096 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	CALL	runtime.chanrecv1(SB)
+	0x0065 00101 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVWLZX	""..autotmp_2+22(SP), AX
+	0x006a 00106 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	ADDL	$-10, AX
+	0x006d 00109 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	CMPW	AX, $40
+	0x0071 00113 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	JHI	67
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	PCDATA	$1, $-1
+	0x0073 00115 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	MOVQ	24(SP), BP
+	0x0078 00120 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	ADDQ	$32, SP
+	0x007c 00124 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	RET
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:188)	NOP
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	PCDATA	$1, $-1
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	PCDATA	$0, $-2
+	0x007d 00125 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	NOP
+	0x0080 00128 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	CALL	runtime.morestack_noctxt(SB)
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	PCDATA	$0, $-1
+	0x0085 00133 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:185)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 71 48  dH..%....H;a.vqH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 66 c7 44  .. H.l$.H.l$.f.D
+	0x0020 24 16 00 00 48 8b 44 24 28 48 89 04 24 48 8d 4c  $...H.D$(H..$H.L
+	0x0030 24 16 48 89 4c 24 08 e8 00 00 00 00 0f b7 44 24  $.H.L$........D$
+	0x0040 16 eb 27 66 c7 44 24 16 00 00 48 8b 44 24 28 48  ..'f.D$...H.D$(H
+	0x0050 89 04 24 48 8d 4c 24 16 48 89 4c 24 08 0f 1f 00  ..$H.L$.H.L$....
+	0x0060 e8 00 00 00 00 0f b7 44 24 16 83 c0 f6 66 83 f8  .......D$....f..
+	0x0070 28 77 d0 48 8b 6c 24 18 48 83 c4 20 c3 0f 1f 00  (w.H.l$.H.. ....
+	0x0080 e8 00 00 00 00 e9 76 ff ff ff                    ......v...
+	rel 5+4 t=17 TLS+0
+	rel 56+4 t=8 runtime.chanrecv1<1>+0
+	rel 97+4 t=8 runtime.chanrecv1<1>+0
+	rel 129+4 t=8 runtime.morestack_noctxt<0>+0
+"".ui4d<1> STEXT size=124 args=0x8 locals=0x20 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	TEXT	"".ui4d(SB), ABIInternal, $32-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	JLS	117
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	SUBQ	$32, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	MOVQ	BP, 24(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	LEAQ	24(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0022 00034 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVQ	"".c+40(SP), AX
+	0x0027 00039 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVQ	AX, (SP)
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0030 00048 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVQ	CX, 8(SP)
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	PCDATA	$1, $0
+	0x0035 00053 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	CALL	runtime.chanrecv1(SB)
+	0x003a 00058 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x003f 00063 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	NOP
+	0x0040 00064 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	JMP	100
+	0x0042 00066 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVB	$0, ""..autotmp_2+23(SP)
+	0x0047 00071 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVQ	"".c+40(SP), AX
+	0x004c 00076 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVQ	AX, (SP)
+	0x0050 00080 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	LEAQ	""..autotmp_2+23(SP), CX
+	0x0055 00085 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVQ	CX, 8(SP)
+	0x005a 00090 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	CALL	runtime.chanrecv1(SB)
+	0x005f 00095 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVBLZX	""..autotmp_2+23(SP), AX
+	0x0064 00100 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	ADDL	$-126, AX
+	0x0067 00103 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	CMPB	AL, $2
+	0x0069 00105 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	JCC	66
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	PCDATA	$1, $-1
+	0x006b 00107 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	MOVQ	24(SP), BP
+	0x0070 00112 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	ADDQ	$32, SP
+	0x0074 00116 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	RET
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:195)	NOP
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	PCDATA	$1, $-1
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	PCDATA	$0, $-2
+	0x0075 00117 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	CALL	runtime.morestack_noctxt(SB)
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	PCDATA	$0, $-1
+	0x007a 00122 (/home/kail/go/src/source-notes/go1.16/test/codegen/fuse.go:192)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 66 48  dH..%....H;a.vfH
+	0x0010 83 ec 20 48 89 6c 24 18 48 8d 6c 24 18 c6 44 24  .. H.l$.H.l$..D$
+	0x0020 17 00 48 8b 44 24 28 48 89 04 24 48 8d 4c 24 17  ..H.D$(H..$H.L$.
+	0x0030 48 89 4c 24 08 e8 00 00 00 00 0f b6 44 24 17 90  H.L$........D$..
+	0x0040 eb 22 c6 44 24 17 00 48 8b 44 24 28 48 89 04 24  .".D$..H.D$(H..$
+	0x0050 48 8d 4c 24 17 48 89 4c 24 08 e8 00 00 00 00 0f  H.L$.H.L$.......
+	0x0060 b6 44 24 17 83 c0 82 3c 02 73 d7 48 8b 6c 24 18  .D$....<.s.H.l$.
+	0x0070 48 83 c4 20 c3 e8 00 00 00 00 eb 84              H.. ........
+	rel 5+4 t=17 TLS+0
+	rel 54+4 t=8 runtime.chanrecv1<1>+0
+	rel 91+4 t=8 runtime.chanrecv1<1>+0
+	rel 118+4 t=8 runtime.morestack_noctxt<0>+0
+go.cuinfo.packagename.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 63 6f 64 65 67 65 6e                             codegen
+runtime.memequal64·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal64<1>+0
+runtime.gcbits.01<0> SRODATA dupok size=1
+	0x0000 01                                               .
+type..namedata.*<-chan int16-<0> SRODATA dupok size=16
+	0x0000 00 00 0d 2a 3c 2d 63 68 61 6e 20 69 6e 74 31 36  ...*<-chan int16
+type.*<-chan int16<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 15 f3 80 99 08 08 08 36 00 00 00 00 00 00 00 00  .......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan int16-<0>+0
+	rel 48+8 t=1 type.<-chan int16<0>+0
+type.<-chan int16<0> SRODATA dupok size=64
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 dd 08 9e cc 0a 08 08 32 00 00 00 00 00 00 00 00  .......2........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan int16-<0>+0
+	rel 44+4 t=6 type.*<-chan int16<0>+0
+	rel 48+8 t=1 type.int16<0>+0
+type..namedata.*<-chan int32-<0> SRODATA dupok size=16
+	0x0000 00 00 0d 2a 3c 2d 63 68 61 6e 20 69 6e 74 33 32  ...*<-chan int32
+type.*<-chan int32<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 e4 36 07 d3 08 08 08 36 00 00 00 00 00 00 00 00  .6.....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan int32-<0>+0
+	rel 48+8 t=1 type.<-chan int32<0>+0
+type.<-chan int32<0> SRODATA dupok size=64
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 ed b8 21 0c 0a 08 08 32 00 00 00 00 00 00 00 00  ..!....2........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan int32-<0>+0
+	rel 44+4 t=6 type.*<-chan int32<0>+0
+	rel 48+8 t=1 type.int32<0>+0
+type..namedata.*<-chan int64-<0> SRODATA dupok size=16
+	0x0000 00 00 0d 2a 3c 2d 63 68 61 6e 20 69 6e 74 36 34  ...*<-chan int64
+type.*<-chan int64<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 29 ae 98 fc 08 08 08 36 00 00 00 00 00 00 00 00  )......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan int64-<0>+0
+	rel 48+8 t=1 type.<-chan int64<0>+0
+type.<-chan int64<0> SRODATA dupok size=64
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 22 f3 02 74 0a 08 08 32 00 00 00 00 00 00 00 00  "..t...2........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan int64-<0>+0
+	rel 44+4 t=6 type.*<-chan int64<0>+0
+	rel 48+8 t=1 type.int64<0>+0
+type..namedata.*<-chan int8-<0> SRODATA dupok size=15
+	0x0000 00 00 0c 2a 3c 2d 63 68 61 6e 20 69 6e 74 38     ...*<-chan int8
+type.*<-chan int8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 30 ec 75 02 08 08 08 36 00 00 00 00 00 00 00 00  0.u....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan int8-<0>+0
+	rel 48+8 t=1 type.<-chan int8<0>+0
+type.<-chan int8<0> SRODATA dupok size=64
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 cf b0 d3 31 0a 08 08 32 00 00 00 00 00 00 00 00  ...1...2........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan int8-<0>+0
+	rel 44+4 t=6 type.*<-chan int8<0>+0
+	rel 48+8 t=1 type.int8<0>+0
+type..namedata.*<-chan uint16-<0> SRODATA dupok size=17
+	0x0000 00 00 0e 2a 3c 2d 63 68 61 6e 20 75 69 6e 74 31  ...*<-chan uint1
+	0x0010 36                                               6
+type.*<-chan uint16<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 b3 cd 92 d1 08 08 08 36 00 00 00 00 00 00 00 00  .......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan uint16-<0>+0
+	rel 48+8 t=1 type.<-chan uint16<0>+0
+type.<-chan uint16<0> SRODATA dupok size=64
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 63 68 60 dd 0a 08 08 32 00 00 00 00 00 00 00 00  ch`....2........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan uint16-<0>+0
+	rel 44+4 t=6 type.*<-chan uint16<0>+0
+	rel 48+8 t=1 type.uint16<0>+0
+type..namedata.*<-chan uint32-<0> SRODATA dupok size=17
+	0x0000 00 00 0e 2a 3c 2d 63 68 61 6e 20 75 69 6e 74 33  ...*<-chan uint3
+	0x0010 32                                               2
+type.*<-chan uint32<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 b5 6e 3d 36 08 08 08 36 00 00 00 00 00 00 00 00  .n=6...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan uint32-<0>+0
+	rel 48+8 t=1 type.<-chan uint32<0>+0
+type.<-chan uint32<0> SRODATA dupok size=64
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 22 18 63 f5 0a 08 08 32 00 00 00 00 00 00 00 00  ".c....2........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan uint32-<0>+0
+	rel 44+4 t=6 type.*<-chan uint32<0>+0
+	rel 48+8 t=1 type.uint32<0>+0
+type..namedata.*<-chan uint64-<0> SRODATA dupok size=17
+	0x0000 00 00 0e 2a 3c 2d 63 68 61 6e 20 75 69 6e 74 36  ...*<-chan uint6
+	0x0010 34                                               4
+type.*<-chan uint64<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 82 1d 01 bf 08 08 08 36 00 00 00 00 00 00 00 00  .......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan uint64-<0>+0
+	rel 48+8 t=1 type.<-chan uint64<0>+0
+type.<-chan uint64<0> SRODATA dupok size=64
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 59 4e 21 4e 0a 08 08 32 00 00 00 00 00 00 00 00  YN!N...2........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan uint64-<0>+0
+	rel 44+4 t=6 type.*<-chan uint64<0>+0
+	rel 48+8 t=1 type.uint64<0>+0
+type..namedata.*<-chan uint8-<0> SRODATA dupok size=16
+	0x0000 00 00 0d 2a 3c 2d 63 68 61 6e 20 75 69 6e 74 38  ...*<-chan uint8
+type.*<-chan uint8<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 c5 78 0c a4 08 08 08 36 00 00 00 00 00 00 00 00  .x.....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan uint8-<0>+0
+	rel 48+8 t=1 type.<-chan uint8<0>+0
+type.<-chan uint8<0> SRODATA dupok size=64
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 68 98 37 e5 0a 08 08 32 00 00 00 00 00 00 00 00  h.7....2........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*<-chan uint8-<0>+0
+	rel 44+4 t=6 type.*<-chan uint8<0>+0
+	rel 48+8 t=1 type.uint8<0>+0
+gclocals·1a65e721a2ccc325b382662e7ffee780<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 01 00 00 00 01 00                    ..........
+gclocals·69c1753bd5f81501d95132d08af04464<0> SRODATA dupok size=8
+	0x0000 02 00 00 00 00 00 00 00                          ........
+aux for "".si1c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 43 00 00 00 00 00 00 00 53 00 00 00 00  ...C.......S....
+	0x0050 00 00 00 01 00 50 6b 00 00 00 00 00 00 00 8a 00  .....Pk.........
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si1c<1>+0
+	rel 59+8 t=1 "".si1c<1>+0
+aux for "".si1c<0> SDWARFLINES size=38
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 0d 14  ................
+	0x0010 0a a5 9e 06 69 06 02 2d ff 06 4b 06 23 06 70 06  ....i..-..K.#.p.
+	0x0020 2d 02 0a 00 01 01                                -.....
+	rel 3+8 t=1 "".si1c<1>+0
+aux for "".si1c<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 31 63 00 00 00 00  guments.si1c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 13 00 00 00 00 00 00 00  .....c..........
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 16 00 00 00 00 00 00 00 00 00 00  ...x............
+	rel 29+8 t=1 "".si1c<1>+0
+	rel 37+8 t=1 "".si1c<1>+138
+	rel 57+4 t=31 go.info.<-chan int64<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si1c<1>+29
+	rel 74+8 t=1 "".si1c<1>+125
+	rel 86+4 t=31 go.info.int64<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si2c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 85 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 50 00 00 00 00  ...A.......P....
+	0x0050 00 00 00 01 00 50 69 00 00 00 00 00 00 00 85 00  .....Pi.........
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si2c<1>+0
+	rel 59+8 t=1 "".si2c<1>+0
+aux for "".si2c<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 14 14  ................
+	0x0010 0a a5 9e 06 5f 06 02 2c ff 06 41 06 23 70 06 41  ...._..,..A.#p.A
+	0x0020 06 19 02 05 00 01 01                             .......
+	rel 3+8 t=1 "".si2c<1>+0
+aux for "".si2c<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 32 63 00 00 00 00  guments.si2c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 1a 00 00 00 00 00 00 00  .....c..........
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 1d 00 00 00 00 00 00 00 00 00 00  ...x............
+	rel 29+8 t=1 "".si2c<1>+0
+	rel 37+8 t=1 "".si2c<1>+133
+	rel 57+4 t=31 go.info.<-chan int32<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si2c<1>+29
+	rel 74+8 t=1 "".si2c<1>+122
+	rel 86+4 t=31 go.info.int32<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si3c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 85 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 4f 00 00 00 00  ...A.......O....
+	0x0050 00 00 00 01 00 50 6a 00 00 00 00 00 00 00 85 00  .....Pj.........
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si3c<1>+0
+	rel 59+8 t=1 "".si3c<1>+0
+aux for "".si3c<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 1b 14  ................
+	0x0010 0a a5 9e 06 55 06 02 2e ff 06 37 06 23 70 06 41  ....U.....7.#p.A
+	0x0020 06 19 02 05 00 01 01                             .......
+	rel 3+8 t=1 "".si3c<1>+0
+aux for "".si3c<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 33 63 00 00 00 00  guments.si3c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 21 00 00 00 00 00 00 00  .....c..!.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 24 00 00 00 00 00 00 00 00 00 00  ...x.$..........
+	rel 29+8 t=1 "".si3c<1>+0
+	rel 37+8 t=1 "".si3c<1>+133
+	rel 57+4 t=31 go.info.<-chan int16<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si3c<1>+29
+	rel 74+8 t=1 "".si3c<1>+122
+	rel 86+4 t=31 go.info.int16<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si4c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 79 00 00 00 00 00 00 00  ........y.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 40 00 00 00 00 00 00 00 4c 00 00 00 00  ...@.......L....
+	0x0050 00 00 00 01 00 50 64 00 00 00 00 00 00 00 79 00  .....Pd.......y.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si4c<1>+0
+	rel 59+8 t=1 "".si4c<1>+0
+aux for "".si4c<0> SDWARFLINES size=35
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 22 14  ..............".
+	0x0010 0a a5 9e 06 41 06 02 2a ff 06 23 06 23 70 02 07  ....A..*..#.#p..
+	0x0020 00 01 01                                         ...
+	rel 3+8 t=1 "".si4c<1>+0
+aux for "".si4c<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 34 63 00 00 00 00  guments.si4c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 28 00 00 00 00 00 00 00  .....c..(.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 2b 00 00 00 00 00 00 00 00 00 00  ...x.+..........
+	rel 29+8 t=1 "".si4c<1>+0
+	rel 37+8 t=1 "".si4c<1>+121
+	rel 57+4 t=31 go.info.<-chan int8<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si4c<1>+29
+	rel 74+8 t=1 "".si4c<1>+114
+	rel 86+4 t=31 go.info.int8<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si5c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8b 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 43 00 00 00 00 00 00 00 53 00 00 00 00  ...C.......S....
+	0x0050 00 00 00 01 00 50 6b 00 00 00 00 00 00 00 6b 00  .....Pk.......k.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si5c<1>+0
+	rel 59+8 t=1 "".si5c<1>+0
+aux for "".si5c<0> SDWARFLINES size=35
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 29 14  ..............).
+	0x0010 0a a5 9e 06 69 06 02 2d ff 06 37 06 5f 70 02 0a  ....i..-..7._p..
+	0x0020 00 01 01                                         ...
+	rel 3+8 t=1 "".si5c<1>+0
+aux for "".si5c<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 35 63 00 00 00 00  guments.si5c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 2f 00 00 00 00 00 00 00  .....c../.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 32 00 00 00 00 00 00 00 00 00 00  ...x.2..........
+	rel 29+8 t=1 "".si5c<1>+0
+	rel 37+8 t=1 "".si5c<1>+139
+	rel 57+4 t=31 go.info.<-chan int64<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si5c<1>+29
+	rel 74+8 t=1 "".si5c<1>+129
+	rel 86+4 t=31 go.info.int64<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si6c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 50 00 00 00 00  ...A.......P....
+	0x0050 00 00 00 01 00 50 69 00 00 00 00 00 00 00 69 00  .....Pi.......i.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si6c<1>+0
+	rel 59+8 t=1 "".si6c<1>+0
+aux for "".si6c<0> SDWARFLINES size=38
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 30 14  ..............0.
+	0x0010 0a a5 9e 06 5f 06 02 2c ff 06 23 06 55 06 70 06  ...._..,..#.U.p.
+	0x0020 37 02 0a 00 01 01                                7.....
+	rel 3+8 t=1 "".si6c<1>+0
+aux for "".si6c<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 36 63 00 00 00 00  guments.si6c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 36 00 00 00 00 00 00 00  .....c..6.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 39 00 00 00 00 00 00 00 00 00 00  ...x.9..........
+	rel 29+8 t=1 "".si6c<1>+0
+	rel 37+8 t=1 "".si6c<1>+138
+	rel 57+4 t=31 go.info.<-chan int32<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si6c<1>+29
+	rel 74+8 t=1 "".si6c<1>+124
+	rel 86+4 t=31 go.info.int32<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si7c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 4f 00 00 00 00  ...A.......O....
+	0x0050 00 00 00 01 00 50 6a 00 00 00 00 00 00 00 6a 00  .....Pj.......j.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si7c<1>+0
+	rel 59+8 t=1 "".si7c<1>+0
+aux for "".si7c<0> SDWARFLINES size=38
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 37 14  ..............7.
+	0x0010 0a a5 9e 06 55 06 02 2e ff 06 2d 06 4b 06 70 06  ....U.....-.K.p.
+	0x0020 2d 02 0a 00 01 01                                -.....
+	rel 3+8 t=1 "".si7c<1>+0
+aux for "".si7c<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 37 63 00 00 00 00  guments.si7c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 3d 00 00 00 00 00 00 00  .....c..=.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 40 00 00 00 00 00 00 00 00 00 00  ...x.@..........
+	rel 29+8 t=1 "".si7c<1>+0
+	rel 37+8 t=1 "".si7c<1>+138
+	rel 57+4 t=31 go.info.<-chan int16<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si7c<1>+29
+	rel 74+8 t=1 "".si7c<1>+125
+	rel 86+4 t=31 go.info.int16<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si8c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 7c 00 00 00 00 00 00 00  ........|.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 40 00 00 00 00 00 00 00 4c 00 00 00 00  ...@.......L....
+	0x0050 00 00 00 01 00 50 64 00 00 00 00 00 00 00 64 00  .....Pd.......d.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si8c<1>+0
+	rel 59+8 t=1 "".si8c<1>+0
+aux for "".si8c<0> SDWARFLINES size=35
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 3e 14  ..............>.
+	0x0010 0a a5 9e 06 41 06 02 2a ff 06 2d 06 37 70 02 07  ....A..*..-.7p..
+	0x0020 00 01 01                                         ...
+	rel 3+8 t=1 "".si8c<1>+0
+aux for "".si8c<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 38 63 00 00 00 00  guments.si8c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 44 00 00 00 00 00 00 00  .....c..D.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 47 00 00 00 00 00 00 00 00 00 00  ...x.G..........
+	rel 29+8 t=1 "".si8c<1>+0
+	rel 37+8 t=1 "".si8c<1>+124
+	rel 57+4 t=31 go.info.<-chan int8<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si8c<1>+29
+	rel 74+8 t=1 "".si8c<1>+117
+	rel 86+4 t=31 go.info.int8<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si1d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 43 00 00 00 00 00 00 00 53 00 00 00 00  ...C.......S....
+	0x0050 00 00 00 01 00 50 6b 00 00 00 00 00 00 00 8a 00  .....Pk.........
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si1d<1>+0
+	rel 59+8 t=1 "".si1d<1>+0
+aux for "".si1d<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 c9 00  ................
+	0x0010 14 0a a5 9e 06 69 06 02 2d ff 06 4b 06 23 06 70  .....i..-..K.#.p
+	0x0020 06 2d 02 0a 00 01 01                             .-.....
+	rel 3+8 t=1 "".si1d<1>+0
+aux for "".si1d<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 31 64 00 00 00 00  guments.si1d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 4f 00 00 00 00 00 00 00  .....c..O.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 52 00 00 00 00 00 00 00 00 00 00  ...x.R..........
+	rel 29+8 t=1 "".si1d<1>+0
+	rel 37+8 t=1 "".si1d<1>+138
+	rel 57+4 t=31 go.info.<-chan int64<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si1d<1>+29
+	rel 74+8 t=1 "".si1d<1>+125
+	rel 86+4 t=31 go.info.int64<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si2d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 85 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 50 00 00 00 00  ...A.......P....
+	0x0050 00 00 00 01 00 50 69 00 00 00 00 00 00 00 85 00  .....Pi.........
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si2d<1>+0
+	rel 59+8 t=1 "".si2d<1>+0
+aux for "".si2d<0> SDWARFLINES size=40
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 d0 00  ................
+	0x0010 14 0a a5 9e 06 5f 06 02 2c ff 06 41 06 23 70 06  ....._..,..A.#p.
+	0x0020 41 06 19 02 05 00 01 01                          A.......
+	rel 3+8 t=1 "".si2d<1>+0
+aux for "".si2d<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 32 64 00 00 00 00  guments.si2d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 56 00 00 00 00 00 00 00  .....c..V.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 59 00 00 00 00 00 00 00 00 00 00  ...x.Y..........
+	rel 29+8 t=1 "".si2d<1>+0
+	rel 37+8 t=1 "".si2d<1>+133
+	rel 57+4 t=31 go.info.<-chan int32<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si2d<1>+29
+	rel 74+8 t=1 "".si2d<1>+122
+	rel 86+4 t=31 go.info.int32<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si3d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 85 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 4f 00 00 00 00  ...A.......O....
+	0x0050 00 00 00 01 00 50 6a 00 00 00 00 00 00 00 85 00  .....Pj.........
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si3d<1>+0
+	rel 59+8 t=1 "".si3d<1>+0
+aux for "".si3d<0> SDWARFLINES size=40
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 d7 00  ................
+	0x0010 14 0a a5 9e 06 55 06 02 2e ff 06 37 06 23 70 06  .....U.....7.#p.
+	0x0020 41 06 19 02 05 00 01 01                          A.......
+	rel 3+8 t=1 "".si3d<1>+0
+aux for "".si3d<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 33 64 00 00 00 00  guments.si3d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 5d 00 00 00 00 00 00 00  .....c..].......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 60 00 00 00 00 00 00 00 00 00 00  ...x.`..........
+	rel 29+8 t=1 "".si3d<1>+0
+	rel 37+8 t=1 "".si3d<1>+133
+	rel 57+4 t=31 go.info.<-chan int16<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si3d<1>+29
+	rel 74+8 t=1 "".si3d<1>+122
+	rel 86+4 t=31 go.info.int16<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si4d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 79 00 00 00 00 00 00 00  ........y.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 40 00 00 00 00 00 00 00 4c 00 00 00 00  ...@.......L....
+	0x0050 00 00 00 01 00 50 64 00 00 00 00 00 00 00 79 00  .....Pd.......y.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si4d<1>+0
+	rel 59+8 t=1 "".si4d<1>+0
+aux for "".si4d<0> SDWARFLINES size=36
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 de 00  ................
+	0x0010 14 0a a5 9e 06 41 06 02 2a ff 06 23 06 23 70 02  .....A..*..#.#p.
+	0x0020 07 00 01 01                                      ....
+	rel 3+8 t=1 "".si4d<1>+0
+aux for "".si4d<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 34 64 00 00 00 00  guments.si4d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 64 00 00 00 00 00 00 00  .....c..d.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 67 00 00 00 00 00 00 00 00 00 00  ...x.g..........
+	rel 29+8 t=1 "".si4d<1>+0
+	rel 37+8 t=1 "".si4d<1>+121
+	rel 57+4 t=31 go.info.<-chan int8<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si4d<1>+29
+	rel 74+8 t=1 "".si4d<1>+114
+	rel 86+4 t=31 go.info.int8<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si5d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8b 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 43 00 00 00 00 00 00 00 53 00 00 00 00  ...C.......S....
+	0x0050 00 00 00 01 00 50 6b 00 00 00 00 00 00 00 6b 00  .....Pk.......k.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si5d<1>+0
+	rel 59+8 t=1 "".si5d<1>+0
+aux for "".si5d<0> SDWARFLINES size=36
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 e5 00  ................
+	0x0010 14 0a a5 9e 06 69 06 02 2d ff 06 37 06 5f 70 02  .....i..-..7._p.
+	0x0020 0a 00 01 01                                      ....
+	rel 3+8 t=1 "".si5d<1>+0
+aux for "".si5d<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 35 64 00 00 00 00  guments.si5d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 6b 00 00 00 00 00 00 00  .....c..k.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 6e 00 00 00 00 00 00 00 00 00 00  ...x.n..........
+	rel 29+8 t=1 "".si5d<1>+0
+	rel 37+8 t=1 "".si5d<1>+139
+	rel 57+4 t=31 go.info.<-chan int64<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si5d<1>+29
+	rel 74+8 t=1 "".si5d<1>+129
+	rel 86+4 t=31 go.info.int64<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si6d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 50 00 00 00 00  ...A.......P....
+	0x0050 00 00 00 01 00 50 69 00 00 00 00 00 00 00 69 00  .....Pi.......i.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si6d<1>+0
+	rel 59+8 t=1 "".si6d<1>+0
+aux for "".si6d<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 ec 00  ................
+	0x0010 14 0a a5 9e 06 5f 06 02 2c ff 06 23 06 55 06 70  ....._..,..#.U.p
+	0x0020 06 37 02 0a 00 01 01                             .7.....
+	rel 3+8 t=1 "".si6d<1>+0
+aux for "".si6d<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 36 64 00 00 00 00  guments.si6d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 72 00 00 00 00 00 00 00  .....c..r.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 75 00 00 00 00 00 00 00 00 00 00  ...x.u..........
+	rel 29+8 t=1 "".si6d<1>+0
+	rel 37+8 t=1 "".si6d<1>+138
+	rel 57+4 t=31 go.info.<-chan int32<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si6d<1>+29
+	rel 74+8 t=1 "".si6d<1>+124
+	rel 86+4 t=31 go.info.int32<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si7d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 4f 00 00 00 00  ...A.......O....
+	0x0050 00 00 00 01 00 50 6a 00 00 00 00 00 00 00 6a 00  .....Pj.......j.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si7d<1>+0
+	rel 59+8 t=1 "".si7d<1>+0
+aux for "".si7d<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 f3 00  ................
+	0x0010 14 0a a5 9e 06 55 06 02 2e ff 06 2d 06 4b 06 70  .....U.....-.K.p
+	0x0020 06 2d 02 0a 00 01 01                             .-.....
+	rel 3+8 t=1 "".si7d<1>+0
+aux for "".si7d<0> SDWARFFCN size=96
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 37 64 00 00 00 00  guments.si7d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 79 00 00 00 00 00 00 00  .....c..y.......
+	0x0040 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 0b 78 00 7c 00 00 00 00 00 00 00 00 00 00  ...x.|..........
+	rel 29+8 t=1 "".si7d<1>+0
+	rel 37+8 t=1 "".si7d<1>+138
+	rel 57+4 t=31 go.info.<-chan int16<0>+0
+	rel 61+4 t=31 <0>+0
+	rel 66+8 t=1 "".si7d<1>+29
+	rel 74+8 t=1 "".si7d<1>+125
+	rel 86+4 t=31 go.info.int16<0>+0
+	rel 90+4 t=31 <0>+51
+aux for "".si8d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 7c 00 00 00 00 00 00 00  ........|.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 40 00 00 00 00 00 00 00 4c 00 00 00 00  ...@.......L....
+	0x0050 00 00 00 01 00 50 64 00 00 00 00 00 00 00 64 00  .....Pd.......d.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".si8d<1>+0
+	rel 59+8 t=1 "".si8d<1>+0
+aux for "".si8d<0> SDWARFLINES size=36
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 fa 00  ................
+	0x0010 14 0a a5 9e 06 41 06 02 2a ff 06 2d 06 37 70 02  .....A..*..-.7p.
+	0x0020 07 00 01 01                                      ....
+	rel 3+8 t=1 "".si8d<1>+0
+aux for "".si8d<0> SDWARFFCN size=98
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 73 69 38 64 00 00 00 00  guments.si8d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 80 01 00 00 00 00 00 00  .....c..........
+	0x0040 00 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 00 0b 78 00 83 01 00 00 00 00 00 00 00 00  ....x...........
+	0x0060 00 00                                            ..
+	rel 29+8 t=1 "".si8d<1>+0
+	rel 37+8 t=1 "".si8d<1>+124
+	rel 58+4 t=31 go.info.<-chan int8<0>+0
+	rel 62+4 t=31 <0>+0
+	rel 67+8 t=1 "".si8d<1>+29
+	rel 75+8 t=1 "".si8d<1>+117
+	rel 88+4 t=31 go.info.int8<0>+0
+	rel 92+4 t=31 <0>+51
+aux for "".ui1c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8b 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 43 00 00 00 00 00 00 00 53 00 00 00 00  ...C.......S....
+	0x0050 00 00 00 01 00 50 6b 00 00 00 00 00 00 00 6b 00  .....Pk.......k.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".ui1c<1>+0
+	rel 59+8 t=1 "".ui1c<1>+0
+aux for "".ui1c<0> SDWARFLINES size=36
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 85 01  ................
+	0x0010 14 0a a5 9e 06 69 06 02 2d ff 06 37 06 5f 70 02  .....i..-..7._p.
+	0x0020 0a 00 01 01                                      ....
+	rel 3+8 t=1 "".ui1c<1>+0
+aux for "".ui1c<0> SDWARFFCN size=98
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 75 69 31 63 00 00 00 00  guments.ui1c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 8b 01 00 00 00 00 00 00  .....c..........
+	0x0040 00 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 00 0b 78 00 8e 01 00 00 00 00 00 00 00 00  ....x...........
+	0x0060 00 00                                            ..
+	rel 29+8 t=1 "".ui1c<1>+0
+	rel 37+8 t=1 "".ui1c<1>+139
+	rel 58+4 t=31 go.info.<-chan uint64<0>+0
+	rel 62+4 t=31 <0>+0
+	rel 67+8 t=1 "".ui1c<1>+29
+	rel 75+8 t=1 "".ui1c<1>+129
+	rel 88+4 t=31 go.info.uint64<0>+0
+	rel 92+4 t=31 <0>+51
+aux for "".ui2c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 50 00 00 00 00  ...A.......P....
+	0x0050 00 00 00 01 00 50 69 00 00 00 00 00 00 00 69 00  .....Pi.......i.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".ui2c<1>+0
+	rel 59+8 t=1 "".ui2c<1>+0
+aux for "".ui2c<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 8c 01  ................
+	0x0010 14 0a a5 9e 06 5f 06 02 2c ff 06 23 06 55 06 70  ....._..,..#.U.p
+	0x0020 06 37 02 0a 00 01 01                             .7.....
+	rel 3+8 t=1 "".ui2c<1>+0
+aux for "".ui2c<0> SDWARFFCN size=98
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 75 69 32 63 00 00 00 00  guments.ui2c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 92 01 00 00 00 00 00 00  .....c..........
+	0x0040 00 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 00 0b 78 00 95 01 00 00 00 00 00 00 00 00  ....x...........
+	0x0060 00 00                                            ..
+	rel 29+8 t=1 "".ui2c<1>+0
+	rel 37+8 t=1 "".ui2c<1>+138
+	rel 58+4 t=31 go.info.<-chan uint32<0>+0
+	rel 62+4 t=31 <0>+0
+	rel 67+8 t=1 "".ui2c<1>+29
+	rel 75+8 t=1 "".ui2c<1>+124
+	rel 88+4 t=31 go.info.uint32<0>+0
+	rel 92+4 t=31 <0>+51
+aux for "".ui3c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 4f 00 00 00 00  ...A.......O....
+	0x0050 00 00 00 01 00 50 6a 00 00 00 00 00 00 00 6a 00  .....Pj.......j.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".ui3c<1>+0
+	rel 59+8 t=1 "".ui3c<1>+0
+aux for "".ui3c<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 93 01  ................
+	0x0010 14 0a a5 9e 06 55 06 02 2e ff 06 2d 06 4b 06 70  .....U.....-.K.p
+	0x0020 06 2d 02 0a 00 01 01                             .-.....
+	rel 3+8 t=1 "".ui3c<1>+0
+aux for "".ui3c<0> SDWARFFCN size=98
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 75 69 33 63 00 00 00 00  guments.ui3c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 99 01 00 00 00 00 00 00  .....c..........
+	0x0040 00 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 00 0b 78 00 9c 01 00 00 00 00 00 00 00 00  ....x...........
+	0x0060 00 00                                            ..
+	rel 29+8 t=1 "".ui3c<1>+0
+	rel 37+8 t=1 "".ui3c<1>+138
+	rel 58+4 t=31 go.info.<-chan uint16<0>+0
+	rel 62+4 t=31 <0>+0
+	rel 67+8 t=1 "".ui3c<1>+29
+	rel 75+8 t=1 "".ui3c<1>+125
+	rel 88+4 t=31 go.info.uint16<0>+0
+	rel 92+4 t=31 <0>+51
+aux for "".ui4c<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 7c 00 00 00 00 00 00 00  ........|.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 40 00 00 00 00 00 00 00 4c 00 00 00 00  ...@.......L....
+	0x0050 00 00 00 01 00 50 64 00 00 00 00 00 00 00 64 00  .....Pd.......d.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".ui4c<1>+0
+	rel 59+8 t=1 "".ui4c<1>+0
+aux for "".ui4c<0> SDWARFLINES size=36
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 9a 01  ................
+	0x0010 14 0a a5 9e 06 41 06 02 2a ff 06 2d 06 37 70 02  .....A..*..-.7p.
+	0x0020 07 00 01 01                                      ....
+	rel 3+8 t=1 "".ui4c<1>+0
+aux for "".ui4c<0> SDWARFFCN size=98
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 75 69 34 63 00 00 00 00  guments.ui4c....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 a0 01 00 00 00 00 00 00  .....c..........
+	0x0040 00 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 00 0b 78 00 a3 01 00 00 00 00 00 00 00 00  ....x...........
+	0x0060 00 00                                            ..
+	rel 29+8 t=1 "".ui4c<1>+0
+	rel 37+8 t=1 "".ui4c<1>+124
+	rel 58+4 t=31 go.info.<-chan uint8<0>+0
+	rel 62+4 t=31 <0>+0
+	rel 67+8 t=1 "".ui4c<1>+29
+	rel 75+8 t=1 "".ui4c<1>+117
+	rel 88+4 t=31 go.info.uint8<0>+0
+	rel 92+4 t=31 <0>+51
+aux for "".ui1d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8b 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 43 00 00 00 00 00 00 00 53 00 00 00 00  ...C.......S....
+	0x0050 00 00 00 01 00 50 6b 00 00 00 00 00 00 00 6b 00  .....Pk.......k.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".ui1d<1>+0
+	rel 59+8 t=1 "".ui1d<1>+0
+aux for "".ui1d<0> SDWARFLINES size=36
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 a5 01  ................
+	0x0010 14 0a a5 9e 06 69 06 02 2d ff 06 37 06 5f 70 02  .....i..-..7._p.
+	0x0020 0a 00 01 01                                      ....
+	rel 3+8 t=1 "".ui1d<1>+0
+aux for "".ui1d<0> SDWARFFCN size=98
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 75 69 31 64 00 00 00 00  guments.ui1d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 ab 01 00 00 00 00 00 00  .....c..........
+	0x0040 00 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 00 0b 78 00 ae 01 00 00 00 00 00 00 00 00  ....x...........
+	0x0060 00 00                                            ..
+	rel 29+8 t=1 "".ui1d<1>+0
+	rel 37+8 t=1 "".ui1d<1>+139
+	rel 58+4 t=31 go.info.<-chan uint64<0>+0
+	rel 62+4 t=31 <0>+0
+	rel 67+8 t=1 "".ui1d<1>+29
+	rel 75+8 t=1 "".ui1d<1>+129
+	rel 88+4 t=31 go.info.uint64<0>+0
+	rel 92+4 t=31 <0>+51
+aux for "".ui2d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 50 00 00 00 00  ...A.......P....
+	0x0050 00 00 00 01 00 50 69 00 00 00 00 00 00 00 69 00  .....Pi.......i.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".ui2d<1>+0
+	rel 59+8 t=1 "".ui2d<1>+0
+aux for "".ui2d<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 ac 01  ................
+	0x0010 14 0a a5 9e 06 5f 06 02 2c ff 06 2d 06 55 06 70  ....._..,..-.U.p
+	0x0020 06 2d 02 0a 00 01 01                             .-.....
+	rel 3+8 t=1 "".ui2d<1>+0
+aux for "".ui2d<0> SDWARFFCN size=98
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 75 69 32 64 00 00 00 00  guments.ui2d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 b2 01 00 00 00 00 00 00  .....c..........
+	0x0040 00 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 00 0b 78 00 b5 01 00 00 00 00 00 00 00 00  ....x...........
+	0x0060 00 00                                            ..
+	rel 29+8 t=1 "".ui2d<1>+0
+	rel 37+8 t=1 "".ui2d<1>+138
+	rel 58+4 t=31 go.info.<-chan uint32<0>+0
+	rel 62+4 t=31 <0>+0
+	rel 67+8 t=1 "".ui2d<1>+29
+	rel 75+8 t=1 "".ui2d<1>+125
+	rel 88+4 t=31 go.info.uint32<0>+0
+	rel 92+4 t=31 <0>+51
+aux for "".ui3d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00  ................
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 41 00 00 00 00 00 00 00 4f 00 00 00 00  ...A.......O....
+	0x0050 00 00 00 01 00 50 6a 00 00 00 00 00 00 00 6a 00  .....Pj.......j.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".ui3d<1>+0
+	rel 59+8 t=1 "".ui3d<1>+0
+aux for "".ui3d<0> SDWARFLINES size=39
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 b3 01  ................
+	0x0010 14 0a a5 9e 06 55 06 02 2e ff 06 2d 06 4b 06 70  .....U.....-.K.p
+	0x0020 06 2d 02 0a 00 01 01                             .-.....
+	rel 3+8 t=1 "".ui3d<1>+0
+aux for "".ui3d<0> SDWARFFCN size=98
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 75 69 33 64 00 00 00 00  guments.ui3d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 b9 01 00 00 00 00 00 00  .....c..........
+	0x0040 00 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 00 0b 78 00 bc 01 00 00 00 00 00 00 00 00  ....x...........
+	0x0060 00 00                                            ..
+	rel 29+8 t=1 "".ui3d<1>+0
+	rel 37+8 t=1 "".ui3d<1>+138
+	rel 58+4 t=31 go.info.<-chan uint16<0>+0
+	rel 62+4 t=31 <0>+0
+	rel 67+8 t=1 "".ui3d<1>+29
+	rel 75+8 t=1 "".ui3d<1>+125
+	rel 88+4 t=31 go.info.uint16<0>+0
+	rel 92+4 t=31 <0>+51
+aux for "".ui4d<0> SDWARFLOC size=121
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 7c 00 00 00 00 00 00 00  ........|.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00  ................
+	0x0040 00 00 00 40 00 00 00 00 00 00 00 4c 00 00 00 00  ...@.......L....
+	0x0050 00 00 00 01 00 50 64 00 00 00 00 00 00 00 64 00  .....Pd.......d.
+	0x0060 00 00 00 00 00 00 01 00 50 00 00 00 00 00 00 00  ........P.......
+	0x0070 00 00 00 00 00 00 00 00 00                       .........
+	rel 8+8 t=1 "".ui4d<1>+0
+	rel 59+8 t=1 "".ui4d<1>+0
+aux for "".ui4d<0> SDWARFLINES size=36
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 ba 01  ................
+	0x0010 14 0a a5 9e 06 41 06 02 2a ff 06 2d 06 37 70 02  .....A..*..-.7p.
+	0x0020 07 00 01 01                                      ....
+	rel 3+8 t=1 "".ui4d<1>+0
+aux for "".ui4d<0> SDWARFFCN size=98
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 75 69 34 64 00 00 00 00  guments.ui4d....
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 01 9c 02  ................
+	0x0030 00 00 00 01 10 63 00 00 c0 01 00 00 00 00 00 00  .....c..........
+	0x0040 00 00 15 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0050 00 00 00 0b 78 00 c3 01 00 00 00 00 00 00 00 00  ....x...........
+	0x0060 00 00                                            ..
+	rel 29+8 t=1 "".ui4d<1>+0
+	rel 37+8 t=1 "".ui4d<1>+124
+	rel 58+4 t=31 go.info.<-chan uint8<0>+0
+	rel 62+4 t=31 <0>+0
+	rel 67+8 t=1 "".ui4d<1>+29
+	rel 75+8 t=1 "".ui4d<1>+117
+	rel 88+4 t=31 go.info.uint8<0>+0
+	rel 92+4 t=31 <0>+51

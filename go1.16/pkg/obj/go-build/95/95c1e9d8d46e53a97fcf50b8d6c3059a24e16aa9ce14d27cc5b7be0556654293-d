@@ -1,0 +1,8 @@
+# command-line-arguments
+HEADER = -H5 -T0x401000 -R0x1000
+loadinternal: cannot find runtime/cgo
+31556 symbols, 15895 reachable
+	1 package symbols, 12953 hashed symbols, 16448 non-package symbols, 2154 external symbols
+59092 liveness data
+archive: ar -q -c -s $WORK/b001/exe/a.out.a /tmp/go-build281365166/go.o
+invoking archiver with syscall.Exec()

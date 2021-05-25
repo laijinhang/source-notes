@@ -1,0 +1,6 @@
+# test log
+getenv TMPDIR
+stat /tmp/go-writeCache-test-2064753607
+open /tmp/go-writeCache-test-2064753607/file298498081.tmp
+stat /tmp/go-writeCache-test-2064753607/file
+open /tmp

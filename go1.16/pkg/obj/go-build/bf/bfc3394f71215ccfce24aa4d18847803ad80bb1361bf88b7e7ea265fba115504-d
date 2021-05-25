@@ -1,0 +1,234 @@
+# command-line-arguments
+"".CallFunc<1> STEXT size=56 args=0x8 locals=0x8 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	TEXT	"".CallFunc(SB), ABIInternal, $8-8
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	JLS	49
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	SUBQ	$8, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	MOVQ	BP, (SP)
+	0x0017 00023 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	LEAQ	(SP), BP
+	0x001b 00027 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	FUNCDATA	$0, gclocals·1a65e721a2ccc325b382662e7ffee780(SB)
+	0x001b 00027 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001b 00027 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:8)	MOVQ	"".f+16(SP), DX
+	0x0020 00032 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:8)	MOVQ	(DX), AX
+	0x0023 00035 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:8)	PCDATA	$1, $1
+	0x0023 00035 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:8)	CALL	runtime.retpolineAX(SB)
+	0x0028 00040 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:9)	MOVQ	(SP), BP
+	0x002c 00044 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:9)	ADDQ	$8, SP
+	0x0030 00048 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:9)	RET
+	0x0031 00049 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:9)	NOP
+	0x0031 00049 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	PCDATA	$1, $-1
+	0x0031 00049 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	PCDATA	$0, $-2
+	0x0031 00049 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	CALL	runtime.morestack_noctxt(SB)
+	0x0036 00054 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	PCDATA	$0, $-1
+	0x0036 00054 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:6)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 22 48  dH..%....H;a.v"H
+	0x0010 83 ec 08 48 89 2c 24 48 8d 2c 24 48 8b 54 24 10  ...H.,$H.,$H.T$.
+	0x0020 48 8b 02 e8 00 00 00 00 48 8b 2c 24 48 83 c4 08  H.......H.,$H...
+	0x0030 c3 e8 00 00 00 00 eb c8                          ........
+	rel 5+4 t=17 TLS+0
+	rel 36+4 t=8 runtime.retpolineAX<0>+0
+	rel 50+4 t=8 runtime.morestack_noctxt<0>+0
+"".CallInterface<1> STEXT size=71 args=0x10 locals=0x10 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	TEXT	"".CallInterface(SB), ABIInternal, $16-16
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	MOVQ	(TLS), CX
+	0x0009 00009 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	CMPQ	SP, 16(CX)
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	PCDATA	$0, $-2
+	0x000d 00013 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	JLS	64
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	PCDATA	$0, $-1
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	SUBQ	$16, SP
+	0x0013 00019 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	MOVQ	BP, 8(SP)
+	0x0018 00024 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	LEAQ	8(SP), BP
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	FUNCDATA	$0, gclocals·09cf9819fc716118c209c2d2155a3632(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x001d 00029 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:13)	MOVQ	"".x+24(SP), AX
+	0x0022 00034 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:13)	MOVQ	24(AX), AX
+	0x0026 00038 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:13)	MOVQ	"".x+32(SP), CX
+	0x002b 00043 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:13)	MOVQ	CX, (SP)
+	0x002f 00047 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:13)	PCDATA	$1, $1
+	0x002f 00047 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:13)	CALL	runtime.retpolineAX(SB)
+	0x0034 00052 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:14)	MOVQ	8(SP), BP
+	0x0039 00057 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:14)	ADDQ	$16, SP
+	0x003d 00061 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:14)	RET
+	0x003e 00062 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:14)	NOP
+	0x003e 00062 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	PCDATA	$1, $-1
+	0x003e 00062 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	PCDATA	$0, $-2
+	0x003e 00062 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	NOP
+	0x0040 00064 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	CALL	runtime.morestack_noctxt(SB)
+	0x0045 00069 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	PCDATA	$0, $-1
+	0x0045 00069 (/home/kail/go/src/source-notes/go1.16/test/codegen/retpoline.go:11)	JMP	0
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 31 48  dH..%....H;a.v1H
+	0x0010 83 ec 10 48 89 6c 24 08 48 8d 6c 24 08 48 8b 44  ...H.l$.H.l$.H.D
+	0x0020 24 18 48 8b 40 18 48 8b 4c 24 20 48 89 0c 24 e8  $.H.@.H.L$ H..$.
+	0x0030 00 00 00 00 48 8b 6c 24 08 48 83 c4 10 c3 66 90  ....H.l$.H....f.
+	0x0040 e8 00 00 00 00 eb b9                             .......
+	rel 2+0 t=26 type.interface { M() }<0>+80
+	rel 5+4 t=17 TLS+0
+	rel 48+4 t=8 runtime.retpolineAX<0>+0
+	rel 65+4 t=8 runtime.morestack_noctxt<0>+0
+go.interface { M() }.M<1> STEXT dupok size=93 args=0x10 locals=0x10 funcid=0x16
+	0x0000 00000 (<autogenerated>:1)	TEXT	go.interface { M() }.M(SB), DUPOK|WRAPPER|ABIInternal, $16-16
+	0x0000 00000 (<autogenerated>:1)	MOVQ	(TLS), CX
+	0x0009 00009 (<autogenerated>:1)	CMPQ	SP, 16(CX)
+	0x000d 00013 (<autogenerated>:1)	PCDATA	$0, $-2
+	0x000d 00013 (<autogenerated>:1)	JLS	71
+	0x000f 00015 (<autogenerated>:1)	PCDATA	$0, $-1
+	0x000f 00015 (<autogenerated>:1)	SUBQ	$16, SP
+	0x0013 00019 (<autogenerated>:1)	MOVQ	BP, 8(SP)
+	0x0018 00024 (<autogenerated>:1)	LEAQ	8(SP), BP
+	0x001d 00029 (<autogenerated>:1)	MOVQ	32(CX), BX
+	0x0021 00033 (<autogenerated>:1)	TESTQ	BX, BX
+	0x0024 00036 (<autogenerated>:1)	JNE	78
+	0x0026 00038 (<autogenerated>:1)	NOP
+	0x0026 00038 (<autogenerated>:1)	FUNCDATA	$0, gclocals·09cf9819fc716118c209c2d2155a3632(SB)
+	0x0026 00038 (<autogenerated>:1)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0026 00038 (<autogenerated>:1)	MOVQ	""..this+24(SP), AX
+	0x002b 00043 (<autogenerated>:1)	MOVQ	""..this+32(SP), CX
+	0x0030 00048 (<autogenerated>:1)	MOVQ	24(AX), AX
+	0x0034 00052 (<autogenerated>:1)	MOVQ	CX, (SP)
+	0x0038 00056 (<autogenerated>:1)	PCDATA	$1, $1
+	0x0038 00056 (<autogenerated>:1)	CALL	runtime.retpolineAX(SB)
+	0x003d 00061 (<autogenerated>:1)	MOVQ	8(SP), BP
+	0x0042 00066 (<autogenerated>:1)	ADDQ	$16, SP
+	0x0046 00070 (<autogenerated>:1)	RET
+	0x0047 00071 (<autogenerated>:1)	NOP
+	0x0047 00071 (<autogenerated>:1)	PCDATA	$1, $-1
+	0x0047 00071 (<autogenerated>:1)	PCDATA	$0, $-2
+	0x0047 00071 (<autogenerated>:1)	CALL	runtime.morestack_noctxt(SB)
+	0x004c 00076 (<autogenerated>:1)	PCDATA	$0, $-1
+	0x004c 00076 (<autogenerated>:1)	JMP	0
+	0x004e 00078 (<autogenerated>:1)	LEAQ	24(SP), DI
+	0x0053 00083 (<autogenerated>:1)	CMPQ	(BX), DI
+	0x0056 00086 (<autogenerated>:1)	JNE	38
+	0x0058 00088 (<autogenerated>:1)	MOVQ	SP, (BX)
+	0x005b 00091 (<autogenerated>:1)	JMP	38
+	0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 38 48  dH..%....H;a.v8H
+	0x0010 83 ec 10 48 89 6c 24 08 48 8d 6c 24 08 48 8b 59  ...H.l$.H.l$.H.Y
+	0x0020 20 48 85 db 75 28 48 8b 44 24 18 48 8b 4c 24 20   H..u(H.D$.H.L$ 
+	0x0030 48 8b 40 18 48 89 0c 24 e8 00 00 00 00 48 8b 6c  H.@.H..$.....H.l
+	0x0040 24 08 48 83 c4 10 c3 e8 00 00 00 00 eb b2 48 8d  $.H...........H.
+	0x0050 7c 24 18 48 39 3b 75 ce 48 89 23 eb c9           |$.H9;u.H.#..
+	rel 2+0 t=26 type.interface { M() }<0>+80
+	rel 5+4 t=17 TLS+0
+	rel 57+4 t=8 runtime.retpolineAX<0>+0
+	rel 72+4 t=8 runtime.morestack_noctxt<0>+0
+go.cuinfo.producer.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 2d 73 70 65 63 74 72 65 3d 72 65 74              -spectre=ret
+go.cuinfo.packagename.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 63 6f 64 65 67 65 6e                             codegen
+runtime.memequal64·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal64<1>+0
+runtime.gcbits.01<0> SRODATA dupok size=1
+	0x0000 01                                               .
+type..namedata.*func()-<0> SRODATA dupok size=10
+	0x0000 00 00 07 2a 66 75 6e 63 28 29                    ...*func()
+type.*func()<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 9b 90 75 1b 08 08 08 36 00 00 00 00 00 00 00 00  ..u....6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*func()-<0>+0
+	rel 48+8 t=1 type.func()<0>+0
+type.func()<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 f6 bc 82 f6 02 08 08 33 00 00 00 00 00 00 00 00  .......3........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00                                      ....
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*func()-<0>+0
+	rel 44+4 t=6 type.*func()<0>+0
+runtime.interequal·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.interequal<1>+0
+type..namedata.*interface { M() }-<0> SRODATA dupok size=21
+	0x0000 00 00 12 2a 69 6e 74 65 72 66 61 63 65 20 7b 20  ...*interface { 
+	0x0010 4d 28 29 20 7d                                   M() }
+type.*interface { M() }<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 3a e8 20 22 08 08 08 36 00 00 00 00 00 00 00 00  :. "...6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*interface { M() }-<0>+0
+	rel 48+8 t=1 type.interface { M() }<0>+0
+runtime.gcbits.02<0> SRODATA dupok size=1
+	0x0000 02                                               .
+type..namedata.M.<0> SRODATA dupok size=4
+	0x0000 01 00 01 4d                                      ...M
+type.interface { M() }<0> SRODATA dupok size=88
+	0x0000 10 00 00 00 00 00 00 00 10 00 00 00 00 00 00 00  ................
+	0x0010 05 bd a2 d0 02 08 08 14 00 00 00 00 00 00 00 00  ................
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+	0x0050 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.interequal·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.02<0>+0
+	rel 40+4 t=5 type..namedata.*interface { M() }-<0>+0
+	rel 44+4 t=6 type.*interface { M() }<0>+0
+	rel 56+8 t=1 type.interface { M() }<0>+80
+	rel 80+4 t=5 type..namedata.M.<0>+0
+	rel 84+4 t=5 type.func()<0>+0
+gclocals·1a65e721a2ccc325b382662e7ffee780<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 01 00 00 00 01 00                    ..........
+gclocals·69c1753bd5f81501d95132d08af04464<0> SRODATA dupok size=8
+	0x0000 02 00 00 00 00 00 00 00                          ........
+gclocals·09cf9819fc716118c209c2d2155a3632<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 02 00 00 00 02 00                    ..........
+aux for "".CallFunc<0> SDWARFLOC size=51
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 38 00 00 00 00 00 00 00  ........8.......
+	0x0020 01 00 9c 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00                                         ...
+	rel 8+8 t=1 "".CallFunc<1>+0
+aux for "".CallFunc<0> SDWARFLINES size=27
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 14 0a a5  ................
+	0x0010 89 06 41 06 60 66 02 07 00 01 01                 ..A.`f.....
+	rel 3+8 t=1 "".CallFunc<1>+0
+aux for "".CallFunc<0> SDWARFFCN size=70
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 61 6c 6c 46 75 6e 63  guments.CallFunc
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 01 9c 02 00 00 00 01 10 66 00 00 06 00 00 00  .........f......
+	0x0040 00 00 00 00 00 00                                ......
+	rel 33+8 t=1 "".CallFunc<1>+0
+	rel 41+8 t=1 "".CallFunc<1>+56
+	rel 61+4 t=31 go.info.func()<0>+0
+	rel 65+4 t=31 <0>+0
+aux for "".CallInterface<0> SDWARFLOC size=64
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 47 00 00 00 00 00 00 00  ........G.......
+	0x0020 0e 00 9c 93 08 9c 93 08 91 08 93 08 91 08 93 08  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	rel 8+8 t=1 "".CallInterface<1>+0
+aux for "".CallInterface<0> SDWARFLINES size=32
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 05 14  ................
+	0x0010 0a a5 9d 06 41 06 c4 06 70 06 23 02 07 00 01 01  ....A...p.#.....
+	rel 3+8 t=1 "".CallInterface<1>+0
+aux for "".CallInterface<0> SDWARFFCN size=75
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 43 61 6c 6c 49 6e 74 65  guments.CallInte
+	0x0020 72 66 61 63 65 00 00 00 00 00 00 00 00 00 00 00  rface...........
+	0x0030 00 00 00 00 00 00 01 9c 02 00 00 00 01 10 78 00  ..............x.
+	0x0040 00 0b 00 00 00 00 00 00 00 00 00                 ...........
+	rel 38+8 t=1 "".CallInterface<1>+0
+	rel 46+8 t=1 "".CallInterface<1>+71
+	rel 66+4 t=31 go.info.interface { M() }<0>+0
+	rel 70+4 t=31 <0>+0
+aux for go.interface { M() }.M<0> SDWARFLINES size=27
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 01 0f 0a a5  ................
+	0x0010 06 08 37 06 08 37 02 16 00 01 01                 ..7..7.....
+	rel 3+8 t=1 go.interface { M() }.M<1>+0
+aux for go.interface { M() }.M<0> SDWARFFCN size=48
+	0x0000 03 67 6f 2e 69 6e 74 65 72 66 61 63 65 20 7b 20  .go.interface { 
+	0x0010 4d 28 29 20 7d 2e 4d 00 00 00 00 00 00 00 00 00  M() }.M.........
+	0x0020 00 00 00 00 00 00 00 00 01 9c 01 00 00 00 01 00  ................
+	rel 0+0 t=24 type.interface { M() }<0>+0
+	rel 24+8 t=1 go.interface { M() }.M<1>+0
+	rel 32+8 t=1 go.interface { M() }.M<1>+93

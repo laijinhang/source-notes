@@ -1,0 +1,80 @@
+# command-line-arguments
+"".efaceExtract<1> STEXT nosplit size=41 args=0x18 locals=0x0 funcid=0x0
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:9)	TEXT	"".efaceExtract(SB), NOSPLIT|ABIInternal, $0-24
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:9)	FUNCDATA	$0, gclocals·09cf9819fc716118c209c2d2155a3632(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:9)	FUNCDATA	$1, gclocals·69c1753bd5f81501d95132d08af04464(SB)
+	0x0000 00000 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:13)	LEAQ	type.int(SB), AX
+	0x0007 00007 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:13)	MOVQ	"".e+8(SP), CX
+	0x000c 00012 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:13)	CMPQ	AX, CX
+	0x000f 00015 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:13)	JNE	31
+	0x0011 00017 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:13)	MOVQ	"".e+16(SP), AX
+	0x0016 00022 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:13)	MOVQ	(AX), AX
+	0x0019 00025 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:14)	MOVQ	AX, "".~r1+24(SP)
+	0x001e 00030 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:14)	RET
+	0x001f 00031 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:16)	MOVQ	$0, "".~r1+24(SP)
+	0x0028 00040 (/home/kail/go/src/source-notes/go1.16/test/codegen/shortcircuit.go:16)	RET
+	0x0000 48 8d 05 00 00 00 00 48 8b 4c 24 08 48 39 c8 75  H......H.L$.H9.u
+	0x0010 0e 48 8b 44 24 10 48 8b 00 48 89 44 24 18 c3 48  .H.D$.H..H.D$..H
+	0x0020 c7 44 24 18 00 00 00 00 c3                       .D$......
+	rel 3+4 t=16 type.int<0>+0
+go.cuinfo.packagename.command-line-arguments<0> SDWARFCUINFO dupok size=0
+	0x0000 63 6f 64 65 67 65 6e                             codegen
+runtime.nilinterequal·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.nilinterequal<1>+0
+runtime.memequal64·f<0> SRODATA dupok size=8
+	0x0000 00 00 00 00 00 00 00 00                          ........
+	rel 0+8 t=1 runtime.memequal64<1>+0
+runtime.gcbits.01<0> SRODATA dupok size=1
+	0x0000 01                                               .
+type..namedata.*interface {}-<0> SRODATA dupok size=16
+	0x0000 00 00 0d 2a 69 6e 74 65 72 66 61 63 65 20 7b 7d  ...*interface {}
+type.*interface {}<0> SRODATA dupok size=56
+	0x0000 08 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00  ................
+	0x0010 4f 0f 96 9d 08 08 08 36 00 00 00 00 00 00 00 00  O......6........
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 24+8 t=1 runtime.memequal64·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.01<0>+0
+	rel 40+4 t=5 type..namedata.*interface {}-<0>+0
+	rel 48+8 t=1 type.interface {}<0>+0
+runtime.gcbits.02<0> SRODATA dupok size=1
+	0x0000 02                                               .
+type.interface {}<0> SRODATA dupok size=80
+	0x0000 10 00 00 00 00 00 00 00 10 00 00 00 00 00 00 00  ................
+	0x0010 e7 57 a0 18 02 08 08 14 00 00 00 00 00 00 00 00  .W..............
+	0x0020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	0x0040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	rel 24+8 t=1 runtime.nilinterequal·f<0>+0
+	rel 32+8 t=1 runtime.gcbits.02<0>+0
+	rel 40+4 t=5 type..namedata.*interface {}-<0>+0
+	rel 44+4 t=6 type.*interface {}<0>+0
+	rel 56+8 t=1 type.interface {}<0>+80
+gclocals·09cf9819fc716118c209c2d2155a3632<0> SRODATA dupok size=10
+	0x0000 02 00 00 00 02 00 00 00 02 00                    ..........
+gclocals·69c1753bd5f81501d95132d08af04464<0> SRODATA dupok size=8
+	0x0000 02 00 00 00 00 00 00 00                          ........
+aux for "".efaceExtract<0> SDWARFLOC size=56
+	0x0000 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00  ................
+	0x0010 00 00 00 00 00 00 00 00 29 00 00 00 00 00 00 00  ........).......
+	0x0020 06 00 9c 93 08 9c 93 08 00 00 00 00 00 00 00 00  ................
+	0x0030 00 00 00 00 00 00 00 00                          ........
+	rel 8+8 t=1 "".efaceExtract<1>+0
+aux for "".efaceExtract<0> SDWARFLINES size=31
+	0x0000 00 09 02 00 00 00 00 00 00 00 00 04 02 03 07 14  ................
+	0x0010 06 55 06 c4 06 41 06 1b 06 69 02 01 00 01 01     .U...A...i.....
+	rel 3+8 t=1 "".efaceExtract<1>+0
+aux for "".efaceExtract<0> SDWARFFCN size=86
+	0x0000 03 63 6f 6d 6d 61 6e 64 2d 6c 69 6e 65 2d 61 72  .command-line-ar
+	0x0010 67 75 6d 65 6e 74 73 2e 65 66 61 63 65 45 78 74  guments.efaceExt
+	0x0020 72 61 63 74 00 00 00 00 00 00 00 00 00 00 00 00  ract............
+	0x0030 00 00 00 00 00 01 9c 02 00 00 00 01 10 65 00 00  .............e..
+	0x0040 09 00 00 00 00 00 00 00 00 0f 7e 72 31 00 01 09  ..........~r1...
+	0x0050 00 00 00 00 00 00                                ......
+	rel 0+0 t=24 type.int<0>+0
+	rel 37+8 t=1 "".efaceExtract<1>+0
+	rel 45+8 t=1 "".efaceExtract<1>+41
+	rel 65+4 t=31 go.info.interface {}<0>+0
+	rel 69+4 t=31 <0>+0
+	rel 80+4 t=31 go.info.int<0>+0

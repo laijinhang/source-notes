@@ -1,0 +1,4 @@
+# test log
+open /tmp/TestGoobj262825313/go1.o
+open /tmp/TestGoobj262825313/go.a
+open /tmp/TestGoobj262825313/gopath/pkg/linux_amd64/mycgo.a
