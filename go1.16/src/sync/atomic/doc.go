@@ -4,15 +4,19 @@
 
 // Package atomic provides low-level atomic memory primitives
 // useful for implementing synchronization algorithms.
+// atomic包提供了对实现同步算法有用的底层原子内存原语。
 //
 // These functions require great care to be used correctly.
 // Except for special, low-level applications, synchronization is better
 // done with channels or the facilities of the sync package.
 // Share memory by communicating;
 // don't communicate by sharing memory.
+// 这些函数需要非常小心才能正确使用。除了特殊的、低级别的应用，同步最好用通道或sync包的设施来完成。
+// 通过交流来分享内存；不要通过分享内存来交流。
 //
 // The swap operation, implemented by the SwapT functions, is the atomic
 // equivalent of:
+// 由SwapT函数实现的交换操作是原子等效的：
 //
 //	old = *addr
 //	*addr = new
@@ -20,6 +24,7 @@
 //
 // The compare-and-swap operation, implemented by the CompareAndSwapT
 // functions, is the atomic equivalent of:
+// 由CompareAndSwapT函数实现的比较和交换操作是原子等价的。
 //
 //	if *addr == old {
 //		*addr = new
@@ -29,6 +34,7 @@
 //
 // The add operation, implemented by the AddT functions, is the atomic
 // equivalent of:
+// 由AddT函数实现的添加操作是原子等价的:
 //
 //	*addr += delta
 //	return *addr
@@ -36,6 +42,7 @@
 // The load and store operations, implemented by the LoadT and StoreT
 // functions, are the atomic equivalents of "return *addr" and
 // "*addr = val".
+// 由LoadT和StoreT函数实现的加载和存储操作是 "return *addr "和 "*addr = val "的原子等价物。
 //
 package atomic
 

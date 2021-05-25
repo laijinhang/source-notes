@@ -263,6 +263,9 @@ func (b *Reader) ReadByte() (byte, error) {
 // UnreadByte returns an error if the most recent method called on the
 // Reader was not a read operation. Notably, Peek is not considered a
 // read operation.
+// UnreadByte解读最后一个字节。只有最近读取的字节可以被解读。
+//
+// 如果最近在阅读器上调用的方法不是读操作，那么UnreadByte会返回一个错误。值得注意的是，Peek不被认为是一个读操作。
 func (b *Reader) UnreadByte() error {
 	if b.lastByte < 0 || b.r == 0 && b.w > 0 {
 		return ErrInvalidUnreadByte
@@ -283,6 +286,8 @@ func (b *Reader) UnreadByte() error {
 // ReadRune reads a single UTF-8 encoded Unicode character and returns the
 // rune and its size in bytes. If the encoded rune is invalid, it consumes one byte
 // and returns unicode.ReplacementChar (U+FFFD) with a size of 1.
+// ReadRune读取一个UTF-8编码的Unicode字符，并返回符文和它的大小（字节）。如果编码的符文是无效的，
+// 它将消耗一个字节并返回unicode.ReplacementChar（U+FFFD），其大小为1。
 func (b *Reader) ReadRune() (r rune, size int, err error) {
 	for b.r+utf8.UTFMax > b.w && !utf8.FullRune(b.buf[b.r:b.w]) && b.err == nil && b.w-b.r < len(b.buf) {
 		b.fill() // b.w-b.r < len(buf) => buffer is not full
