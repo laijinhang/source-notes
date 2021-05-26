@@ -113,6 +113,8 @@ var badData = errors.New("malformed time zone information")
 // initialized from the IANA Time Zone database-formatted data.
 // The data should be in the format of a standard IANA time zone file
 // (for example, the content of /etc/localtime on Unix systems).
+// LoadLocationFromTZData返回一个具有给定名称的、由IANA时区数据库格式化的数据初始化的位置。
+// 该数据应该是标准的IANA时区文件的格式（例如，Unix系统上的/etc/localtime的内容）。
 func LoadLocationFromTZData(name string, data []byte) (*Location, error) {
 	d := dataIO{data, false}
 
@@ -352,6 +354,7 @@ func LoadLocationFromTZData(name string, data []byte) (*Location, error) {
 
 // loadTzinfoFromDirOrZip returns the contents of the file with the given name
 // in dir. dir can either be an uncompressed zip file, or a directory.
+// loadTzinfoFromDirOrZip返回dir中给定名称的文件内容。dir可以是一个未压缩的zip文件，也可以是一个目录。
 func loadTzinfoFromDirOrZip(dir, name string) ([]byte, error) {
 	if len(dir) > 4 && dir[len(dir)-4:] == ".zip" {
 		return loadTzinfoFromZip(dir, name)
@@ -505,6 +508,9 @@ var loadTzinfoFromTzdata func(file, name string) ([]byte, error)
 // with the given name, from a given source. A source may be a
 // timezone database directory, tzdata database file or an uncompressed
 // zip file, containing the contents of such a directory.
+// loadTzinfo从一个给定的源头返回给定名称的时区的时区信息。
+// 来源可以是一个时区数据库目录、tzdata数据库文件或一个未压缩的zip文件，
+// 其中包含了这样一个目录的内容。
 func loadTzinfo(name string, source string) ([]byte, error) {
 	if len(source) >= 6 && source[len(source)-6:] == "tzdata" {
 		return loadTzinfoFromTzdata(source, name)

@@ -641,19 +641,26 @@ var zoneinfo *string
 var zoneinfoOnce sync.Once
 
 // LoadLocation returns the Location with the given name.
+// LoadLocation返回具有给定名称的Location。
 //
 // If the name is "" or "UTC", LoadLocation returns UTC.
 // If the name is "Local", LoadLocation returns Local.
+// 如果名称是""或 "UTC"，LoadLocation返回UTC。
+// 如果名称是 "Local"，LoadLocation返回Local。
 //
 // Otherwise, the name is taken to be a location name corresponding to a file
 // in the IANA Time Zone database, such as "America/New_York".
+// 否则，该名称将被视为与IANA时区数据库中的文件相对应的位置名称，如 "America/New_York"。
 //
 // The time zone database needed by LoadLocation may not be
 // present on all systems, especially non-Unix systems.
+// LoadLocation所需要的时区数据库可能并不存在于所有的系统中，尤其是非Unix系统。
 // LoadLocation looks in the directory or uncompressed zip file
 // named by the ZONEINFO environment variable, if any, then looks in
 // known installation locations on Unix systems,
 // and finally looks in $GOROOT/lib/time/zoneinfo.zip.
+// LoadLocation在ZONEINFO环境变量命名的目录或未压缩的压缩文件中寻找，如果有的话，
+// 然后在Unix系统中寻找已知的安装位置，最后在$GOROOT/lib/time/zoneinfo.zip中寻找。
 func LoadLocation(name string) (*Location, error) {
 	if name == "" || name == "UTC" {
 		return UTC, nil
@@ -664,6 +671,7 @@ func LoadLocation(name string) (*Location, error) {
 	if containsDotDot(name) || name[0] == '/' || name[0] == '\\' {
 		// No valid IANA Time Zone name contains a single dot,
 		// much less dot dot. Likewise, none begin with a slash.
+		// 没有一个有效的IANA时区名称包含一个点，更不用说点点了。同样，也没有一个是以斜线开头的。
 		return nil, errLocation
 	}
 	zoneinfoOnce.Do(func() {
@@ -690,6 +698,7 @@ func LoadLocation(name string) (*Location, error) {
 }
 
 // containsDotDot reports whether s contains "..".
+// containsDotDot报告s是否包含".."。
 func containsDotDot(s string) bool {
 	if len(s) < 2 {
 		return false
