@@ -355,11 +355,11 @@ func tzset(s string, initEnd, sec int64) (name string, offset int, start, end in
 	// just the start and end of the year. That suffices for
 	// the only caller that cares, which is Date.
 	if ysec < startSec {
-		return stdName, stdOffset, abs, startSec + abs, false, true
+		return stdName, stdOffset, abs, startSec + abs, stdIsDST, true
 	} else if ysec >= endSec {
-		return stdName, stdOffset, endSec + abs, abs + 365*secondsPerDay, false, true
+		return stdName, stdOffset, endSec + abs, abs + 365*secondsPerDay, stdIsDST, true
 	} else {
-		return dstName, dstOffset, startSec + abs, endSec + abs, false, true
+		return dstName, dstOffset, startSec + abs, endSec + abs, dstIsDST, true
 	}
 }
 
@@ -520,7 +520,7 @@ func tzsetRule(s string) (rule, string, bool) {
 	}
 
 	offset, s, ok := tzsetOffset(s[1:])
-	if !ok || offset < 0 {
+	if !ok {
 		return rule{}, "", false
 	}
 	r.time = offset
