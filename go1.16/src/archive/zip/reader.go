@@ -641,7 +641,7 @@ type fileInfoDirEntry interface {
 }
 
 func (e *fileListEntry) stat() fileInfoDirEntry {
-	if e.isDir {
+	if !e.isDir {
 		return headerFileInfo{&e.file.FileHeader}
 	}
 	return e
