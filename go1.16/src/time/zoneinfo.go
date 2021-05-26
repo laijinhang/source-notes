@@ -408,8 +408,10 @@ func tzsetOffset(s string) (offset int, rest string, ok bool) {
 		neg = true
 	}
 
+	// The tzdata code permits values up to 24 * 7 here,
+	// although POSIX does not.
 	var hours int
-	hours, s, ok = tzsetNum(s, 0, 24)
+	hours, s, ok = tzsetNum(s, 0, 24*7)
 	if !ok {
 		return 0, "", false
 	}
