@@ -1,0 +1,20 @@
+# test log
+getenv TMPDIR
+open /tmp/TestSymlink980282340/001/hello
+open /tmp/TestSymlink980282340/001/.
+open /tmp/TestSymlink980282340/001/hello
+stat /tmp/TestSymlink980282340/001/./hello
+open /tmp/TestSymlink980282340/001/hello
+open /tmp/TestSymlink980282340/001/hello
+open /tmp/TestSymlink980282340/001/hello
+open /tmp/TestSymlink980282340/001/hello
+open /tmp/TestSymlink980282340/001/hello.link
+stat /tmp/TestSymlink980282340/001/./hello.link
+open /tmp/TestSymlink980282340/001/hello.link
+open /tmp/TestSymlink980282340/001/hello.link
+open /tmp/TestSymlink980282340/001/hello.link
+open /tmp/TestSymlink980282340/001/hello.link
+open /tmp/TestSymlink980282340/001/.
+open /tmp/TestSymlink980282340/001/.
+open /tmp/TestSymlink980282340/001/.
+open /tmp

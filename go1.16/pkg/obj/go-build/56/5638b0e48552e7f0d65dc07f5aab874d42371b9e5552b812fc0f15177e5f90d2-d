@@ -1,0 +1,10 @@
+# test log
+getenv TMPDIR
+open /tmp/syslogtest3540103828
+open /proc/sys/net/core/somaxconn
+getenv TMPDIR
+open /tmp/syslogtest1293533464
+getenv TMPDIR
+open /tmp/syslogtest1963328747
+getenv TMPDIR
+open /tmp/syslogtest928825080
