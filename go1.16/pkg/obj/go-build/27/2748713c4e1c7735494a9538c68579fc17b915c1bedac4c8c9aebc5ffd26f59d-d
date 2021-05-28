@@ -1,6 +1,0 @@
-# test log
-getenv TMPDIR
-open /tmp/web-TestGetFileURL1612225165
-open /tmp/web-TestGetFileURL1612225165
-getenv PWD
-open /home/kail/go/src/source-notes/go1.16/src/cmd/go/internal/web/nonexistent

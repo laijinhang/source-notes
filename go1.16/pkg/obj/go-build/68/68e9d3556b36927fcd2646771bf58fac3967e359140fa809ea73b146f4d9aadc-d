@@ -1,5 +1,0 @@
-# test log
-getenv TMPDIR
-open /tmp/heapdumptest3651143357
-getenv TMPDIR
-open /tmp/heapdumptest1722892002

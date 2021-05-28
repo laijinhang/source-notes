@@ -1,4 +1,0 @@
-./all_test.go
-./reflect_mirror_test.go
-./set_test.go
-./tostring_test.go

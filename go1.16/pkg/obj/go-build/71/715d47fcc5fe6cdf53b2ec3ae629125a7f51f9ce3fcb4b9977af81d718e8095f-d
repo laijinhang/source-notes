@@ -1,7 +1,0 @@
-./api.go
-./http.go
-./url.go
-./url_other.go
-./file_test.go
-./url_other_test.go
-./url_test.go
