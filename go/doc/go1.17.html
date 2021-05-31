@@ -611,7 +611,7 @@ Do not send CLs removing the interior tags from such phrases.
       On Unix-like systems, the process group of a child process is now set with signals blocked.
       This avoids sending a <code>SIGTTOU</code> to the child when the parent is in a background process group.
     </p>
-    
+
     <p><!-- CL 288298, CL 288300 -->
       The Windows version of
       <a href="/pkg/syscall/#SysProcAttr"><code>SysProcAttr</code></a>
@@ -627,6 +627,14 @@ Do not send CLs removing the interior tags from such phrases.
   <dd>
     <p><!-- CL 310033 -->
       TODO: <a href="https://golang.org/cl/310033">https://golang.org/cl/310033</a>: add -shuffle=off|on|N to alter the execution order of tests and benchmarks
+    </p>
+    
+    <p><!-- CL 260577 -->
+      The new
+      <a href="/pkg/testing/#T.Setenv"><code>T.Setenv</code></a>
+      and <a href="/pkg/testing/#B.Setenv"><code>B.Setenv</code></a>
+      methods support setting an environment variable for the duration
+      of the test or benchmark.
     </p>
   </dd>
 </dl><!-- testing -->
