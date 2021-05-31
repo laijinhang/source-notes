@@ -55,14 +55,26 @@ import (
 	"time"
 )
 
+/*
+	起先对Context接口的方法做了作用定义
+	所谓的继承/派生 父Context，其实就是 新定一个结构体，里面先继承Context类，再附加功能，如超时，取消，存储k-v，创建的时候，把父Context对象赋值给子Context，
+	其实就是使用同一个对象
+	对于Context协程安全，是因为使用了 互斥锁
+*/
 // A Context carries a deadline, a cancellation signal, and other values across
 // API boundaries.
 //
 // Context's methods may be called by multiple goroutines simultaneously.
+// Context包含截止时间，取消时间和其他API
+//
+// Context方法可以被多个协程同时调用
 type Context interface {
 	// Deadline returns the time when work done on behalf of this context
 	// should be canceled. Deadline returns ok==false when no deadline is
 	// set. Successive calls to Deadline return the same results.
+	// Deadline返回应取消代表该上下文完成工作的时间
+	// 如果未设置截止时间，则返回的ok变量为false
+	// 连续调用Deadline会返回相同的结果
 	Deadline() (deadline time.Time, ok bool)
 
 	// Done returns a channel that's closed when work done on behalf of this
@@ -70,6 +82,8 @@ type Context interface {
 	// never be canceled. Successive calls to Done return the same value.
 	// The close of the Done channel may happen asynchronously,
 	// after the cancel function returns.
+	// Done会返回一个channel，当该context被取消的时候，该channel会被关闭，
+	// 同时对应的使用该context的routine也应该结束并返回。
 	//
 	// WithCancel arranges for Done to be closed when cancel is called;
 	// WithDeadline arranges for Done to be closed when the deadline
@@ -96,6 +110,11 @@ type Context interface {
 	//
 	// See https://blog.golang.org/pipelines for more examples of how to use
 	// a Done channel for cancellation.
+	/*
+		该方法返回一个channel，需要在select-case语句中使用，如"case <-context.Done():"。
+		当context关闭后，Done()返回一个被关闭的管道，关闭的管理仍然是可读的，据此goroutine可以收到关闭请求；
+		当context还未关闭时，Done()返回nil。
+	*/
 	Done() <-chan struct{}
 
 	// If Done is not yet closed, Err returns nil.
@@ -103,6 +122,8 @@ type Context interface {
 	// Canceled if the context was canceled
 	// or DeadlineExceeded if the context's deadline passed.
 	// After Err returns a non-nil error, successive calls to Err return the same error.
+	// 如果 Done 尚未关闭，Err返回nil
+	// 如果 Done 已经关闭，Err返回一个非nil的错误，原因：
 	Err() error
 
 	// Value returns the value associated with this context for key, or nil
@@ -150,16 +171,20 @@ type Context interface {
 	// 		u, ok := ctx.Value(userKey).(*User)
 	// 		return u, ok
 	// 	}
+	// Value可以让协程共享一些数据，当然获取数据是协程安全的
 	Value(key interface{}) interface{}
 }
 
 // Canceled is the error returned by Context.Err when the context is canceled.
+// 当context取消时，调用Context.Err会返回这个错误
 var Canceled = errors.New("context canceled")
 
 // DeadlineExceeded is the error returned by Context.Err when the context's
 // deadline passes.
+// 当context超时时，调用context.Err会返回这个错误
 var DeadlineExceeded error = deadlineExceededError{}
 
+// 超时错误
 type deadlineExceededError struct{}
 
 func (deadlineExceededError) Error() string   { return "context deadline exceeded" }
@@ -168,6 +193,8 @@ func (deadlineExceededError) Temporary() bool { return true }
 
 // An emptyCtx is never canceled, has no values, and has no deadline. It is not
 // struct{}, since vars of this type must have distinct addresses.
+// emptyCtx永远是一个取消，没有值，没有超时。它不是一个结构体，
+// 因此此类型的var必须具有不同的地址
 type emptyCtx int
 
 func (*emptyCtx) Deadline() (deadline time.Time, ok bool) {
@@ -205,6 +232,8 @@ var (
 // values, and has no deadline. It is typically used by the main function,
 // initialization, and tests, and as the top-level Context for incoming
 // requests.
+// Backgroud返回一个非nil，空的Context。它永远是一个取消，没有值，没有超时。
+// 它通常由main函数使用，初始化和测试，作为传入的最起始的上下文
 func Background() Context {
 	return background
 }
@@ -213,6 +242,7 @@ func Background() Context {
 // it's unclear which Context to use or it is not yet available (because the
 // surrounding function has not yet been extended to accept a Context
 // parameter).
+// TODO返回一个非nil，空的Context。
 func TODO() Context {
 	return todo
 }
@@ -221,6 +251,10 @@ func TODO() Context {
 // A CancelFunc does not wait for the work to stop.
 // A CancelFunc may be called by multiple goroutines simultaneously.
 // After the first call, subsequent calls to a CancelFunc do nothing.
+// CancelFunc告诉一个操作放弃其工作。 => CannelFunc通知操作停止
+// CancelFunc不等待工作停止。 => 异步
+// 多个协程可以同时调用CancelFunc
+// 在第一个调用之后，随后CancelFunc的调用什么也不做
 type CancelFunc func()
 
 // WithCancel returns a copy of parent with a new Done channel. The returned
@@ -229,6 +263,7 @@ type CancelFunc func()
 //
 // Canceling this context releases resources associated with it, so code should
 // call cancel as soon as the operations running in this Context complete.
+// WithCancel会一个拷贝parent带Done
 func WithCancel(parent Context) (ctx Context, cancel CancelFunc) {
 	if parent == nil {
 		panic("cannot create context from nil parent")
@@ -239,11 +274,13 @@ func WithCancel(parent Context) (ctx Context, cancel CancelFunc) {
 }
 
 // newCancelCtx returns an initialized cancelCtx.
+// newCancelCtx返回一个初始化的cancelCtx。
 func newCancelCtx(parent Context) cancelCtx {
 	return cancelCtx{Context: parent}
 }
 
 // goroutines counts the number of goroutines ever created; for testing.
+// goroutines计算曾经的创建的协程数；供测试使用。
 var goroutines int32
 
 // propagateCancel arranges for child to be canceled when parent is.
