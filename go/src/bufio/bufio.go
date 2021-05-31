@@ -16,26 +16,29 @@ import (
 )
 
 const (
+	// 默认buf大小，4096字节，4K字节
 	defaultBufSize = 4096
 )
 
 var (
-	ErrInvalidUnreadByte = errors.New("bufio: invalid use of UnreadByte")
-	ErrInvalidUnreadRune = errors.New("bufio: invalid use of UnreadRune")
-	ErrBufferFull        = errors.New("bufio: buffer full")
-	ErrNegativeCount     = errors.New("bufio: negative count")
+	ErrInvalidUnreadByte = errors.New("bufio: invalid use of UnreadByte") // 无效使用UnreadByte
+	ErrInvalidUnreadRune = errors.New("bufio: invalid use of UnreadRune") // 无效使用UnreadRune
+	ErrBufferFull        = errors.New("bufio: buffer full")               // 缓冲区已满
+	ErrNegativeCount     = errors.New("bufio: negative count")            // 负数
 )
 
 // Buffered input.
+// 缓冲输入。
 
 // Reader implements buffering for an io.Reader object.
+// Reader为io.Reader对象实现缓冲。
 type Reader struct {
-	buf          []byte
-	rd           io.Reader // reader provided by the client
-	r, w         int       // buf read and write positions
-	err          error
-	lastByte     int // last byte read for UnreadByte; -1 means invalid
-	lastRuneSize int // size of last rune read for UnreadRune; -1 means invalid
+	buf          []byte    // 缓冲区的数据
+	rd           io.Reader // reader provided by the client	// 底层的io.Reader
+	r, w         int       // buf read and write positions	// r ,w分别表示 buf中读和写的指针位置
+	err          error     // r ,w分别表示 buf中读和写的指针位置
+	lastByte     int       // last byte read for UnreadByte; -1 means invalid			// 记录读取的最后一个字节（用于撤销）
+	lastRuneSize int       // size of last rune read for UnreadRune; -1 means invalid	// 记录读取的最后一个字节（用于撤销）
 }
 
 const minReadBufferSize = 16
@@ -44,8 +47,12 @@ const maxConsecutiveEmptyReads = 100
 // NewReaderSize returns a new Reader whose buffer has at least the specified
 // size. If the argument io.Reader is already a Reader with large enough
 // size, it returns the underlying Reader.
+// 如果传入的rd实现了Reader，并且长度大于等于传入的size，则直接返回转换之后的rd
+// 如果传入的rd实现了Reader，并且长度大小传入的size，则为其创建一个新的Reader
+// 对于size的长度，如果小于16，则设为16
 func NewReaderSize(rd io.Reader, size int) *Reader {
 	// Is it already a Reader?
+	// 这已经是一个Reader？
 	b, ok := rd.(*Reader)
 	if ok && len(b.buf) >= size {
 		return b
@@ -59,19 +66,23 @@ func NewReaderSize(rd io.Reader, size int) *Reader {
 }
 
 // NewReader returns a new Reader whose buffer has the default size.
+// 创建一个4k字节的Reader
 func NewReader(rd io.Reader) *Reader {
 	return NewReaderSize(rd, defaultBufSize)
 }
 
 // Size returns the size of the underlying buffer in bytes.
+// 获取Reader的大小
 func (b *Reader) Size() int { return len(b.buf) }
 
 // Reset discards any buffered data, resets all state, and switches
 // the buffered reader to read from r.
+// 重置到初始
 func (b *Reader) Reset(r io.Reader) {
 	b.reset(b.buf, r)
 }
 
+// 重置
 func (b *Reader) reset(buf []byte, r io.Reader) {
 	*b = Reader{
 		buf:          buf,
@@ -81,11 +92,19 @@ func (b *Reader) reset(buf []byte, r io.Reader) {
 	}
 }
 
+// bufio: reader从读取中返回负数
 var errNegativeRead = errors.New("bufio: reader returned negative count from Read")
 
 // fill reads a new chunk into the buffer.
+// fill将一个新的块读入缓冲区。
+/*
+	1、如果读指针大于0（等于0的时候表示不需要把已读部分清干净），把buf上未读部分（r指针到w指针之间的部分）拷贝到buf的开头位置，w指针标到新的位置上（也就是w-r），r指针标未0
+	2、如果写指针大于等于buf，则抛出panic出 bufio: tried to fill full buffer 错误
+	3、？？？是要将w后面的清空？？？
+*/
 func (b *Reader) fill() {
 	// Slide existing data to beginning.
+	// 将现有的数据滑到开头。
 	if b.r > 0 {
 		copy(b.buf, b.buf[b.r:b.w])
 		b.w -= b.r
@@ -93,10 +112,12 @@ func (b *Reader) fill() {
 	}
 
 	if b.w >= len(b.buf) {
+		// bufio: 试图填满缓冲区
 		panic("bufio: tried to fill full buffer")
 	}
 
 	// Read new data: try a limited number of times.
+	// 读取新数据：尝试次数有限。
 	for i := maxConsecutiveEmptyReads; i > 0; i-- {
 		n, err := b.rd.Read(b.buf[b.w:])
 		if n < 0 {
@@ -124,9 +145,12 @@ func (b *Reader) readErr() error {
 // being valid at the next read call. If Peek returns fewer than n bytes, it
 // also returns an error explaining why the read is short. The error is
 // ErrBufferFull if n is larger than b's buffer size.
+// Peek返回下一个n个字节，而不推进阅读器。这些字节在下一次读取调用时停止有效。如果Peek返回的
+// 字节数少于n个，它还会返回一个错误，解释为什么读短了。如果n大于b的缓冲区大小，则错误为ErrBufferFull。
 //
 // Calling Peek prevents a UnreadByte or UnreadRune call from succeeding
 // until the next read operation.
+// 调用Peek可以防止UnreadByte或UnreadRune调用成功，直到下一次读取操作。
 func (b *Reader) Peek(n int) ([]byte, error) {
 	if n < 0 {
 		return nil, ErrNegativeCount
@@ -250,7 +274,7 @@ func (b *Reader) ReadByte() (byte, error) {
 		if b.err != nil {
 			return 0, b.readErr()
 		}
-		b.fill() // buffer is empty
+		b.fill() // buffer is empty	// 缓冲区是空的
 	}
 	c := b.buf[b.r]
 	b.r++
@@ -259,10 +283,12 @@ func (b *Reader) ReadByte() (byte, error) {
 }
 
 // UnreadByte unreads the last byte. Only the most recently read byte can be unread.
+// UnreadByte解读最后一个字节。只有最近读取的字节可以被解读。
 //
 // UnreadByte returns an error if the most recent method called on the
 // Reader was not a read operation. Notably, Peek is not considered a
 // read operation.
+// 如果最近在阅读器上调用的方法不是读操作，那么UnreadByte会返回一个错误。值得注意的是，Peek不被认为是一个读操作。
 func (b *Reader) UnreadByte() error {
 	if b.lastByte < 0 || b.r == 0 && b.w > 0 {
 		return ErrInvalidUnreadByte
@@ -283,6 +309,8 @@ func (b *Reader) UnreadByte() error {
 // ReadRune reads a single UTF-8 encoded Unicode character and returns the
 // rune and its size in bytes. If the encoded rune is invalid, it consumes one byte
 // and returns unicode.ReplacementChar (U+FFFD) with a size of 1.
+// ReadRune读取一个UTF-8编码的Unicode字符，并返回符文和它的大小（字节）。如果编码的符文是无效的，
+// 它将消耗一个字节并返回unicode.ReplacementChar（U+FFFD），其大小为1。
 func (b *Reader) ReadRune() (r rune, size int, err error) {
 	for b.r+utf8.UTFMax > b.w && !utf8.FullRune(b.buf[b.r:b.w]) && b.err == nil && b.w-b.r < len(b.buf) {
 		b.fill() // b.w-b.r < len(buf) => buffer is not full

@@ -27,18 +27,23 @@ import (
 // control over error handling or large tokens, or must run sequential scans
 // on a reader, should use bufio.Reader instead.
 //
+// Scanner提供一个按指定规则来读取数据的缓冲区IO，比如通过“行匹配函数”来逐行读取数据，Scanner通过Scan方法来按“匹配函数”读取
+// Scan方法会通过一个“函数匹配`”读取数据中符合要求的部分，跳过不符合的部分
+// “函数匹配”由调用者指定，本包中提供的匹配函数有“行匹配函数”、“字节匹配函数”、“字符串匹配函数”、
+// “单词匹配函数”，用户也可以自定义“匹配函数”。默认的匹配函数是“行匹配函数”，用于获取数据中的
+// 一行内容（不包括行尾表标记）
 type Scanner struct {
-	r            io.Reader // The reader provided by the client.
-	split        SplitFunc // The function to split the tokens.
-	maxTokenSize int       // Maximum size of a token; modified by tests.
-	token        []byte    // Last token returned by split.
+	r            io.Reader // The reader provided by the client.			// 由用户提供的io.Reader
+	split        SplitFunc // The function to split the tokens.				// 用于拆分tokens的函数（匹配函数，默认是行匹配）
+	maxTokenSize int       // Maximum size of a token; modified by tests.	// token的最大长度
+	token        []byte    // Last token returned by split.					// 记录最后一次Scan操作匹配到的数据
 	buf          []byte    // Buffer used as argument to split.
-	start        int       // First non-processed byte in buf.
-	end          int       // End of data in buf.
+	start        int       // First non-processed byte in buf.				// 记录缓冲区第一个未扫描的位置
+	end          int       // End of data in buf.							// 记录缓冲区结束的位置
 	err          error     // Sticky error.
-	empties      int       // Count of successive empty tokens.
-	scanCalled   bool      // Scan has been called; buffer is in use.
-	done         bool      // Scan has finished.
+	empties      int       // Count of successive empty tokens. 			// 记录匹配到空数据的次数，如果超过指定maxConsecutiveEmptyReads次数，则会panic
+	scanCalled   bool      // Scan has been called; buffer is in use.		// 标记Scan方法是否已经调用过，如果调用过则置为true，说明buffer正在使用
+	done         bool      // Scan has finished. 							// 标记是否已经扫描结束
 }
 
 // SplitFunc is the signature of the split function used to tokenize the
@@ -63,6 +68,7 @@ type Scanner struct {
 // The function is never called with an empty data slice unless atEOF
 // is true. If atEOF is true, however, data may be non-empty and,
 // as always, holds unprocessed text.
+// SplitFunc用来定义“匹配函数”类型，data是缓存中的数据，atEOF标记数据是否读完
 type SplitFunc func(data []byte, atEOF bool) (advance int, token []byte, err error)
 
 // Errors returned by Scanner.
@@ -85,6 +91,7 @@ const (
 
 // NewScanner returns a new Scanner to read from r.
 // The split function defaults to ScanLines.
+// 初始化一个Scanner对象，默认是行匹配
 func NewScanner(r io.Reader) *Scanner {
 	return &Scanner{
 		r:            r,
@@ -94,6 +101,7 @@ func NewScanner(r io.Reader) *Scanner {
 }
 
 // Err returns the first non-EOF error that was encountered by the Scanner.
+// 获取扫描中遇到的非EOF错误
 func (s *Scanner) Err() error {
 	if s.err == io.EOF {
 		return nil
@@ -287,6 +295,7 @@ func (s *Scanner) Split(split SplitFunc) {
 // Split functions
 
 // ScanBytes is a split function for a Scanner that returns each byte as a token.
+// 字节匹配函数
 func ScanBytes(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	if atEOF && len(data) == 0 {
 		return 0, nil, nil
@@ -302,6 +311,7 @@ var errorRune = []byte(string(utf8.RuneError))
 // means that erroneous UTF-8 encodings translate to U+FFFD = "\xef\xbf\xbd".
 // Because of the Scan interface, this makes it impossible for the client to
 // distinguish correctly encoded replacement runes from encoding errors.
+// 字符匹配函数
 func ScanRunes(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	if atEOF && len(data) == 0 {
 		return 0, nil, nil
@@ -335,6 +345,7 @@ func ScanRunes(data []byte, atEOF bool) (advance int, token []byte, err error) {
 }
 
 // dropCR drops a terminal \r from the data.
+// 如果data末尾字节是'\r'，则将其删除
 func dropCR(data []byte) []byte {
 	if len(data) > 0 && data[len(data)-1] == '\r' {
 		return data[0 : len(data)-1]
@@ -348,6 +359,10 @@ func dropCR(data []byte) []byte {
 // by one mandatory newline. In regular expression notation, it is `\r?\n`.
 // The last non-empty line of input will be returned even if it has no
 // newline.
+// 行匹配函数,advance表示已处理的字节数（其中\r和\n也算），token表示匹配到的第一行
+// 如果atEOF为false && 数据长度为0，返回 0，nil, nil
+// 如果data里面包含\n，则返回扫描到的第一行
+// 如果atEOF为false，并且没有\n，则会先判断最后一个字节是否为\r，如果是，则删去，返回数据
 func ScanLines(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	if atEOF && len(data) == 0 {
 		return 0, nil, nil
@@ -368,6 +383,7 @@ func ScanLines(data []byte, atEOF bool) (advance int, token []byte, err error) {
 // We avoid dependency on the unicode package, but check validity of the implementation
 // in the tests.
 func isSpace(r rune) bool {
+	// \u0000 ~ \u00ff 表示ASCII/ANSI字符。\u是一个Unicode值。
 	if r <= '\u00FF' {
 		// Obvious ASCII ones: \t through \r plus space. Plus two Latin-1 oddballs.
 		switch r {
@@ -393,9 +409,12 @@ func isSpace(r rune) bool {
 // space-separated word of text, with surrounding spaces deleted. It will
 // never return an empty string. The definition of space is set by
 // unicode.IsSpace.
+// 单词匹配函数：返回以空格进行分隔的单词
 func ScanWords(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	// Skip leading spaces.
 	start := 0
+	// start是单词第一个字母的下标位置
+	// 这个for循环的目的是定位到一个字母所在位置
 	for width := 0; start < len(data); start += width {
 		var r rune
 		r, width = utf8.DecodeRune(data[start:])
@@ -404,6 +423,7 @@ func ScanWords(data []byte, atEOF bool) (advance int, token []byte, err error) {
 		}
 	}
 	// Scan until space, marking end of word.
+	// 如果这个单词有分隔符，则会在这个for里面返回
 	for width, i := 0, start; i < len(data); i += width {
 		var r rune
 		r, width = utf8.DecodeRune(data[i:])
