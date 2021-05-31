@@ -6,10 +6,17 @@
 // Its primary job is to wrap existing implementations of such primitives,
 // such as those in package os, into shared public interfaces that
 // abstract the functionality, plus some other related primitives.
+// 包io提供了与I/O原语的基本接口。
+// 它的主要工作是包装此类原语的现有实现，
+// （例如os套件中的程式码）放入共用的公用介面
+// 对功能进行抽象，再加上其他一些相关的原语。
 //
 // Because these interfaces and primitives wrap lower-level operations with
 // various implementations, unless otherwise informed clients should not
 // assume they are safe for parallel execution.
+// 因为这些接口和原语使用
+// 各种实现，除非另行通知，客户端不应
+// 假设它们对于并行执行是安全的。
 package io
 
 import (
@@ -19,19 +26,22 @@ import (
 
 // Seek whence values.
 const (
-	SeekStart   = 0 // seek relative to the origin of the file
-	SeekCurrent = 1 // seek relative to the current offset
-	SeekEnd     = 2 // seek relative to the end
+	SeekStart   = 0 // seek relative to the origin of the file	// 相对于文件的起始点查找
+	SeekCurrent = 1 // seek relative to the current offset		// 相对于文件的当前偏移点查找
+	SeekEnd     = 2 // seek relative to the end					// 相对于文件的结束点查找
 )
 
 // ErrShortWrite means that a write accepted fewer bytes than requested
 // but failed to return an explicit error.
+// ErrShortWrite表示写入接受的字节数少于请求的字节数
 var ErrShortWrite = errors.New("short write")
 
 // errInvalidWrite means that a write returned an impossible count.
+// errInvalidWrite 意味着写返回了一个不可能的计数。
 var errInvalidWrite = errors.New("invalid write result")
 
 // ErrShortBuffer means that a read required a longer buffer than was provided.
+// ErrShortBuffer 意味着读取时需要的缓冲区比提供的长。
 var ErrShortBuffer = errors.New("short buffer")
 
 // EOF is the error returned by Read when no more input is available.
@@ -41,15 +51,21 @@ var ErrShortBuffer = errors.New("short buffer")
 // If the EOF occurs unexpectedly in a structured data stream,
 // the appropriate error is either ErrUnexpectedEOF or some other error
 // giving more detail.
+// EOF是Read在没有更多输入时返回的错误。(Read必须返回EOF本身，而不是一个包裹EOF的错误，
+// 因为调用者会用==来测试EOF)。函数应该只返回EOF，以示对输入的优雅结束。 如果EOF在结构化
+// 数据流中意外发生，适当的错误是ErrUnexpectedEOF或者其他给出更多细节的错误。
 var EOF = errors.New("EOF")
 
 // ErrUnexpectedEOF means that EOF was encountered in the
 // middle of reading a fixed-size block or data structure.
+// ErrUnexpectedEOF表示在读取一个固定大小的块或数据结构的过程中遇到了EOF。
 var ErrUnexpectedEOF = errors.New("unexpected EOF")
 
 // ErrNoProgress is returned by some clients of an Reader when
 // many calls to Read have failed to return any data or error,
 // usually the sign of a broken Reader implementation.
+// ErrNoProgress是由Reader的一些客户端返回的，
+// 当多次调用Read都未能返回任何数据或错误时，通常是Reader执行失败的标志。
 var ErrNoProgress = errors.New("multiple Read calls return no data or error")
 
 // Reader is the interface that wraps the basic Read method.
@@ -85,22 +101,31 @@ type Reader interface {
 }
 
 // Writer is the interface that wraps the basic Write method.
+// Writer是包装基本Write方法的接口
 //
 // Write writes len(p) bytes from p to the underlying data stream.
 // It returns the number of bytes written from p (0 <= n <= len(p))
 // and any error encountered that caused the write to stop early.
 // Write must return a non-nil error if it returns n < len(p).
 // Write must not modify the slice data, even temporarily.
+// Write将 字节切片p 写入数据流中
+// 返回从p写入的字节数（0 <= n <= len(p)），和遇到的任何导致写入提前停止的错误
+// 如果写入返回 n < len(p）,则必须返回一个非nil错误
+// 写操作不得修改切片数据，即使是临时的也不行
 //
 // Implementations must not retain p.
+// 实现不得保留p，不理解这一行代表什么意思？？？
 type Writer interface {
 	Write(p []byte) (n int, err error)
 }
 
 // Closer is the interface that wraps the basic Close method.
+// Closer是包装基本Close方法的接口
 //
 // The behavior of Close after the first call is undefined.
 // Specific implementations may document their own behavior.
+// 第一次调用后关闭的行为是不确定的
+// 特定的实现可能会记录其自身的行为
 type Closer interface {
 	Close() error
 }
@@ -123,24 +148,28 @@ type Seeker interface {
 }
 
 // ReadWriter is the interface that groups the basic Read and Write methods.
+// ReadWriter是对基本的读和写方法进行分组的接口。
 type ReadWriter interface {
 	Reader
 	Writer
 }
 
 // ReadCloser is the interface that groups the basic Read and Close methods.
+// ReadCloser是将基本的读取和关闭方法分组的接口。
 type ReadCloser interface {
 	Reader
 	Closer
 }
 
 // WriteCloser is the interface that groups the basic Write and Close methods.
+// WriteCloser是一个接口，它将基本的写入和关闭方法分组。
 type WriteCloser interface {
 	Writer
 	Closer
 }
 
 // ReadWriteCloser is the interface that groups the basic Read, Write and Close methods.
+// ReadWriteCloser是将基本的读、写和关闭方法分组的接口。
 type ReadWriteCloser interface {
 	Reader
 	Writer
@@ -148,6 +177,7 @@ type ReadWriteCloser interface {
 }
 
 // ReadSeeker is the interface that groups the basic Read and Seek methods.
+// ReadSeeker是将基本的Read和Seek方法分组的接口。
 type ReadSeeker interface {
 	Reader
 	Seeker
@@ -155,6 +185,7 @@ type ReadSeeker interface {
 
 // ReadSeekCloser is the interface that groups the basic Read, Seek and Close
 // methods.
+// ReadSeekCloser是一个接口，它将基本的Read、Seek和Close方法分组。
 type ReadSeekCloser interface {
 	Reader
 	Seeker
@@ -162,12 +193,14 @@ type ReadSeekCloser interface {
 }
 
 // WriteSeeker is the interface that groups the basic Write and Seek methods.
+// WriteSeeker是对基本的Write和Seek方法进行分组的接口。
 type WriteSeeker interface {
 	Writer
 	Seeker
 }
 
 // ReadWriteSeeker is the interface that groups the basic Read, Write and Seek methods.
+// ReadWriteSeeker是将基本的Read、Write和Seek方法分组的接口。
 type ReadWriteSeeker interface {
 	Reader
 	Writer
@@ -175,23 +208,33 @@ type ReadWriteSeeker interface {
 }
 
 // ReaderFrom is the interface that wraps the ReadFrom method.
+// ReaderFrom是封装ReadFrom方法的接口。
 //
 // ReadFrom reads data from r until EOF or error.
 // The return value n is the number of bytes read.
 // Any error except EOF encountered during the read is also returned.
+// ReadFrom从r中读取数据，直到出现EOF或错误。
+// 返回值n是读取的字节数。
+// 读取过程中除了EOF之外遇到的任何错误也会被返回。
 //
 // The Copy function uses ReaderFrom if available.
+// 复制函数使用ReaderFrom（如果有的话）。
 type ReaderFrom interface {
 	ReadFrom(r Reader) (n int64, err error)
 }
 
 // WriterTo is the interface that wraps the WriteTo method.
+// WriterTo是封装WriteTo方法的接口。
 //
 // WriteTo writes data to w until there's no more data to write or
 // when an error occurs. The return value n is the number of bytes
 // written. Any error encountered during the write is also returned.
+// WriteTo将数据写入w，直到没有更多的数据可写或
+//当发生错误时，返回值n。返回值n是字节数。
+//写入。在写入过程中遇到的任何错误也会被返回。
 //
 // The Copy function uses WriterTo if available.
+// 如果有的话，复制函数使用WriterTo。
 type WriterTo interface {
 	WriteTo(w Writer) (n int64, err error)
 }
@@ -369,15 +412,20 @@ func CopyN(dst Writer, src Reader, n int64) (written int64, err error) {
 // Copy copies from src to dst until either EOF is reached
 // on src or an error occurs. It returns the number of bytes
 // copied and the first error encountered while copying, if any.
+// 从src复制到dst，直到src上达到EOF或发生错误。它返回复制的字节数和复制时遇到的第一个错误（如果有）。
 //
 // A successful Copy returns err == nil, not err == EOF.
 // Because Copy is defined to read from src until EOF, it does
 // not treat an EOF from Read as an error to be reported.
+// 一个成功的Copy返回err == nil，而不是err == EOF。因为Copy被定义为从src读到EOF，
+// 所以它不把Read的EOF当作一个需要报告的错误。
 //
 // If src implements the WriterTo interface,
 // the copy is implemented by calling src.WriteTo(dst).
 // Otherwise, if dst implements the ReaderFrom interface,
 // the copy is implemented by calling dst.ReadFrom(src).
+// 如果src实现了WriterTo接口，则通过调用src.WriteTo(dst)实现拷贝。
+// 否则，如果dst实现了ReaderFrom接口，则通过调用dst.ReadFrom(src)来实现拷贝。
 func Copy(dst Writer, src Reader) (written int64, err error) {
 	return copyBuffer(dst, src, nil)
 }
@@ -398,13 +446,21 @@ func CopyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error) {
 
 // copyBuffer is the actual implementation of Copy and CopyBuffer.
 // if buf is nil, one is allocated.
+// copyBuffer是Copy和CopyBuffer的实际实现。如果buf是nil，就会分配一个。
+/*
+	1、如果传入的src带有WriterTo方法，则使用它来进行拷贝，避免了分配和复制
+	2、如果传入的dst带有ReadFrom方法，则使用它来进行拷贝
+	3、如果buf为空
+*/
 func copyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error) {
 	// If the reader has a WriteTo method, use it to do the copy.
 	// Avoids an allocation and a copy.
+	// 如果reader有一个WriteTo方法，就用它来做拷贝。避免了分配和复制。
 	if wt, ok := src.(WriterTo); ok {
 		return wt.WriteTo(dst)
 	}
 	// Similarly, if the writer has a ReadFrom method, use it to do the copy.
+	// 同样地，如果writer有一个ReadFrom方法，就用它来进行复制。
 	if rt, ok := dst.(ReaderFrom); ok {
 		return rt.ReadFrom(src)
 	}
@@ -458,11 +514,16 @@ func LimitReader(r Reader, n int64) Reader { return &LimitedReader{r, n} }
 // data returned to just N bytes. Each call to Read
 // updates N to reflect the new amount remaining.
 // Read returns EOF when N <= 0 or when the underlying R returns EOF.
+// 一个有限读取器从R中读取数据，但将返回的数据量限制在N个字节。每次对Read的调用都会更新N，
+// 以反映新的剩余量。当N<=0或底层R返回EOF时，Read返回EOF。
 type LimitedReader struct {
 	R Reader // underlying reader
 	N int64  // max bytes remaining
 }
 
+/*
+	将l中的数据写到p上，并设置剩余最大字节数，返回已读长度和错误
+*/
 func (l *LimitedReader) Read(p []byte) (n int, err error) {
 	if l.N <= 0 {
 		return 0, EOF
@@ -477,12 +538,14 @@ func (l *LimitedReader) Read(p []byte) (n int, err error) {
 
 // NewSectionReader returns a SectionReader that reads from r
 // starting at offset off and stops with EOF after n bytes.
+// NewSectionReader返回一个SectionReader，从偏移量off开始读取r，在n个字节后以EOF停止。
 func NewSectionReader(r ReaderAt, off int64, n int64) *SectionReader {
 	return &SectionReader{r, off, off, off + n}
 }
 
 // SectionReader implements Read, Seek, and ReadAt on a section
 // of an underlying ReaderAt.
+// SectionReader在底层ReaderAt的一个部分上实现了读、寻、和ReadAt。
 type SectionReader struct {
 	r     ReaderAt
 	base  int64
@@ -540,6 +603,7 @@ func (s *SectionReader) ReadAt(p []byte, off int64) (n int, err error) {
 }
 
 // Size returns the size of the section in bytes.
+// Size 返回该部分的大小，单位为字节。
 func (s *SectionReader) Size() int64 { return s.limit - s.base }
 
 // TeeReader returns a Reader that writes to w what it reads from r.
@@ -547,6 +611,8 @@ func (s *SectionReader) Size() int64 { return s.limit - s.base }
 // corresponding writes to w. There is no internal buffering -
 // the write must complete before the read completes.
 // Any error encountered while writing is reported as a read error.
+// 所有通过它从r读取的数据都与写入w的数据相匹配，没有内部缓冲--写入必须在读取完成之前完成。
+// 写入时遇到的任何错误都被报告为读取错误。
 func TeeReader(r Reader, w Writer) Reader {
 	return &teeReader{r, w}
 }
@@ -568,12 +634,14 @@ func (t *teeReader) Read(p []byte) (n int, err error) {
 
 // Discard is a Writer on which all Write calls succeed
 // without doing anything.
+// Discard是一个Writer，在这个Writer上，所有的写入调用都会成功而不做任何事情。
 var Discard Writer = discard{}
 
 type discard struct{}
 
 // discard implements ReaderFrom as an optimization so Copy to
 // io.Discard can avoid doing unnecessary work.
+// 丢弃实现了ReaderFrom，作为一种优化，所以Copy to io.Discard可以避免做不必要的工作。
 var _ ReaderFrom = discard{}
 
 func (discard) Write(p []byte) (int, error) {
@@ -609,6 +677,7 @@ func (discard) ReadFrom(r Reader) (n int64, err error) {
 
 // NopCloser returns a ReadCloser with a no-op Close method wrapping
 // the provided Reader r.
+// NopCloser返回一个ReadCloser，它有一个无操作的Close方法来包装所提供的Reader r。
 func NopCloser(r Reader) ReadCloser {
 	return nopCloser{r}
 }
@@ -623,6 +692,8 @@ func (nopCloser) Close() error { return nil }
 // A successful call returns err == nil, not err == EOF. Because ReadAll is
 // defined to read from src until EOF, it does not treat an EOF from Read
 // as an error to be reported.
+// ReadAll从r读取数据，直到出现错误或EOF，并返回它所读取的数据。一个成功的调用返回err == nil，
+// 而不是err == EOF。因为ReadAll被定义为从src读到EOF为止，所以它不把Read的EOF当作一个需要报告的错误。
 func ReadAll(r Reader) ([]byte, error) {
 	b := make([]byte, 0, 512)
 	for {
