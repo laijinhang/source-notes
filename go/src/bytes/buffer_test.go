@@ -88,11 +88,17 @@ func fillBytes(t *testing.T, testname string, buf *Buffer, s string, n int, fub 
 	return s
 }
 
+/*
+	NewBuffer单元测试用例
+*/
 func TestNewBuffer(t *testing.T) {
 	buf := NewBuffer(testBytes)
 	check(t, "NewBuffer", buf, testString)
 }
 
+/*
+	TestNewBufferString单元测试用例
+*/
 func TestNewBufferString(t *testing.T) {
 	buf := NewBufferString(testString)
 	check(t, "NewBufferString", buf, testString)
@@ -118,6 +124,9 @@ func empty(t *testing.T, testname string, buf *Buffer, s string, fub []byte) {
 	check(t, testname+" (empty 4)", buf, "")
 }
 
+/*
+	TestBasicOperations单元测试用例：测试Buffer基本操作
+*/
 func TestBasicOperations(t *testing.T) {
 	var buf Buffer
 
