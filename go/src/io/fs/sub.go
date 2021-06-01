@@ -10,20 +10,26 @@ import (
 )
 
 // A SubFS is a file system with a Sub method.
+// SubFS是一个具有Sub方法的文件系统。
 type SubFS interface {
 	FS
 
 	// Sub returns an FS corresponding to the subtree rooted at dir.
+	// Sub返回一个对应于以dir为根的子树的FS。
 	Sub(dir string) (FS, error)
 }
 
 // Sub returns an FS corresponding to the subtree rooted at fsys's dir.
+// Sub返回一个FS，对应于以fsys的dir为根的子树。
 //
 // If fs implements SubFS, Sub calls returns fsys.Sub(dir).
 // Otherwise, if dir is ".", Sub returns fsys unchanged.
 // Otherwise, Sub returns a new FS implementation sub that,
 // in effect, implements sub.Open(dir) as fsys.Open(path.Join(dir, name)).
 // The implementation also translates calls to ReadDir, ReadFile, and Glob appropriately.
+// 如果fs实现了SubFS，Sub调用返回fsys.Sub(dir)。否则，如果dir是"."，Sub返回fsys而不改变。
+// 否则，Sub返回一个新的FS实现sub，实际上是将sub.Open(dir)实现为fsys.Open(path.Join(dir, name))。
+// 该实现还适当地翻译了对ReadDir、ReadFile和Glob的调用。
 //
 // Note that Sub(os.DirFS("/"), "prefix") is equivalent to os.DirFS("/prefix")
 // and that neither of them guarantees to avoid operating system
@@ -31,6 +37,10 @@ type SubFS interface {
 // does not check for symbolic links inside "/prefix" that point to
 // other directories. That is, os.DirFS is not a general substitute for a
 // chroot-style security mechanism, and Sub does not change that fact.
+// 注意 Sub(os.DirFS("/"), "prefix")等同于os.DirFS("/prefix")，
+// 它们都不能保证避免操作系统对"/prefix "之外的访问，因为os.DirFS的实现
+// 并不检查"/prefix "内指向其他目录的符号链接。也就是说，os.DirFS并不是
+// chroot式安全机制的一般替代品，Sub并不能改变这一事实。
 func Sub(fsys FS, dir string) (FS, error) {
 	if !ValidPath(dir) {
 		return nil, &PathError{Op: "sub", Path: dir, Err: errors.New("invalid name")}
