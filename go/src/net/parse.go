@@ -81,6 +81,7 @@ func stat(name string) (mtime time.Time, size int64, err error) {
 }
 
 // Count occurrences in s of any bytes in t.
+// 计算s中任何字节在t中出现的次数。
 func countAnyByte(s string, t string) int {
 	n := 0
 	for i := 0; i < len(s); i++ {
@@ -92,6 +93,7 @@ func countAnyByte(s string, t string) int {
 }
 
 // Split s at any bytes in t.
+// 在t的任何字节处分割s。
 func splitAtBytes(s string, t string) []string {
 	a := make([]string, 1+countAnyByte(s, t))
 	n := 0
@@ -119,6 +121,8 @@ const big = 0xFFFFFF
 
 // Decimal to integer.
 // Returns number, characters consumed, success.
+// 转为十进制整数。
+// 返回 数字、消耗的字符、是否成功。
 func dtoi(s string) (n int, i int, ok bool) {
 	n = 0
 	for i = 0; i < len(s) && '0' <= s[i] && s[i] <= '9'; i++ {
@@ -135,6 +139,8 @@ func dtoi(s string) (n int, i int, ok bool) {
 
 // Hexadecimal to integer.
 // Returns number, characters consumed, success.
+// 十六进制字符串转为整数。
+// 返回 数字、消耗的字符、是否成功。
 func xtoi(s string) (n int, i int, ok bool) {
 	n = 0
 	for i = 0; i < len(s); i++ {
@@ -173,6 +179,7 @@ func xtoi2(s string, e byte) (byte, bool) {
 }
 
 // Convert i to a hexadecimal string. Leading zeros are not printed.
+// 将i转换为十六进制的字符串。不打印前导零。
 func appendHex(dst []byte, i uint32) []byte {
 	if i == 0 {
 		return append(dst, '0')
@@ -187,6 +194,7 @@ func appendHex(dst []byte, i uint32) []byte {
 }
 
 // Number of occurrences of b in s.
+// b在s中出现的次数。
 func count(s string, b byte) int {
 	n := 0
 	for i := 0; i < len(s); i++ {
@@ -198,6 +206,7 @@ func count(s string, b byte) int {
 }
 
 // Index of rightmost occurrence of b in s.
+// s中b的最右边出现的索引。
 func last(s string, b byte) int {
 	i := len(s)
 	for i--; i >= 0; i-- {
@@ -334,6 +343,8 @@ func readFull(r io.Reader) (all []byte, err error) {
 
 // goDebugString returns the value of the named GODEBUG key.
 // GODEBUG is of the form "key=val,key2=val2"
+// goDebugString返回命名的GODEBUG键的值。
+// GODEBUG的形式是 "key=val,key2=val2"
 func goDebugString(key string) string {
 	s := os.Getenv("GODEBUG")
 	for i := 0; i < len(s)-len(key)-1; i++ {

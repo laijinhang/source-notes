@@ -12,43 +12,57 @@ import (
 )
 
 // defaultTCPKeepAlive is a default constant value for TCPKeepAlive times
+// defaultTCPKeepAlive是TCPKeepAlive时间的默认常数
 // See golang.org/issue/31510
 const (
+	// 默认保活15秒
 	defaultTCPKeepAlive = 15 * time.Second
 )
 
 // A Dialer contains options for connecting to an address.
+// 一个拨号器包含连接到地址的选项。
 //
 // The zero value for each field is equivalent to dialing
 // without that option. Dialing with the zero value of Dialer
 // is therefore equivalent to just calling the Dial function.
+// 每个字段的零值相当于没有该选项的拨号。因此，使用Dialer的零值进行拨号相当于只调用Dial函数。
 //
 // It is safe to call Dialer's methods concurrently.
+// 同时调用Dialer的方法是安全的。
 type Dialer struct {
 	// Timeout is the maximum amount of time a dial will wait for
 	// a connect to complete. If Deadline is also set, it may fail
 	// earlier.
+	// Timeout是拨号等待连接成功的最长时间。
+	// 如果设置了超时时间，则它可能会更早时间。
 	//
 	// The default is no timeout.
+	// 默认是没有设置超时时间
 	//
 	// When using TCP and dialing a host name with multiple IP
 	// addresses, the timeout may be divided between them.
+	// 使用TCP连接具有多个IP地址的主机名时，可能会在两个主机之间分配超时。
 	//
 	// With or without a timeout, the operating system may impose
 	// its own earlier timeout. For instance, TCP timeouts are
 	// often around 3 minutes.
+	// 如果没有设置，则会根据操作系统所设置的。 例如，TCP超时通常为3分钟左右。
 	Timeout time.Duration
 
 	// Deadline is the absolute point in time after which dials
 	// will fail. If Timeout is set, it may fail earlier.
 	// Zero means no deadline, or dependent on the operating system
 	// as with the Timeout option.
+	// 截至时间是连接失败的绝对时间点。如果设置了超时，它可能会更早失败。
+	// 零值表示没有截至时间，或者与“超时”选项一样依赖于操作系统。
 	Deadline time.Time
 
 	// LocalAddr is the local address to use when dialing an
 	// address. The address must be of a compatible type for the
 	// network being dialed.
 	// If nil, a local address is automatically chosen.
+	// LocalAddr是拨打地址时要使用的本地地址。
+	// 该地址必须是所拨打网络的兼容类型。 如果为零，将自动选择一个本地地址。
 	LocalAddr Addr
 
 	// DualStack previously enabled RFC 6555 Fast Fallback
@@ -58,6 +72,8 @@ type Dialer struct {
 	//
 	// Deprecated: Fast Fallback is enabled by default. To
 	// disable, set FallbackDelay to a negative value.
+	// 当网络类型是tcp并且一个主机名字具有多个dns记录地址时，
+	// DualStack允许一个dial创建多个ipv4和ipv6的连接，并且返回第一个创建的连接
 	DualStack bool
 
 	// FallbackDelay specifies the length of time to wait before
@@ -65,9 +81,12 @@ type Dialer struct {
 	// is the amount of time to wait for IPv6 to succeed before
 	// assuming that IPv6 is misconfigured and falling back to
 	// IPv4.
+	// FallbackDelay指定了在生成RFC 6555快速回退连接之前等待的时间长度。
+	// 也就是说，在假设IPv6配置错误并回退到IPv4之前，等待IPv6成功的时间长度。
 	//
 	// If zero, a default delay of 300ms is used.
 	// A negative value disables Fast Fallback support.
+	// 如果为零，则使用默认的300ms延迟。 如果是负值，则不支持快速回退。
 	FallbackDelay time.Duration
 
 	// KeepAlive specifies the interval between keep-alive
@@ -77,6 +96,8 @@ type Dialer struct {
 	// system. Network protocols or operating systems that do
 	// not support keep-alives ignore this field.
 	// If negative, keep-alive probes are disabled.
+	// KeepAlive指定一个网络连接的保持声明的时间段；如果为0，会禁止keep-alive。当网络协议不支持keep-alives时便会忽略掉这个值。
+	// 不支持keep-alive的网络连接会忽略本字段。
 	KeepAlive time.Duration
 
 	// Resolver optionally specifies an alternate resolver to use.
@@ -100,10 +121,13 @@ type Dialer struct {
 
 func (d *Dialer) dualStack() bool { return d.FallbackDelay >= 0 }
 
+// 获取a，b时间中不为零值（默认时间）比较小的那个
 func minNonzeroTime(a, b time.Time) time.Time {
+	// 如果a为零值（默认值），则返回b
 	if a.IsZero() {
 		return b
 	}
+	// 如果b为零值 或 b时间在a之后
 	if b.IsZero() || a.Before(b) {
 		return a
 	}
@@ -115,10 +139,18 @@ func minNonzeroTime(a, b time.Time) time.Time {
 //   - d.Deadline
 //   - the context's deadline
 // Or zero, if none of Timeout, Deadline, or context's deadline is set.
+
+// deadline 返回以下日期中最早的一个。
+// - now+Timeout
+// - d.截止日期
+// - 上下文的截止日期
+// 如果没有设置Timeout、Deadline或context的deadline，则为0。
 func (d *Dialer) deadline(ctx context.Context, now time.Time) (earliest time.Time) {
+	// 如果设置了超时时间
 	if d.Timeout != 0 { // including negative, for historical reasons
 		earliest = now.Add(d.Timeout)
 	}
+	// emptyCtx的Deadline()返回时间默认值和false
 	if d, ok := ctx.Deadline(); ok {
 		earliest = minNonzeroTime(earliest, d)
 	}
@@ -134,6 +166,7 @@ func (d *Dialer) resolver() *Resolver {
 
 // partialDeadline returns the deadline to use for a single address,
 // when multiple addresses are pending.
+// partialDeadline 返回用于单个地址的最后期限，当有多个地址待定时。
 func partialDeadline(now, deadline time.Time, addrsRemaining int) (time.Time, error) {
 	if deadline.IsZero() {
 		return deadline, nil
@@ -199,6 +232,7 @@ func parseNetwork(ctx context.Context, network string, needsProto bool) (afnet s
 // resolveAddrList resolves addr using hint and returns a list of
 // addresses. The result contains at least one address when error is
 // nil.
+// resolveAddrList使用提示解析addr并返回一个地址列表。当错误为nil时，结果至少包含一个地址
 func (r *Resolver) resolveAddrList(ctx context.Context, op, network, addr string, hint Addr) (addrList, error) {
 	afnet, _, err := parseNetwork(ctx, network, true)
 	if err != nil {
@@ -269,8 +303,13 @@ func (r *Resolver) resolveAddrList(ctx context.Context, op, network, addr string
 }
 
 // Dial connects to the address on the named network.
+// Dial 根据地址连接到指定网络。
 //
 // Known networks are "tcp", "tcp4" (IPv4-only), "tcp6" (IPv6-only),
+// "udp", "udp4" (IPv4-only), "udp6" (IPv6-only), "ip", "ip4"
+// (IPv4-only), "ip6" (IPv6-only), "unix", "unixgram" and
+// "unixpacket".
+// 已知网络是 "tcp", "tcp4" (IPv4-only), "tcp6" (IPv6-only),
 // "udp", "udp4" (IPv4-only), "udp6" (IPv6-only), "ip", "ip4"
 // (IPv4-only), "ip6" (IPv6-only), "unix", "unixgram" and
 // "unixpacket".
@@ -287,6 +326,9 @@ func (r *Resolver) resolveAddrList(ctx context.Context, op, network, addr string
 // host and port in this form.
 // When using TCP, and the host resolves to multiple IP addresses,
 // Dial will try each IP address in order until one succeeds.
+// 对于TCP和UDP网络, 该地址的网络格式是 "host:port".
+// 主机必须是原义IP地址，或者是可以解析为IP地址的主机名。
+// 该端口必须是端口号或服务名称.
 //
 // Examples:
 //	Dial("tcp", "golang.org:http")
@@ -312,8 +354,12 @@ func (r *Resolver) resolveAddrList(ctx context.Context, op, network, addr string
 // unspecified IP address, as in ":80", "0.0.0.0:80" or "[::]:80" for
 // TCP and UDP, "", "0.0.0.0" or "::" for IP, the local system is
 // assumed.
+// 对于TCP，UDP和IP网络，如果主机为空或
+// 未指定的IP地址，如“：80”，“ 0.0.0.0:80”或“ [::]：80”
+// 对于IP，TCP和UDP，“”，“ 0.0.0.0”或“ ::”（假定为本地系统）。
 //
 // For Unix networks, the address must be a file system path.
+// 对于Unix网络，该地址必须是文件系统路径。
 func Dial(network, address string) (Conn, error) {
 	var d Dialer
 	return d.Dial(network, address)
@@ -335,6 +381,7 @@ func DialTimeout(network, address string, timeout time.Duration) (Conn, error) {
 }
 
 // sysDialer contains a Dial's parameters and configuration.
+// sysDialer包含一个Dial的参数和配置。
 type sysDialer struct {
 	Dialer
 	network, address string
@@ -347,17 +394,21 @@ type sysDialer struct {
 //
 // Dial uses context.Background internally; to specify the context, use
 // DialContext.
+// 拨号连接到指定网络上的地址。
 func (d *Dialer) Dial(network, address string) (Conn, error) {
 	return d.DialContext(context.Background(), network, address)
 }
 
 // DialContext connects to the address on the named network using
 // the provided context.
+// DialContext使用提供的上下文连接到命名网络上的地址。
 //
 // The provided Context must be non-nil. If the context expires before
 // the connection is complete, an error is returned. Once successfully
 // connected, any expiration of the context will not affect the
 // connection.
+// 提供的Context必须为非null。如果上下文在连接完成之前过期，则返回错误。
+// 一旦成功连接，上下文的任何到期都不会影响连接。
 //
 // When using TCP, and the host in the address parameter resolves to multiple
 // network addresses, any dial timeout (from d.Timeout or ctx) is spread
@@ -366,6 +417,12 @@ func (d *Dialer) Dial(network, address string) (Conn, error) {
 // For example, if a host has 4 IP addresses and the timeout is 1 minute,
 // the connect to each single address will be given 15 seconds to complete
 // before trying the next one.
+// 使用TCP时，地址参数中的主机解析为多个
+// 网络地址，任何拨号超时（来自d.Timeout或ctx）都会传播
+// 在每个连续的拨盘上，以便为每个拨盘提供适当的
+// 连接时间的一小部分。
+// 例如，如果主机有4个IP地址，并且超时为1分钟，
+// 与每个地址的连接将在15秒内完成在尝试下一个之前。
 //
 // See func Dial for a description of the network and address
 // parameters.
@@ -373,8 +430,10 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 	if ctx == nil {
 		panic("nil context")
 	}
+	// 获取超时时间，如果ctx是context.Background()，则超时时间是d.Deadline，也就是零值（默认值）
 	deadline := d.deadline(ctx, time.Now())
 	if !deadline.IsZero() {
+		// 如果ctx没有设置超时时间，或者ctx里面的超时时间大于deadline，则重新设置为比较小的
 		if d, ok := ctx.Deadline(); !ok || deadline.Before(d) {
 			subCtx, cancel := context.WithDeadline(ctx, deadline)
 			defer cancel()
@@ -403,6 +462,7 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 		resolveCtx = context.WithValue(resolveCtx, nettrace.TraceKey{}, &shadow)
 	}
 
+	// 这一步如果能成功连接到所指定的网络，则可以拿到域名对应的ip地址
 	addrs, err := d.resolver().resolveAddrList(resolveCtx, "dial", network, address, d.LocalAddr)
 	if err != nil {
 		return nil, &OpError{Op: "dial", Net: network, Source: nil, Addr: nil, Err: err}
@@ -432,8 +492,10 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 	}
 
 	if tc, ok := c.(*TCPConn); ok && d.KeepAlive >= 0 {
+		// 设置保活时间
 		setKeepAlive(tc.fd, true)
 		ka := d.KeepAlive
+		// 如果d,KeepAlive设置的保活时间为0，则使用默认的15秒
 		if d.KeepAlive == 0 {
 			ka = defaultTCPKeepAlive
 		}
@@ -521,11 +583,13 @@ func (sd *sysDialer) dialParallel(ctx context.Context, primaries, fallbacks addr
 
 // dialSerial connects to a list of addresses in sequence, returning
 // either the first successful connection, or the first error.
+// dialSerial按顺序连接到一个地址列表，返回第一个成功连接，或者第一个错误。
 func (sd *sysDialer) dialSerial(ctx context.Context, ras addrList) (Conn, error) {
-	var firstErr error // The error from the first address is most relevant.
+	var firstErr error // The error from the first address is most relevant.	// 第一个地址的错误是最相关的.
 
 	for i, ra := range ras {
 		select {
+		// 超时退出
 		case <-ctx.Done():
 			return nil, &OpError{Op: "dial", Net: sd.network, Source: sd.LocalAddr, Addr: ra, Err: mapErr(ctx.Err())}
 		default:
@@ -533,6 +597,7 @@ func (sd *sysDialer) dialSerial(ctx context.Context, ras addrList) (Conn, error)
 
 		dialCtx := ctx
 		if deadline, hasDeadline := ctx.Deadline(); hasDeadline {
+			// 超时
 			partialDeadline, err := partialDeadline(time.Now(), deadline, len(ras)-i)
 			if err != nil {
 				// Ran out of time.
@@ -565,6 +630,7 @@ func (sd *sysDialer) dialSerial(ctx context.Context, ras addrList) (Conn, error)
 
 // dialSingle attempts to establish and returns a single connection to
 // the destination address.
+// dialSingle尝试建立并返回一个连接到目的地址。
 func (sd *sysDialer) dialSingle(ctx context.Context, ra Addr) (c Conn, err error) {
 	trace, _ := ctx.Value(nettrace.TraceKey{}).(*nettrace.Trace)
 	if trace != nil {
@@ -600,13 +666,17 @@ func (sd *sysDialer) dialSingle(ctx context.Context, ra Addr) (c Conn, err error
 }
 
 // ListenConfig contains options for listening to an address.
+// ListenConfig包含收听地址的选项。
 type ListenConfig struct {
 	// If Control is not nil, it is called after creating the network
 	// connection but before binding it to the operating system.
+	// 如果Control不是nil，则在创建网络连接后，但在将其绑定到操作系统之前调用它。
 	//
 	// Network and address parameters passed to Control method are not
 	// necessarily the ones passed to Listen. For example, passing "tcp" to
 	// Listen will cause the Control function to be called with "tcp4" or "tcp6".
+	// 传递给Control方法的网络和地址参数不一定是传递给Listen的。例如，
+	// 向Listen传递 "tcp "会导致Control函数被调用 "tcp4 "或 "tcp6"。
 	Control func(network, address string, c syscall.RawConn) error
 
 	// KeepAlive specifies the keep-alive period for network
@@ -615,14 +685,20 @@ type ListenConfig struct {
 	// and operating system. Network protocols or operating systems
 	// that do not support keep-alives ignore this field.
 	// If negative, keep-alives are disabled.
+	// KeepAlive 指定了此侦听器所接受的网络连接的保留期。
+	// 如果为零，则如果得到协议和操作系统的支持，则启用保持保活。不支持保活的网络协议或操作系统忽略此字段。
+	// 如果为负数，则禁用保活机制。
 	KeepAlive time.Duration
 }
 
 // Listen announces on the local network address.
+// 听取本地网络地址的广播。
 //
 // See func Listen for a description of the network and address
 // parameters.
+// 关于网络和地址参数的描述，请参见 func Listen。
 func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Listener, error) {
+	// 根据协议名称和地址取得Internet协议族地址列表
 	addrs, err := DefaultResolver.resolveAddrList(ctx, "listen", network, address, nil)
 	if err != nil {
 		return nil, &OpError{Op: "listen", Net: network, Source: nil, Addr: nil, Err: err}
@@ -649,9 +725,11 @@ func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Li
 }
 
 // ListenPacket announces on the local network address.
+// ListenPacket在本地网络地址上宣布。
 //
 // See func ListenPacket for a description of the network and address
 // parameters.
+// 关于网络和地址参数的描述，请参见 func ListenPacket。
 func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address string) (PacketConn, error) {
 	addrs, err := DefaultResolver.resolveAddrList(ctx, "listen", network, address, nil)
 	if err != nil {
@@ -681,6 +759,7 @@ func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address strin
 }
 
 // sysListener contains a Listen's parameters and configuration.
+// sysListener包含一个Listen的参数和配置。
 type sysListener struct {
 	ListenConfig
 	network, address string

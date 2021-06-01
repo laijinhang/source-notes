@@ -12,15 +12,17 @@ import (
 )
 
 // provided by runtime
+// runtime提供
 func fastrand() uint32
 
 func randInt() int {
-	x, y := fastrand(), fastrand()    // 32-bit halves
-	u := uint(x)<<31 ^ uint(int32(y)) // full uint, even on 64-bit systems; avoid 32-bit shift on 32-bit systems
-	i := int(u >> 1)                  // clear sign bit, even on 32-bit systems
+	x, y := fastrand(), fastrand()    // 32-bit halves	// 32位的一半
+	u := uint(x)<<31 ^ uint(int32(y)) // full uint, even on 64-bit systems; avoid 32-bit shift on 32-bit systems	// full uint，即使在64位系统中也是如此；在32位系统中避免32位移位。
+	i := int(u >> 1)                  // clear sign bit, even on 32-bit systems										// 清除的符号位，即使在32位系统上
 	return i
 }
 
+// [0,n) 的随机数
 func randIntn(n int) int {
 	return randInt() % n
 }
@@ -28,6 +30,8 @@ func randIntn(n int) int {
 // reverseaddr returns the in-addr.arpa. or ip6.arpa. hostname of the IP
 // address addr suitable for rDNS (PTR) record lookup or an error if it fails
 // to parse the IP address.
+// reverseaddr返回适合rDNS（PTR）记录查找的IP地址addr的in-addr.arpa.或
+// ip6.arpa.hostname，如果不能解析IP地址，则返回错误
 func reverseaddr(addr string) (arpa string, err error) {
 	ip := ParseIP(addr)
 	if ip == nil {

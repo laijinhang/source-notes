@@ -155,16 +155,20 @@ func ipv6only(addr IPAddr) bool {
 // SplitHostPort splits a network address of the form "host:port",
 // "host%zone:port", "[host]:port" or "[host%zone]:port" into host or
 // host%zone and port.
+// SplitHostPort将 "host:port"、"host%zone:port"、"[host]:port"或
+// "[host%zone]:port"形式的网络地址分割为host或host%zone和port。
 //
 // A literal IPv6 address in hostport must be enclosed in square
 // brackets, as in "[::1]:80", "[::1%lo0]:80".
+// hostport中的字面IPv6地址必须用方括号括起来，如"[::1]:80"、"[:1%lo0]:80"。
 //
 // See func Dial for a description of the hostport parameter, and host
 // and port results.
+// 参见func Dial，了解参数hostport的描述，以及主机和端口的结果。
 func SplitHostPort(hostport string) (host, port string, err error) {
 	const (
-		missingPort   = "missing port in address"
-		tooManyColons = "too many colons in address"
+		missingPort   = "missing port in address"    // 地址没有带端口
+		tooManyColons = "too many colons in address" // 地址中的冒号太多
 	)
 	addrErr := func(addr, why string) (host, port string, err error) {
 		return "", "", &AddrError{Err: why, Addr: addr}
@@ -172,6 +176,7 @@ func SplitHostPort(hostport string) (host, port string, err error) {
 	j, k := 0, 0
 
 	// The port starts after the last colon.
+	// 端口在最后一个冒号之后开始。
 	i := last(hostport, ':')
 	if i < 0 {
 		return addrErr(hostport, missingPort)
@@ -179,6 +184,7 @@ func SplitHostPort(hostport string) (host, port string, err error) {
 
 	if hostport[0] == '[' {
 		// Expect the first ']' just before the last ':'.
+		// 期待在最后一个':'之前出现第一个']'。
 		end := bytealg.IndexByteString(hostport, ']')
 		if end < 0 {
 			return addrErr(hostport, "missing ']' in address")
@@ -186,19 +192,22 @@ func SplitHostPort(hostport string) (host, port string, err error) {
 		switch end + 1 {
 		case len(hostport):
 			// There can't be a ':' behind the ']' now.
+			//现在']'后面不能有':'。
 			return addrErr(hostport, missingPort)
 		case i:
 			// The expected result.
+			// 预期的结果。
 		default:
 			// Either ']' isn't followed by a colon, or it is
 			// followed by a colon that is not the last one.
+			// 要么']'后面没有冒号，要么后面的冒号不是最后一个。
 			if hostport[end+1] == ':' {
 				return addrErr(hostport, tooManyColons)
 			}
 			return addrErr(hostport, missingPort)
 		}
 		host = hostport[1:end]
-		j, k = 1, end+1 // there can't be a '[' resp. ']' before these positions
+		j, k = 1, end+1 // there can't be a '[' resp. ']' before these positions	// 在这些位置之前不能有'['或']'。
 	} else {
 		host = hostport[:i]
 		if bytealg.IndexByteString(host, ':') >= 0 {
@@ -219,6 +228,7 @@ func SplitHostPort(hostport string) (host, port string, err error) {
 func splitHostZone(s string) (host, zone string) {
 	// The IPv6 scoped addressing zone identifier starts after the
 	// last percent sign.
+	// IPv6范围内的寻址区标识符从最后一个百分号之后开始。
 	if i := last(s, '%'); i > 0 {
 		host, zone = s[:i], s[i+1:]
 	} else {
@@ -230,11 +240,15 @@ func splitHostZone(s string) (host, zone string) {
 // JoinHostPort combines host and port into a network address of the
 // form "host:port". If host contains a colon, as found in literal
 // IPv6 addresses, then JoinHostPort returns "[host]:port".
+// JoinHostPort将主机和端口合并成一个 "host:port "形式的网络地址。如果 host 包含一个冒号，
+// 就像在 IPv6 地址中发现的那样，那么 JoinHostPort 返回 "[host]:port"。
 //
 // See func Dial for a description of the host and port parameters.
+// 参见 func Dial 对 host 和 port 参数的描述。
 func JoinHostPort(host, port string) string {
 	// We assume that host is a literal IPv6 address if host has
 	// colons.
+	// 如果host有冒号，我们假定host是一个字面的IPv6地址。
 	if bytealg.IndexByteString(host, ':') >= 0 {
 		return "[" + host + "]:" + port
 	}
@@ -245,6 +259,8 @@ func JoinHostPort(host, port string) string {
 // address or a DNS name, and returns a list of internet protocol
 // family addresses. The result contains at least one address when
 // error is nil.
+// internetAddrList解析addr，它可能是一个字面的IP地址或一个DNS名称，并返回一个
+// 互联网协议族地址的列表。当错误为nil时，结果至少包含一个地址。
 func (r *Resolver) internetAddrList(ctx context.Context, net, addr string) (addrList, error) {
 	var (
 		err        error
@@ -285,6 +301,7 @@ func (r *Resolver) internetAddrList(ctx context.Context, net, addr string) (addr
 	}
 
 	// Try as a literal IP address, then as a DNS name.
+	// 先试着用一个字面的IP地址，然后用一个DNS名称。
 	ips, err := r.lookupIPAddr(ctx, net, host)
 	if err != nil {
 		return nil, err
@@ -293,6 +310,8 @@ func (r *Resolver) internetAddrList(ctx context.Context, net, addr string) (addr
 	// IPv6 such that it can bind on "::" (IPv6unspecified)
 	// but not connect back to that same address, fall
 	// back to dialing 0.0.0.0.
+	// 问题18806：如果机器半路配置了IPv6，它可以在"::"（IPv6unspecified）上绑定，
+	// 但不能回连到同一地址，则回拨到0.0.0.0。
 	if len(ips) == 1 && ips[0].IP.Equal(IPv6unspecified) {
 		ips = append(ips, IPAddr{IP: IPv4zero})
 	}

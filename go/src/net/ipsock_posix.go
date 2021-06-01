@@ -72,12 +72,13 @@ func (p *ipStackCapabilities) probe() {
 
 // favoriteAddrFamily returns the appropriate address family for the
 // given network, laddr, raddr and mode.
+// favoriteAddrFamily 返回给定网络、laddr、raddr 和 mode 的适当地址族。
 //
 // If mode indicates "listen" and laddr is a wildcard, we assume that
 // the user wants to make a passive-open connection with a wildcard
 // address family, both AF_INET and AF_INET6, and a wildcard address
 // like the following:
-//
+// 如果mode表示 "listen"，laddr是通配符，我们假设用户要用通配符地址族（包括AF_INET和AF_INET6）进行被动开放连接，通配符地址如下。
 //	- A listen for a wildcard communication domain, "tcp" or
 //	  "udp", with a wildcard address: If the platform supports
 //	  both IPv6 and IPv4-mapped IPv6 communication capabilities,
@@ -87,28 +88,35 @@ func (p *ipStackCapabilities) probe() {
 //	  AF_INET6 and IPV6_V6ONLY=1, wildcard address listen.
 //	  Otherwise we prefer an IPv4-only, AF_INET, wildcard address
 //	  listen.
+// - 通配符通信域的监听，"tcp "或 "udp"，通配符地址。如果平台同时支持IPv6和IPv4映射的IPv6通信能力，或者不支持IPv4，我们使用双栈，AF_INET6和IPV6_V6ONLY=0，通配符地址侦听。双栈通配符地址监听可能会回落到IPv6-only，AF_INET6和IPV6_V6ONLY=1，通配符地址监听。否则，我们更倾向于只使用IPv4，AF_INET，通配符地址监听。
 //
 //	- A listen for a wildcard communication domain, "tcp" or
 //	  "udp", with an IPv4 wildcard address: same as above.
+// - 通配符通信域的监听，"tcp "或 "udp"，IPv4通配符地址：同上。
 //
 //	- A listen for a wildcard communication domain, "tcp" or
 //	  "udp", with an IPv6 wildcard address: same as above.
+// - 通配符通信域的监听，"tcp "或 "udp"，IPv6通配符地址：同上。
 //
 //	- A listen for an IPv4 communication domain, "tcp4" or "udp4",
 //	  with an IPv4 wildcard address: We use an IPv4-only, AF_INET,
 //	  wildcard address listen.
+// - 一个IPv4通信域的监听，"tcp4 "或 "udp4"，有一个IPv4通配符地址。我们使用的是IPv4-only, AF_INET, 通配符地址监听。
 //
 //	- A listen for an IPv6 communication domain, "tcp6" or "udp6",
 //	  with an IPv6 wildcard address: We use an IPv6-only, AF_INET6
 //	  and IPV6_V6ONLY=1, wildcard address listen.
+// - IPv6通信域的监听，"tcp6 "或 "udp6"，带有IPv6通配符地址。我们使用IPv6-only，AF_INET6和IPV6_V6ONLY=1，通配符地址监听。
 //
 // Otherwise guess: If the addresses are IPv4 then returns AF_INET,
 // or else returns AF_INET6. It also returns a boolean value what
 // designates IPV6_V6ONLY option.
+// 否则猜测：如果地址是IPv4，则返回AF_INET，否则返回AF_INET6。它还返回一个布尔值，表示IPV6_V6ONLY选项。
 //
 // Note that the latest DragonFly BSD and OpenBSD kernels allow
 // neither "net.inet6.ip6.v6only=1" change nor IPPROTO_IPV6 level
 // IPV6_V6ONLY socket option setting.
+// 注意，最新的DragonFly BSD和OpenBSD内核既不允许修改 "net.inet6.ip6.v6only=1"，也不允许设置IPPROTO_IPV6级别的IPV6_V6ONLY socket选项。
 func favoriteAddrFamily(network string, laddr, raddr sockaddr, mode string) (family int, ipv6only bool) {
 	switch network[len(network)-1] {
 	case '4':

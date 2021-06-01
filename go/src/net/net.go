@@ -108,27 +108,37 @@ type Addr interface {
 }
 
 // Conn is a generic stream-oriented network connection.
+// Conn是一个面向流的通用网络连接。
 //
 // Multiple goroutines may invoke methods on a Conn simultaneously.
+// 多个goroutines可以同时调用Conn上的方法。
 type Conn interface {
 	// Read reads data from the connection.
 	// Read can be made to time out and return an error after a fixed
 	// time limit; see SetDeadline and SetReadDeadline.
+	// Read从连接中读取数据。读取可以使其超时，并在固定的时间限制后返回一个错误；
+	// 参见SetDeadline和SetReadDeadline。
 	Read(b []byte) (n int, err error)
 
 	// Write writes data to the connection.
 	// Write can be made to time out and return an error after a fixed
 	// time limit; see SetDeadline and SetWriteDeadline.
+	// Write将数据写入连接。写入可以在固定的时间限制后超时并返回一个错误；
+	// 参见SetDeadline和SetWriteDeadline。
 	Write(b []byte) (n int, err error)
 
 	// Close closes the connection.
 	// Any blocked Read or Write operations will be unblocked and return errors.
+	// Close 关闭连接。
+	// 任何被阻止的读或写操作都将被解除阻止并返回错误。
 	Close() error
 
 	// LocalAddr returns the local network address.
+	// LocalAddr 返回本地网络地址。
 	LocalAddr() Addr
 
 	// RemoteAddr returns the remote network address.
+	// RemoteAddr 返回远程网络地址。
 	RemoteAddr() Addr
 
 	// SetDeadline sets the read and write deadlines associated
@@ -152,11 +162,13 @@ type Conn interface {
 	// the deadline after successful Read or Write calls.
 	//
 	// A zero value for t means I/O operations will not time out.
+	/* 设置超时时间 */
 	SetDeadline(t time.Time) error
 
 	// SetReadDeadline sets the deadline for future Read calls
 	// and any currently-blocked Read call.
 	// A zero value for t means Read will not time out.
+	/* 设置读超时时间 */
 	SetReadDeadline(t time.Time) error
 
 	// SetWriteDeadline sets the deadline for future Write calls
@@ -164,6 +176,7 @@ type Conn interface {
 	// Even if write times out, it may return n > 0, indicating that
 	// some of the data was successfully written.
 	// A zero value for t means Write will not time out.
+	/* 设置写超时时间 */
 	SetWriteDeadline(t time.Time) error
 }
 
@@ -174,8 +187,10 @@ type conn struct {
 func (c *conn) ok() bool { return c != nil && c.fd != nil }
 
 // Implementation of the Conn interface.
+// Conn接口的实现。
 
 // Read implements the Conn Read method.
+// Read实现Conn Read方法。
 func (c *conn) Read(b []byte) (int, error) {
 	if !c.ok() {
 		return 0, syscall.EINVAL
@@ -188,6 +203,7 @@ func (c *conn) Read(b []byte) (int, error) {
 }
 
 // Write implements the Conn Write method.
+// Write实现Conn Write方法。
 func (c *conn) Write(b []byte) (int, error) {
 	if !c.ok() {
 		return 0, syscall.EINVAL
@@ -200,6 +216,7 @@ func (c *conn) Write(b []byte) (int, error) {
 }
 
 // Close closes the connection.
+// Close 关闭连接。
 func (c *conn) Close() error {
 	if !c.ok() {
 		return syscall.EINVAL
@@ -214,6 +231,8 @@ func (c *conn) Close() error {
 // LocalAddr returns the local network address.
 // The Addr returned is shared by all invocations of LocalAddr, so
 // do not modify it.
+// LocalAddr 返回本地网络地址。
+// 返回的Addr是所有调用LocalAddr的次数所共享的，所以不要修改它。
 func (c *conn) LocalAddr() Addr {
 	if !c.ok() {
 		return nil
@@ -224,6 +243,7 @@ func (c *conn) LocalAddr() Addr {
 // RemoteAddr returns the remote network address.
 // The Addr returned is shared by all invocations of RemoteAddr, so
 // do not modify it.
+// RemoteAddr 返回远程网络地址。返回的Addr是所有调用RemoteAddr的次数所共享的，所以不要修改它。
 func (c *conn) RemoteAddr() Addr {
 	if !c.ok() {
 		return nil
@@ -232,6 +252,7 @@ func (c *conn) RemoteAddr() Addr {
 }
 
 // SetDeadline implements the Conn SetDeadline method.
+// SetDeadline实现Conn SetDeadline方法。
 func (c *conn) SetDeadline(t time.Time) error {
 	if !c.ok() {
 		return syscall.EINVAL
@@ -243,6 +264,7 @@ func (c *conn) SetDeadline(t time.Time) error {
 }
 
 // SetReadDeadline implements the Conn SetReadDeadline method.
+// SetReadDeadline实现Conn SetReadDeadline方法。
 func (c *conn) SetReadDeadline(t time.Time) error {
 	if !c.ok() {
 		return syscall.EINVAL
@@ -254,6 +276,7 @@ func (c *conn) SetReadDeadline(t time.Time) error {
 }
 
 // SetWriteDeadline implements the Conn SetWriteDeadline method.
+// SetWriteDeadline实现Conn SetWriteDeadline方法。
 func (c *conn) SetWriteDeadline(t time.Time) error {
 	if !c.ok() {
 		return syscall.EINVAL
@@ -266,6 +289,7 @@ func (c *conn) SetWriteDeadline(t time.Time) error {
 
 // SetReadBuffer sets the size of the operating system's
 // receive buffer associated with the connection.
+// SetReadBuffer设置操作系统与连接相关的接收缓冲区的大小。
 func (c *conn) SetReadBuffer(bytes int) error {
 	if !c.ok() {
 		return syscall.EINVAL
@@ -278,6 +302,7 @@ func (c *conn) SetReadBuffer(bytes int) error {
 
 // SetWriteBuffer sets the size of the operating system's
 // transmit buffer associated with the connection.
+// SetWriteBuffer设置操作系统与连接相关的传输缓冲区的大小。
 func (c *conn) SetWriteBuffer(bytes int) error {
 	if !c.ok() {
 		return syscall.EINVAL
@@ -291,10 +316,15 @@ func (c *conn) SetWriteBuffer(bytes int) error {
 // File returns a copy of the underlying os.File.
 // It is the caller's responsibility to close f when finished.
 // Closing c does not affect f, and closing f does not affect c.
+// File返回底层os.File的副本。
+// 完成后关闭f是调用者的责任。
+// 关闭c不会影响f，关闭f也不会影响c。
 //
 // The returned os.File's file descriptor is different from the connection's.
 // Attempting to change properties of the original using this duplicate
 // may or may not have the desired effect.
+// 返回的os.File的文件描述符与连接的不同。
+// 试图使用这个副本来改变原文件的属性，可能会或可能不会达到预期的效果。
 func (c *conn) File() (f *os.File, err error) {
 	f, err = c.fd.dup()
 	if err != nil {
@@ -304,8 +334,10 @@ func (c *conn) File() (f *os.File, err error) {
 }
 
 // PacketConn is a generic packet-oriented network connection.
+// PacketConn是一个面向数据包的通用网络连接。
 //
 // Multiple goroutines may invoke methods on a PacketConn simultaneously.
+// 多个goroutines可以同时调用PacketConn上的方法。
 type PacketConn interface {
 	// ReadFrom reads a packet from the connection,
 	// copying the payload into p. It returns the number of
@@ -373,23 +405,30 @@ var listenerBacklogCache struct {
 }
 
 // listenerBacklog is a caching wrapper around maxListenerBacklog.
+// listenerBacklog是一个围绕maxListenerBacklog的缓存包装器。
 func listenerBacklog() int {
 	listenerBacklogCache.Do(func() { listenerBacklogCache.val = maxListenerBacklog() })
 	return listenerBacklogCache.val
 }
 
 // A Listener is a generic network listener for stream-oriented protocols.
+// 监听器是面向流协议的通用网络监听器。
 //
 // Multiple goroutines may invoke methods on a Listener simultaneously.
+// 多个goroutines可以同时调用一个Listener的方法。
 type Listener interface {
 	// Accept waits for and returns the next connection to the listener.
+	// Accept 等待并返回下一个连接给监听器。
 	Accept() (Conn, error)
 
 	// Close closes the listener.
 	// Any blocked Accept operations will be unblocked and return errors.
+	// Close 关闭监听器。
+	// 任何被阻止的Accept操作都将被解除阻止并返回错误。
 	Close() error
 
 	// Addr returns the listener's network address.
+	// Addr 返回监听者的网络地址。
 	Addr() Addr
 }
 
@@ -668,6 +707,12 @@ var threadLimit chan struct{}
 
 var threadOnce sync.Once
 
+// 获取线程
+/*
+	通过acquireThread、releaseThread来限制最大线程数
+	acquireThread在第一次调用的时候，生成一个指定大小的有缓冲通道来限制最大线程数，然后能够使用的线程数减1
+	releaseThread释放线程，也就是在使用完之后，回收限制数
+*/
 func acquireThread() {
 	threadOnce.Do(func() {
 		threadLimit = make(chan struct{}, concurrentThreadsLimit())

@@ -15,15 +15,18 @@ import (
 
 // BUG(mikio): On JS and Windows, the File method of TCPConn and
 // TCPListener is not implemented.
+// BUG（mikio）：在JS和Windows上，未实现TCPConn和TCPListener的File方法。
 
 // TCPAddr represents the address of a TCP end point.
+// TCPAddr表示TCP的地址。
 type TCPAddr struct {
 	IP   IP
 	Port int
-	Zone string // IPv6 scoped addressing zone
+	Zone string // IPv6 scoped addressing zone	// IPv6范围寻址区域
 }
 
 // Network returns the address's network name, "tcp".
+// 网络返回地址的网络名称 "tcp"
 func (a *TCPAddr) Network() string { return "tcp" }
 
 func (a *TCPAddr) String() string {
@@ -83,6 +86,7 @@ func ResolveTCPAddr(network, address string) (*TCPAddr, error) {
 
 // TCPConn is an implementation of the Conn interface for TCP network
 // connections.
+// TCPConn是用于TCP网络连接的Conn接口的实现。
 type TCPConn struct {
 	conn
 }
@@ -156,7 +160,9 @@ func (c *TCPConn) SetLinger(sec int) error {
 
 // SetKeepAlive sets whether the operating system should send
 // keep-alive messages on the connection.
+// SetKeepAlive设置操作系统是否应在连接上发送保持活动消息。
 func (c *TCPConn) SetKeepAlive(keepalive bool) error {
+	// 如果c == nil 或 c.fd == nil，返回无效
 	if !c.ok() {
 		return syscall.EINVAL
 	}
@@ -193,18 +199,24 @@ func (c *TCPConn) SetNoDelay(noDelay bool) error {
 
 func newTCPConn(fd *netFD) *TCPConn {
 	c := &TCPConn{conn{fd}}
+	// 禁用Nagle算法
 	setNoDelay(c.fd, true)
 	return c
 }
 
 // DialTCP acts like Dial for TCP networks.
+// DialTCP的作用类似于TCP网络的Dial。
 //
 // The network must be a TCP network name; see func Dial for details.
+// 该网络必须是TCP网络名称。 有关详细信息，请参见func Dial。
 //
 // If laddr is nil, a local address is automatically chosen.
 // If the IP field of raddr is nil or an unspecified IP address, the
 // local system is assumed.
+// 如果laddr为nil，则会自动选择一个本地地址。
+// 如果raddr的IP字段为nil或未指定IP地址，则使用本地系统。
 func DialTCP(network string, laddr, raddr *TCPAddr) (*TCPConn, error) {
+	// network必须为 tcp、tcp4、tcp6中的一种，不然会返回未知网络的错误
 	switch network {
 	case "tcp", "tcp4", "tcp6":
 	default:
@@ -255,6 +267,7 @@ func (l *TCPListener) AcceptTCP() (*TCPConn, error) {
 
 // Accept implements the Accept method in the Listener interface; it
 // waits for the next call and returns a generic Conn.
+// Accept实现了Listener接口中的Accept方法；它等待下一次调用并返回一个通用的Conn。
 func (l *TCPListener) Accept() (Conn, error) {
 	if !l.ok() {
 		return nil, syscall.EINVAL

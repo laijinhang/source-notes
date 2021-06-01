@@ -12,6 +12,7 @@ import (
 	"unsafe"
 )
 
+// 网络文件描述符
 func setKeepAlivePeriod(fd *netFD, d time.Duration) error {
 	// The kernel expects milliseconds so round to next highest
 	// millisecond.
