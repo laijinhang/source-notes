@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Package cookiejar implements an in-memory RFC 6265-compliant http.CookieJar.
+// cookiejar包实现了一个与文档rfc6265兼容的http.CookieJar.
 package cookiejar
 
 import (
@@ -32,8 +33,19 @@ import (
 //
 // A public suffix list implementation is in the package
 // golang.org/x/net/publicsuffix.
+
+// PublicSuffixList提供域的公共后缀。例如：
+//		- “example.com”的公共后缀是“com”，
+//	 	-“foo1.foo2.foo3.co.uk”的公共后缀是“co.uk”，以及
+//	 	-“bar.pvt.k12.ma.us”的公共后缀是“pvt.k12.ma.us”。
+//
+// PublicSuffixList的实现对于多个Goroutine的并发使用必须是安全的。
+// 总是返回“”的实现是有效的，可能对测试有用，但不安全：
+// 这意味着foo.com的HTTP服务器可以为bar.com设置cookie。
+// 公共后缀列表实现位于包golang.org/x/net/public suffix中。
 type PublicSuffixList interface {
 	// PublicSuffix returns the public suffix of domain.
+	// PublicSuffix返回domain的公共后缀。
 	//
 	// TODO: specify which of the caller and callee is responsible for IP
 	// addresses, for leading and trailing dots, for case sensitivity, and
@@ -47,6 +59,7 @@ type PublicSuffixList interface {
 }
 
 // Options are the options for creating a new Jar.
+// Options是用于创建新Jar的选项。
 type Options struct {
 	// PublicSuffixList is the public suffix list that determines whether
 	// an HTTP server can set a cookie for a domain.
@@ -54,27 +67,35 @@ type Options struct {
 	// A nil value is valid and may be useful for testing but it is not
 	// secure: it means that the HTTP server for foo.co.uk can set a cookie
 	// for bar.co.uk.
+	// PublicSuffixList是公共后缀列表，用于确定HTTP服务器是否可以为域设置
+	// Cookie。nil值是有效的，可能对测试有用，但不安全：这意味着foo.co.uk
+	// 的HTTP服务器可以为bar.co.uk设置cookie。
 	PublicSuffixList PublicSuffixList
 }
 
 // Jar implements the http.CookieJar interface from the net/http package.
+// Jar实现net/http包的http.CookieJar接口。
 type Jar struct {
 	psList PublicSuffixList
 
 	// mu locks the remaining fields.
+	// mu锁定其余字段。
 	mu sync.Mutex
 
 	// entries is a set of entries, keyed by their eTLD+1 and subkeyed by
 	// their name/domain/path.
+	// entries是一组条目，由它们的eTLD+1来标识，由它们的名称/域/路径来子标识
 	entries map[string]map[string]entry
 
 	// nextSeqNum is the next sequence number assigned to a new cookie
 	// created SetCookies.
+	// nextSeqNum是分配给新cookie的下一个序列号。
 	nextSeqNum uint64
 }
 
 // New returns a new cookie jar. A nil *Options is equivalent to a zero
 // Options.
+// New返回一个新的cookie jar。nil*选项等同于零选项.
 func New(o *Options) (*Jar, error) {
 	jar := &Jar{
 		entries: make(map[string]map[string]entry),
@@ -89,6 +110,7 @@ func New(o *Options) (*Jar, error) {
 //
 // This struct type is not used outside of this package per se, but the exported
 // fields are those of RFC 6265.
+// 条目是Cookie的内部表示形式。此结构类型本身不在此包的外部使用，但导出的字段是RFC 6265的字段。
 type entry struct {
 	Name       string
 	Value      string
@@ -150,13 +172,16 @@ func hasDotSuffix(s, suffix string) bool {
 }
 
 // Cookies implements the Cookies method of the http.CookieJar interface.
+// Cookies实现了http的Cookies方法。
 //
 // It returns an empty slice if the URL's scheme is not HTTP or HTTPS.
+// CookieJar接口。如果网址的scheme不是超文本传输协议或HTTPS，它将返回一个空切片。
 func (j *Jar) Cookies(u *url.URL) (cookies []*http.Cookie) {
 	return j.cookies(u, time.Now())
 }
 
 // cookies is like Cookies but takes the current time as a parameter.
+// Cookie类似于Cookie，但将当前时间作为参数。
 func (j *Jar) cookies(u *url.URL, now time.Time) (cookies []*http.Cookie) {
 	if u.Scheme != "http" && u.Scheme != "https" {
 		return cookies
@@ -295,6 +320,7 @@ func (j *Jar) setCookies(u *url.URL, cookies []*http.Cookie, now time.Time) {
 
 // canonicalHost strips port from host if present and returns the canonicalized
 // host name.
+// canonicalHost从主机中去掉端口(如果存在)，并返回规范化的主机名。
 func canonicalHost(host string) (string, error) {
 	var err error
 	if hasPort(host) {
