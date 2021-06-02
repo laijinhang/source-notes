@@ -24,8 +24,15 @@ import (
 
 // recType is a record type, as defined by
 // https://web.archive.org/web/20150420080736/http://www.fastcgi.com/drupal/node/6?q=node/22#S8
+// recType是一种记录类型，定义于https://web.archive.org/web/20150420080736/http://www.fastcgi.com/drupal/node/6?q=node/22#S8。
 type recType uint8
 
+/*
+fcgi消息类型：
+* 1~3：信号类型
+* 4~10：数据类型
+* 11：错误类型
+*/
 const (
 	typeBeginRequest    recType = 1
 	typeAbortRequest    recType = 2
@@ -41,15 +48,16 @@ const (
 )
 
 // keep the connection between web-server and responder open after request
+// 在请求后保持web-server和response之间的连接畅通
 const flagKeepConn = 1
 
 const (
-	maxWrite = 65535 // maximum record body
+	maxWrite = 65535 // maximum record body	// 最大记录体
 	maxPad   = 255
 )
 
 const (
-	roleResponder = iota + 1 // only Responders are implemented.
+	roleResponder = iota + 1 // only Responders are implemented.	// 只实施响应者。
 	roleAuthorizer
 	roleFilter
 )
@@ -62,12 +70,12 @@ const (
 )
 
 type header struct {
-	Version       uint8
-	Type          recType
-	Id            uint16
-	ContentLength uint16
-	PaddingLength uint8
-	Reserved      uint8
+	Version       uint8   // 协议版本 默认是01
+	Type          recType // 类型
+	Id            uint16  // Id
+	ContentLength uint16  // 内容长度
+	PaddingLength uint8   // 填充长度
+	Reserved      uint8   // 保留
 }
 
 type beginRequest struct {
@@ -87,22 +95,25 @@ func (br *beginRequest) read(content []byte) error {
 
 // for padding so we don't have to allocate all the time
 // not synchronized because we don't care what the contents are
+// 用于填充，这样我们就不必分配所有不同步的时间，因为我们不关心内容是什么。
 var pad [maxPad]byte
 
 func (h *header) init(recType recType, reqId uint16, contentLength int) {
-	h.Version = 1
-	h.Type = recType
-	h.Id = reqId
-	h.ContentLength = uint16(contentLength)
-	h.PaddingLength = uint8(-contentLength & 7)
+	h.Version = 1                               // 版本
+	h.Type = recType                            // 类型
+	h.Id = reqId                                // 请求id
+	h.ContentLength = uint16(contentLength)     // 内容长度
+	h.PaddingLength = uint8(-contentLength & 7) // 填充长度
 }
 
 // conn sends records over rwc
+// conn通过rwc发送记录
 type conn struct {
 	mutex sync.Mutex
 	rwc   io.ReadWriteCloser
 
 	// to avoid allocations
+	// 以避免分配
 	buf bytes.Buffer
 	h   header
 }
