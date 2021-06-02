@@ -4,6 +4,14 @@
 
 // This file implements CGI from the perspective of a child
 // process.
+// 这个文件从子进程的角度来实现CGI。
+/*
+核心工作原理：
+1. 启动一个web服务监听某个路由
+2. 当这个路由被触发，拿到请求的路由
+3. 启动一个进程去执行设定好的命令（比如：go run ...）
+*/
+
 
 package cgi
 
@@ -25,6 +33,9 @@ import (
 // environment. This assumes the current program is being run
 // by a web server in a CGI environment.
 // The returned Request's Body is populated, if applicable.
+// Request返回当前环境中表示的HTTP请求。
+// 这假设当前程序是由CGI环境中的web服务器运行的。
+// 如果适用，将填充返回的请求体。
 func Request() (*http.Request, error) {
 	r, err := RequestFromMap(envMap(os.Environ()))
 	if err != nil {
@@ -48,6 +59,8 @@ func envMap(env []string) map[string]string {
 
 // RequestFromMap creates an http.Request from CGI variables.
 // The returned Request's Body field is not populated.
+// RequestFromMap创建一个http。
+// CGI变量的请求。未填充返回的请求的正文字段。
 func RequestFromMap(params map[string]string) (*http.Request, error) {
 	r := new(http.Request)
 	r.Method = params["REQUEST_METHOD"]
@@ -140,6 +153,9 @@ func RequestFromMap(params map[string]string) (*http.Request, error) {
 // request, if any. If there's no current CGI environment
 // an error is returned. The provided handler may be nil to use
 // http.DefaultServeMux.
+// 在当前活跃CGI环境下执行handler；
+// 如当前无CGI环境，会返回错误。
+// handler为nil时将使用http.DefaultServeMux。
 func Serve(handler http.Handler) error {
 	req, err := Request()
 	if err != nil {

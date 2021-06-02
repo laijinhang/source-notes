@@ -7,11 +7,15 @@
 
 // Package cgi implements CGI (Common Gateway Interface) as specified
 // in RFC 3875.
+// cgi包实现了CGI（Common Gateway Interface，公共网关协议），参见RFC 3875。
 //
 // Note that using CGI means starting a new process to handle each
 // request, which is typically less efficient than using a
 // long-running server. This package is intended primarily for
 // compatibility with existing systems.
+// 注意使用CGI意味着对每一个请求开始一个新的进程，
+// 这显然要比使用长期运行的服务程序要低效。
+// 本包主要是为了兼容现有的系统。
 package cgi
 
 import (
@@ -54,20 +58,23 @@ var osDefaultInheritEnv = func() []string {
 }()
 
 // Handler runs an executable in a subprocess with a CGI environment.
+// 处理程序在CGI环境的子进程中运行可执行文件。
 type Handler struct {
-	Path string // path to the CGI executable
-	Root string // root URI prefix of handler or empty for "/"
+	Path string // path to the CGI executable					// CGI可执行文件的路径
+	Root string // root URI prefix of handler or empty for "/"	// handler的根URI前缀，""代表"/"
 
 	// Dir specifies the CGI executable's working directory.
 	// If Dir is empty, the base directory of Path is used.
 	// If Path has no base directory, the current working
 	// directory is used.
+	// Dir指定CGI程序的工作目录。
+	// 如果Dir为""，则使用Path的基目录；如果Path没有基目录则使用当前工作目录。
 	Dir string
 
-	Env        []string    // extra environment variables to set, if any, as "key=value"
-	InheritEnv []string    // environment variables to inherit from host, as "key"
-	Logger     *log.Logger // optional log for errors or nil to use log.Print
-	Args       []string    // optional arguments to pass to child process
+	Env        []string    // extra environment variables to set, if any, as "key=value"	// 额外设置的环境变量（如果有），格式为"key"="val"
+	InheritEnv []string    // environment variables to inherit from host, as "key"			// 从host继承的环境变量，只有"key"
+	Logger     *log.Logger // optional log for errors or nil to use log.Print				// 可选的logger接口切片，如果为nil则使用log.Print
+	Args       []string    // optional arguments to pass to child process					// 可选的传递给子进程的参数
 	Stderr     io.Writer   // optional stderr for the child process; nil means os.Stderr
 
 	// PathLocationHandler specifies the root http Handler that
@@ -78,6 +85,10 @@ type Handler struct {
 	//
 	// If nil, a CGI response with a local URI path is instead sent
 	// back to the client and not redirected internally.
+	// 当CGI进程返回一个Location头，且其值以"/"开始时，
+	// 本字段指定处理内部重定向的根部HTTP Handler。参见RFC 3875 § 6.3.2。
+	// 一般会使用http.DefaultServeMux。
+	// 如果为nil，返回一个本地URI路径的CGI回复会发送给客户端，不进行内部跳转。
 	PathLocationHandler http.Handler
 }
 
