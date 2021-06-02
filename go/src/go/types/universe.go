@@ -238,7 +238,6 @@ func init() {
 	defPredeclaredConsts()
 	defPredeclaredNil()
 	defPredeclaredFuncs()
-	defPredeclaredComparable()
 	if typeparams.Enabled {
 		defPredeclaredComparable()
 	}

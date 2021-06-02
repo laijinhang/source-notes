@@ -117,3 +117,4 @@ module rsc.io/quote
 go 1.16
 -- dummy/quote.go --
 package quote
+
