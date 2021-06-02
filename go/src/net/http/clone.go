@@ -65,6 +65,7 @@ func cloneMultipartFileHeader(fh *multipart.FileHeader) *multipart.FileHeader {
 
 // cloneOrMakeHeader invokes Header.Clone but if the
 // result is nil, it'll instead make and return a non-nil Header.
+// 但如果结果为nil，它将生成并返回一个非nil标头。
 func cloneOrMakeHeader(hdr Header) Header {
 	clone := hdr.Clone()
 	if clone == nil {

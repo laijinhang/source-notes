@@ -40,6 +40,9 @@ import (
 // and caches them for reuse by subsequent calls. It uses HTTP proxies
 // as directed by the $HTTP_PROXY and $NO_PROXY (or $http_proxy and
 // $no_proxy) environment variables.
+// DefaultTransport是Transport的默认实现，并且是由DefaultClient使用。
+// 它根据需要建立网络连接并缓存它们，以供后续调用重用。
+// 它使用HTTP代理按照设置的 $HTTP_PROXY和 $NO_PROXY（或$http_proxy和 $no_proxy）环境变量。
 var DefaultTransport RoundTripper = &Transport{
 	Proxy: ProxyFromEnvironment,
 	DialContext: (&net.Dialer{
@@ -92,10 +95,36 @@ const DefaultMaxIdleConnsPerHost = 2
 // entry. If the idempotency key value is a zero-length slice, the
 // request is treated as idempotent but the header is not sent on the
 // wire.
+// Transport是一个RoundTripper的实现，它支持HTTP，HTTPS和HTTPS代理（适用于HTTP和带连接的HTTPS）
+//
+// 默认情况，Transport缓存连接以供将来重用。当访问许多主机时，可能会留下许多打开的连接。
+// 可以使用Transport的CloseIdleConnctions方法以及MaxIdleConnsPerHost和DisableKeepAlives字段来管理此行为。
+//
+// Transports应该被重用，而不是根据需要被创建。
+// Transports对于由多个协程并发使用是安全的。
+//
+// 传输是用于发出HTTP和HTTPS请求的低级原语。
+//
+// Transport对HTTPS URL使用HTTP/1.1和HTTP/2请求网站，取决于网站服务端是否支持HTTP/2以及Transport的配置方式。
+// DefaultTransport支持HTTP/2，要在Transport中显式启用HTTP / 2，请使用golang.org/x/net/http2调用ConfigureTransport。
+// 有关HTTP/2的更多信息，请参见软件包文档。
+//
+// 处理状态码在1xx范围内的响应
+// 自动（100个期望继续）或忽略。唯一的那个
+// 例外是HTTP状态代码101（交换协议），它是
+// 被视为终端状态，并由RoundTrip返回。看到
+// 忽略了1xx响应，请使用httptrace跟踪包的
+// ClientTrace.Got1xxResponse。
+//
+//Transport仅在遇到网络错误时重试请求
+// 如果请求是幂等的，并且没有主体或没有主体Request.GetBody定义。
+// 如果HTTP请求被认为是幂等的，它们具有HTTP方法GET，HEAD，OPTIONS或TRACE；
+// 或者如果他们标头映射包含“ Idempotency-Key”或“ X-Idempotency-Key” 入口。
+// 如果幂等键值为零长度切片，则请求被视为幂等，但标头未在wire
 type Transport struct {
-	idleMu       sync.Mutex
-	closeIdle    bool                                // user has requested to close all idle conns
-	idleConn     map[connectMethodKey][]*persistConn // most recently used at end
+	idleMu       sync.Mutex                          // 互斥锁，用于保护下面空闲的连接池
+	closeIdle    bool                                // user has requested to close all idle conns	// 用于标识是否关闭全部空闲连接池
+	idleConn     map[connectMethodKey][]*persistConn // most recently used at end					// 空闲连接池
 	idleConnWait map[connectMethodKey]wantConnQueue  // waiting getConns
 	idleLRU      connLRU
 
@@ -577,6 +606,8 @@ func (t *Transport) roundTrip(req *Request) (*Response, error) {
 		// host (for http or https), the http proxy, or the http proxy
 		// pre-CONNECTed to https server. In any case, we'll be ready
 		// to send it requests.
+		// 获取到主机（对于http或https）、http代理或预连接到https服务器的http代理
+		// 的缓存连接或新创建的连接。在任何情况下，我们都可以发送请求。
 		pconn, err := t.getConn(treq, cm)
 		if err != nil {
 			t.setReqCanceler(cancelKey, nil)
@@ -587,6 +618,7 @@ func (t *Transport) roundTrip(req *Request) (*Response, error) {
 		var resp *Response
 		if pconn.alt != nil {
 			// HTTP/2 path.
+			// HTTP/2路径。
 			t.setReqCanceler(cancelKey, nil) // not cancelable with CancelRequest
 			resp, err = pconn.alt.RoundTrip(req)
 		} else {
@@ -2859,6 +2891,12 @@ func cloneTLSConfig(cfg *tls.Config) *tls.Config {
 	return cfg.Clone()
 }
 
+// Least Recently Used，最近最久未使用法，
+// 它是按照一个非常著名的计算机操作系统基础理论得来的：最近使用的页面数据会在未来一段时间内仍然被使用，
+// 已经很久没有使用的页面很有可能在未来较长的一段时间内仍然不会被使用。基于这个思想，会存在一种缓存淘汰机制，
+// 每次从内存中找到最久未使用的数据然后置换出来，从而存入新的数据！它的主要衡量指标是使用的时间，
+// 附加指标是使用的次数。在计算机中大量使用了这个机制，它的合理性在于优先筛选热点数据，
+// 所谓热点数据，就是最多使用的数据！利用LRU算法，我们可以解决很多现实遇到的开发问题。
 type connLRU struct {
 	ll *list.List // list.Element.Value type is of *persistConn
 	m  map[*persistConn]*list.Element

@@ -16,15 +16,19 @@ import (
 )
 
 // A Header represents the key-value pairs in an HTTP header.
+// Header表示HTTP报头中的键-值对。
 //
 // The keys should be in canonical form, as returned by
 // CanonicalHeaderKey.
+// 键应该是规范形式，由CanonicalHeaderKey返回。
 type Header map[string][]string
 
 // Add adds the key, value pair to the header.
 // It appends to any existing values associated with key.
 // The key is case insensitive; it is canonicalized by
 // CanonicalHeaderKey.
+// 添加将键、值对添加到头中。它附加到任何与key相关的现有值上。
+// 键是不区分大小写的；它被CanonicalHeaderKey规范化。
 func (h Header) Add(key, value string) {
 	textproto.MIMEHeader(h).Add(key, value)
 }
@@ -88,6 +92,8 @@ func (h Header) write(w io.Writer, trace *httptrace.ClientTrace) error {
 }
 
 // Clone returns a copy of h or nil if h is nil.
+// Clone返回一个h的拷贝，如果h是零，则返回零。
+// 深度拷贝
 func (h Header) Clone() Header {
 	if h == nil {
 		return nil

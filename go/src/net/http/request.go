@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // HTTP Request reading and parsing.
+// HTTP请求的读取和解析。
 
 package http
 
@@ -100,6 +101,9 @@ var reqWriteExcludeHeader = map[string]bool{
 // The field semantics differ slightly between client and server
 // usage. In addition to the notes on the fields below, see the
 // documentation for Request.Write and RoundTripper.
+// 请求表示由服务器接收或将由客户端发送的HTTP请求。
+// 客户端和服务器使用之间的字段语义略有不同。除了下面字段上的注释之外，
+// 请参阅Request.Write和Cirtripper的文档
 type Request struct {
 	// Method specifies the HTTP method (GET, POST, PUT, etc.).
 	// For client requests, an empty string means GET.
@@ -107,6 +111,11 @@ type Request struct {
 	// Go's HTTP client does not support sending a request with
 	// the CONNECT method. See the documentation on Transport for
 	// details.
+	// Method指定HTTP方法（GET、POST、PUT等）。
+	// 对于客户端请求，空字符串表示GET。
+	//
+	// Go的HTTP客户端不支持使用CONNECT方法发送请求。
+	// 有关详细信息，请参阅有关Transport的文档。
 	Method string
 
 	// URL specifies either the URI being requested (for server
@@ -121,6 +130,12 @@ type Request struct {
 	// connect to, while the Request's Host field optionally
 	// specifies the Host header value to send in the HTTP
 	// request.
+	// URL指定被请求的URI（对于服务器请求）或要访问的URL（对于客户端请求）。
+	// 对于服务器请求，URL是从存储在RequestURI中的Request-Line上提供的
+	// URI中解析出来的。 对于大多数请求，除了Path和RawQuery以外的字段将
+	// 是空的。(参见RFC 7230，第5.3节)对于客户端请求，URL的Host指定了要
+	// 连接的服务器，而Request的Host字段则可选地指定了HTTP请求中要发送的
+	// Host头值。
 	URL *url.URL
 
 	// The protocol version for incoming server requests.
@@ -128,14 +143,19 @@ type Request struct {
 	// For client requests, these fields are ignored. The HTTP
 	// client code always uses either HTTP/1.1 or HTTP/2.
 	// See the docs on Transport for details.
+	// 传入服务器请求的协议版本。对于客户端请求，这些字段将被忽略。
+	// HTTP客户端代码始终使用HTTP/1.1或HTTP/2。有关详细信息，
+	// 请参阅有关传输的文档。
 	Proto      string // "HTTP/1.0"
 	ProtoMajor int    // 1
 	ProtoMinor int    // 0
 
 	// Header contains the request header fields either received
 	// by the server or to be sent by the client.
+	// 报头包含服务器接收到的请求报头字段或客户端发送的请求报头字段
 	//
 	// If a server received a request with header lines,
+	// 如果服务器收到带有标题行的请求,
 	//
 	//	Host: example.com
 	//	accept-encoding: gzip, deflate
@@ -325,15 +345,20 @@ type Request struct {
 
 // Context returns the request's context. To change the context, use
 // WithContext.
+// Context返回请求的上下文。要更改上下文，请使用WithContext。
 //
 // The returned context is always non-nil; it defaults to the
 // background context.
+// 返回的上下文总是非零的；它默认为background context.
 //
 // For outgoing client requests, the context controls cancellation.
+// 对于传出的客户端请求，上下文控制取消。
 //
 // For incoming server requests, the context is canceled when the
 // client's connection closes, the request is canceled (with HTTP/2),
 // or when the ServeHTTP method returns.
+// 对于传入的服务器请求，上下文在客户端连接关闭时被取消，请求被取消(使用HTTP/2)，
+// 或者当ServeHTTP方法返回时被取消。
 func (r *Request) Context() context.Context {
 	if r.ctx != nil {
 		return r.ctx
@@ -343,15 +368,21 @@ func (r *Request) Context() context.Context {
 
 // WithContext returns a shallow copy of r with its context changed
 // to ctx. The provided ctx must be non-nil.
+// WithContext返回r的浅拷贝，其上下文更改为ctx。提供的CTX必须为非零。
 //
 // For outgoing client request, the context controls the entire
 // lifetime of a request and its response: obtaining a connection,
 // sending the request, and reading the response headers and body.
+// 对于传出的客户端请求，上下文控制请求及其响应的整个生命周期：
+// 获取连接、发送请求以及读取响应头和正文。
 //
 // To create a new request with a context, use NewRequestWithContext.
 // To change the context of a request, such as an incoming request you
 // want to modify before sending back out, use Request.Clone. Between
 // those two uses, it's rare to need WithContext.
+// 要使用上下文创建新请求，请使用NewRequestWithContext。要更改请求的上下文，
+// 例如要在发回之前修改的传入请求，请使用Request.Clone。在这两种用途之间，
+// 很少需要WithContext。
 func (r *Request) WithContext(ctx context.Context) *Request {
 	if ctx == nil {
 		panic("nil context")
@@ -365,10 +396,13 @@ func (r *Request) WithContext(ctx context.Context) *Request {
 
 // Clone returns a deep copy of r with its context changed to ctx.
 // The provided ctx must be non-nil.
+// 克隆返回r的深度拷贝，其上下文更改为ctx。
 //
 // For an outgoing client request, the context controls the entire
 // lifetime of a request and its response: obtaining a connection,
 // sending the request, and reading the response headers and body.
+// 提供的ctx必须不为零。对于传出的客户端请求，
+// 上下文控制请求及其响应的整个生命周期:获取连接、发送请求以及读取响应头和正文。
 func (r *Request) Clone(ctx context.Context) *Request {
 	if ctx == nil {
 		panic("nil context")
@@ -396,17 +430,20 @@ func (r *Request) Clone(ctx context.Context) *Request {
 
 // ProtoAtLeast reports whether the HTTP protocol used
 // in the request is at least major.minor.
+// ProtoAtLeast报告请求中使用的HTTP协议是否至少是major.minor。
 func (r *Request) ProtoAtLeast(major, minor int) bool {
 	return r.ProtoMajor > major ||
 		r.ProtoMajor == major && r.ProtoMinor >= minor
 }
 
 // UserAgent returns the client's User-Agent, if sent in the request.
+// 如果在请求中发送，UserAgent将返回客户端的User-Agent。
 func (r *Request) UserAgent() string {
 	return r.Header.Get("User-Agent")
 }
 
 // Cookies parses and returns the HTTP cookies sent with the request.
+// cookie解析并返回与请求一起发送的HTTP cookie。
 func (r *Request) Cookies() []*Cookie {
 	return readCookies(r.Header, "")
 }
@@ -431,11 +468,17 @@ func (r *Request) Cookie(name string) (*Cookie, error) {
 // separated by semicolon.
 // AddCookie only sanitizes c's name and value, and does not sanitize
 // a Cookie header already present in the request.
+// AddCookie将Cookie添加到请求中。
+// 根据RFC 6265第5.4节，AddCookie不会附加多个Cookie报头字段。
+// 这意味着所有cookie(如果有的话)都写入同一行，并用分号分隔。
+// AddCookie仅清理c的名称和值，而不清理请求中已存在的Cookie头。
 func (r *Request) AddCookie(c *Cookie) {
 	s := fmt.Sprintf("%s=%s", sanitizeCookieName(c.Name), sanitizeCookieValue(c.Value))
 	if c := r.Header.Get("Cookie"); c != "" {
+		// 如果已经设置了cookie，则在后面再追加
 		r.Header.Set("Cookie", c+"; "+s)
 	} else {
+		// 如果没有设置，则直接赋值
 		r.Header.Set("Cookie", s)
 	}
 }
@@ -448,6 +491,9 @@ func (r *Request) AddCookie(c *Cookie) {
 // as a method is that the compiler can diagnose programs that use the
 // alternate (correct English) spelling req.Referrer() but cannot
 // diagnose programs that use Header["Referrer"].
+// Referer返回引用URL(如果在请求中发送)。Referer的拼写错误，就像请求本身一样，这是HTTP最早出现时的错误。
+// 该值也可以作为Header[“Referer”]从头映射中获取；将其作为方法使用的好处是编译器可以诊断使用替代(正确的英语)
+// 拼写req.Referrer()的程序，但不能诊断使用Header[“Referrer”]的程序。
 func (r *Request) Referer() string {
 	return r.Header.Get("Referer")
 }
@@ -455,6 +501,8 @@ func (r *Request) Referer() string {
 // multipartByReader is a sentinel value.
 // Its presence in Request.MultipartForm indicates that parsing of the request
 // body has been handed off to a MultipartReader instead of ParseMultipartForm.
+// multipartByReader是一个sentinel值。它的存在请求.MultipartForm指示已将请求正文的解析传递给MultipartReader，
+// 而不是ParseMultipartForm。
 var multipartByReader = &multipart.Form{
 	Value: make(map[string][]string),
 	File:  make(map[string][]*multipart.FileHeader),

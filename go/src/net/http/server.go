@@ -60,21 +60,28 @@ var (
 )
 
 // A Handler responds to an HTTP request.
+// 一个处理程序对一个HTTP请求做出响应。
 //
 // ServeHTTP should write reply headers and data to the ResponseWriter
 // and then return. Returning signals that the request is finished; it
 // is not valid to use the ResponseWriter or read from the
 // Request.Body after or concurrently with the completion of the
 // ServeHTTP call.
+// ServeHTTP应该把回复头和数据写到ResponseWriter中，然后返回。返回是请求完成的信号；
+// 在ServeHTTP调用完成后或同时，使用ResponseWriter或从Request.Body中读取是无效的。
 //
 // Depending on the HTTP client software, HTTP protocol version, and
 // any intermediaries between the client and the Go server, it may not
 // be possible to read from the Request.Body after writing to the
 // ResponseWriter. Cautious handlers should read the Request.Body
 // first, and then reply.
+// 根据HTTP客户端软件、HTTP协议版本以及客户端和Go服务器之间的任何中介，
+// 在向ResponseWriter写完后可能无法从Request.Body中读取。
+// 谨慎的处理程序应该先读取Request.Body，然后再回复。
 //
 // Except for reading the body, handlers should not modify the
 // provided Request.
+// 除了读取正文，处理程序不应该修改所提供的Request。
 //
 // If ServeHTTP panics, the server (the caller of ServeHTTP) assumes
 // that the effect of the panic was isolated to the active request.
@@ -83,15 +90,20 @@ var (
 // RST_STREAM, depending on the HTTP protocol. To abort a handler so
 // the client sees an interrupted response but the server doesn't log
 // an error, panic with the value ErrAbortHandler.
+// 如果ServeHTTP发生慌乱，服务器（ServeHTTP的调用者）会认为慌乱的影响只限于活动请求。
+// 它恢复了恐慌，将堆栈跟踪记录到服务器错误日志中，并根据HTTP协议，关闭网络连接或发送HTTP/2 RST_STREAM。
+// 要中止一个处理程序，使客户端看到一个中断的响应，但服务器不记录错误，用ErrAbortHandler的值进行恐慌。
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
 }
 
 // A ResponseWriter interface is used by an HTTP handler to
 // construct an HTTP response.
+// 一个ResponseWriter接口被一个HTTP处理程序用来构建一个HTTP响应。
 //
 // A ResponseWriter may not be used after the Handler.ServeHTTP method
 // has returned.
+// 在Handler.ServeHTTP方法返回后，不得使用ResponseWriter。
 type ResponseWriter interface {
 	// Header returns the header map that will be sent by
 	// WriteHeader. The Header map also is the mechanism with which
@@ -245,9 +257,11 @@ var (
 )
 
 // A conn represents the server side of an HTTP connection.
+// conn代表一个HTTP连接的服务器端。
 type conn struct {
 	// server is the server on which the connection arrived.
 	// Immutable; never nil.
+	// server是连接所到达的服务器。不可变的；永远不会为nil。
 	server *Server
 
 	// cancelCtx cancels the connection-level context.
@@ -630,6 +644,7 @@ func (w *response) ReadFrom(src io.Reader) (n int64, err error) {
 const debugServerConnections = false
 
 // Create new connection from rwc.
+// 从rwc创建新的连接。
 func (srv *Server) newConn(rwc net.Conn) *conn {
 	c := &conn{
 		server: srv,
@@ -872,9 +887,12 @@ func putBufioWriter(bw *bufio.Writer) {
 // DefaultMaxHeaderBytes is the maximum permitted size of the headers
 // in an HTTP request.
 // This can be overridden by setting Server.MaxHeaderBytes.
+// DefaultMaxHeaderBytes是HTTP请求中头信息的最大允许大小。这可以通过设置Server.MaxHeaderBytes来覆盖。
 const DefaultMaxHeaderBytes = 1 << 20 // 1 MB
 
+// 初始读限值大小
 func (srv *Server) maxHeaderBytes() int {
+	// 默认每个http请求最大限制大小为 1M+4kb
 	if srv.MaxHeaderBytes > 0 {
 		return srv.MaxHeaderBytes
 	}
@@ -954,6 +972,7 @@ func appendTime(b []byte, t time.Time) []byte {
 var errTooLarge = errors.New("http: request too large")
 
 // Read next request from connection.
+// 从连接中读取下一个请求。
 func (c *conn) readRequest(ctx context.Context) (w *response, err error) {
 	if c.hijacked() {
 		return nil, ErrHijacked
@@ -2216,6 +2235,7 @@ func RedirectHandler(url string, code int) Handler {
 // It matches the URL of each incoming request against a list of registered
 // patterns and calls the handler for the pattern that
 // most closely matches the URL.
+// ServeMux是一个HTTP请求复用器。它将每个传入的请求的URL与注册的模式列表进行匹配，并调用与URL最匹配的模式的处理程序。
 //
 // Patterns name fixed, rooted paths, like "/favicon.ico",
 // or rooted subtrees, like "/images/" (note the trailing slash).
@@ -2225,10 +2245,15 @@ func RedirectHandler(url string, code int) Handler {
 // called for paths beginning "/images/thumbnails/" and the
 // former will receive requests for any other paths in the
 // "/images/" subtree.
+// 模式命名固定的、有根的路径，如"/favicon.ico"，或有根的子树，如"/images/"（注意尾部的斜线）。
+// 较长的模式优先于较短的模式，因此，如果"/images/"和"/images/thumbnails/"都有处理程序，那么后者将被调用，
+// 用于处理以"/images/thumbnails/"开始的路径，而前者将接收"/images/"子树中任何其它路径的请求。
 //
 // Note that since a pattern ending in a slash names a rooted subtree,
 // the pattern "/" matches all paths not matched by other registered
 // patterns, not just the URL with Path == "/".
+// 注意，由于以斜线结尾的模式命名了一个有根的子树，模式"/"匹配所有没有被其他注册模式匹配的路径，
+// 而不仅仅是Path == "/"的URL。
 //
 // If a subtree has been registered and a request is received naming the
 // subtree root without its trailing slash, ServeMux redirects that
@@ -2237,32 +2262,42 @@ func RedirectHandler(url string, code int) Handler {
 // the trailing slash. For example, registering "/images/" causes ServeMux
 // to redirect a request for "/images" to "/images/", unless "/images" has
 // been registered separately.
+// 如果一个子树已经被注册，并且收到一个命名子树根的请求，但没有尾部斜线，
+// ServeMux将该请求重定向到子树根（添加尾部斜线）。
+// 这种行为可以通过为没有尾部斜线的路径单独注册来覆盖。
+// 例如，注册"/images/"会导致ServeMux将"/images "的请求重定向到"/images/"，除非"/images "已经被单独注册。
 //
 // Patterns may optionally begin with a host name, restricting matches to
 // URLs on that host only. Host-specific patterns take precedence over
 // general patterns, so that a handler might register for the two patterns
 // "/codesearch" and "codesearch.google.com/" without also taking over
 // requests for "http://www.google.com/".
+// 模式可以选择以主机名开始，只匹配该主机上的URL。特定于主机的模式优先于一般模式，
+// 因此一个处理程序可以注册"/codesearch "和 "codesearch.google.com/"这两个模式，
+// 而不需要同时接收 "http://www.google.com/"的请求。
 //
 // ServeMux also takes care of sanitizing the URL request path and the Host
 // header, stripping the port number and redirecting any request containing . or
 // .. elements or repeated slashes to an equivalent, cleaner URL.
+// ServeMux还负责清理URL请求路径和Host头，去除端口号，并将任何含有.或.元素或重复斜线的请求重定向到一个等价的、更干净的URL。
 type ServeMux struct {
 	mu    sync.RWMutex
 	m     map[string]muxEntry
-	es    []muxEntry // slice of entries sorted from longest to shortest.
-	hosts bool       // whether any patterns contain hostnames
+	es    []muxEntry // slice of entries sorted from longest to shortest.	// 从最长到最短排序的条目切片
+	hosts bool       // whether any patterns contain hostnames				// 是否有任何模式包含主机名
 }
 
 type muxEntry struct {
-	h       Handler
-	pattern string
+	h       Handler // 路由对应的处理方法，也就是平时写的业务接口那些
+	pattern string  // 路由，也就是匹配规则
 }
 
 // NewServeMux allocates and returns a new ServeMux.
+// NewServeMux分配并返回一个新的ServeMux。
 func NewServeMux() *ServeMux { return new(ServeMux) }
 
 // DefaultServeMux is the default ServeMux used by Serve.
+// DefaultServeMux是Serve使用的默认ServeMux。
 var DefaultServeMux = &defaultServeMux
 
 var defaultServeMux ServeMux
@@ -2446,6 +2481,7 @@ func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request) {
 
 // Handle registers the handler for the given pattern.
 // If a handler already exists for pattern, Handle panics.
+// Handle注册了给定模式的处理函数，如果处理函数在这个handle中已经存在，Handle就会抛出panic。
 func (mux *ServeMux) Handle(pattern string, handler Handler) {
 	mux.mu.Lock()
 	defer mux.mu.Unlock()
@@ -2483,13 +2519,15 @@ func appendSorted(es []muxEntry, e muxEntry) []muxEntry {
 		return append(es, e)
 	}
 	// we now know that i points at where we want to insert
-	es = append(es, muxEntry{}) // try to grow the slice in place, any entry works.
-	copy(es[i+1:], es[i:])      // Move shorter entries down
+	// 我们现在知道，i指向我们要插入的地方。
+	es = append(es, muxEntry{}) // try to grow the slice in place, any entry works.	// 尝试在原地增加切片，任何条目都可以。
+	copy(es[i+1:], es[i:])      // Move shorter entries down	// 将较短的条目下移
 	es[i] = e
 	return es
 }
 
 // HandleFunc registers the handler function for the given pattern.
+// HandleFunc注册了给定模式的处理函数。
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request)) {
 	if handler == nil {
 		panic("http: nil handler")
@@ -2500,6 +2538,7 @@ func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Re
 // Handle registers the handler for the given pattern
 // in the DefaultServeMux.
 // The documentation for ServeMux explains how patterns are matched.
+// HandleFunc为DefaultServeMux中的给定模式注册了处理函数。ServeMux的文档解释了如何匹配模式。
 func Handle(pattern string, handler Handler) { DefaultServeMux.Handle(pattern, handler) }
 
 // HandleFunc registers the handler function for the given pattern
@@ -2939,19 +2978,24 @@ var ErrServerClosed = errors.New("http: Server closed")
 // Serve accepts incoming connections on the Listener l, creating a
 // new service goroutine for each. The service goroutines read requests and
 // then call srv.Handler to reply to them.
+// Serve在Listener l上接受传入的连接，为每个连接创建一个新的服务goroutine。
+// 服务goroutine读取请求，然后调用srv.Handler来回复它们。
 //
 // HTTP/2 support is only enabled if the Listener returns *tls.Conn
 // connections and they were configured with "h2" in the TLS
 // Config.NextProtos.
+// 只有当监听器返回*tls.Conn连接并且在TLS Config.NextProtos中配置了 "h2 "时，才会启用HTTP/2支持。
 //
 // Serve always returns a non-nil error and closes l.
 // After Shutdown or Close, the returned error is ErrServerClosed.
+// Serve总是返回一个非零的错误并关闭l。在关闭或关闭之后，返回的错误是ErrServerClosed。
 func (srv *Server) Serve(l net.Listener) error {
 	if fn := testHookServerServe; fn != nil {
 		fn(srv, l) // call hook with unwrapped listener
 	}
 
 	origListener := l
+	// 结束时关闭监听的连接
 	l = &onceCloseListener{Listener: l}
 	defer l.Close()
 
@@ -2975,6 +3019,7 @@ func (srv *Server) Serve(l net.Listener) error {
 	var tempDelay time.Duration // how long to sleep on accept failure
 
 	ctx := context.WithValue(baseCtx, ServerContextKey, srv)
+	// 处理连接进来的请求
 	for {
 		rw, err := l.Accept()
 		if err != nil {
@@ -3153,10 +3198,14 @@ func logf(r *Request, format string, args ...interface{}) {
 // ListenAndServe listens on the TCP network address addr and then calls
 // Serve with handler to handle requests on incoming connections.
 // Accepted connections are configured to enable TCP keep-alives.
+// ListenAndServe在TCP网络地址addr上监听，然后用处理程序调用Serve来处理进入的连接的请求。
+// 接受的连接被配置为启用TCP keep-alives。
 //
 // The handler is typically nil, in which case the DefaultServeMux is used.
+// 处理程序通常为nil，在这种情况下，使用DefaultServeMux。
 //
 // ListenAndServe always returns a non-nil error.
+// ListenAndServe总是返回一个非零的错误。
 func ListenAndServe(addr string, handler Handler) error {
 	server := &Server{Addr: addr, Handler: handler}
 	return server.ListenAndServe()
@@ -3218,10 +3267,13 @@ func (srv *Server) setupHTTP2_ServeTLS() error {
 // configures HTTP/2 on srv using a more conservative policy than
 // setupHTTP2_ServeTLS because Serve is called after tls.Listen,
 // and may be called concurrently. See shouldConfigureHTTP2ForServe.
+// 更保守的策略在srv上配置HTTP/2，因为Serve是在tls.Listen之后调用的，而且可能是同时调用。
+// 参见shouldConfigureHTTP2ForServe。
 //
 // The tests named TestTransportAutomaticHTTP2* and
 // TestConcurrentServerServe in server_test.go demonstrate some
 // of the supported use cases and motivations.
+// server_test.go中名为TestTransportAutomaticHTTP2*和TestConcurrentServerServe的测试展示了一些支持的用例和动机。
 func (srv *Server) setupHTTP2_Serve() error {
 	srv.nextProtoOnce.Do(srv.onceSetNextProtoDefaults_Serve)
 	return srv.nextProtoErr
@@ -3399,6 +3451,7 @@ func (tw *timeoutWriter) WriteHeader(code int) {
 
 // onceCloseListener wraps a net.Listener, protecting it from
 // multiple Close calls.
+// onceCloseListener包装了一个net.Listener，保护它不被多次调用关闭。
 type onceCloseListener struct {
 	net.Listener
 	once     sync.Once
@@ -3502,6 +3555,51 @@ func (c *loggingConn) Close() (err error) {
 // checkConnErrorWriter writes to c.rwc and records any write errors to c.werr.
 // It only contains one field (and a pointer field at that), so it
 // fits in an interface value without an extra allocation.
+// checkConnErrorWriter写到c.rwc，并将任何写错记录到c.werr。 它只包含一个字段（而且是一个指针字段），所以它适合于一个接口值，不需要额外分配。
+type checkConnErrorWriter struct {
+	c *conn
+}
+
+func (w checkConnErrorWriter) Write(p []byte) (n int, err error) {
+	n, err = w.c.rwc.Write(p)
+	if err != nil && w.c.werr == nil {
+		w.c.werr = err
+		w.c.cancelCtx()
+	}
+	return
+}
+
+func numLeadingCRorLF(v []byte) (n int) {
+	for _, b := range v {
+		if b == '\r' || b == '\n' {
+			n++
+			continue
+		}
+		break
+	}
+	return
+
+}
+
+func strSliceContains(ss []string, s string) bool {
+	for _, v := range ss {
+		if v == s {
+			return true
+		}
+	}
+	return false
+}
+
+// tlsRecordHeaderLooksLikeHTTP reports whether a TLS record header
+// looks like it might've been a misdirected plaintext HTTP request.
+func tlsRecordHeaderLooksLikeHTTP(hdr [5]byte) bool {
+	switch string(hdr[:]) {
+	case "GET /", "HEAD ", "POST ", "PUT /", "OPTIO":
+		return true
+	}
+	return false
+}
+
 type checkConnErrorWriter struct {
 	c *conn
 }
