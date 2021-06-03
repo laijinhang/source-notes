@@ -42,6 +42,26 @@ import (
 //
 // A Pool must not be copied after first use.
 type Pool struct {
+	// 不复制Pool结构体，理解起来就是浅拷贝
+	/*
+		下面c、c1、c2指向的都是同一个Pool
+		func main() {
+			c := sync.Pool{}
+			c1 := c
+			c1.New = func() interface{} {
+				return 123
+			}
+			c1.Put("x1")
+			c1.Put("x2")
+			c2 := sync.Pool{}
+			c2 = c1
+			fmt.Println(c2.Get())	// x1
+			fmt.Println(c2.Get())	// x2
+			fmt.Println(c1.Get())	// 123
+			c2.Put("x3")
+			fmt.Println(c1.Get())	// x3
+		}
+	*/
 	noCopy noCopy
 
 	local     unsafe.Pointer // local fixed-size per-P pool, actual type is [P]poolLocal
@@ -118,9 +138,12 @@ func (p *Pool) Put(x interface{}) {
 // Get may choose to ignore the pool and treat it as empty.
 // Callers should not assume any relation between values passed to Put and
 // the values returned by Get.
+// Get从池中选择一个任意的项目，将其从池中移除，并将其返回给调用者。
+// Get可以选择忽略池子并将其视为空的。调用者不应该假设传递给Put的值和Get返回的值之间有任何关系。
 //
 // If Get would otherwise return nil and p.New is non-nil, Get returns
 // the result of calling p.New.
+// 如果Get会返回nil，并且p.New不是nil，Get会返回调用p.New的结果。
 func (p *Pool) Get() interface{} {
 	if race.Enabled {
 		race.Disable()
