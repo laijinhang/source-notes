@@ -89,6 +89,10 @@ func mapaccess2_fast64(t *maptype, h *hmap, key uint64) (unsafe.Pointer, bool) {
 	return unsafe.Pointer(&zeroVal[0]), false
 }
 
+/*
+int64和uint64会调用这个方法给map赋值
+64位平台下：int和uint会调用这个方法给map赋值
+*/
 func mapassign_fast64(t *maptype, h *hmap, key uint64) unsafe.Pointer {
 	if h == nil {
 		panic(plainError("assignment to entry in nil map"))
@@ -97,14 +101,21 @@ func mapassign_fast64(t *maptype, h *hmap, key uint64) unsafe.Pointer {
 		callerpc := getcallerpc()
 		racewritepc(unsafe.Pointer(h), callerpc, funcPC(mapassign_fast64))
 	}
+	// 检查 map 的标志位 flags。如果 flags 的写标志位此时被置 1 了，说明有其他协程
+	// 在执行“写”操作，进而导致程序 panic。这也说明了 map 对协程是不安全的。
+	// h.flags&4 => h.flags&0b100 =>
+	// 判断写标识位是否被置为1了
 	if h.flags&hashWriting != 0 {
+		// 并发读写会触发这个错误
 		throw("concurrent map writes")
 	}
 	hash := t.hasher(noescape(unsafe.Pointer(&key)), uintptr(h.hash0))
 
 	// Set hashWriting after calling t.hasher for consistency with mapassign.
+	// 在调用t.hash后设置hashWriting，以便与mapassign保持一致。
 	h.flags ^= hashWriting
 
+	// 如果这个桶为空，则新建一个桶
 	if h.buckets == nil {
 		h.buckets = newobject(t.bucket) // newarray(t.bucket, 1)
 	}

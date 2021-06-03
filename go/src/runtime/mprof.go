@@ -519,22 +519,26 @@ var disableMemoryProfiling bool
 
 // A MemProfileRecord describes the live objects allocated
 // by a particular call sequence (stack trace).
+// 一个MemProfileRecord描述了一个特定的调用序列（堆栈跟踪）分配的实时对象。
 type MemProfileRecord struct {
-	AllocBytes, FreeBytes     int64       // number of bytes allocated, freed
-	AllocObjects, FreeObjects int64       // number of objects allocated, freed
-	Stack0                    [32]uintptr // stack trace for this record; ends at first 0 entry
+	AllocBytes, FreeBytes     int64       // number of bytes allocated, freed	// 分配、释放的字节数
+	AllocObjects, FreeObjects int64       // number of objects allocated, freed	// 分配、释放的对象数量
+	Stack0                    [32]uintptr // stack trace for this record; ends at first 0 entry	// 该记录的堆栈跟踪；以第一个0条目结束。
 }
 
 // InUseBytes returns the number of bytes in use (AllocBytes - FreeBytes).
+// InUseBytes 返回正在使用的字节数（AllocBytes - FreeBytes）。
 func (r *MemProfileRecord) InUseBytes() int64 { return r.AllocBytes - r.FreeBytes }
 
 // InUseObjects returns the number of objects in use (AllocObjects - FreeObjects).
+// InUseObjects 返回正在使用的对象数量（AllocObjects - FreeObjects）。
 func (r *MemProfileRecord) InUseObjects() int64 {
 	return r.AllocObjects - r.FreeObjects
 }
 
 // Stack returns the stack trace associated with the record,
 // a prefix of r.Stack0.
+// Stack返回与记录相关联的栈跟踪，前缀为r.Stack0。
 func (r *MemProfileRecord) Stack() []uintptr {
 	for i, v := range r.Stack0 {
 		if v == 0 {
@@ -546,6 +550,7 @@ func (r *MemProfileRecord) Stack() []uintptr {
 
 // MemProfile returns a profile of memory allocated and freed per allocation
 // site.
+// MemProfile返回每个分配站点分配和释放的内存的配置文件。
 //
 // MemProfile returns n, the number of records in the current memory profile.
 // If len(p) >= n, MemProfile copies the profile into p and returns n, true.
@@ -570,6 +575,8 @@ func MemProfile(p []MemProfileRecord, inuseZero bool) (n int, ok bool) {
 	// If we're between mProf_NextCycle and mProf_Flush, take care
 	// of flushing to the active profile so we only have to look
 	// at the active profile below.
+	// 如果我们在mProf_NextCycle和mProf_Flush之间，要注意刷新到活动配置文件，
+	// 这样我们只需要看下面的活动配置文件。
 	mProf_FlushLocked()
 	clear := true
 	for b := mbuckets; b != nil; b = b.allnext {
@@ -614,6 +621,7 @@ func MemProfile(p []MemProfileRecord, inuseZero bool) (n int, ok bool) {
 }
 
 // Write b's data to r.
+// 将b的数据写入r。
 func record(r *MemProfileRecord, b *bucket) {
 	mp := b.mp()
 	r.AllocBytes = int64(mp.active.alloc_bytes)
@@ -643,6 +651,7 @@ func iterate_memprof(fn func(*bucket, uintptr, *uintptr, uintptr, uintptr, uintp
 
 // BlockProfileRecord describes blocking events originated
 // at a particular call sequence (stack trace).
+// BlockProfileRecord描述了源于特定调用序列的阻塞事件（堆栈跟踪）。
 type BlockProfileRecord struct {
 	Count  int64
 	Cycles int64
@@ -747,6 +756,7 @@ func runtime_goroutineProfileWithLabels(p []StackRecord, labels []unsafe.Pointer
 }
 
 // labels may be nil. If labels is non-nil, it must have the same length as p.
+// labels可以是nil。如果label是非nil，它的长度必须与p相同。
 func goroutineProfileWithLabels(p []StackRecord, labels []unsafe.Pointer) (n int, ok bool) {
 	if labels != nil && len(labels) != len(p) {
 		labels = nil
@@ -756,6 +766,7 @@ func goroutineProfileWithLabels(p []StackRecord, labels []unsafe.Pointer) (n int
 	isOK := func(gp1 *g) bool {
 		// Checking isSystemGoroutine here makes GoroutineProfile
 		// consistent with both NumGoroutine and Stack.
+		// 在这里检查isSystemGoroutine使得GoroutineProfile与NumGoroutine和Stack一致。
 		return gp1 != gp && readgstatus(gp1) != _Gdead && !isSystemGoroutine(gp1, false)
 	}
 
@@ -782,12 +793,14 @@ func goroutineProfileWithLabels(p []StackRecord, labels []unsafe.Pointer) (n int
 		r = r[1:]
 
 		// If we have a place to put our goroutine labelmap, insert it there.
+		// 如果我们有一个放置goroutine labelmap的地方，就把它插入那里。
 		if labels != nil {
 			lbl[0] = gp.labels
 			lbl = lbl[1:]
 		}
 
 		// Save other goroutines.
+		// 保存其他协程
 		forEachGRace(func(gp1 *g) {
 			if !isOK(gp1) {
 				return
@@ -833,22 +846,32 @@ func saveg(pc, sp uintptr, gp *g, r *StackRecord) {
 // and returns the number of bytes written to buf.
 // If all is true, Stack formats stack traces of all other goroutines
 // into buf after the trace for the current goroutine.
+// Stack将调用goroutine的堆栈跟踪格式化为buf，并返回写入buf的字节数。
+// 如果all为true，则Stack格式将所有其他goroutine的跟踪堆叠到当前goroutine跟踪之后的buf中。
 func Stack(buf []byte, all bool) int {
+	// 如果是获取全部协程栈信息，先暂停全部协程的工作
 	if all {
 		stopTheWorld("stack trace")
 	}
 
 	n := 0
 	if len(buf) > 0 {
+		// 获取当前协程
 		gp := getg()
 		sp := getcallersp()
 		pc := getcallerpc()
+		// 在系统栈上运行
 		systemstack(func() {
 			g0 := getg()
 			// Force traceback=1 to override GOTRACEBACK setting,
 			// so that Stack's results are consistent.
 			// GOTRACEBACK is only about crash dumps.
+
+			// 强制 traceback=1 以覆盖GOTRACEBACK设置，
+			// 这样Stack的结果是一致的。
+			// GOTRACEBACK仅用于崩溃转储。
 			g0.m.traceback = 1
+			// 分配cap大小为len(buf)的写缓冲区
 			g0.writebuf = buf[0:0:len(buf)]
 			goroutineheader(gp)
 			traceback(pc, sp, 0, gp)
@@ -861,6 +884,7 @@ func Stack(buf []byte, all bool) int {
 		})
 	}
 
+	// 如果是获取全部协程栈信息，获取完，则继续工作
 	if all {
 		startTheWorld()
 	}

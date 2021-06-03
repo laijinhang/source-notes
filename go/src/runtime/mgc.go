@@ -512,8 +512,8 @@ const (
 // it is an exit condition for the _GCoff phase.
 type gcTrigger struct {
 	kind gcTriggerKind
-	now  int64  // gcTriggerTime: current time
-	n    uint32 // gcTriggerCycle: cycle number to start
+	now  int64  // gcTriggerTime: current time	// 当前时间
+	n    uint32 // gcTriggerCycle: cycle number to start	// 开始的周期数
 }
 
 type gcTriggerKind int
@@ -522,26 +522,35 @@ const (
 	// gcTriggerHeap indicates that a cycle should be started when
 	// the heap size reaches the trigger heap size computed by the
 	// controller.
+	// gcTriggerHeap 表示当堆大小达到控制器计算的触发堆大小时开始一个周期
 	gcTriggerHeap gcTriggerKind = iota
 
 	// gcTriggerTime indicates that a cycle should be started when
 	// it's been more than forcegcperiod nanoseconds since the
 	// previous GC cycle.
+	// gcTriggerTime 表示自上一个 GC 周期后当循环超过
+	// forcegcperiod 纳秒时应开始一个周期。
 	gcTriggerTime
 
 	// gcTriggerCycle indicates that a cycle should be started if
 	// we have not yet started cycle number gcTrigger.n (relative
 	// to work.cycles).
+	// gcTriggerCycle 表示如果我们还没有启动第 gcTrigger.n 个周期
+	// （相对于 work.cycles）时应开始一个周期。
 	gcTriggerCycle
 )
 
 // test reports whether the trigger condition is satisfied, meaning
 // that the exit condition for the _GCoff phase has been met. The exit
 // condition should be tested when allocating.
+// test 报告当前出发条件是否满足，换句话说 _GCoff 阶段的退出条件已满足。
+// 退出条件应该在分配阶段已完成测试。
 func (t gcTrigger) test() bool {
+	// 如果已禁用 GC
 	if !memstats.enablegc || panicking != 0 || gcphase != _GCoff {
 		return false
 	}
+	// 根据类别做不同判断
 	switch t.kind {
 	case gcTriggerHeap:
 		// Non-atomic access to gcController.heapLive for performance. If

@@ -199,6 +199,9 @@ dohash:
 	return unsafe.Pointer(&zeroVal[0]), false
 }
 
+/*
+为 key类型为字符串的map赋值时，会调用这个方法
+*/
 func mapassign_faststr(t *maptype, h *hmap, s string) unsafe.Pointer {
 	if h == nil {
 		panic(plainError("assignment to entry in nil map"))
@@ -253,6 +256,7 @@ bucketloop:
 				continue
 			}
 			// already have a mapping for key. Update it.
+			// 已经有了key的映射。更新它。
 			inserti = i
 			insertb = b
 			// Overwrite existing key, so it can be garbage collected.
@@ -268,23 +272,27 @@ bucketloop:
 	}
 
 	// Did not find mapping for key. Allocate new cell & add entry.
+	// 没有找到键的映射。分配新的单元格并添加条目。
 
 	// If we hit the max load factor or we have too many overflow buckets,
 	// and we're not already in the middle of growing, start growing.
+	// 如果我们达到了最大的负载系数，或者我们有太多的溢出桶，而且我们还没有在增长中，就开始增长。
 	if !h.growing() && (overLoadFactor(h.count+1, h.B) || tooManyOverflowBuckets(h.noverflow, h.B)) {
 		hashGrow(t, h)
-		goto again // Growing the table invalidates everything, so try again
+		goto again // Growing the table invalidates everything, so try again	// 增长表会使所有的东西都无效，所以再试一次。
 	}
 
 	if insertb == nil {
 		// The current bucket and all the overflow buckets connected to it are full, allocate a new one.
+		// 当前的桶和与之相连的所有溢出桶都已满，分配一个新的桶。
 		insertb = h.newoverflow(t, b)
-		inserti = 0 // not necessary, but avoids needlessly spilling inserti
+		inserti = 0 // not necessary, but avoids needlessly spilling inserti	// 没有必要，但可以避免不必要的插入物溢出。
 	}
-	insertb.tophash[inserti&(bucketCnt-1)] = top // mask inserti to avoid bounds checks
+	insertb.tophash[inserti&(bucketCnt-1)] = top // mask inserti to avoid bounds checks	// mask inserti以避免边界检查。
 
 	insertk = add(unsafe.Pointer(insertb), dataOffset+inserti*2*sys.PtrSize)
 	// store new key at insert position
+	// 在插入位置存储新键
 	*((*stringStruct)(insertk)) = *key
 	h.count++
 

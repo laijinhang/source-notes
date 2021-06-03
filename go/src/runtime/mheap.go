@@ -19,13 +19,19 @@ const (
 	// minPhysPageSize is a lower-bound on the physical page size. The
 	// true physical page size may be larger than this. In contrast,
 	// sys.PhysPageSize is an upper-bound on the physical page size.
+
+	// minPhysPageSize是物理页面大小的下限。
+	// 真正的物理页面大小可能会大于这个值。
+	// 相反，sys.PhysPageSize是物理页面大小的上界。
 	minPhysPageSize = 4096
 
 	// maxPhysPageSize is the maximum page size the runtime supports.
+	// maxPhysPageSize是运行时支持的最大页面大小。
 	maxPhysPageSize = 512 << 10
 
 	// maxPhysHugePageSize sets an upper-bound on the maximum huge page size
 	// that the runtime supports.
+	// maxPhysHugePageSize设置了运行时支持的最大huge页面大小的上限。
 	maxPhysHugePageSize = pallocChunkBytes
 
 	// pagesPerReclaimerChunk indicates how many pages to scan from the
@@ -380,15 +386,25 @@ type mSpanList struct {
 	last  *mspan // last span in list, or nil if none
 }
 
+/*
+mspan是mheap中管理的内存页的最基本结构。这是一个双向链表，
+像TCMalloc一样，Go将内存页按大小分为67个不同类别，大小从8字节到32KB
+*/
 //go:notinheap
 type mspan struct {
-	next *mspan     // next span in list, or nil if none
-	prev *mspan     // previous span in list, or nil if none
+	// 链表的下一个节点，如果下一个节点为空，则为nil
+	next *mspan // next span in list, or nil if none
+	// 链表的上一个节点，如果上一个节点为空，则为nil
+	prev *mspan // previous span in list, or nil if none
+	// 链表地址
 	list *mSpanList // For debugging. TODO: Remove.
 
+	// 该span在arena区域的起始地址
 	startAddr uintptr // address of first byte of span aka s.base()
-	npages    uintptr // number of pages in span
+	// 该span占用arena区域page的数量
+	npages uintptr // number of pages in span
 
+	// 空闲对象列表
 	manualFreeList gclinkptr // list of free objects in mSpanManual spans
 
 	// freeindex is the slot index between 0 and nelems at which to begin scanning
@@ -409,6 +425,7 @@ type mspan struct {
 	freeindex uintptr
 	// TODO: Look up nelems from sizeclass and remove this field if it
 	// helps performance.
+	// 管理的对象数
 	nelems uintptr // number of object in the span.
 
 	// Cache of the allocBits at freeindex. allocCache is shifted
@@ -417,6 +434,7 @@ type mspan struct {
 	// ctz (count trailing zero) to use it directly.
 	// allocCache may contain bits beyond s.nelems; the caller must ignore
 	// these.
+	// 从freeindex开始的标记位
 	allocCache uint64
 
 	// allocBits and gcmarkBits hold pointers to a span's mark and
@@ -441,8 +459,8 @@ type mspan struct {
 	// The sweep will free the old allocBits and set allocBits to the
 	// gcmarkBits. The gcmarkBits are replaced with a fresh zeroed
 	// out memory.
-	allocBits  *gcBits
-	gcmarkBits *gcBits
+	allocBits  *gcBits // 已分配的对象的个数
+	gcmarkBits *gcBits // span分类
 
 	// sweep generation:
 	// if sweepgen == h->sweepgen - 2, the span needs sweeping
@@ -452,16 +470,17 @@ type mspan struct {
 	// if sweepgen == h->sweepgen + 3, the span was swept and then cached and is still cached
 	// h->sweepgen is incremented by 2 after every GC
 
-	sweepgen    uint32
-	divMul      uint32        // for divide by elemsize
-	allocCount  uint16        // number of allocated objects
-	spanclass   spanClass     // size class and noscan (uint8)
-	state       mSpanStateBox // mSpanInUse etc; accessed atomically (get/set methods)
-	needzero    uint8         // needs to be zeroed before allocation
-	elemsize    uintptr       // computed from sizeclass or from npages
-	limit       uintptr       // end of data in span
-	speciallock mutex         // guards specials list
-	specials    *special      // linked list of special records sorted by offset.
+	sweepgen   uint32
+	divMul     uint32        // for divide by elemsize
+	allocCount uint16        // number of allocated objects
+	spanclass  spanClass     // size class and noscan (uint8)
+	state      mSpanStateBox // mSpanInUse etc; accessed atomically (get/set methods)
+	needzero   uint8         // needs to be zeroed before allocation
+	elemsize   uintptr       // computed from sizeclass or from npages
+	// 申请大对象内存块会用到，mspan的数据截止位置
+	limit       uintptr  // end of data in span
+	speciallock mutex    // guards specials list
+	specials    *special // linked list of special records sorted by offset.
 }
 
 func (s *mspan) base() uintptr {
@@ -697,7 +716,9 @@ func pageIndexOf(p uintptr) (arena *heapArena, pageIdx uintptr, pageMask uint8) 
 }
 
 // Initialize the heap.
+// 堆初始化
 func (h *mheap) init() {
+	// 初始化堆中各个组件的分配器
 	lockInit(&h.lock, lockRankMheap)
 	lockInit(&h.speciallock, lockRankMheapSpecial)
 
@@ -713,11 +734,16 @@ func (h *mheap) init() {
 	// important that the span's sweepgen survive across freeing
 	// and re-allocating a span to prevent background sweeping
 	// from improperly cas'ing it from 0.
+	// 不对mspan的分配清零，后台扫描可以通过分配它来并发的检查一个span
+	// 因此span的sweepgen在释放和重新分配时候能存活，从而可以防止后台扫描
+	// 不正确的将其从0进行CAS。
 	//
 	// This is safe because mspan contains no heap pointers.
+	// 因为span不包含堆指针，因此它是安全的
 	h.spanalloc.zero = false
 
 	// h->mapcache needs no init
+	// h->mapcache不需要初始化
 
 	for i := range h.central {
 		h.central[i].mcentral.init(spanClass(i))
