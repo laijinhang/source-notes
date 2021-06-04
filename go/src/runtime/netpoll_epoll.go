@@ -12,6 +12,12 @@ import (
 	"unsafe"
 )
 
+/*
+	在 epollcreate() 的最初实现版本时，size参数的作用是创建epoll实例时候告诉内核需要使用多少个文件描述符。
+	内核会使用 size 的大小去申请对应的内存(如果在使用的时候超过了给定的size， 内核会申请更多的空间)。现在，
+	这个size参数不再使用了（内核会动态的申请需要的内存）。但要注意的是，这个size必须要大于0，为了兼容旧版的
+	linux 内核的代码。
+*/
 func epollcreate(size int32) int32
 func epollcreate1(flags int32) int32
 
@@ -23,13 +29,22 @@ func epollwait(epfd int32, ev *epollevent, nev, timeout int32) int32
 func closeonexec(fd int32)
 
 var (
-	epfd int32 = -1 // epoll descriptor
+	epfd int32 = -1 // epoll descriptor	// epoll描述符
 
-	netpollBreakRd, netpollBreakWr uintptr // for netpollBreak
+	netpollBreakRd, netpollBreakWr uintptr // for netpollBreak	//用于netpollBreak
 
-	netpollWakeSig uint32 // used to avoid duplicate calls of netpollBreak
+	netpollWakeSig uint32 // used to avoid duplicate calls of netpollBreak	// 用于避免重复调用netpollBrea
 )
 
+// epoll模型的初始化
+// 对于一个M主线程只会初始化一张epoll表，所有要监听的文件描述符都会放入这个表中。
+/*
+	1、创建epoll（_EPOLL_CLOEXEC用来设置文件close-on-exec状态的。当close-on-exec状态为0时，调用exec时，fd不会被关闭；状态非零时则会被关闭，这样做可以防止fd泄露给执行exec后的进程）
+	2、如果第一步创建失败，则调用epollcreate(1024)进行创建，如果再创建失败，则抛出netpoll初始化错误，如果创建成功，则设置close-on-exec标识，也就是_EPOLL_CLOEXEC
+	在第一步创建失败时，尝试第二步的创建是为了兼容旧的linux内核
+	3、设置epoll事件为EPOLLIN事件（EPOLLIN事件则只有当对端有数据写入时才会触发，所以触发一次后需要不断读取所有数据直到读完EAGAIN为止。否则剩下的数据只有在下次对端有写入时才能一起取出来了）
+	4、注册epoll事件
+*/
 func netpollinit() {
 	epfd = epollcreate1(_EPOLL_CLOEXEC)
 	if epfd < 0 {
@@ -79,6 +94,7 @@ func netpollarm(pd *pollDesc, mode int) {
 }
 
 // netpollBreak interrupts an epollwait.
+// netpollBreak中断epollwait。
 func netpollBreak() {
 	if atomic.Cas(&netpollWakeSig, 0, 1) {
 		for {
@@ -104,6 +120,12 @@ func netpollBreak() {
 // delay < 0: blocks indefinitely
 // delay == 0: does not block, just polls
 // delay > 0: block for up to that many nanoseconds
+
+// netpoll检查网络连接是否就绪。
+// 返回可运行的goroutine列表。
+// 延迟  < 0：无限期阻止
+// 延迟 == 0：不阻止，仅轮询
+// 延迟  > 0：最多阻塞几纳秒
 func netpoll(delay int64) gList {
 	if epfd == -1 {
 		return gList{}
@@ -120,6 +142,8 @@ func netpoll(delay int64) gList {
 	} else {
 		// An arbitrary cap on how long to wait for a timer.
 		// 1e9 ms == ~11.5 days.
+		// 一个任意的上限，即等待多长时间的定时器。
+		// 1e9 ms == ~11.5 天。
 		waitms = 1e9
 	}
 	var events [128]epollevent
@@ -132,6 +156,7 @@ retry:
 		}
 		// If a timed sleep was interrupted, just return to
 		// recalculate how long we should sleep now.
+		// 如果定时睡眠被打断，只要返回重新计算我们现在应该睡多长时间。
 		if waitms > 0 {
 			return gList{}
 		}
@@ -153,6 +178,7 @@ retry:
 				// netpollBreak could be picked up by a
 				// nonblocking poll. Only read the byte
 				// if blocking.
+				// netpollBreak可以被一个非阻塞的轮询所拾取。只有在阻塞的情况下才会读取该字节。
 				var tmp [16]byte
 				read(int32(netpollBreakRd), noescape(unsafe.Pointer(&tmp[0])), int32(len(tmp)))
 				atomic.Store(&netpollWakeSig, 0)
