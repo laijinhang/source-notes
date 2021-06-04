@@ -444,23 +444,33 @@ func (root *semaRoot) rotateRight(y *sudog) {
 }
 
 // notifyList is a ticket-based notification list used to implement sync.Cond.
+// notifyList 基于 ticket 实现通知列表
 //
 // It must be kept in sync with the sync package.
+// 它必须与sync包保持同步。
 type notifyList struct {
 	// wait is the ticket number of the next waiter. It is atomically
 	// incremented outside the lock.
+	// wait为下一个 waiter 的 ticket 编号
+	// 在没有 lock 的情况下原子自增
 	wait uint32
 
 	// notify is the ticket number of the next waiter to be notified. It can
 	// be read outside the lock, but is only written to with lock held.
+	// notify 是下一个被通知的 waiter 的 ticket 编号
+	// 它可以在没有 lock 的情况下进行读取，但只有在持有 lock 的情况下才能进行协
 	//
 	// Both wait & notify can wrap around, and such cases will be correctly
 	// handled as long as their "unwrapped" difference is bounded by 2^31.
 	// For this not to be the case, we'd need to have 2^31+ goroutines
 	// blocked on the same condvar, which is currently not possible.
+	// wait 和 notify 会产生 wrap around，只要它们 "unwrapped"
+	// 的差别下雨 2^31，这种情况可以被正常处理。对于 wrap around 的情况而言，
+	// 我们需要超过 2^31+ 个 goroutine 阻塞在相同的 condvar 上，这是不可能的。
 	notify uint32
 
 	// List of parked waiters.
+	// waiter 列表
 	lock mutex
 	head *sudog
 	tail *sudog
@@ -472,6 +482,11 @@ func less(a, b uint32) bool {
 	return int32(a-b) < 0
 }
 
+/*
+当一个Cond调用Wait方法时候，向wait字段加1，并返回一个ticket编号：
+notifyListAdd 将调用者添加到通知列表，以便接收通知。
+调用者最终必须调用 notifyListWait 等待这样的通知，并传递返回的 ticket 编号。
+*/
 // notifyListAdd adds the caller to a notify list such that it can receive
 // notifications. The caller must eventually call notifyListWait to wait for
 // such a notification, passing the returned ticket number.
@@ -479,9 +494,15 @@ func less(a, b uint32) bool {
 func notifyListAdd(l *notifyList) uint32 {
 	// This may be called concurrently, for example, when called from
 	// sync.Cond.Wait while holding a RWMutex in read mode.
+	// 这可以并发调用，例如，当在 read 模式下保持 RWMutex 时从sync.Cond.Wait 调用时。s
 	return atomic.Xadd(&l.wait, 1) - 1
 }
 
+/*
+而后使用这个 ticket 编号来等待通知，这个过程会将等待通知的 goroutine 进行停泊，进入等待状态，
+并将其M与P解绑，从而将G从M身上剥离，放入等待队列sudog中：
+notifyListWait 等待通知。如果在调用 notifyListAdd 后发送了一个，则立即返回。否则，它会阻塞。
+*/
 // notifyListWait waits for a notification. If one has been sent since
 // notifyListAdd was called, it returns immediately. Otherwise, it blocks.
 //go:linkname notifyListWait sync.runtime_notifyListWait
@@ -489,6 +510,7 @@ func notifyListWait(l *notifyList, t uint32) {
 	lockWithRank(&l.lock, lockRankNotifyList)
 
 	// Return right away if this ticket has already been notified.
+	// 如果 ticket 编号对应的 goroutinue 已经被通知到，则立即返回
 	if less(t, l.notify) {
 		unlock(&l.lock)
 		return
@@ -510,6 +532,7 @@ func notifyListWait(l *notifyList, t uint32) {
 		l.tail.next = s
 	}
 	l.tail = s
+	// 将 M/P/G 解绑，并将 G 调整位等待状态，放入 sudog 等待队列中
 	goparkunlock(&l.lock, waitReasonSyncCondWait, traceEvGoBlockCond, 3)
 	if t0 != 0 {
 		blockevent(s.releasetime-t0, 2)
@@ -517,17 +540,23 @@ func notifyListWait(l *notifyList, t uint32) {
 	releaseSudog(s)
 }
 
+/*
+notifyListNotifyAll 通知列表里的所有人
+*/
 // notifyListNotifyAll notifies all entries in the list.
 //go:linkname notifyListNotifyAll sync.runtime_notifyListNotifyAll
 func notifyListNotifyAll(l *notifyList) {
 	// Fast-path: if there are no new waiters since the last notification
 	// we don't need to acquire the lock.
+	// Fast-path：如果上次通知后没有新的 waiter
+	// 则无需加锁
 	if atomic.Load(&l.wait) == atomic.Load(&l.notify) {
 		return
 	}
 
 	// Pull the list out into a local variable, waiters will be readied
 	// outside the lock.
+	// 从列表中取一个，保存到局部变量，waiter 则可以无锁的情况下 ready
 	lockWithRank(&l.lock, lockRankNotifyList)
 	s := l.head
 	l.head = nil
@@ -537,10 +566,14 @@ func notifyListNotifyAll(l *notifyList) {
 	// value of wait because any previous waiters are already in the list
 	// or will notice that they have already been notified when trying to
 	// add themselves to the list.
+	// 更新要通知的下一个 ticket。
+	// 可以将它设置为等待的当前值，因为任何以前的 waiter 已经在列表中，
+	// 或者会在他们尝试将自己添加到列表时已经收到通知。
 	atomic.Store(&l.notify, atomic.Load(&l.wait))
 	unlock(&l.lock)
 
 	// Go through the local list and ready all waiters.
+	// 遍历整个本地队列，病 ready 所有的 waiter
 	for s != nil {
 		next := s.next
 		s.next = nil
@@ -549,11 +582,18 @@ func notifyListNotifyAll(l *notifyList) {
 	}
 }
 
+/*
+当调用Signal时，会有一个在等待的goroutine被通知到，具体过程就是从sudog列表中找到
+要通知的goroutine，而后将其goready来等待调度循环将其调度：
+notifyListNotifyOne 通知列表中的一个条目
+*/
 // notifyListNotifyOne notifies one entry in the list.
 //go:linkname notifyListNotifyOne sync.runtime_notifyListNotifyOne
 func notifyListNotifyOne(l *notifyList) {
 	// Fast-path: if there are no new waiters since the last notification
 	// we don't need to acquire the lock at all.
+	// Fast-path：如果上次通知后没有新的 waiter
+	// 则无需加锁
 	if atomic.Load(&l.wait) == atomic.Load(&l.notify) {
 		return
 	}
@@ -561,6 +601,7 @@ func notifyListNotifyOne(l *notifyList) {
 	lockWithRank(&l.lock, lockRankNotifyList)
 
 	// Re-check under the lock if we need to do anything.
+	// slow-path 的二次检查
 	t := l.notify
 	if t == atomic.Load(&l.wait) {
 		unlock(&l.lock)
@@ -568,11 +609,15 @@ func notifyListNotifyOne(l *notifyList) {
 	}
 
 	// Update the next notify ticket number.
+	// 更新下一个需要唤醒的 ticket 编号
 	atomic.Store(&l.notify, t+1)
 
 	// Try to find the g that needs to be notified.
 	// If it hasn't made it to the list yet we won't find it,
 	// but it won't park itself once it sees the new notify number.
+	// 尝试找到需要被通知的 g
+	// 如果目前还没来的及入队，是无法找到的
+	// 但是，当它看到编号已经发生改变是不会被 park 的
 	//
 	// This scan looks linear but essentially always stops quickly.
 	// Because g's queue separately from taking numbers,
@@ -583,6 +628,12 @@ func notifyListNotifyOne(l *notifyList) {
 	// be too long. This applies even when the g is missing:
 	// it hasn't yet gotten to sleep and has lost the race to
 	// the (few) other g's that we find on the list.
+	//
+	// 这个查找过程看起来是线性复杂度，但实际上很快就停止了
+	// 因为 g 的队列与获取编号不同，因而队列中会出现少量重排，但我们希望找到靠前的 g
+	// 而 g 只有在不再 race 后才会排在靠前的位置，因此这个迭代也不会太久，
+	// 同时，即使找不到g，这个情况也成立：
+	// 它还没有休眠，并且已经失去了我们在队列中找到的（少数）其他 g 的race。
 	for p, s := (*sudog)(nil), l.head; s != nil; p, s = s, s.next {
 		if s.ticket == t {
 			n := s.next

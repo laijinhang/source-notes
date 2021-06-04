@@ -19,6 +19,8 @@ func add(p unsafe.Pointer, x uintptr) unsafe.Pointer {
 // getg returns the pointer to the current g.
 // The compiler rewrites calls to this function into instructions
 // that fetch the g directly (from TLS or from the dedicated register).
+// getg返回指向当前g的指针。也就是当前执行的协程
+// 编译器将对此函数的调用重写为直接（从TLS或专用寄存器）获取g的指令。
 func getg() *g
 
 // mcall switches from the g to the g0 stack and invokes fn(g),
@@ -38,15 +40,22 @@ func getg() *g
 func mcall(fn func(*g))
 
 // systemstack runs fn on a system stack.
+// systemstack在系统堆栈上运行fn。
 // If systemstack is called from the per-OS-thread (g0) stack, or
 // if systemstack is called from the signal handling (gsignal) stack,
 // systemstack calls fn directly and returns.
+// 如果从每个操作系统线程(G0)堆栈调用systemstack，
+// 或者从信号处理(Gignal)堆栈调用systemstack，
+// 则systemstack直接调用fn并返回。
 // Otherwise, systemstack is being called from the limited stack
 // of an ordinary goroutine. In this case, systemstack switches
 // to the per-OS-thread stack, calls fn, and switches back.
 // It is common to use a func literal as the argument, in order
 // to share inputs and outputs with the code around the call
 // to system stack:
+// 否则，将从普通goroutine的有限堆栈调用systemstack。在这种情况下，
+// systemstack切换到每操作系统线程堆栈，调用fn，然后切换回。通常使用
+// func literal作为参数，以便在调用系统堆栈时与代码共享输入和输出
 //
 //	... set up y ...
 //	systemstack(func() {
@@ -85,6 +94,13 @@ func badsystemstack() {
 // memmove for more details.
 //
 // The (CPU-specific) implementations of this function are in memclr_*.s.
+//
+// memclrNoHeapPointers清除从ptr开始的n个字节
+// 通常情况下你应该使用typedmemclr，而memclrNoHeapPointers应该仅在调用方知道*ptr
+// 不包含堆指针的情况下使用，因为*ptr只能是下面两种情况：
+// 1. *ptr是初始化过的内存，且其类型不是指针。
+// 2. *ptr是未初始化的内存（例如刚被新分配时使用的内存），则指包含"junk"垃圾内存
+// 见 memclr_*.s
 //
 //go:noescape
 func memclrNoHeapPointers(ptr unsafe.Pointer, n uintptr)
@@ -155,6 +171,9 @@ func os_fastrand() uint32 { return fastrand() }
 //go:noescape
 func memequal(a, b unsafe.Pointer, size uintptr) bool
 
+/*
+noescape可以在逃逸分析中隐藏一个指针，让这个指针在逃逸分析中不会被检测为逃逸。
+*/
 // noescape hides a pointer from escape analysis.  noescape is
 // the identity function but escape analysis doesn't think the
 // output depends on the input.  noescape is inlined and currently
@@ -261,11 +280,15 @@ func goexit(neverCallThisFunction)
 func publicationBarrier()
 
 // getcallerpc returns the program counter (PC) of its caller's caller.
+// Getcallerpc返回其调用方的程序计数器(PC)。
 // getcallersp returns the stack pointer (SP) of its caller's caller.
+// Getcallersp返回其调用方调用方的堆栈指针(SP)。
 // The implementation may be a compiler intrinsic; there is not
 // necessarily code implementing this on every platform.
+// 该实现可以是编译器固有的；不一定在每个平台上都有实现它的代码。
 //
 // For example:
+// 例如：
 //
 //	func f(arg1, arg2, arg3 int) {
 //		pc := getcallerpc()
@@ -274,27 +297,36 @@ func publicationBarrier()
 //
 // These two lines find the PC and SP immediately following
 // the call to f (where f will return).
+// 这两行代码在调用f之后立即查找PC和SP(其中f将返回)。
 //
 // The call to getcallerpc and getcallersp must be done in the
 // frame being asked about.
+// 对getcallerpc和getcallersp的调用必须在被询问的帧中完成。
 //
 // The result of getcallersp is correct at the time of the return,
 // but it may be invalidated by any subsequent call to a function
 // that might relocate the stack in order to grow or shrink it.
+// Getcallersp的结果在返回时是正确的，但它可能会被任何后续调用失效，
+// 该函数可能会重新定位堆栈以增大或缩小堆栈。
 // A general rule is that the result of getcallersp should be used
 // immediately and can only be passed to nosplit functions.
+// 一般规则是，getcallersp的结果应该立即使用，并且只能传递给noplit函数。
 
 //go:noescape
 func getcallerpc() uintptr
 
 //go:noescape
-func getcallersp() uintptr // implemented as an intrinsic on all platforms
+func getcallersp() uintptr // implemented as an intrinsic on all platforms	// 在所有平台上作为内部函数实现
 
 // getclosureptr returns the pointer to the current closure.
+// Getclosureptr返回指向当前闭包的指针。
 // getclosureptr can only be used in an assignment statement
 // at the entry of a function. Moreover, go:nosplit directive
 // must be specified at the declaration of caller function,
 // so that the function prolog does not clobber the closure register.
+// Getclosureptr只能在函数入口处的赋值语句中使用。
+// 此外，GO：NOSPLIT指令必须在调用者函数的声明中指定，
+// 这样函数Prolog就不会破坏闭包寄存器。
 // for example:
 //
 //	//go:nosplit
@@ -304,6 +336,7 @@ func getcallersp() uintptr // implemented as an intrinsic on all platforms
 //
 // The compiler rewrites calls to this function into instructions that fetch the
 // pointer from a well-known register (DX on x86 architecture, etc.) directly.
+// 编译器将对此函数的调用重写为直接从已知寄存器（x86体系结构上的DX等）获取指针的指令。
 func getclosureptr() uintptr
 
 //go:noescape
@@ -318,11 +351,14 @@ func rt0_go()
 // the calling Go function that it should not jump
 // to deferreturn.
 // in asm_*.s
+// rereturn 0是用于从deferproc返回0的存根。它在deferproc的最后被调用，
+// 以通知调用GO函数它不应该跳到延迟返回。在ASM_*.s中
 func return0()
 
 // in asm_*.s
 // not called directly; definitions here supply type information for traceback.
 // These must have the same signature (arg pointer map) as reflectcall.
+// 在asm _ *。s中不直接调用；此处的定义提供了用于回溯的类型信息。
 func call16(typ, fn, stackArgs unsafe.Pointer, stackArgsSize, stackRetOffset, frameSize uint32, regArgs *abi.RegArgs)
 func call32(typ, fn, stackArgs unsafe.Pointer, stackArgsSize, stackRetOffset, frameSize uint32, regArgs *abi.RegArgs)
 func call64(typ, fn, stackArgs unsafe.Pointer, stackArgsSize, stackRetOffset, frameSize uint32, regArgs *abi.RegArgs)
