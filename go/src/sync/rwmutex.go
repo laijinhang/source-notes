@@ -69,7 +69,9 @@ const rwmutexMaxReaders = 1 << 30
 // 它不应该被用于递归读锁；一个阻塞的Lock调用排除了新的读者获取锁。参见RWMutex类型的文档。
 /*
 	读锁：
-	1、
+	1、尝试获取读锁，获取不成功（写锁已经被获取）的话，会被阻塞
+	2、当前读锁数量加一
+	3、获取读锁成功
 */
 func (rw *RWMutex) RLock() {
 	if race.Enabled {
