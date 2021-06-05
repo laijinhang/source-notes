@@ -15,34 +15,47 @@ import (
 
 // FD is a file descriptor. The net and os packages use this type as a
 // field of a larger type representing a network connection or OS file.
+// FD是GO中通用的文件描述符类型，net包和os包用FD来表示网络连接或者文件，FD提供了
+// 用户接口层到runtime之间逻辑处理。此处的pollDesc是poll.pollDesc而非runtime.pollDesc，
+// poll.pollDesc在internal/poll/fd_poll_runtime.go中实现了runtime交互的接口。
 type FD struct {
 	// Lock sysfd and serialize access to Read and Write methods.
+	// 锁定sysfd并序列化对读写方法的访问。
 	fdmu fdMutex
 
 	// System file descriptor. Immutable until Close.
+	// 系统文件描述符。关闭前不变。
 	Sysfd int
 
 	// I/O poller.
+	// I/O轮询器。
 	pd pollDesc
 
 	// Writev cache.
+	// 写缓存。在一次函数调用中读、写多个非连续缓冲区，这里主要是写
 	iovecs *[]syscall.Iovec
 
 	// Semaphore signaled when file is closed.
+	// 关闭文件时发出信号。
 	csema uint32
 
 	// Non-zero if this file has been set to blocking mode.
+	// 如果此文件已设置为阻止模式，则为非零。
 	isBlocking uint32
 
 	// Whether this is a streaming descriptor, as opposed to a
 	// packet-based descriptor like a UDP socket. Immutable.
+	// 这是否是流描述符，而不是基于数据包的描述符（如UDP套接字）。不变的。
 	IsStream bool
 
 	// Whether a zero byte read indicates EOF. This is false for a
 	// message based socket connection.
+	// 零字节读取是否表示EOF。
+	// 对于基于消息的套接字连接，这是错误的。
 	ZeroReadIsEOF bool
 
 	// Whether this is a file rather than a network socket.
+	// 是否系统中真实文件还是socket连接
 	isFile bool
 }
 
@@ -51,8 +64,12 @@ type FD struct {
 // The net argument is a network name from the net package (e.g., "tcp"),
 // or "file".
 // Set pollable to true if fd should be managed by runtime netpoll.
+// 初始化FD。应已设置Sysfd字段。这可以在单个FD上调用多次。
+// net参数是来自net包（例如，“tcp”）或“file”的网络名称。
+// 如果fd应由运行时netpoll管理，则将pollable设置为true。
 func (fd *FD) Init(net string, pollable bool) error {
 	// We don't actually care about the various network types.
+	// 我们实际上并不关心各种网络类型。
 	if net == "file" {
 		fd.isFile = true
 	}
@@ -64,6 +81,7 @@ func (fd *FD) Init(net string, pollable bool) error {
 	if err != nil {
 		// If we could not initialize the runtime poller,
 		// assume we are using blocking mode.
+		// 如果我们不能初始化运行时轮询器，假设我们使用的是阻塞模式
 		fd.isBlocking = 1
 	}
 	return err
@@ -71,9 +89,14 @@ func (fd *FD) Init(net string, pollable bool) error {
 
 // Destroy closes the file descriptor. This is called when there are
 // no remaining references.
+// destroy关闭文件描述符。当没有剩余的引用时，会调用这个功能。
+/*
+	1、fd轮询器
+*/
 func (fd *FD) destroy() error {
 	// Poller may want to unregister fd in readiness notification mechanism,
 	// so this must be executed before CloseFunc.
+	// 轮询器可能想在就绪的通知机制中取消对fd的注册，所以必须在CloseFunc之前执行这个。
 	fd.pd.close()
 
 	// We don't use ignoringEINTR here because POSIX does not define
@@ -81,6 +104,9 @@ func (fd *FD) destroy() error {
 	// If the descriptor is indeed closed, using a loop would race
 	// with some other goroutine opening a new descriptor.
 	// (The Linux kernel guarantees that it is closed on an EINTR error.)
+	// 我们在这里不使用ignoringEINTR，因为POSIX没有定义如果close返回EINTR，描述符是否关闭。
+	// 如果描述符确实被关闭了，使用一个循环会与其他goroutine打开一个新的描述符相竞争。
+	// (Linux内核保证在EINTR错误时关闭它)。
 	err := CloseFunc(fd.Sysfd)
 
 	fd.Sysfd = -1
@@ -258,6 +284,7 @@ func (fd *FD) ReadMsg(p []byte, oob []byte, flags int) (int, int, int, syscall.S
 }
 
 // Write implements io.Writer.
+// Write 实现 io.Writer.
 func (fd *FD) Write(p []byte) (int, error) {
 	if err := fd.writeLock(); err != nil {
 		return 0, err
@@ -294,10 +321,13 @@ func (fd *FD) Write(p []byte) (int, error) {
 }
 
 // Pwrite wraps the pwrite system call.
+// Pwrite封装了pwrite系统调用。
 func (fd *FD) Pwrite(p []byte, off int64) (int, error) {
 	// Call incref, not writeLock, because since pwrite specifies the
 	// offset it is independent from other writes.
 	// Similarly, using the poller doesn't make sense for pwrite.
+	// 调用incref，而不是writeLock，因为既然pwrite指定了偏移量，
+	// 那么它就独立于其他写法。同样，使用轮询器对pwrite也没有意义。
 	if err := fd.incref(); err != nil {
 		return 0, err
 	}
@@ -380,12 +410,19 @@ func (fd *FD) WriteMsg(p []byte, oob []byte, sa syscall.Sockaddr) (int, int, err
 }
 
 // Accept wraps the accept network call.
+// 包装接受网络呼叫。
 func (fd *FD) Accept() (int, syscall.Sockaddr, string, error) {
+	// 获取读锁
 	if err := fd.readLock(); err != nil {
 		return -1, nil, "", err
 	}
 	defer fd.readUnlock()
 
+	// fd.pd.prepareRead 检查当前fd是否允许accept，
+	// 实际上是检查更底层的 pollDesc 是否可读。
+	// 检查完毕之后，尝试调用 accept 获取已连接的socket，注意此待代码在for循环内，
+	// 说明 Accept 是阻塞的，直到有连接进来；当遇到 EAGIN 和 ECONNABORTED 错误
+	// 会重试，其他错误都抛给更上一层。
 	if err := fd.pd.prepareRead(fd.isFile); err != nil {
 		return -1, nil, "", err
 	}
@@ -577,6 +614,7 @@ func (fd *FD) RawWrite(f func(uintptr) bool) error {
 }
 
 // ignoringEINTRIO is like ignoringEINTR, but just for IO calls.
+// ignoringEINTRIO和ignoringEINTR一样，但只是针对IO调用。
 func ignoringEINTRIO(fn func(fd int, p []byte) (int, error), fd int, p []byte) (int, error) {
 	for {
 		n, err := fn(fd, p)

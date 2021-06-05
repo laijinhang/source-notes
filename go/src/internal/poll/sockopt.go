@@ -10,6 +10,7 @@ package poll
 import "syscall"
 
 // SetsockoptInt wraps the setsockopt network call with an int argument.
+// SetsockoptInt用int参数包装setsockopt网络调用。
 func (fd *FD) SetsockoptInt(level, name, arg int) error {
 	if err := fd.incref(); err != nil {
 		return err

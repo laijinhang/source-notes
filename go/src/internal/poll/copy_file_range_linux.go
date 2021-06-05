@@ -10,7 +10,7 @@ import (
 	"syscall"
 )
 
-var copyFileRangeSupported int32 = -1 // accessed atomically
+var copyFileRangeSupported int32 = -1 // accessed atomically	// 以原子方式访问
 
 const maxCopyFileRangeRound = 1 << 30
 

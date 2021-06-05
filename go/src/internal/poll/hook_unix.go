@@ -10,7 +10,9 @@ package poll
 import "syscall"
 
 // CloseFunc is used to hook the close call.
+// CloseFunc是用来钩住关闭调用的。
 var CloseFunc func(int) error = syscall.Close
 
 // AcceptFunc is used to hook the accept call.
+// AcceptFunc用于钩住接受调用。
 var AcceptFunc func(int) (int, syscall.Sockaddr, error) = syscall.Accept
