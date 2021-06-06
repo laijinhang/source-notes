@@ -343,8 +343,6 @@ var (
 const pkgdef = "__.PKGDEF"
 
 var (
-	// Set if we see an object compiled by the host compiler that is not
-	// from a package that is known to support internal linking mode.
 	// externalobj is set to true if we see an object compiled by
 	// the host compiler that is not from a package that is known
 	// to support internal linking mode.
