@@ -4270,7 +4270,14 @@ func exitsyscall0(gp *g) {
 	if schedEnabled(gp) {
 		_p_ = pidleget()
 	}
+	var locked bool
 	if _p_ == nil {
+		// Below, we stoplockedm if gp is locked. globrunqput releases
+		// ownership of gp, so we must check if gp is locked prior to
+		// committing the release by unlocking sched.lock, otherwise we
+		// could race with another M transitioning gp from unlocked to
+		// locked.
+		locked = gp.lockedm != 0
 		globrunqput(gp)
 	} else if atomic.Load(&sched.sysmonwait) != 0 {
 		atomic.Store(&sched.sysmonwait, 0)
@@ -4281,7 +4288,7 @@ func exitsyscall0(gp *g) {
 		acquirep(_p_)
 		execute(gp, false) // Never returns.
 	}
-	if gp.lockedm != 0 {
+	if locked {
 		// Wait until another thread schedules gp and so m again.
 		//
 		// N.B. lockedm must be this M, as this g was running on this M
