@@ -234,14 +234,26 @@ type funcval struct {
 	// variable-size, fn-specific data here
 }
 
+/*
+iface表示non-empty interface，即包含方法的接口
+
+一般常用于定义接口
+
+interface可以作为中间层进行解耦，将具体的实现和调用完全分离，上层的模块就不需要依赖某一个具体的实现，只需要依赖一个定义好的接口。
+*/
 type iface struct {
 	tab  *itab
 	data unsafe.Pointer
 }
 
+/*
+eface表示empty interface，不含任何方法
+
+一般用于存数据，如变量等
+*/
 type eface struct {
-	_type *_type
-	data  unsafe.Pointer
+	_type *_type         // 实际类型，_type是Go语言中所有类型的公共描述，几乎所有的数据结构都可以抽象成_type
+	data  unsafe.Pointer // 指向实际数据
 }
 
 func efaceOf(ep *interface{}) *eface {
@@ -985,16 +997,20 @@ type funcinl struct {
 	line  int
 }
 
+/*
+每个itab都占用32字节的空间
+*/
 // layout of Itab known to compilers
 // allocated in non-garbage-collected memory
 // Needs to be in sync with
 // ../cmd/compile/internal/gc/reflect.go:/^func.WriteTabs.
 type itab struct {
-	inter *interfacetype
-	_type *_type
-	hash  uint32 // copy of _type.hash. Used for type switches.
+	inter *interfacetype // 接口自身的元信息
+	_type *_type         // 具体类型的元信息
+	hash  uint32         // copy of _type.hash. Used for type switches.	// _type.hash的副本。用于类型转换（也就是断言）。
 	_     [4]byte
-	fun   [1]uintptr // variable sized. fun[0]==0 means _type does not implement inter.
+	// 函数指针，指向具体类型所实现的方法
+	fun [1]uintptr // variable sized. fun[0]==0 means _type does not implement inter.
 }
 
 // Lock-free stack node.
