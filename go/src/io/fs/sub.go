@@ -22,13 +22,15 @@ type SubFS interface {
 // Sub returns an FS corresponding to the subtree rooted at fsys's dir.
 // Sub返回一个FS，对应于以fsys的dir为根的子树。
 //
-// If fs implements SubFS, Sub calls returns fsys.Sub(dir).
-// Otherwise, if dir is ".", Sub returns fsys unchanged.
+// If dir is ".", Sub returns fsys unchanged.
+// Otherwise, if fs implements SubFS, Sub returns fsys.Sub(dir).
 // Otherwise, Sub returns a new FS implementation sub that,
-// in effect, implements sub.Open(dir) as fsys.Open(path.Join(dir, name)).
+// in effect, implements sub.Open(name) as fsys.Open(path.Join(dir, name)).
 // The implementation also translates calls to ReadDir, ReadFile, and Glob appropriately.
-// 如果fs实现了SubFS，Sub调用返回fsys.Sub(dir)。否则，如果dir是"."，Sub返回fsys而不改变。
-// 否则，Sub返回一个新的FS实现sub，实际上是将sub.Open(dir)实现为fsys.Open(path.Join(dir, name))。
+// 如果dir是"."，Sub返回fsys而不改变。
+// 否则，如果fs实现了SubFS，Sub返回fsys.Sub(dir)。
+// 否则，Sub 返回一个新的 FS 实现 sub。
+// 实际上是把sub.Open(name)实现为fsys.Open(path.Join(dir, name))。
 // 该实现还适当地翻译了对ReadDir、ReadFile和Glob的调用。
 //
 // Note that Sub(os.DirFS("/"), "prefix") is equivalent to os.DirFS("/prefix")
