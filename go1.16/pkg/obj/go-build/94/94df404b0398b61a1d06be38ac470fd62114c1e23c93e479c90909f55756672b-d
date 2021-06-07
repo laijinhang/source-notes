@@ -1,4 +1,0 @@
-./cc_test.go
-./cshared_test.go
-./msan_test.go
-./tsan_test.go

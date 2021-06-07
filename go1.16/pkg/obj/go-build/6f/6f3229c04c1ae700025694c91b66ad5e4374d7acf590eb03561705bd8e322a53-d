@@ -1,3 +1,0 @@
-# test log
-open /proc/sys/net/core/somaxconn
-getenv GODEBUG

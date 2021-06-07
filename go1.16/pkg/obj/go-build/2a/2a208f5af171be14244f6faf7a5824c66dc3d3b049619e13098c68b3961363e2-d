@@ -1,6 +1,0 @@
-./boundary_test.go
-./buffer_test.go
-./bytes_test.go
-./compare_test.go
-./example_test.go
-./reader_test.go

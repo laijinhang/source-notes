@@ -1,5 +1,0 @@
-./swapper.go
-./type.go
-./value.go
-./export_test.go
-./asm.s

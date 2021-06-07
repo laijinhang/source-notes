@@ -1,5 +1,0 @@
-./exportdata.go
-./gcimporter.go
-./iimport.go
-./support.go
-./gcimporter_test.go
