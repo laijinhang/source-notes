@@ -63,11 +63,15 @@
 # If $GOROOT_BOOTSTRAP/bin/go is missing, $(go env GOROOT) is
 # tried for all "go" in $PATH. $HOME/go1.4 by default.
 
+# set -e 的作用是在后面脚本出现错误的时候，就不继续执行下去
 set -e
 
 export GOENV=off
+# 删除环境变量GOBIN
 unset GOBIN # Issue 14340
+# 删除环境变量GOFLAGS
 unset GOFLAGS
+# 删除环境变量GO111MODULE
 unset GO111MODULE
 
 if [ ! -f run.bash ]; then
