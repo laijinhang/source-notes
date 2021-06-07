@@ -122,8 +122,8 @@ var modinfo string
 //   workers.
 
 var (
-	m0           m
-	g0           g
+	m0           m // 代表进程的主线程
+	g0           g // m0的g0，也就是m0.g0 = &g0
 	mcache0      *mcache
 	raceprocctx0 uintptr
 )
@@ -579,7 +579,7 @@ var (
 	// Readers that cannot take the lock may (carefully!) use the atomic
 	// variables below.
 	allglock mutex
-	allgs    []*g
+	allgs    []*g // 保存所有的g
 
 	// allglen and allgptr are atomic variables that contain len(allg) and
 	// &allg[0] respectively. Proper ordering depends on totally-ordered

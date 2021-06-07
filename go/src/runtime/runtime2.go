@@ -356,6 +356,9 @@ func setMNoWB(mp **m, new *m) {
 	(*muintptr)(unsafe.Pointer(mp)).set(new)
 }
 
+/*
+gobuf结构体用于保存goroutine的调度信息，主要包含CPU的几个寄存器的值
+*/
 type gobuf struct {
 	// The offsets of sp, pc, and g are known to (hard-coded in) libmach.
 	//
@@ -370,16 +373,18 @@ type gobuf struct {
 	// typed as a pointer so that any other writes from Go get
 	// write barriers.
 	// 栈指针
-	sp uintptr
+	sp uintptr // 保存CPU的rsp寄存器的值
 	// 程序计数器
-	pc uintptr
+	pc uintptr // 保存CPU的rip寄存器的值
 	// gobuf对应的Goroutine
-	g    guintptr
+	g    guintptr // 记录当前这个gobuf对象属于哪个goroutine
 	ctxt unsafe.Pointer
-	// 系统调用的返回值
+	// 系统调用的返回值，因为从系统调用返回之后如果p被其他工作线程抢占，
+	// 则这个goroutine会被放入全局队列被其它工作线程调度，其它线程需要知道系统调用的返回值
 	ret uintptr
 	lr  uintptr
-	bp  uintptr // for framepointer-enabled architectures
+	// 保存CPU的rip寄存器的值
+	bp uintptr // for framepointer-enabled architectures
 }
 
 // sudog represents a g in a wait list, such as for sending/receiving
@@ -437,12 +442,15 @@ type libcall struct {
 	err  uintptr // error number
 }
 
+/*
+stack结构体主要用来记录goroutine所使用的栈信息，包含栈顶和栈底位置
+*/
 // Stack describes a Go execution stack.
 // The bounds of the stack are exactly [lo, hi),
 // with no implicit data structures on either side.
 type stack struct {
-	lo uintptr
-	hi uintptr
+	lo uintptr // 栈顶，指向内存低地址
+	hi uintptr // 栈底，指向内存高地址
 }
 
 // heldLockInfo gives info on a held lock and the rank of that lock
@@ -829,6 +837,7 @@ type p struct {
 
 	// preempt is set to indicate that this P should be enter the
 	// scheduler ASAP (regardless of what G is running on it).
+	// 抢占调度标志，如果需要抢占调度，设置preempt为true
 	preempt bool
 
 	// Padding is no longer needed. False sharing is now not a worry because p is large enough
@@ -1216,10 +1225,10 @@ func (w waitReason) String() string {
 
 var (
 	allm       *m
-	gomaxprocs int32
-	ncpu       int32
+	gomaxprocs int32 // p的最大值，默认等于ncpu，但可以通过GOMAXPROCS修改
+	ncpu       int32 // 系统中cpu核的数量，程序启动时由runtime代码初始化
 	forcegc    forcegcstate
-	sched      schedt
+	sched      schedt // 调度器结构体对象，记录了调度器的工作状态
 	newprocs   int32
 
 	// allpLock protects P-less reads and size changes of allp, idlepMask,
@@ -1227,7 +1236,7 @@ var (
 	allpLock mutex
 	// len(allp) == gomaxprocs; may change at safe points, otherwise
 	// immutable.
-	allp []*p
+	allp []*p // 保存所有的p，len(allp) == gomaxprocs
 	// Bitmask of Ps in _Pidle list, one bit per P. Reads and writes must
 	// be atomic. Length may change at safe points.
 	//
