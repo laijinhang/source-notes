@@ -290,6 +290,45 @@ func deferproc(siz int32, fn *funcval) { // arguments of fn follow fn
 	// been set and must not be clobbered.
 }
 
+/*
+说明：以下注释，大部分来自[Golang的defer优化](https://www.jishuchi.com/read/data-structures-questions/5099)，此处标出原文
+
+在go1.14中新加入编码（Open-coded）defer类型，编译器在ssa过程会把被延迟的方法直接插入到函数的尾部，避免了运行时的deferproc及deferprocStack操作。
+
+避免了在没有运行时判断下的deferreturn调用，如有运行时判断的逻辑，则deferreturn也会进一步优化，开发编码下的deferreturn不会进行jmpdefer的尾递归调用，而直接在一个循环里遍历执行。
+
+defer的实现原理有三种defer模式类型，编译后一个函数里只会有一种defer模式
+
+一、栈上分配
+在Golang1.13之前的版本中，所有defer都是在堆上分配（deferProc），该机制在编译时会进行两个步骤：
+1. 在defer语句的位置插入 runtime.deferproc，当被执行时，延迟调用会被保存一个为 _defer 记录，并将被延迟调用的入口地址及其参数复制保存，存入Goroutine的调用链表中。
+2. 在函数返回之前的位置插入 runtime.deferreturn，当被执行时，会将延迟调用从Goroutine链表中取出并执行，多个延迟调用则以jmpdefer尾递归调用方式连续执行。
+
+这种机制的主要性能问题存在与每个defer语句产生记录时的内存分配，以及记录参数和完成调用时参数移动的系统调用开销。
+
+二、堆上分配
+在Golang1.13版本中新加入 deferprocStack 实现了在栈上分配的形式来取代 deferproc，相比后者，栈上分配在函数返回后 _defer 便得到释放，省去了内存分配时产生的性能开销，只需适当维护 _defer 的链表即可。
+
+编译器可以取选择使用 deferproc 还是 deferprocStack，通常情况下都会使用 deferprocStack，性能会提升约30%，不过在defer语句出现在了循环语句中，或者无法执行高阶的编译器优化时，亦或者同一个函数中使用了过多的defer时，依然会使用 deferproc
+
+
+栈上分配（deferprocStack），基本跟堆上差不多，只是分配方式改为在栈上分配，压入的函数调用栈存有 _defer 记录，另外编译器在ssa过程中会预留 defer空间
+
+SSA代表 static single-assignment，是一种IR（中间表示代码），要保证每个变量只被赋值一次。这个能帮助简化编译器的优化算法。简单来说,使用ssa可以使二进制文件大小减少了30%，性能提升5%-35%等.
+
+三、开放编码
+Golang 1.14 版本继续加入了开发编码（open coded），该机制会将延迟调用直接插入函数返回之前，省去了运行时的 deferproc 或 deferprocStack 操作，在运行时的 deferreturn 也不会进行尾递归调用，而是直接在一个循环中遍历所有延迟函数执行。
+这种机制使得 defer 的开销几乎可以忽略，唯一的运行时成本就是存储参与延迟调用的相关信息，不过使用这个机制还需要三个条件：
+
+没有禁用编译器优化，即没有设置 -gcflags “-N”.
+函数内 defer 的数量不超过 8 个，且返回语句与延迟语句个数的乘积不超过 15.
+defer 不是在循环语句中。
+此外该机制还引入了一种元素 —— 延迟比特（defer bit）,用于运行时记录每个 defer 是否被执行（尤其是在条件判断分支中的 defer），从而便于判断最后的延迟调用该执行哪些函数。
+
+延迟编译的原理：
+同一个函数内每出现一个 defer 都会为其分配 1个比特，如果被执行到则设为 1，否则设为 0，当到达函数返回之前需要判断延迟调用时，则用掩码判断每个位置的比特，若为 1 则调用延迟函数，否则跳过。
+为了轻量，官方将延迟比特限制为 1 个字节，即 8 个比特，这就是为什么不能超过 8 个 defer 的原因，若超过依然会选择堆栈分配，但显然大部分情况不会超过 8 个。
+*/
 // deferprocStack queues a new deferred function with a defer record on the stack.
 // The defer record must have its siz and fn fields initialized.
 // All other fields can contain junk.
@@ -299,6 +338,7 @@ func deferproc(siz int32, fn *funcval) { // arguments of fn follow fn
 // until the defer record is spliced into the gp._defer list.
 //go:nosplit
 func deferprocStack(d *_defer) {
+	// 获取当前的g
 	gp := getg()
 	if gp.m.curg != gp {
 		// go code on the system stack can't defer
