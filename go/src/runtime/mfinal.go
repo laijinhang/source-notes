@@ -29,13 +29,20 @@ type finblock struct {
 	fin     [(_FinBlockSize - 2*sys.PtrSize - 2*4) / unsafe.Sizeof(finalizer{})]finalizer
 }
 
-var finlock mutex  // protects the following variables
-var fing *g        // goroutine that runs finalizers
+var finlock mutex // protects the following variables
+// 用于运行finalizer的g，只有一个g，不用的时候休眠，需要的时候再换线
+var fing *g // goroutine that runs finalizers
+// finalizer的全局队列，这里是已经设置的finalizer串成的链表
 var finq *finblock // list of finalizers that are to be executed
+// 已经释放的finblock的链表，用于finc缓存起来，以后需要使用的时候可以直接取走，避免再走一遍内存分配了
 var finc *finblock // cache of free blocks
 var finptrmask [_FinBlockSize / sys.PtrSize / 8]byte
+
+/* fing的标志为，通过fingwait和fingwake，来确定释放需要唤醒fing */
 var fingwait bool
 var fingwake bool
+
+// 所有的blocks串成的链表
 var allfin *finblock // list of all blocks
 
 // NOTE: Layout known to queuefinalizer.
@@ -151,9 +158,14 @@ var (
 	fingRunning bool
 )
 
+/*
+这个函数是保证，创建了finalizer之后，有一个goroutine去运行，这里只运行一次，这个goroutine会由全局变量 fing 记录
+*/
 func createfing() {
 	// start the finalizer goroutine exactly once
+	// 创建一个goroutine，进行时刻监控运行
 	if fingCreate == 0 && atomic.Cas(&fingCreate, 0, 1) {
+		// 开启一个goroutine运行
 		go runfinq()
 	}
 }
@@ -168,17 +180,21 @@ func runfinq() {
 
 	for {
 		lock(&finlock)
+		// 获取 finq 全局队列，并清空全局队列
 		fb := finq
 		finq = nil
 		if fb == nil {
+			// 如果全局队列为空，休眠当前g，等待被唤醒
 			gp := getg()
 			fing = gp
+			// 设置fing的状态标志位
 			fingwait = true
 			goparkunlock(&finlock, waitReasonFinalizerWait, traceEvGoBlock, 1)
 			continue
 		}
 		argRegs = intArgRegs
 		unlock(&finlock)
+		// 循环执行runq链表的fin数组
 		if raceenabled {
 			racefingo()
 		}
@@ -186,6 +202,7 @@ func runfinq() {
 			for i := fb.cnt; i > 0; i-- {
 				f := &fb.fin[i-1]
 
+				// 获取存储当前finalizer的返回数据的大小，如果比之前大，则分配
 				var regs abi.RegArgs
 				var framesz uintptr
 				if argRegs > 0 {
@@ -222,6 +239,7 @@ func runfinq() {
 					// memory. That means we have to clear
 					// it before writing to it to avoid
 					// confusing the write barrier.
+					// 清空frame内存存储
 					*(*[2]uintptr)(frame) = [2]uintptr{}
 				}
 				switch f.fint.kind & kindMask {
@@ -241,6 +259,7 @@ func runfinq() {
 				default:
 					throw("bad kind in runfinq")
 				}
+				// 调用finalizer函数
 				fingRunning = true
 				reflectcall(nil, unsafe.Pointer(f.fn), frame, uint32(framesz), uint32(framesz), uint32(framesz), &regs)
 				fingRunning = false
@@ -249,11 +268,13 @@ func runfinq() {
 				// before hiding them from markroot.
 				// This also ensures these will be
 				// clear if we reuse the finalizer.
+				// 清空finalizer的属性
 				f.fn = nil
 				f.arg = nil
 				f.ot = nil
 				atomic.Store(&fb.cnt, i-1)
 			}
+			// 将已经完成的finalizer放入finc以作缓存，避免再次分配内存
 			next := fb.next
 			lock(&finlock)
 			fb.next = finc
@@ -365,6 +386,7 @@ func SetFinalizer(obj interface{}, finalizer interface{}) {
 
 	// find the containing object
 	// 找到包含的对象
+	// 在内存中找不到分配的地址时 base==0，setFinalizer 是在内存回收的时候调用，没有分配就不会回收
 	base, _, _ := findObject(uintptr(e.data), 0, 0)
 
 	if base == 0 {
@@ -402,6 +424,7 @@ func SetFinalizer(obj interface{}, finalizer interface{}) {
 
 	f := efaceOf(&finalizer)
 	ftyp := f._type
+	// 如果 finalizer type == nil，尝试移除（没有的话，就不需要移除了）
 	if ftyp == nil {
 		// switch to system stack and remove finalizer
 		systemstack(func() {
@@ -444,6 +467,7 @@ func SetFinalizer(obj interface{}, finalizer interface{}) {
 	throw("runtime.SetFinalizer: cannot pass " + etyp.string() + " to finalizer " + ftyp.string())
 okarg:
 	// compute size needed for return parameters
+	// 计算返回参数的大小并进行对齐
 	nret := uintptr(0)
 	for _, t := range ft.out() {
 		nret = alignUp(nret, uintptr(t.align)) + uintptr(t.size)
@@ -451,9 +475,11 @@ okarg:
 	nret = alignUp(nret, sys.PtrSize)
 
 	// make sure we have a finalizer goroutine
+	// 确保 finalizer 有一个 goroutine
 	createfing()
 
 	systemstack(func() {
+		// 却换到g0，添加finalizer，并且不能重复设置
 		if !addfinalizer(e.data, (*funcval)(f.data), nret, fint, ot) {
 			throw("runtime.SetFinalizer: finalizer already set")
 		}

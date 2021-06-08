@@ -62,7 +62,24 @@ if err = setDefaultSockopts(s, family, sotype, ipv6only); err != nil {
 ```
 
 ##### 5. 创建网络描述符
+**linux：**
+```go
+net/fd_unix.go
 
+func newFD(sysfd, family, sotype int, net string) (*netFD, error) {
+	ret := &netFD{
+		pfd: poll.FD{
+			Sysfd:         sysfd,
+			IsStream:      sotype == syscall.SOCK_STREAM,
+			ZeroReadIsEOF: sotype != syscall.SOCK_DGRAM && sotype != syscall.SOCK_RAW,
+		},
+		family: family,
+		sotype: sotype,
+		net:    net,
+	}
+	return ret, nil
+}
+```
 ##### 6. 监听端口
 
 ```go

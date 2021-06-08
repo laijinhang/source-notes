@@ -478,9 +478,13 @@ type mspan struct {
 	needzero   uint8         // needs to be zeroed before allocation
 	elemsize   uintptr       // computed from sizeclass or from npages
 	// 申请大对象内存块会用到，mspan的数据截止位置
-	limit       uintptr  // end of data in span
-	speciallock mutex    // guards specials list
-	specials    *special // linked list of special records sorted by offset.
+	limit       uintptr // end of data in span
+	speciallock mutex   // guards specials list
+	/*
+		当前span上所有对象的special串成链表
+		special中有个offset，就是数据对象在span上的offset，通过offset，将数据对象和special关联起来
+	*/
+	specials *special // linked list of special records sorted by offset.
 }
 
 func (s *mspan) base() uintptr {
@@ -1695,9 +1699,10 @@ const (
 
 //go:notinheap
 type special struct {
-	next   *special // linked list in span
-	offset uint16   // span offset of object
-	kind   byte     // kind of special
+	next *special // linked list in span
+	// 数据对象在span上的offset
+	offset uint16 // span offset of object
+	kind   byte   // kind of special
 }
 
 // spanHasSpecials marks a span as having specials in the arena bitmap.
@@ -1716,6 +1721,9 @@ func spanHasNoSpecials(s *mspan) {
 	atomic.And8(&ha.pageSpecials[arenaPage/8], ^(uint8(1) << (arenaPage % 8)))
 }
 
+/*
+添加special
+*/
 // Adds the special record s to the list of special records for
 // the object p. All fields of s should be filled in except for
 // offset & next, which this routine will fill in.
@@ -1727,7 +1735,7 @@ func addspecial(p unsafe.Pointer, s *special) bool {
 	if span == nil {
 		throw("addspecial on invalid pointer")
 	}
-
+	/* 同 removerspecial一样，确保这个span已经清扫过了 */
 	// Ensure that the span is swept.
 	// Sweeping accesses the specials list w/o locks, so we have
 	// to synchronize with it. And it's just much safer.
@@ -1747,6 +1755,7 @@ func addspecial(p unsafe.Pointer, s *special) bool {
 			break
 		}
 		if offset == uintptr(x.offset) && kind == x.kind {
+			// 已经存在了，不能在增加了，一个数据对象，只能绑定一个finalizer
 			unlock(&span.speciallock)
 			releasem(mp)
 			return false // already exists
@@ -1758,6 +1767,7 @@ func addspecial(p unsafe.Pointer, s *special) bool {
 	}
 
 	// Splice in record, fill in offset.
+	// 添加到 specials 队列尾
 	s.offset = uint16(offset)
 	s.next = *t
 	*t = s
@@ -1768,10 +1778,14 @@ func addspecial(p unsafe.Pointer, s *special) bool {
 	return true
 }
 
+/*
+遍历数据所在的span的special，如果找到了指定数据p的special的话，就从special中移除，并返回
+*/
 // Removes the Special record of the given kind for the object p.
 // Returns the record if the record existed, nil otherwise.
 // The caller must FixAlloc_Free the result.
 func removespecial(p unsafe.Pointer, kind uint8) *special {
+	// 找到数据p所在的span
 	span := spanOfHeap(uintptr(p))
 	if span == nil {
 		throw("removespecial on invalid pointer")
@@ -1781,13 +1795,15 @@ func removespecial(p unsafe.Pointer, kind uint8) *special {
 	// Sweeping accesses the specials list w/o locks, so we have
 	// to synchronize with it. And it's just much safer.
 	mp := acquirem()
+	// 保证span被清扫过了
 	span.ensureSwept()
-
+	// 获取数据p的偏移量，根据偏移量取寻找p对应的special
 	offset := uintptr(p) - span.base()
 
 	var result *special
 	lock(&span.speciallock)
 	t := &span.specials
+	// 遍历span.spcials这个链表
 	for {
 		s := *t
 		if s == nil {
@@ -1796,6 +1812,7 @@ func removespecial(p unsafe.Pointer, kind uint8) *special {
 		// This function is used for finalizers only, so we don't check for
 		// "interior" specials (p must be exactly equal to s->offset).
 		if offset == uintptr(s.offset) && kind == s.kind {
+			// 找到了，修改指针，将当前找到的special移除
 			*t = s.next
 			result = s
 			break
@@ -1807,6 +1824,7 @@ func removespecial(p unsafe.Pointer, kind uint8) *special {
 	}
 	unlock(&span.speciallock)
 	releasem(mp)
+	// 没有找到，就返回nil
 	return result
 }
 
@@ -1819,14 +1837,21 @@ func removespecial(p unsafe.Pointer, kind uint8) *special {
 type specialfinalizer struct {
 	special special
 	fn      *funcval // May be a heap pointer.
-	nret    uintptr
-	fint    *_type   // May be a heap pointer, but always live.
-	ot      *ptrtype // May be a heap pointer, but always live.
+	// retuen数据的大小
+	nret uintptr
+	// 第一个参数的类型
+	fint *_type // May be a heap pointer, but always live.
+	// 与finalizer关联的数据对象的指针类型
+	ot *ptrtype // May be a heap pointer, but always live.
 }
 
+/*
+根据数据对象p，创建对应的special，然后添加到span.specials链表上面
+*/
 // Adds a finalizer to the object p. Returns true if it succeeded.
 func addfinalizer(p unsafe.Pointer, f *funcval, nret uintptr, fint *_type, ot *ptrtype) bool {
 	lock(&mheap_.speciallock)
+	// 分配出来一块内存供finalizer使用
 	s := (*specialfinalizer)(mheap_.specialfinalizeralloc.alloc())
 	unlock(&mheap_.speciallock)
 	s.special.kind = _KindSpecialFinalizer
@@ -1855,19 +1880,25 @@ func addfinalizer(p unsafe.Pointer, f *funcval, nret uintptr, fint *_type, ot *p
 	}
 
 	// There was an old finalizer
+	// 没有添加成功，是因为p已经有了一个special对象了
 	lock(&mheap_.speciallock)
 	mheap_.specialfinalizeralloc.free(unsafe.Pointer(s))
 	unlock(&mheap_.speciallock)
 	return false
 }
 
+/*
+通过removespecial，找到数据对象p所对应的special对象，如果找到的话，释放mheap上对应的内存
+*/
 // Removes the finalizer (if any) from the object p.
 func removefinalizer(p unsafe.Pointer) {
+	// 根据数据p找到对应的special对象
 	s := (*specialfinalizer)(unsafe.Pointer(removespecial(p, _KindSpecialFinalizer)))
 	if s == nil {
 		return // there wasn't a finalizer to remove
 	}
 	lock(&mheap_.speciallock)
+	// 释放找到的special所对应的内存
 	mheap_.specialfinalizeralloc.free(unsafe.Pointer(s))
 	unlock(&mheap_.speciallock)
 }
