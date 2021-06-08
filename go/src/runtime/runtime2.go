@@ -473,7 +473,9 @@ type g struct {
 	stackguard0 uintptr // offset known to liblink
 	stackguard1 uintptr // offset known to liblink
 
+	// panic组成的链表
 	_panic *_panic // innermost panic - offset known to liblink
+	// defer组成的先进后出的链表，同栈
 	_defer *_defer // innermost defer
 	// 当前 Goroutine 占用的线程
 	m *m // current m; offset known to arm liblink
@@ -1065,7 +1067,9 @@ func extendRandom(r []byte, n int) {
 // initialize them are not required. All defers must be manually scanned,
 // and for heap defers, marked.
 type _defer struct {
-	siz     int32 // includes both arguments and results
+	// 参数的大小
+	siz int32 // includes both arguments and results
+	// 是否执行过了
 	started bool
 	heap    bool
 	// openDefer indicates that this _defer is for a frame with open-coded
@@ -1075,8 +1079,10 @@ type _defer struct {
 	sp        uintptr  // sp at time of defer
 	pc        uintptr  // pc at time of defer
 	fn        *funcval // can be nil for open-coded defers
-	_panic    *_panic  // panic that is running defer
-	link      *_defer
+	// defer中的panic
+	_panic *_panic // panic that is running defer
+	// defer链表，函数执行流程中的defer，会通过 link 这个属性进行串联
+	link *_defer
 
 	// If openDefer is true, the fields below record values about the stack
 	// frame and associated function that has the open-coded defer(s). sp

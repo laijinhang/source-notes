@@ -12,6 +12,15 @@ import (
 	"unsafe"
 )
 
+/*
+当发生panic时，会遍历G的defer链表，如果发现defer里面有recover，则会运行recovery函数，recovery会跳转到deferreturn,否则会退出整个程序。
+
+比如：
+f1（defer1，defer2） -> f2 -> f3(defer3) -> panic
+
+defer链表：defer3->defer2->defer1
+*/
+
 // We have two different ways of doing defers. The older way involves creating a
 // defer record at the time that a defer statement is executing and adding it to a
 // defer chain. This chain is inspected by the deferreturn call at all function
@@ -228,6 +237,8 @@ func panicmemAddr(addr uintptr) {
 
 // Create a new deferred function fn with siz bytes of arguments.
 // The compiler turns a defer statement into a call to this.
+// 创建一个新的递延函数fn，参数为siz字节。
+// 编译器将延迟语句变成对这个的调用。
 //go:nosplit
 func deferproc(siz int32, fn *funcval) { // arguments of fn follow fn
 	gp := getg()
@@ -330,6 +341,9 @@ func deferprocStack(d *_defer) {
 // Small malloc size classes >= 16 are the multiples of 16: 16, 32, 48, 64, 80, 96, 112, 128, 144, ...
 // Each P holds a pool for defers with small arg sizes.
 // Assign defer allocations to pools by rounding to 16, to match malloc size classes.
+// 小的malloc大小的类>=16是16的倍数：16，32，48，64，80，96，112，128，144，...。
+// 每个P持有一个池子，用于小arg大小的defer。
+// 通过四舍五入将defer分配到池中，以匹配malloc大小类。
 
 const (
 	deferHeaderSize = unsafe.Sizeof(_defer{})
@@ -411,6 +425,11 @@ func init() {
 	deferType = (*(**ptrtype)(unsafe.Pointer(&x))).elem
 }
 
+/*
+获取一个*_defer*对象，并推入 g._defer链表的头部
+
+这边就好理解，为什么defer后入先执行了
+*/
 // Allocate a Defer, usually using per-P pool.
 // Each defer must be released with freedefer.  The defer is not
 // added to any defer chain yet.
@@ -421,6 +440,7 @@ func init() {
 //go:nosplit
 func newdefer(siz int32) *_defer {
 	var d *_defer
+	// 根据 size 通过deferclass判断应该分配的 sizeclass
 	sc := deferclass(uintptr(siz))
 	gp := getg()
 	if sc < uintptr(len(p{}.deferpool)) {
