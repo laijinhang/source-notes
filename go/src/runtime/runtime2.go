@@ -1067,21 +1067,27 @@ func extendRandom(r []byte, n int) {
 // initialize them are not required. All defers must be manually scanned,
 // and for heap defers, marked.
 type _defer struct {
-	// 参数的大小
+	// 参数的大小（所有传入参数和返回值的总大学）
 	siz int32 // includes both arguments and results
-	// 是否执行过了
+	// defer是否执行过了
 	started bool
-	heap    bool
+	// 是否在堆上分配（也就是是否调用deferprocStack进行分配），go1.13之后新增的
+	heap bool
 	// openDefer indicates that this _defer is for a frame with open-coded
 	// defers. We have only one defer record for the entire frame (which may
 	// currently have 0, 1, or more defers active).
 	openDefer bool
-	sp        uintptr  // sp at time of defer
-	pc        uintptr  // pc at time of defer
-	fn        *funcval // can be nil for open-coded defers
+	// 函数栈指针寄存器，一般指向当前函数栈的栈顶
+	sp uintptr // sp at time of defer
+	// 程序计数器，指向下一条需要执行的指令
+	pc uintptr // pc at time of defer
+	// 指向传入的函数地址和参数
+	fn *funcval // can be nil for open-coded defers
 	// defer中的panic
+	// 指向 panic 链表
 	_panic *_panic // panic that is running defer
 	// defer链表，函数执行流程中的defer，会通过 link 这个属性进行串联
+	// 指向 defer 链表
 	link *_defer
 
 	// If openDefer is true, the fields below record values about the stack

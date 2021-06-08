@@ -261,6 +261,9 @@ func deferproc(siz int32, fn *funcval) { // arguments of fn follow fn
 	argp := uintptr(unsafe.Pointer(&fn)) + unsafe.Sizeof(fn)
 	callerpc := getcallerpc()
 
+	/*
+		进到newdefer函数，在这个函数的末尾会看到，是在堆上分配的
+	*/
 	d := newdefer(siz)
 	if d._panic != nil {
 		throw("deferproc: d.panic != nil after newdefer")
@@ -299,14 +302,14 @@ func deferproc(siz int32, fn *funcval) { // arguments of fn follow fn
 
 defer的实现原理有三种defer模式类型，编译后一个函数里只会有一种defer模式
 
-一、栈上分配
+一、堆上分配
 在Golang1.13之前的版本中，所有defer都是在堆上分配（deferProc），该机制在编译时会进行两个步骤：
 1. 在defer语句的位置插入 runtime.deferproc，当被执行时，延迟调用会被保存一个为 _defer 记录，并将被延迟调用的入口地址及其参数复制保存，存入Goroutine的调用链表中。
 2. 在函数返回之前的位置插入 runtime.deferreturn，当被执行时，会将延迟调用从Goroutine链表中取出并执行，多个延迟调用则以jmpdefer尾递归调用方式连续执行。
 
 这种机制的主要性能问题存在与每个defer语句产生记录时的内存分配，以及记录参数和完成调用时参数移动的系统调用开销。
 
-二、堆上分配
+二、栈上分配
 在Golang1.13版本中新加入 deferprocStack 实现了在栈上分配的形式来取代 deferproc，相比后者，栈上分配在函数返回后 _defer 便得到释放，省去了内存分配时产生的性能开销，只需适当维护 _defer 的链表即可。
 
 编译器可以取选择使用 deferproc 还是 deferprocStack，通常情况下都会使用 deferprocStack，性能会提升约30%，不过在defer语句出现在了循环语句中，或者无法执行高阶的编译器优化时，亦或者同一个函数中使用了过多的defer时，依然会使用 deferproc
@@ -513,6 +516,7 @@ func newdefer(siz int32) *_defer {
 		})
 	}
 	d.siz = siz
+	// 在堆上分配
 	d.heap = true
 	return d
 }
@@ -610,6 +614,12 @@ func freedeferfn() {
 //
 //go:nosplit
 func deferreturn() {
+	/*
+		清空 defer 的调用信息
+		freedefer 将 defer 对象放入到 defer 池中，后面可以复用
+		如果存在延迟函数就会调用 runtime·jmpdefer 方法跳转到对应的方法上去
+		runtime·jmpdefer 方法会递归调用 deferreturn 一直执行到结束为止
+	*/
 	gp := getg()
 	d := gp._defer
 	if d == nil {
