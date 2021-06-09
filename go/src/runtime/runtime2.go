@@ -924,14 +924,26 @@ type p struct {
 */
 type schedt struct {
 	// accessed atomically. keep at top to ensure alignment on 32-bit systems.
-	goidgen   uint64
-	lastpoll  uint64 // time of last network poll, 0 if currently polling
+	// 在32位系统上保持在顶部以确保对齐。
+	/*
+		Sched.goidgen 用于为最后（最新创建）一个goroutine分配的id（goid），相当于一个全局计数器
+		启动时 sched.goidgen=0，因此主 Goroutine 的goid为1
+	*/
+	goidgen uint64
+	/*
+		最后一次网络轮询的时间，如果目前正在轮询则为0
+	*/
+	lastpoll uint64 // time of last network poll, 0 if currently polling
+	/*
+		当前轮询的睡眠时间
+	*/
 	pollUntil uint64 // time to which current poll is sleeping
 
 	lock mutex
 
 	// When increasing nmidle, nmidlelocked, nmsys, or nmfreed, be
 	// sure to call checkdead().
+	// 在增加nmidle、nmidlelocked、nmsys或nmfreed时，一定要调用checkdead()。
 
 	// 空闲的 M 列表
 	midle muintptr // idle m's waiting for work
@@ -940,10 +952,13 @@ type schedt struct {
 	// lockde状态的m个数
 	nmidlelocked int32 // number of locked m's waiting for work
 	// 下一个被创建的 M 的 id
-	mnext     int64 // number of m's that have been created and next M ID
+	mnext int64 // number of m's that have been created and next M ID
+	// 表示最多所能创建的工作线程数量
 	maxmcount int32 // maximum number of m's allowed (or die)
-	nmsys     int32 // number of system m's not counted for deadlock
-	nmfreed   int64 // cumulative number of freed m's
+	// 不计入死锁的系统M的数量
+	nmsys int32 // number of system m's not counted for deadlock
+	// 累计释放的M的数量（空闲m的数量）
+	nmfreed int64 // cumulative number of freed m's
 
 	// 系统中goroutine的数目，会自动更新
 	ngsys uint32 // number of system goroutines; updated atomically
@@ -993,7 +1008,14 @@ type schedt struct {
 	// m.exited is set. Linked through m.freelink.
 	freem *m
 
-	gcwaiting  uint32 // gc is waiting to run
+	/*
+		gcwaiting标志
+
+		startTheWorld的时候，会将gcwaiting设为0，表示表示gc正在等待运行？？？
+		stopTheWorld的时候，会将gcwaiting设为1，表示gc正在运行？？？
+	*/
+	gcwaiting uint32 // gc is waiting to run
+
 	stopwait   int32
 	stopnote   note
 	sysmonwait uint32
@@ -1011,6 +1033,9 @@ type schedt struct {
 
 	profilehz int32 // cpu profiling rate
 
+	/*
+		上次修改 gomaxprocs 的纳秒时间
+	*/
 	procresizetime int64 // nanotime() of last change to gomaxprocs
 	totaltime      int64 // ∫gomaxprocs dt up to procresizetime
 
@@ -1025,8 +1050,11 @@ type schedt struct {
 	// timeToRun is a distribution of scheduling latencies, defined
 	// as the sum of time a G spends in the _Grunnable state before
 	// it transitions to _Grunning.
+	// timeToRun是一个调度延迟的分布，定义为一个G在过渡到_Grunnable状态之前在
+	// _Grunning状态下花费的时间总和。
 	//
 	// timeToRun is protected by sched.lock.
+	// timeToRun受到sched.lock的保护。
 	timeToRun timeHistogram
 }
 
@@ -1048,6 +1076,10 @@ const (
 // See https://golang.org/s/go12symtab.
 // Keep in sync with linker (../cmd/link/internal/ld/pcln.go:/pclntab)
 // and with package debug/gosym and with symtab.go in package runtime.
+// 由链接器准备的内存中每个函数信息的布局
+// 见 https://golang.org/s/go12symtab。
+// 与链接器保持同步（.../cmd/link/internal/ld/pcln.go:/pclntab）。
+// 与软件包 debug/gosym 和软件包 runtime 中的 symtab.go 保持同步。
 type _func struct {
 	entry   uintptr // start pc
 	nameoff int32   // function name

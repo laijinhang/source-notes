@@ -156,6 +156,7 @@ func netpollGenericInit() {
 }
 
 func netpollinited() bool {
+	// atomic.Load(&netpollInited)等于0，表示没有初始化过
 	return atomic.Load(&netpollInited) != 0
 }
 

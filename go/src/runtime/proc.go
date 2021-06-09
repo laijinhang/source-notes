@@ -165,6 +165,8 @@ func main() {
 	// Max stack size is 1 GB on 64-bit, 250 MB on 32-bit.
 	// Using decimal instead of binary GB and MB because
 	// they look nicer in the stack overflow failure message.
+	// 最大堆栈大小在64位上是1GB，在32位上是250MB。
+	// 使用十进制而不是二进制的GB和MB，因为它们在堆栈溢出失败消息中看起来更直观。
 	if sys.PtrSize == 8 {
 		maxstacksize = 1000000000
 	} else {
@@ -174,6 +176,7 @@ func main() {
 	// An upper limit for max stack size. Used to avoid random crashes
 	// after calling SetMaxStack and trying to allocate a stack that is too big,
 	// since stackalloc works with 32-bit sizes.
+	// 最大堆栈尺寸的上限。用于避免在调用SetMaxStack并试图分配一个过大的堆栈后出现随机崩溃，因为stackalloc只适用于32位大小。
 	maxstackceiling = 2 * maxstacksize
 
 	// Allow newproc to start new Ms.
@@ -1250,22 +1253,29 @@ var gcsema uint32 = 1
 // Holding worldsema causes any other goroutines invoking
 // stopTheWorld to block.
 func stopTheWorldWithSema() {
+	// 获取当前运行的goroutine
 	_g_ := getg()
 
 	// If we hold a lock, then we won't be able to stop another M
 	// that is blocked trying to acquire the lock.
+	// 如果我们持有一个锁，那么我们将无法阻止另一个被封锁的M试图获得这个锁。
 	if _g_.m.locks > 0 {
 		throw("stopTheWorld: holding locks")
 	}
 
 	lock(&sched.lock)
+	// 停止调度器需要停止的线程数
 	sched.stopwait = gomaxprocs
+	// 设置因 GC 需要停止调度器的标志位
 	atomic.Store(&sched.gcwaiting, 1)
+	// 抢占所有当前的G
 	preemptall()
 	// stop current P
+	// 停止当前G所在的P
 	_g_.m.p.ptr().status = _Pgcstop // Pgcstop is only diagnostic.
 	sched.stopwait--
 	// try to retake all P's in Psyscall status
+	// 抢占所有在系统调用Psyscall状态的P
 	for _, p := range allp {
 		s := p.status
 		if s == _Psyscall && atomic.Cas(&p.status, s, _Pgcstop) {
@@ -1278,6 +1288,7 @@ func stopTheWorldWithSema() {
 		}
 	}
 	// stop idle P's
+	// 抢占所有空闲的P，防止再次被抢走
 	for {
 		p := pidleget()
 		if p == nil {
@@ -1290,9 +1301,11 @@ func stopTheWorldWithSema() {
 	unlock(&sched.lock)
 
 	// wait for remaining P's to stop voluntarily
+	// 等待剩余的无法被抢占的P主动停止
 	if wait {
 		for {
 			// wait for 100us, then try to re-preempt in case of any races
+			// 等待 100us，然后尝试重新抢占，从而防止竞争
 			if notetsleep(&sched.stopnote, 100*1000) {
 				noteclear(&sched.stopnote)
 				break
@@ -1331,19 +1344,37 @@ func startTheWorldWithSema(emitTraceEvent bool) int64 {
 	assertWorldStopped()
 
 	mp := acquirem() // disable preemption because it can be holding p in a local var
+	// 优先处理网络数据
+	/*
+		如果netpollinited()为false，则表示没有初始化过网络，所有也不需要做if里面的
+		如果netpollinited()为true，则表示已经初始化过网络
+	*/
 	if netpollinited() {
-		list := netpoll(0) // non-blocking
+		/*
+			netpoll检查网络连接是否就绪。
+			返回可运行的goroutine列表。
+			延迟  < 0：无限期阻止
+			延迟 == 0：不阻止，仅轮询
+			延迟  > 0：最多阻塞几纳秒
+		*/
+		list := netpoll(0) // non-blocking	// 非阻塞
+		/*
+
+		 */
 		injectglist(&list)
 	}
 	lock(&sched.lock)
 
+	// 调P的数量
 	procs := gomaxprocs
 	if newprocs != 0 {
 		procs = newprocs
 		newprocs = 0
 	}
 	p1 := procresize(procs)
+	// 调度器可以开始调度了
 	sched.gcwaiting = 0
+	// 唤醒系统监控
 	if sched.sysmonwait != 0 {
 		sched.sysmonwait = 0
 		notewakeup(&sched.sysmonnote)
@@ -3131,6 +3162,8 @@ top:
 // be doing. This is a fairly lightweight check to be used for
 // background work loops, like idle GC. It checks a subset of the
 // conditions checked by the actual scheduler.
+// pollWork报告这个P是否有非后台工作可以做。这是一个相当轻量级的检查，可用于后台工作
+// 循环，如空闲的GC。它检查的是实际调度器所检查的条件的一个子集。
 func pollWork() bool {
 	if sched.runqsize != 0 {
 		return true
@@ -3366,6 +3399,10 @@ func resetspinning() {
 // local run queue.
 // This may temporarily acquire sched.lock.
 // Can run concurrently with GC.
+// injectglist将列表中的每个可运行G添加到某个运行队列中，并清除glist。
+// 如果当前没有P，它们会被添加到全局队列中，并且最多启动n个空闲的M来运行它们。
+// 否则，对于每一个空闲的P，这将在全局队列中添加一个G，并启动一个M。任何剩余的
+// G都被添加到当前P的运行队列中。这可能会暂时获得sched.lock。可以与GC同时运行。
 func injectglist(glist *gList) {
 	if glist.empty() {
 		return
@@ -4779,7 +4816,7 @@ func Breakpoint() {
 //go:nosplit
 func dolockOSThread() {
 	if GOARCH == "wasm" {
-		return // no threads on wasm yet
+		return // no threads on wasm yet	// 还没有关于WASM的主题
 	}
 	_g_ := getg()
 	_g_.m.lockedg.set(_g_)
@@ -4795,10 +4832,14 @@ func dolockOSThread() {
 // UnlockOSThread as to LockOSThread.
 // If the calling goroutine exits without unlocking the thread,
 // the thread will be terminated.
+// LockOSThread将调用的goroutine连接到其当前的操作系统线程。调用的goroutine将一直在该线程中执行，
+// 其他goroutine也不会在该线程中执行，直到调用的goroutine对UnlockOSThread的调用次数与对LockOSThread
+// 的调用次数相同。 如果调用的goroutine在没有解锁线程的情况下退出，该线程将被终止。
 //
 // All init functions are run on the startup thread. Calling LockOSThread
 // from an init function will cause the main function to be invoked on
 // that thread.
+// 所有的初始函数都在启动线程上运行。从一个init函数中调用LockOSThread将导致主函数在该线程上被调用。
 //
 // A goroutine should call LockOSThread before calling OS services or
 // non-Go library functions that depend on per-thread state.
@@ -4807,6 +4848,7 @@ func LockOSThread() {
 		// If we need to start a new thread from the locked
 		// thread, we need the template thread. Start it now
 		// while we're in a known-good state.
+		// 如果我们需要从锁定的线程开始一个新的线程，我们需要模板线程。在我们处于已知的良好状态时，现在就启动它。
 		startTemplateThread()
 	}
 	_g_ := getg()
@@ -5224,13 +5266,18 @@ func (pp *p) destroy() {
 }
 
 // Change number of processors.
+// 改变处理器的数量。
 //
 // sched.lock must be held, and the world must be stopped.
+// sched.lock必须被持有，the world必须被停止。
 //
 // gcworkbufs must not be being modified by either the GC or the write barrier
 // code, so the GC must not be running if the number of Ps actually changes.
+// gcworkbufs不能被GC或写屏障代码修改，所以如果Ps的数量实际发生变化，GC就不能运行。
 //
 // Returns list of Ps with local work, they need to be scheduled by the caller.
+// 返回有本地工作的Ps列表，它们需要由调用者安排。
+
 // 调用时已经 STW，记录调整P的时间
 // 按需调整
 func procresize(nprocs int32) *p {
@@ -5252,6 +5299,9 @@ func procresize(nprocs int32) *p {
 	if sched.procresizetime != 0 {
 		sched.totaltime += int64(old) * (now - sched.procresizetime)
 	}
+	/*
+		设置上次调整 gomaxprocs 的纳秒时间
+	*/
 	sched.procresizetime = now
 
 	maskWords := (nprocs + 31) / 32
@@ -5307,6 +5357,7 @@ func procresize(nprocs int32) *p {
 		atomicstorep(unsafe.Pointer(&allp[i]), unsafe.Pointer(pp))
 	}
 
+	// 获取当前运行的goroutine
 	_g_ := getg()
 	// 如果当前正在使用的p应该被释放，则更换为allp[0]
 	// 否则是初始化阶段，没有P绑定当前P allp[0]
@@ -5845,6 +5896,7 @@ func retake(now int64) uint32 {
 func preemptall() bool {
 	res := false
 	for _, _p_ := range allp {
+		// 尝试抢占所有处于运行状态的P
 		if _p_.status != _Prunning {
 			continue
 		}

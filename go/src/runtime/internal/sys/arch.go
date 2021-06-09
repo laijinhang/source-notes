@@ -21,6 +21,8 @@ const (
 
 // PtrSize is the size of a pointer in bytes - unsafe.Sizeof(uintptr(0)) but as an ideal constant.
 // It is also the size of the machine's native word size (that is, 4 on 32-bit systems, 8 on 64-bit).
+// PtrSize是指针的大小，单位是字节--unsafe.Sizeof(uintptr(0))，但作为一个理想的常数。
+// 它也是机器的本地字大小（即在32位系统上为4，在64位上为8）。
 const PtrSize = 4 << (^uintptr(0) >> 63)
 
 // AIX requires a larger stack for syscalls.

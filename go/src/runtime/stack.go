@@ -505,7 +505,7 @@ func stackfree(stk stack) {
 	}
 }
 
-var maxstacksize uintptr = 1 << 20 // enough until runtime.main sets it for real
+var maxstacksize uintptr = 1 << 20 // enough until runtime.main sets it for real	// 足够了，直到runtime.main把它设置为真正的
 
 var maxstackceiling = maxstacksize
 
