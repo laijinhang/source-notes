@@ -11,6 +11,7 @@ import (
 )
 
 // Should be a built-in for unsafe.Pointer?
+// 应该为unsafe.Pointer提供一个内置的？
 //go:nosplit
 func add(p unsafe.Pointer, x uintptr) unsafe.Pointer {
 	return unsafe.Pointer(uintptr(p) + x)

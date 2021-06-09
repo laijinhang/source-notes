@@ -611,6 +611,11 @@ const (
 M的结构，M是OS线程的实体
 */
 type m struct {
+	/*
+	   1.  所有调用栈的Goroutine,这是一个比较特殊的Goroutine。
+	   2.  普通的Goroutine栈是在Heap分配的可增长的stack,而g0的stack是M对应的线程栈。
+	   3.  所有调度相关代码,会先切换到该Goroutine的栈再执行。
+	*/
 	// 持有调度栈的 Goroutine
 	g0 *g // goroutine with scheduling stack	// 用于执行调度指令的 Goroutine
 	/*
@@ -636,8 +641,9 @@ type m struct {
 	// 当前运行的G
 	curg      *g       // current running goroutine	// 当前运行的用户 Goroutine
 	caughtsig guintptr // goroutine running during fatal signal
-	// 正在运行代码的P
-	p     puintptr // attached p for executing go code (nil if not executing go code)	// 执行go代码时持有的P（如果没有执行则为nil）
+	// 正在运行代码的p
+	p puintptr // attached p for executing go code (nil if not executing go code)	// 执行go代码时持有的P（如果没有执行则为nil）
+	// 下一个要执行的p
 	nextp puintptr
 	// 之前使用的P
 	oldp       puintptr // the p that was attached before executing a syscall
@@ -749,7 +755,14 @@ P只是处理器的抽象，而被处理器本身，它存在的意义在于实�
 偷取：当有若个P时，其中有P当前维护的本地G队列为空时，而全局队列中存在G，那么本地队列为空的P会去全局队列中偷取。
 */
 type p struct {
-	id          int32
+	id int32
+	/*
+		_Pidle：空闲中，当M发现无待运行的G时会进入休眠，这时M拥有的P会变为空闲并加到空闲P链表中
+		_Prunning：运行中，当M拥有一个P后，这个P的状态就会变为运行中，M运行G会使用这个P中的置业
+		_Psyscall：系统调用中
+		_Pgctop：GC STW时，P会变为此状态
+		_Pdead：已终止，当P的数量在运行中时改变，且数量减少时多余的P会变为此状态
+	*/
 	status      uint32 // one of pidle/prunning/...	// p的状态 pidle/prunning/...
 	link        puintptr
 	schedtick   uint32     // incremented on every scheduler call	// 每次调度程序调用时递增
@@ -1384,10 +1397,12 @@ var (
 )
 
 // Set by the linker so the runtime can determine the buildmode.
+// 由链接器设置，以便运行时能够确定构建模式。
 var (
 	islibrary bool // -buildmode=c-shared
 	isarchive bool // -buildmode=c-archive
 )
 
 // Must agree with internal/buildcfg.Experiment.FramePointer.
+// 必须与内部/buildcfg.Experiment.FramePointer一致。
 const framepointer_enabled = GOARCH == "amd64" || GOARCH == "arm64"

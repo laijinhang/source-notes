@@ -122,9 +122,15 @@ var modinfo string
 //   workers.
 
 var (
-	m0           m // 代表进程的主线程
-	g0           g // m0的g0，也就是m0.g0 = &g0
-	mcache0      *mcache
+	m0 m // 代表进程的主线程
+	g0 g // m0的g0，也就是m0.g0 = &g0
+	/*
+		???
+	*/
+	mcache0 *mcache
+	/*
+		???
+	*/
 	raceprocctx0 uintptr
 )
 
@@ -144,12 +150,15 @@ var main_init_done chan bool
 func main_main()
 
 // mainStarted indicates that the main M has started.
+// mainStarted表示主M已经开始。
 var mainStarted bool
 
 // runtimeInitTime is the nanotime() at which the runtime started.
+// runtimeInitTime是运行时开始的纳米时间（）。
 var runtimeInitTime int64
 
 // Value to use for signal mask for newly created M's.
+// 用于新创建的M的信号屏蔽的值。
 var initSigmask sigset
 
 // The main goroutine.
@@ -200,6 +209,10 @@ func main() {
 	// Those can arrange for main.main to run in the main thread
 	// by calling runtime.LockOSThread during initialization
 	// to preserve the lock.
+	// 在初始化过程中，将主goroutine锁定在这里，即操作系统的主线程。大多数程序
+	// 并不关心这个问题，但也有一些程序需要由主线程来完成某些调用。这些程序可以通
+	// 过在初始化过程中调用runtime.LockOSThread来安排main.main在主线程中运行，
+	// 以保留锁。
 	lockOSThread()
 
 	if g.m != &m0 {
@@ -5527,14 +5540,18 @@ func incidlelocked(v int32) {
 }
 
 // Check for deadlock situation.
+// 检查死锁情况。
 // The check is based on number of running M's, if 0 -> deadlock.
+// 检查是基于运行中的M的数量，如果是 0-> 死锁。
 // sched.lock must be held.
+// sched.lock必须被持有。
 func checkdead() {
 	assertLockHeld(&sched.lock)
 
 	// For -buildmode=c-shared or -buildmode=c-archive it's OK if
 	// there are no running goroutines. The calling program is
 	// assumed to be running.
+	// 对于-buildmode=c-shared或-buildmode=c-archive，如果没有运行中的goroutines就可以了。调用程序被假定为正在运行。
 	if islibrary || isarchive {
 		return
 	}
@@ -5543,6 +5560,8 @@ func checkdead() {
 	// freezetheworld will cause all running threads to block.
 	// And runtime will essentially enter into deadlock state,
 	// except that there is a thread that will call exit soon.
+	// 如果我们因为在一个已经空闲的线程上捕捉到信号而死亡。freezetheworld将导致所有正在运行的线程阻塞。
+	// 而运行时间基本上会进入死锁状态，只是有一个线程会很快调用退出。
 	if panicking > 0 {
 		return
 	}
@@ -6833,8 +6852,15 @@ func gcd(a, b uint32) uint32 {
 
 // An initTask represents the set of initializations that need to be done for a package.
 // Keep in sync with ../../test/initempty.go:initTask
+// 一个initTask表示一个包需要做的一系列初始化工作。
+// 与 .././test/initempty.go:initTask 保持同步。
 type initTask struct {
 	// TODO: pack the first 3 fields more tightly?
+	/*
+		0 = 未初始化
+		1 = 正在进行
+		2 = 已完成
+	*/
 	state uintptr // 0 = uninitialized, 1 = in progress, 2 = done
 	ndeps uintptr
 	nfns  uintptr
@@ -6844,23 +6870,33 @@ type initTask struct {
 
 // inittrace stores statistics for init functions which are
 // updated by malloc and newproc when active is true.
+// inittrace存储了init函数的统计数据，当active为真时，由malloc和newproc更新。
 var inittrace tracestat
 
 type tracestat struct {
-	active bool   // init tracing activation status
-	id     int64  // init goroutine id
-	allocs uint64 // heap allocations
-	bytes  uint64 // heap allocated bytes
+	active bool   // init tracing activation status	// 启动追踪激活状态
+	id     int64  // init goroutine id				// 启动goroutine id
+	allocs uint64 // heap allocations				// 堆的分配
+	bytes  uint64 // heap allocated bytes			// 堆分配的字节
 }
 
 func doInit(t *initTask) {
+	/*
+		t.state的三种状态
+		0 = 未初始化
+		1 = 正在进行
+		2 = 已完成
+	*/
 	switch t.state {
-	case 2: // fully initialized
+	case 2: // fully initialized	// 完成初始化
 		return
-	case 1: // initialization in progress
+	case 1: // initialization in progress	// 初始化正在进行中
+		/*
+			如果已经在初始化了，又被调用进行初始化，则抛出 初始化过程中的递归调用 - 链接器偏移 的错误
+		*/
 		throw("recursive call during initialization - linker skew")
-	default: // not initialized yet
-		t.state = 1 // initialization in progress
+	default: // not initialized yet	// 还没有初始化
+		t.state = 1 // initialization in progress	 // 初始化正在进行中
 
 		for i := uintptr(0); i < t.ndeps; i++ {
 			p := add(unsafe.Pointer(t), (3+i)*sys.PtrSize)
@@ -6869,7 +6905,7 @@ func doInit(t *initTask) {
 		}
 
 		if t.nfns == 0 {
-			t.state = 2 // initialization done
+			t.state = 2 // initialization done	// 初始化完成
 			return
 		}
 
@@ -6881,6 +6917,7 @@ func doInit(t *initTask) {
 		if inittrace.active {
 			start = nanotime()
 			// Load stats non-atomically since tracinit is updated only by this init goroutine.
+			// 以非原子方式加载统计信息，因为Tracinit只由这个init goroutine更新。
 			before = inittrace
 		}
 
@@ -6894,6 +6931,7 @@ func doInit(t *initTask) {
 		if inittrace.active {
 			end := nanotime()
 			// Load stats non-atomically since tracinit is updated only by this init goroutine.
+			// 以非原子方式加载统计信息，因为Tracinit只由这个init goroutine更新。
 			after := inittrace
 
 			pkg := funcpkgpath(findfunc(funcPC(firstFunc)))
@@ -6907,6 +6945,6 @@ func doInit(t *initTask) {
 			print("\n")
 		}
 
-		t.state = 2 // initialization done
+		t.state = 2 // initialization done	// 初始化完成
 	}
 }
