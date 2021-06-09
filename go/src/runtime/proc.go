@@ -4432,6 +4432,9 @@ func malg(stacksize int32) *g {
 	return newg
 }
 
+/*
+创建goroutine，所有的goroutine创建都是通过这个函数的
+*/
 // Create a new g running fn with siz bytes of arguments.
 // Put it on the queue of g's waiting to run.
 // The compiler turns a go statement into a call to this.
@@ -4483,6 +4486,12 @@ func newproc(siz int32, fn *funcval) {
 // 创建一个运行fn的新g，具有narg字节大小的参数，从argp开始。
 // callerps 是go语句的起始地址,新创建的g会被放入g队列中等待运行。
 func newproc1(fn *funcval, argp unsafe.Pointer, narg int32, callergp *g, callerpc uintptr) *g {
+	/*
+		分配一个g的结构体
+		初始化这个结构体的一些字段
+		将g挂在就绪队列
+		绑定g到一个m上
+	*/
 	if goexperiment.RegabiDefer && narg != 0 {
 		// TODO: When we commit to GOEXPERIMENT=regabidefer,
 		// rewrite the comments for newproc and newproc1.
