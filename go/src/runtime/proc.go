@@ -2833,6 +2833,7 @@ findrunnable的工作原理：
 // Finds a runnable goroutine to execute.
 // Tries to steal from other P's, get g from local or global queue, poll network.
 func findrunnable() (gp *g, inheritTime bool) {
+	// 获取当前的G对象
 	_g_ := getg()
 
 	// The conditions here and in handoffp must agree: if
@@ -2840,6 +2841,7 @@ func findrunnable() (gp *g, inheritTime bool) {
 	// an M.
 
 top:
+	// 获取当前的P对象
 	_p_ := _g_.m.p.ptr()
 	// 如果在 GC，则休眠当前M，直到复始后回到 top
 	if sched.gcwaiting != 0 {
@@ -2872,6 +2874,7 @@ top:
 	// 从全局的可运行队列获取 G
 	if sched.runqsize != 0 {
 		lock(&sched.lock)
+		// globrunqget从Global队列中获取G 并转移一批G到_p_的Local队列
 		gp := globrunqget(_p_, 0)
 		unlock(&sched.lock)
 		if gp != nil {
@@ -2906,6 +2909,7 @@ top:
 	// Limit the number of spinning Ms to half the number of busy Ps.
 	// This is necessary to prevent excessive CPU consumption when
 	// GOMAXPROCS>>1 but the program parallelism is low.
+	// 尝试从其它P窃取任务
 	procs := uint32(gomaxprocs)
 	if _g_.m.spinning || 2*atomic.Load(&sched.nmspinning) < procs-atomic.Load(&sched.npidle) {
 		if !_g_.m.spinning {

@@ -88,6 +88,17 @@ type m struct {
 	locksHeld    [10]heldLockInfo
 }
 ```
+
+M的最大数量限制在10000
+```go
+// src/runtime/proc.go
+func schedinit() {
+	...
+    // M（线程）最大数量限制
+    sched.maxmcount = 10000
+    ...
+}
+```
 # 2、初始化
 
 # 3、M的状态转换
