@@ -1974,12 +1974,18 @@ type cgothreadstart struct {
 // Can use p for allocation context if needed.
 // fn is recorded as the new m's m.mstartfn.
 // id is optional pre-allocated m ID. Omit by passing -1.
+// 分配一个与任何线程无关的新的m。
+// 如果需要，可以使用p作为分配上下文。
+// fn被记录为新m的m.mstartfn。
+// id是可选的预分配的m ID。通过传递-1来省略。
 //
 // This function is allowed to have write barriers even if the caller
 // isn't because it borrows _p_.
+// 这个函数被允许有写障碍，即使调用者没有，因为它借用了_p_。
 //
 //go:yeswritebarrierrec
 func allocm(_p_ *p, fn func(), id int64) *m {
+	// 获取当前运行的g
 	_g_ := getg()
 	acquirem() // disable GC because it can be called from sysmon
 	if _g_.m.p == 0 {
@@ -2333,8 +2339,12 @@ var newmHandoff struct {
 // Create a new m. It will start off with a call to fn, or else the scheduler.
 // fn needs to be static and not a heap allocated closure.
 // May run with m.p==nil, so write barriers are not allowed.
+// 创建一个新的m。它将从调用fn开始，否则将调用调度器。
+// fn需要是静态的，而不是一个堆分配的闭包。
+// 可以在m.p==nil的情况下运行，所以不允许有写障碍。
 //
 // id is optional pre-allocated m ID. Omit by passing -1.
+// id是可选的预分配的m ID。通过传递-1来省略。
 //go:nowritebarrierrec
 func newm(fn func(), _p_ *p, id int64) {
 	mp := allocm(_p_, fn, id)
@@ -2348,8 +2358,12 @@ func newm(fn func(), _p_ *p, id int64) {
 		// purpose). We don't want to clone that into another
 		// thread. Instead, ask a known-good thread to create
 		// the thread for us.
+		// 我们在一个被锁定的M或者一个可能由C启动的线程上，这个线程的内核
+		// 状态可能很奇怪（用户可能为此而锁定它）。我们不想把它克隆到另一
+		// 个线程中。相反，要求一个已知的好的线程为我们创建线程。
 		//
 		// This is disabled on Plan 9. See golang.org/issue/22227.
+		// 这在Plan 9上是禁用的。参见 golang.org/issue/22227。
 		//
 		// TODO: This may be unnecessary on Windows, which
 		// doesn't model thread creation off fork.

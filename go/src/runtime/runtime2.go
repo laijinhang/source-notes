@@ -667,7 +667,10 @@ type m struct {
 	/*
 		m是否在在执行cgo调用
 	*/
-	incgo      bool   // m is executing a cgo call
+	incgo bool // m is executing a cgo call
+	/*
+		如果等于0，安全释放g0并删除m（原子性）。
+	*/
 	freeWait   uint32 // if == 0, safe to free g0 and delete m (atomic)
 	fastrand   [2]uint32
 	needextram bool
