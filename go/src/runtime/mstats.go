@@ -75,8 +75,11 @@ type mstats struct {
 	numgc           uint32
 	numforcedgc     uint32  // number of user-forced GCs
 	gc_cpu_fraction float64 // fraction of CPU time used by GC
-	enablegc        bool
-	debuggc         bool
+	/*
+		是否启用gc
+	*/
+	enablegc bool
+	debuggc  bool
 
 	// Statistics about allocation size classes.
 

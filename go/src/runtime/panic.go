@@ -1302,6 +1302,8 @@ var runningPanicDefers uint32
 
 // panicking is non-zero when crashing the program for an unrecovered panic.
 // panicking is incremented and decremented atomically.
+// 当程序因未恢复的panic而崩溃时，panicking为非零。
+// panicking的增量和减量都是原子性的。
 var panicking uint32
 
 // paniclk is held while printing the panic information and stack trace,

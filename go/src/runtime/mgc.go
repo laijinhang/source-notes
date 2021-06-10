@@ -598,24 +598,44 @@ const (
 // 退出条件应该在分配阶段已完成测试。
 func (t gcTrigger) test() bool {
 	// 如果已禁用 GC
+	/*
+		!memstats.enablegc：memstats.enablegc表示是否启用gc，!memstats.enablegc为true时，表示已禁用gc
+		panicking != 0：表示程序因为panic并且未恢复
+		gcphase：有三种值，如果等于_GCoff时，表示gc没有启用
+	*/
 	if !memstats.enablegc || panicking != 0 || gcphase != _GCoff {
 		return false
 	}
 	// 根据类别做不同判断
+	/*
+		一共三种：
+		1. 堆增长到一定之后触发
+		2. 离上次GC触发后一定时间后触发（一般是两分钟）
+		3. 主动调用runtime.GC触发
+	*/
 	switch t.kind {
 	case gcTriggerHeap:
+		/*
+			gcTriggerHeap：表示当堆大小达到控制器计算的触发堆大小
+		*/
 		// Non-atomic access to gcController.heapLive for performance. If
 		// we are going to trigger on this, this thread just
 		// atomically wrote gcController.heapLive anyway and we'll see our
 		// own write.
 		return gcController.heapLive >= gcController.trigger
 	case gcTriggerTime:
+		/*
+			gcTriggerTime：表示自从上次GC后间隔达到了runtime.forcegcperiod时间（默认两分钟），将启用GC。主要是 sysmon 监控线程
+		*/
 		if gcController.gcPercent < 0 {
 			return false
 		}
 		lastgc := int64(atomic.Load64(&memstats.last_gc_nanotime))
 		return lastgc != 0 && t.now-lastgc > forcegcperiod
 	case gcTriggerCycle:
+		/*
+			gcTriggerCycle：如果当前没有开启垃圾收集，则触发GC；主要是runtime.GC函数调用
+		*/
 		// t.n > work.cycles, but accounting for wraparound.
 		return int32(t.n-work.cycles) > 0
 	}
@@ -633,6 +653,8 @@ func gcStart(trigger gcTrigger) {
 	// the guts of a number of libraries that might be holding
 	// locks, don't attempt to start GC in non-preemptible or
 	// potentially unstable situations.
+	// 由于这是从malloc中调用的，而malloc是在一些可能持有锁的库的内部调用的，
+	// 所以不要试图在不可抢占或潜在的不稳定的情况下启动GC。
 	mp := acquirem()
 	if gp := getg(); gp == mp.g0 || mp.locks > 1 || mp.preemptoff != "" {
 		releasem(mp)

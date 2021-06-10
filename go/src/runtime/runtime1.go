@@ -491,6 +491,7 @@ func releasem(mp *m) {
 	mp.locks--
 	if mp.locks == 0 && _g_.preempt {
 		// restore the preemption request in case we've cleared it in newstack
+		// 恢复抢占请求，以防我们在newstack中清除了它。
 		_g_.stackguard0 = stackPreempt
 	}
 }

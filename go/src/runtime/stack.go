@@ -132,11 +132,14 @@ const (
 	// These are all larger than any real SP.
 
 	// Goroutine preemption request.
+	// Goroutine抢占请求。
 	// 0xfffffade in hex.
+	//十六进制的0xfffffade。
 	stackPreempt = uintptrMask & -1314
 
 	// Thread is forking. Causes a split stack check failure.
 	// 0xfffffb2e in hex.
+	// 线程正在forking。导致 split stack check失败
 	stackFork = uintptrMask & -1234
 
 	// Force a stack movement. Used for debugging.

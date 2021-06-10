@@ -5665,8 +5665,10 @@ func checkdead() {
 // forcegcperiod is the maximum time in nanoseconds between garbage
 // collections. If we go this long without a garbage collection, one
 // is forced to run.
+// forcegcperiod是两次垃圾回收之间的最长时间，单位是纳秒。如果我们这么长时间没有进行垃圾回收，就会强制运行一次。
 //
 // This is a variable for testing purposes. It normally doesn't change.
+// 这是一个用于测试的变量。它通常不会改变。
 var forcegcperiod int64 = 2 * 60 * 1e9
 
 // Always runs without a P, so write barriers are not allowed.
