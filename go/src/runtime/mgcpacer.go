@@ -291,6 +291,9 @@ func (c *gcControllerState) startCycle() {
 	// GOGC. Assist is proportional to this distance, so enforce a
 	// minimum distance, even if it means going over the GOGC goal
 	// by a tiny bit.
+	/*
+		设置 next_gc 最小值
+	*/
 	if c.heapGoal < c.heapLive+1024*1024 {
 		c.heapGoal = c.heapLive + 1024*1024
 	}

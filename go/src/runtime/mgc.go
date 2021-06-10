@@ -560,6 +560,7 @@ const (
 
 // A gcTrigger is a predicate for starting a GC cycle. Specifically,
 // it is an exit condition for the _GCoff phase.
+// gcTrigger是启动GC循环的一个谓词。具体来说，它是_GCoff阶段的一个退出条件。
 type gcTrigger struct {
 	kind gcTriggerKind
 	now  int64  // gcTriggerTime: current time	// 当前时间
@@ -650,12 +651,19 @@ func gcStart(trigger gcTrigger) {
 	//
 	// We check the transition condition continuously here in case
 	// this G gets delayed in to the next GC cycle.
+
+	/*
+		验证垃圾收集条件，并清理已经被标记的内存单元
+	*/
 	for trigger.test() && sweepone() != ^uintptr(0) {
 		sweep.nbgsweep++
 	}
 
 	// Perform GC initialization and the sweep termination
 	// transition.
+	/*
+		获取全局的 startSema 信号量
+	*/
 	semacquire(&work.startSema)
 	// Re-check transition condition under transition lock.
 	if !trigger.test() {
@@ -664,6 +672,9 @@ func gcStart(trigger gcTrigger) {
 	}
 
 	// For stats, check if this GC was forced by the user.
+	/*
+		检查是不是手动调用了 runtime.GC
+	*/
 	work.userForced = trigger.kind == gcTriggerCycle
 
 	// In gcstoptheworld debug mode, upgrade the mode accordingly.
@@ -692,11 +703,18 @@ func gcStart(trigger gcTrigger) {
 			throw("p mcache not flushed")
 		}
 	}
-
+	/*
+		启动后台标记任务
+	*/
 	gcBgMarkStartWorkers()
-
+	/*
+		重置标记相关的状态
+	*/
 	systemstack(gcResetMarkState)
 
+	/*
+		work 初始化工作
+	*/
 	work.stwprocs, work.maxprocs = gomaxprocs, gomaxprocs
 	if work.stwprocs > ncpu {
 		// This is used to compute CPU time of the STW phases,
@@ -707,24 +725,41 @@ func gcStart(trigger gcTrigger) {
 	work.pauseNS = 0
 	work.mode = mode
 
+	/*
+		记录开始时间
+	*/
 	now := nanotime()
 	work.tSweepTerm = now
 	work.pauseStart = now
 	if trace.enabled {
 		traceGCSTWStart(1)
 	}
+	/*
+		暂停程序 STW
+	*/
 	systemstack(stopTheWorldWithSema)
 	// Finish sweep before we start concurrent scan.
+	/*
+		在并发标记前，确保清理结束
+	*/
 	systemstack(func() {
 		finishsweep_m()
 	})
 
 	// clearpools before we start the GC. If we wait they memory will not be
 	// reclaimed until the next GC cycle.
+	/*
+		清理sched.sudogcache以及sync.Pools
+	*/
 	clearpools()
-
+	/*
+		GC次数
+	*/
 	work.cycles++
 
+	/*
+		在开始GC之前清理控制器的状态，标记新一轮GC开始
+	*/
 	gcController.startCycle()
 	work.heapGoal = gcController.heapGoal
 
@@ -749,9 +784,19 @@ func gcStart(trigger gcTrigger) {
 	// allocations are blocked until assists can
 	// happen, we want enable assists as early as
 	// possible.
+	/*
+		设置全局变量中的GC状态未_GCmark
+		然后启用写屏障
+	*/
 	setGCPhase(_GCmark)
 
+	/*
+		初始化后台扫描需要的状态
+	*/
 	gcBgMarkPrepare() // Must happen before assist enable.
+	/*
+		扫描栈上、全局变量等根对象并将它们加入队列
+	*/
 	gcMarkRootPrepare()
 
 	// Mark all active tinyalloc blocks. Since we're
@@ -759,6 +804,9 @@ func gcStart(trigger gcTrigger) {
 	// other allocations. The alternative is to blacken
 	// the tiny block on every allocation from it, which
 	// would slow down the tiny allocator.
+	/*
+		标记所有tiny alloc等待合并的对象
+	*/
 	gcMarkTinyAllocs()
 
 	// At this point all Ps have enabled the write
@@ -766,10 +814,16 @@ func gcStart(trigger gcTrigger) {
 	// black invariant. Enable mutator assists to
 	// put back-pressure on fast allocating
 	// mutators.
+	/*
+		启用mutator assists（协助线程）
+	*/
 	atomic.Store(&gcBlackenEnabled, 1)
 
 	// Assists and workers can start the moment we start
 	// the world.
+	/*
+		记录标记开始的时间
+	*/
 	gcController.markStartTime = now
 
 	// In STW mode, we could block the instant systemstack
@@ -777,8 +831,14 @@ func gcStart(trigger gcTrigger) {
 	mp = acquirem()
 
 	// Concurrent mark.
+	/*
+		启动程序，后台任务也会开始标记堆中的对象
+	*/
 	systemstack(func() {
 		now = startTheWorldWithSema(trace.enabled)
+		/*
+			记录停止了多久，和标记阶段开始的时间
+		*/
 		work.pauseNS += now - work.pauseStart
 		work.tMark = now
 		memstats.gcPauseDist.record(now - work.pauseStart)

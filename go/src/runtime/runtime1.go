@@ -475,7 +475,9 @@ func timediv(v int64, div int32, rem *int32) int32 {
 
 // Helpers for Go. Must be NOSPLIT, must only call NOSPLIT functions, and must not block.
 // Go的助手。必须是NOSPLIT，必须只调用NOSPLIT函数，并且不能阻塞。
-
+/*
+获取当前goroutine的m
+*/
 //go:nosplit
 func acquirem() *m {
 	_g_ := getg()

@@ -646,8 +646,11 @@ type m struct {
 	// 下一个要执行的p
 	nextp puintptr
 	// 之前使用的P
-	oldp       puintptr // the p that was attached before executing a syscall
-	id         int64
+	oldp puintptr // the p that was attached before executing a syscall
+	id   int64
+	/*
+		mallocing不等于0，表示正在执行分配任务
+	*/
 	mallocing  int32
 	throwing   int32
 	preemptoff string // if != "", keep curg running on this m
