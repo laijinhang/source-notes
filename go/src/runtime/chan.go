@@ -49,15 +49,26 @@ type hchan struct {
 	elemtype *_type // element type				// 元素的类型信息
 	sendx    uint   // send index				// 已发送的索引位置
 	recvx    uint   // receive index			// 已接收的索引位置
-	recvq    waitq  // list of recv waiters
-	sendq    waitq  // list of send waiters
+	/*
+		接收而阻塞的等待队列
+	*/
+	recvq waitq // list of recv waiters
+	/*
+		发送而阻塞的等待队列
+	*/
+	sendq waitq // list of send waiters
 
 	// lock protects all fields in hchan, as well as several
 	// fields in sudogs blocked on this channel.
+	// lock保护hchan中的所有字段，以及在这个通道上被封锁的sudogs中的几个字段。
 	//
 	// Do not change another G's status while holding this lock
 	// (in particular, do not ready a G), as this can deadlock
 	// with stack shrinking.
+	// 在持有这个锁的时候不要改变另一个G的状态（特别是不要准备好一个G），因为这可能会与堆栈收缩发生死锁。
+	/*
+		保护hchan的所有字段
+	*/
 	lock mutex
 }
 
@@ -82,6 +93,7 @@ func makechan64(t *chantype, size int64) *hchan {
 func makechan(t *chantype, size int) *hchan {
 	elem := t.elem
 
+	// 编译器会检查这一点，但要注意安全。
 	// compiler checks this but be safe.
 	if elem.size >= 1<<16 {
 		throw("makechan: invalid channel element type")
@@ -90,6 +102,10 @@ func makechan(t *chantype, size int) *hchan {
 		throw("makechan: bad alignment")
 	}
 
+	// 计算需要分配的buf空间
+	/*
+		math.MulUintptr(elem.size, uintptr(size))返回 elem.size * uintptr(size)的值，以及是否会越界
+	*/
 	mem, overflow := math.MulUintptr(elem.size, uintptr(size))
 	if overflow || mem > maxAlloc-hchanSize || size < 0 {
 		panic(plainError("makechan: size out of range"))

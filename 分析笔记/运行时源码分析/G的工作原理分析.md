@@ -1,5 +1,5 @@
-# 1、结构
-### 1. 数据结构
+# 一、结构
+### 1、数据结构
 ```go
 type g struct {
 	// Stack parameters.
@@ -105,12 +105,83 @@ type g struct {
 	gcAssistBytes int64
 }
 ```
-### 2. 状态
-
+### 2、状态
+**Goroutine的状态：**
+* _Gidle：0，刚刚被分配并且还没有被初始化
+* _Grunnable：1，没有执行代码，没有栈的所有权，存储在运行队列中
+* _Grunning：2，可以执行代码，拥有栈的所有权，被赋予了内核线程 M 和处理器 P
+* _Gsyscall：3，正在执行系统调用，拥有栈的所有权，没有执行用户代码，被赋予了内核线程 M 但是不在运行队列上
+* _Gwaiting：4，由于运行时而被阻塞，没有执行用户代码并且不在运行队列上，但是可能存在于 Channel 的等待队列上
+* _Gdead：5，没有被使用，没有执行代码，可能有分配的栈
+* _Gcopystack：6，栈正在被拷贝，没有执行代码，不在运行队列上
+* _Gpreempted：7，由于抢占而被阻塞，没有执行用户代码并且不在运行队列上，等待唤醒
+* _Gscan：0x1000，GC 正在扫描栈空间，没有执行代码，可以与其他状态同时存在
+* _Gscanrunnable  = _Gscan + _Grunnable  // 0x1001
+* _Gscanrunning   = _Gscan + _Grunning   // 0x1002
+* _Gscansyscall   = _Gscan + _Gsyscall   // 0x1003
+* _Gscanwaiting   = _Gscan + _Gwaiting   // 0x1004
+* _Gscanpreempted = _Gscan + _Gpreempted // 0x1009
+### 3、种类
+* 主协程，g0
+* 普通协程
+* 用于进行gc的协程
+* 用于管理finalizer的协程
 # 2、G的创建
 ### 1. 初始化过程
 # 3、G的切换
+runtime/proc.go
+```go
+/*
+gopack用于协程的切换，协程切换的原因一般有以下几种情况：
+1. 系统调用
+2. channel读写条件不满足
+3. 抢占式调度时间片结束
+gopack函数做的主要事情分为两点：
+1. 解除当前goroutine与m的绑定关闭，将当前goroutine状态机切换为等待状态；
+2. 调用一次schedule()函数，在局部调度器P发起一轮新的调度。
+*/
+func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason waitReason, traceEv byte, traceskip int) {
+	if reason != waitReasonSleep {
+		checkTimeouts() // timeouts may expire while two goroutines keep the scheduler busy
+	}
+	mp := acquirem()
+	gp := mp.curg
+	status := readgstatus(gp)
 
+	//println("m.id：", mp.id, "，当前协程编号：", mp.curg.goid, "，协程当前状态：", status)
+	//{
+	//	curp := mp.p
+	//	println("当前p：", curp.ptr().id, "，p的长度：", curp.ptr().runqtail - curp.ptr().runqhead)
+	//	for i := curp.ptr().runqhead; i < curp.ptr().runqtail; i++ {
+	//		println("p：", curp.ptr().id, "，gid：", curp.ptr().runq[i].ptr().goid)
+	//	}
+	//}
+	//println("----------------------------------------------------------")
+	//println("")
+
+	if status != _Grunning && status != _Gscanrunning {
+		throw("gopark: bad g status")
+	}
+	mp.waitlock = lock
+	mp.waitunlockf = unlockf
+	gp.waitreason = reason
+	mp.waittraceev = traceEv
+	mp.waittraceskip = traceskip
+	releasem(mp)
+	// can't do anything that might move the G between Ms here.
+	/*
+		协程切换工作：
+		1. 切换当前线程的堆栈从g的堆栈切换到g0的堆栈；
+		2. 并在g0的堆栈上执行新的函数fn(g)；
+		3. 保存当前协程的信息（PC/SP存储到g->sched)，当后续对当前协程调用Goready函数时候能够恢复现场；
+		mcall函数是通过汇编实现的，64位机的实现代码在 asm_amd64.s
+		它将当前正在执行的协程状态保存起来，然后在m->g0的堆栈上调用新的函数。在新的函数内会将之前运行的协程放弃，
+		然后调用一次schedule()来挑选新的协程运行（也就是在传入的函数中调用一次schedule()函数进行一次schedule的重新调度，
+		让m去运行其余的goroutine）。
+	*/
+	mcall(park_m)
+}
+```
 # 4、G的结束
 # 5、main的协程
 ### 1. main协程的创建
@@ -135,3 +206,4 @@ POPQ	AX
 // 启动M，开始调度 goroutine
 CALL	runtime·mstart(SB)
 ```
+# 六、g状态切换的场景
