@@ -46,6 +46,7 @@ const (
 	gcOverAssistWork = 64 << 10
 
 	// defaultHeapMinimum is the value of heapMinimum for GOGC==100.
+	// defaultHeapMinimum是GOGC==100的heapMinimum的值。
 	defaultHeapMinimum = 4 << 20
 )
 
@@ -260,6 +261,7 @@ func (c *gcControllerState) init(gcPercent int32) {
 	c.heapMinimum = defaultHeapMinimum
 
 	// Set a reasonable initial GC trigger.
+	// 设置合理的初始 GC 触发比率
 	c.triggerRatio = 7 / 8.0
 
 	// Fake a heapMarked value so it looks like a trigger at

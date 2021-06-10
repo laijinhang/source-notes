@@ -242,6 +242,7 @@ func main() {
 		}
 	}()
 
+	// 启动垃圾回收器后台
 	gcenable()
 
 	main_init_done = make(chan bool)
@@ -792,6 +793,7 @@ func schedinit() {
 	gcinit()
 
 	lock(&sched.lock)
+	// 设置最后一次轮询时间
 	sched.lastpoll = uint64(nanotime())
 	// 通过 CPU 核心数 和 GOMAPROCS 环境变量确定 P 的数量
 	// 设置GOMAXPROCS

@@ -123,9 +123,10 @@ type g struct {
 * _Gscanpreempted = _Gscan + _Gpreempted // 0x1009
 ### 3、种类
 * 主协程，g0
-* 普通协程
 * 用于进行gc的协程
+* 用于帮助标记内存专用后台的协程：runtime.gcBgMarkWorker
 * 用于管理finalizer的协程
+* 普通协程
 # 2、G的创建
 ### 1. 初始化过程
 # 3、G的切换

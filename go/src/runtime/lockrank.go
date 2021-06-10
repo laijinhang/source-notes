@@ -9,6 +9,9 @@
 // for documentation purposes, but don't list any of the architecture-dependent
 // locks (which are all leaf locks). debugLock is ignored for ranking, since it is used
 // when printing out lock ranking errors.
+// 这个文件记录了运行时中锁的静态等级。如果一个锁没有被赋予等级，那么它就被认为是一个叶子锁，这意味着在它被持有
+// 的时候没有其他锁可以被获取。因此，叶子锁不需要被赋予一个明确的等级。我们列出了所有与架构无关的叶子锁，以备文档
+// 之用，但没有列出任何与架构有关的锁（它们都是叶子锁）。 debugLock在排序时被忽略，因为它是在打印出锁的排序错误时使用。
 //
 // lockInit(l *mutex, rank int) is used to set the rank of lock before it is used.
 // If there is no clear place to initialize a lock, then the rank of a lock can be
