@@ -485,20 +485,28 @@ func mallocinit() {
 	lockInit(&globalAlloc.mutex, lockRankGlobalAlloc)
 
 	// Create initial arena growth hints.
+	/*
+		64位机器
+	*/
 	if sys.PtrSize == 8 {
 		// On a 64-bit machine, we pick the following hints
+		// 在64位机器上，我们选择以下提示
 		// because:
+		// 因为：
 		//
 		// 1. Starting from the middle of the address space
 		// makes it easier to grow out a contiguous range
 		// without running in to some other mapping.
+		// 1.从地址空间的中间开始，可以更容易地增长出一个连续的范围，而不会碰到其他的映射。
 		//
 		// 2. This makes Go heap addresses more easily
 		// recognizable when debugging.
+		// 2.这使得Go的堆地址在调试时更容易被识别。
 		//
 		// 3. Stack scanning in gccgo is still conservative,
 		// so it's important that addresses be distinguishable
 		// from other data.
+		// 3. gccgo中的堆栈扫描仍然是保守的，所以地址与其他数据的区分是很重要的。
 		//
 		// Starting at 0x00c0 means that the valid memory addresses
 		// will begin 0x00c0, 0x00c1, ...

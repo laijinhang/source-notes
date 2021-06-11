@@ -841,6 +841,14 @@ func setGCPercent(in int32) (out int32) {
 	return out
 }
 
+/*
+GOGC参数取值范围为0~100，单位是百分比
+GOGC有两个特殊值：
+-1："off"，代表关闭GC
+0：代表持续进行垃圾回收，只用于调试
+
+触发阈值等于 x% * defaultHeapMinimum (defaultHeapMinimum 默认是 4M)
+*/
 func readGOGC() int32 {
 	p := gogetenv("GOGC")
 	if p == "off" {

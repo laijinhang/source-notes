@@ -204,7 +204,11 @@ var gcphase uint32
 // If you change it, you must change builtin/runtime.go, too.
 // If you change the first four bytes, you must also change the write
 // barrier insertion code.
+// 编译器知道这个变量。
+// 如果你改变它，你也必须改变 builtin/runtime.go。
+// 如果你改变了前四个字节，你也必须改变写屏障插入的代码。
 var writeBarrier struct {
+	// 编译器在调用写屏障之前，会发出对这个的检查
 	enabled bool    // compiler emits a check of this before calling write barrier
 	pad     [3]byte // compiler uses 32-bit load for "enabled" field
 	needed  bool    // whether we need a write barrier for current GC phase
@@ -676,6 +680,9 @@ func gcStart(trigger gcTrigger) {
 
 	/*
 		验证垃圾收集条件，并清理已经被标记的内存单元
+
+		sweepone没有发现没有需要标记的内容时，会返回^uintptr(0)，也就是没有需要标记的内容时，sweepone() != ^uintptr(0) 为false
+		有标记内容的时候sweepone() != ^uintptr(0) 为true
 	*/
 	for trigger.test() && sweepone() != ^uintptr(0) {
 		sweep.nbgsweep++
@@ -1045,8 +1052,10 @@ top:
 
 // World must be stopped and mark assists and background workers must be
 // disabled.
+// 世界必须被停止，mark assists和background workers必须被禁用。
 func gcMarkTermination(nextTriggerRatio float64) {
 	// Start marktermination (write barrier remains enabled for now).
+	// 开始 标记终止（写屏障暂时保持启用状态）。
 	setGCPhase(_GCmarktermination)
 
 	work.heap1 = gcController.heapLive
@@ -1605,8 +1614,10 @@ func gcMark(startTime int64) {
 
 // gcSweep must be called on the system stack because it acquires the heap
 // lock. See mheap for details.
+// gcSweep必须在系统堆栈上调用，因为它要获取堆锁。详见mheap。
 //
 // The world must be stopped.
+// 这个世界必须被停止。
 //
 //go:systemstack
 func gcSweep(mode gcMode) {

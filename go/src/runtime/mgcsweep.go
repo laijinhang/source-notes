@@ -34,12 +34,16 @@ import (
 var sweep sweepdata
 
 // State of background sweep.
+// 在后台进行sweep的状态
 type sweepdata struct {
 	lock    mutex
 	g       *g
 	parked  bool
 	started bool
 
+	/*
+		nbgsweep 和 npausesweep 来统计清扫过程
+	*/
 	nbgsweep    uint32
 	npausesweep uint32
 
@@ -55,6 +59,7 @@ type sweepdata struct {
 
 // sweepClass is a spanClass and one bit to represent whether we're currently
 // sweeping partial or full spans.
+// sweepClass是一个spanClass和一个比特，代表我们目前是在清扫部分还是全部spans。
 type sweepClass uint32
 
 const (
@@ -265,19 +270,26 @@ func (l *sweepLocker) sweepIsDone() {
 
 // sweepone sweeps some unswept heap span and returns the number of pages returned
 // to the heap, or ^uintptr(0) if there was nothing to sweep.
+// sweepone 扫除一些未扫除的heap span，并返回返回到堆中的页数，如果没有什么可扫除的，则返回^uintptr(0)。
 func sweepone() uintptr {
+	// 获取当前运行的g
 	_g_ := getg()
 
 	// increment locks to ensure that the goroutine is not preempted
 	// in the middle of sweep thus leaving the span in an inconsistent state for next GC
+	// 增加锁，以确保goroutine不会在清扫过程中被抢占，从而使跨度处于不一致的状态，以利于下一次GC。
 	_g_.m.locks++
 	// 校验是否清扫已完成
+	/*
+		如果完成，atomic.Load(&mheap_.sweepDrained) != 0 值为true，返回^uintptr(0)
+	*/
 	if atomic.Load(&mheap_.sweepDrained) != 0 {
 		_g_.m.locks--
 		return ^uintptr(0)
 	}
 	// TODO(austin): sweepone is almost always called in a loop;
 	// lift the sweepLocker into its callers.
+	// 将sweepLocker提升到其调用者。
 	sl := newSweepLocker()
 
 	// Find a span to sweep.
@@ -348,7 +360,9 @@ func sweepone() uintptr {
 		readyForScavenger()
 	}
 
+	// 允许G被抢占
 	_g_.m.locks--
+	// 返回清扫的页数
 	return npages
 }
 

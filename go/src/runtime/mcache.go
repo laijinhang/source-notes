@@ -44,6 +44,9 @@ type mcache struct {
 	// tiny指向当前tiny块的起始位置，或没有tiny块时为nil
 	// tiny是一个堆指针。由于mcache在非GC内存中，我们通常在
 	// make termination期间在releaseAll中清除它来处理它。
+	/*
+		小对象分配器，小于 16 byte 的小对象都会通过 tiny 来分配。
+	*/
 	tiny       uintptr
 	tinyoffset uintptr
 	tinyAllocs uintptr
