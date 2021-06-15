@@ -11,6 +11,17 @@ import (
 
 type mOS struct{}
 
+/*
+#include <linux/futex.h>
+#include <sys/time.h>
+int futex (int *uaddr, int op, int val, const struct timespec *timeout,int *uaddr2, int val3);
+#define __NR_futex              240
+
+uaddr就是用户态下共享内存的地址，里面存放的是一个对齐的整型计数器。
+op存放着操作类型。定义的有5中，可以通过man futex获取这五种的说明
+	FUTEX_WAIT: 原子性的检查uaddr中计数器的值是否为val,如果是则让进程休眠，直到FUTEX_WAKE或者超时(time-out)。也就是把进程挂到uaddr相对应的等待队列上去。
+	FUTEX_WAKE: 最多唤醒val个等待在uaddr上进程。
+*/
 //go:noescape
 func futex(addr unsafe.Pointer, op int32, val uint32, ts, addr2 unsafe.Pointer, val3 uint32) int32
 
@@ -27,12 +38,19 @@ func futex(addr unsafe.Pointer, op int32, val uint32, ts, addr2 unsafe.Pointer, 
 
 /*
 Futex，Fast Userspace muTexes，linux下的一种快速同步（互斥）机制，第一次出现在内核开发的2.5.7版；其语义在2.5.40固定下来，然后在2.6.x系列稳定版内核中出现。
+在futex出现之前，linux下的同步机制可以归为两类：用户态的同步机制 和 内核同步机制，
+	用户态的同步机制基本就是利用原子指令实现的spinlock
+	内核提供的同步机制，如semaphore，也是利用原子指令实现的spinlock，内核在此基础上实现了进程的睡眠与唤醒，使用这样的锁，能很好的支持进程挂起等待，但最大的缺点是每次lock和unlock都是一次系统调用，即使没有锁冲突，也必须要通过系统调用进入内核之后才能识别。
 
+		// 在uaddr指向的这个锁变量上挂起等待（仅当*uaddr==val时）
+		int futex_wait(int *uaddr, int val);
+		// 唤醒n个在uaddr指向的锁变量上挂起等待的进程
+		int futex_wake(int *uaddr, int n);
 */
 const (
-	_FUTEX_PRIVATE_FLAG = 128
-	_FUTEX_WAIT_PRIVATE = 0 | _FUTEX_PRIVATE_FLAG
-	_FUTEX_WAKE_PRIVATE = 1 | _FUTEX_PRIVATE_FLAG
+	_FUTEX_PRIVATE_FLAG = 128                     // 10000000	128
+	_FUTEX_WAIT_PRIVATE = 0 | _FUTEX_PRIVATE_FLAG // 10000000	128
+	_FUTEX_WAKE_PRIVATE = 1 | _FUTEX_PRIVATE_FLAG // 10000001	129
 )
 
 // Atomically,
@@ -63,6 +81,7 @@ func futexsleep(addr *uint32, val uint32, ns int64) {
 }
 
 // If any procs are sleeping on addr, wake up at most cnt.
+// 如果有程序在addr上休眠，最多只能唤醒cnt。
 //go:nosplit
 func futexwakeup(addr *uint32, cnt uint32) {
 	ret := futex(unsafe.Pointer(addr), _FUTEX_WAKE_PRIVATE, cnt, nil, nil, 0)
