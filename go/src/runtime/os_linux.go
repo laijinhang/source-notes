@@ -22,7 +22,13 @@ func futex(addr unsafe.Pointer, op int32, val uint32, ts, addr2 unsafe.Pointer, 
 // Futexsleep atomically checks if *addr == val and if so, sleeps on addr.
 // Futexwakeup wakes up threads sleeping on addr.
 // Futexsleep is allowed to wake up spuriously.
+// Futexsleep原子化地检查*addr是否等于val，如果是，就在addr上sleeps。
+// Futexwakeup会唤醒在addr上sleeps的线程。Futexsleep允许假性唤醒。
 
+/*
+Futex，Fast Userspace muTexes，linux下的一种快速同步（互斥）机制，第一次出现在内核开发的2.5.7版；其语义在2.5.40固定下来，然后在2.6.x系列稳定版内核中出现。
+
+*/
 const (
 	_FUTEX_PRIVATE_FLAG = 128
 	_FUTEX_WAIT_PRIVATE = 0 | _FUTEX_PRIVATE_FLAG
@@ -30,9 +36,12 @@ const (
 )
 
 // Atomically,
+// 原子化。
 //	if(*addr == val) sleep
 // Might be woken up spuriously; that's allowed.
 // Don't sleep longer than ns; ns < 0 means forever.
+// 可能会被假性唤醒；这是被允许的。
+// 不要让睡眠时间超过ns；ns<0意味着永远。
 //go:nosplit
 func futexsleep(addr *uint32, val uint32, ns int64) {
 	// Some Linux kernels have a bug where futex of
@@ -40,6 +49,9 @@ func futexsleep(addr *uint32, val uint32, ns int64) {
 	// as an errno. Libpthread ignores the return value
 	// here, and so can we: as it says a few lines up,
 	// spurious wakeups are allowed.
+	// 一些Linux内核有一个错误，FUTEX_WAIT的futex会返回一个
+	// 内部错误代码作为errno。Libpthread忽略了这里的返回值，
+	// 我们也可以这样做：正如它在前面几行所说，假性唤醒是允许的。
 	if ns < 0 {
 		futex(unsafe.Pointer(addr), _FUTEX_WAIT_PRIVATE, val, nil, nil, 0)
 		return
