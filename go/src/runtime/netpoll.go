@@ -104,17 +104,18 @@ type pollDesc struct {
 	lock    mutex // protects the following fields				// 保护以下字段
 	fd      uintptr
 	closing bool
-	everr   bool      // marks event scanning error happened			// 标志着事件扫描错误的发生
-	user    uint32    // user settable cookie							// 用户可设置的cookie
-	rseq    uintptr   // protects from stale read timers				// 防止陈旧的读取计时器
-	rg      uintptr   // pdReady, pdWait, G waiting for read or nil		// pdReady, pdWait, G等待读取或nil
-	rt      timer     // read deadline timer (set if rt.f != nil)		// 读取最后期限的计时器（如果rt.f != nil，则设置）
-	rd      int64     // read deadline									// 读取截止日期
-	wseq    uintptr   // protects from stale write timers				// 防止写入计时器过期
-	wg      uintptr   // pdReady, pdWait, G waiting for write or nil	// pdReady, pdWait, G等待写入或nil
-	wt      timer     // write deadline timer							// 写入最后期限的定时器
-	wd      int64     // write deadline									// 写下最后期限
-	self    *pollDesc // storage for indirect interface. See (*pollDesc).makeArg.	// 为间接接口的存储。见（*pollDesc）.makeArg。
+
+	everr bool      // marks event scanning error happened			// 标志着事件扫描错误的发生
+	user  uint32    // user settable cookie							// 用户可设置的cookie
+	rseq  uintptr   // protects from stale read timers				// 防止陈旧的读取计时器
+	rg    uintptr   // pdReady, pdWait, G waiting for read or nil		// pdReady, pdWait, G等待读取或nil
+	rt    timer     // read deadline timer (set if rt.f != nil)		// 读取最后期限的计时器（如果rt.f != nil，则设置）
+	rd    int64     // read deadline									// 读取截止日期
+	wseq  uintptr   // protects from stale write timers				// 防止写入计时器过期
+	wg    uintptr   // pdReady, pdWait, G waiting for write or nil	// pdReady, pdWait, G等待写入或nil
+	wt    timer     // write deadline timer							// 写入最后期限的定时器
+	wd    int64     // write deadline									// 写下最后期限
+	self  *pollDesc // storage for indirect interface. See (*pollDesc).makeArg.	// 为间接接口的存储。见（*pollDesc）.makeArg。
 }
 
 type pollCache struct {

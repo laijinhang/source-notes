@@ -6217,8 +6217,8 @@ func globrunqget(_p_ *p, max int32) *g {
 	sched.runqsize -= n
 
 	gp := sched.runq.pop()
-	n--
 	// 将其余 n-1 个 G 从全局队列放入本地队列
+	n--
 	for ; n > 0; n-- {
 		gp1 := sched.runq.pop()
 		runqput(_p_, gp1, false)

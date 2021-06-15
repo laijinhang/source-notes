@@ -792,9 +792,19 @@ type p struct {
 	goidcacheend uint64
 
 	// Queue of runnable goroutines. Accessed without lock.
-	runqhead uint32 // 可运行的 Goroutine 队列，可无锁访问
+	// 可运行的 Goroutine 队列，可无锁访问
+	/*
+		运行队列的头指针
+	*/
+	runqhead uint32
+	/*
+		运行队列的尾指针
+	*/
 	runqtail uint32
-	runq     [256]guintptr
+	/*
+		运行队列
+	*/
+	runq [256]guintptr
 	// runnext, if non-nil, is a runnable G that was ready'd by
 	// the current G and should be run next instead of what's in
 	// runq if there's time remaining in the running G's time
@@ -812,6 +822,10 @@ type p struct {
 	// 则应该运行next而不是runq中的内容。它将继承当前时间片中剩余的时间。如果一组goroutine被锁定
 	// 在一个communicate and wait模式中，那么这会将其作为一个单元进行调度，并消除由于将准备好的
 	// goroutine添加到运行队列末尾而产生的（可能较大的）调度延迟。
+
+	/*
+		下一个要执行的协程
+	*/
 	runnext guintptr
 
 	// Available G's (status == Gdead)

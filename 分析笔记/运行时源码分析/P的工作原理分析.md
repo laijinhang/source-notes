@@ -170,4 +170,42 @@ type p struct {
 }
 ```
 ### 2. 状态
-### 3. 协程队列
+### 3. 本地队列
+```go
+type p struct {
+    ...
+	// 可运行的 Goroutine 队列，可无锁访问
+	/*
+		运行队列的头指针
+	*/
+	runqhead uint32
+	/*
+		运行队列的尾指针
+	*/
+	runqtail uint32
+	/*
+		运行队列
+	*/
+	runq [256]guintptr
+	/*
+		下一个要执行的协程
+	*/
+	runnext guintptr
+	...
+}
+```
+### 4. 全局队列
+```go
+type schedt struct {
+    ...
+	// 全局 runnable G 队列
+	runq     gQueue
+	runqsize int32
+    ...
+}
+```
+# 2、本地队列的维护
+1. func runqget(_p_ *p) (gp *g, inheritTime bool)
+2. func runqput(_p_ *p, gp *g, next bool)
+### 1. runget
+### 2. runput
