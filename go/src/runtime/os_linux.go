@@ -126,17 +126,46 @@ func getproccount() int32 {
 	return n
 }
 
+/*
+0	sys_read
+1	sys_write
+3	sys_close
+9	sys_mmap
+12	sys_brk
+13	sys_rt_sigaction
+14	sys_rt_sigprocmask
+24	sys_sched_yield
+35	sys_nanosleep
+38	sys_setitimer
+39	sys_getpid
+41	sys_socket
+42	sys_connect
+56	sys_clone
+60	sys_exit
+72	sys_fcntl
+186	sys_gettid
+202	sys_futex
+204	sys_sched_getaffinity
+231	sys_exit_group
+233	sys_epoll_ctl
+234	sys_tgkill
+257	sys_openat
+269	sys_faccessat
+281	sys_epoll_pwait
+291	sys_epoll_create1
+*/
+
 // Clone, the Linux rfork.
 const (
-	_CLONE_VM             = 0x100
-	_CLONE_FS             = 0x200
-	_CLONE_FILES          = 0x400
-	_CLONE_SIGHAND        = 0x800
-	_CLONE_PTRACE         = 0x2000
-	_CLONE_VFORK          = 0x4000
-	_CLONE_PARENT         = 0x8000
-	_CLONE_THREAD         = 0x10000
-	_CLONE_NEWNS          = 0x20000
+	_CLONE_VM             = 0x100   // 子进程与父进程运行于相同的内存空间
+	_CLONE_FS             = 0x200   // 子进程与父进程共享相同的文件系统，包括root、当前目录、umask
+	_CLONE_FILES          = 0x400   // 子进程与父进程共享相同的文件描述符（file descriptor）表
+	_CLONE_SIGHAND        = 0x800   // 子进程与父进程共享相同的信号处理（signal handler）表
+	_CLONE_PTRACE         = 0x2000  // 若父进程被trace，子进程也被trace
+	_CLONE_VFORK          = 0x4000  // 父进程被挂起，直至子进程释放虚拟内存资源
+	_CLONE_PARENT         = 0x8000  // 创建的子进程的父进程是调用者的父进程，新进程与创建它的进程成了“兄弟”而不是“父子”
+	_CLONE_THREAD         = 0x10000 // Linux 2.4中增加以支持POSIX线程标准，子进程与父进程共享相同的线程群
+	_CLONE_NEWNS          = 0x20000 // 在新的namespace启动子进程，namespace描述了进程的文件hierarchy
 	_CLONE_SYSVSEM        = 0x40000
 	_CLONE_SETTLS         = 0x80000
 	_CLONE_PARENT_SETTID  = 0x100000
@@ -154,23 +183,32 @@ const (
 	// In non-QEMU environments CLONE_SYSVSEM is inconsequential as we do not
 	// use System V semaphores.
 
-	cloneFlags = _CLONE_VM | /* share memory */
-		_CLONE_FS | /* share cwd, etc */
-		_CLONE_FILES | /* share fd table */
-		_CLONE_SIGHAND | /* share sig handler table */
-		_CLONE_SYSVSEM | /* share SysV semaphore undo lists (see issue #20763) */
-		_CLONE_THREAD /* revisit - okay for now */
+	cloneFlags = _CLONE_VM | /* share memory 共享内存 */
+		_CLONE_FS | /* share cwd, etc 共享cwd, etc */
+		_CLONE_FILES | /* share fd table 共享 fd表 */
+		_CLONE_SIGHAND | /* share sig handler table 共享 信号处理表 */
+		_CLONE_SYSVSEM | /* share SysV semaphore undo lists (see issue #20763) 共享 SysV信号撤销列表（见问题#20763）。 */
+		_CLONE_THREAD /* revisit - okay for now 	Linux 2.4中增加以支持POSIX线程标准，子进程与父进程共享相同的线程群 */
 )
 
+/*
+runtime.clone 这个方法直接通过汇编实现，并直接通过将 56 号系统调用编号送入 AX，通过 SYSCALL 完成 clone 这个系统调用。
+
+56：sys_clone
+
+runtime/sys_linux_amd64.s
+*/
 //go:noescape
 func clone(flags int32, stk, mp, gp, fn unsafe.Pointer) int32
 
 // May run with m.p==nil, so write barriers are not allowed.
+// 可以在m.p==nil的情况下运行，所以不允许写障碍。
 //go:nowritebarrier
 func newosproc(mp *m) {
 	stk := unsafe.Pointer(mp.g0.stack.hi)
 	/*
 	 * note: strace gets confused if we use CLONE_PTRACE here.
+	 * 注意：如果我们在这里使用CLONE_PTRACE，strace会感到困惑。
 	 */
 	if false {
 		print("newosproc stk=", stk, " m=", mp, " g=", mp.g0, " clone=", funcPC(clone), " id=", mp.id, " ostk=", &mp, "\n")
@@ -178,6 +216,7 @@ func newosproc(mp *m) {
 
 	// Disable signals during clone, so that the new thread starts
 	// with signals disabled. It will enable them in minit.
+	// 在克隆过程中禁用信号，以便新线程在开始时禁用信号。它将在minit中启用它们。
 	var oset sigset
 	sigprocmask(_SIG_SETMASK, &sigset_all, &oset)
 	ret := clone(cloneFlags, stk, unsafe.Pointer(mp), unsafe.Pointer(mp.g0), unsafe.Pointer(funcPC(mstart)))
@@ -193,6 +232,7 @@ func newosproc(mp *m) {
 }
 
 // Version of newosproc that doesn't require a valid G.
+// newosproc的版本不需要有效的G。
 //go:nosplit
 func newosproc0(stacksize uintptr, fn unsafe.Pointer) {
 	stack := sysAlloc(stacksize, &memstats.stacks_sys)
