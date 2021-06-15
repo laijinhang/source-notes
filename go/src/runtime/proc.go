@@ -772,8 +772,8 @@ func schedinit() {
 	fastrandinit() // must run before mcommoninit
 	// M 初始化
 	mcommoninit(_g_.m, -1)
-	cpuinit()       // must run before alginit
-	alginit()       // maps must not be used before this call
+	cpuinit()       // must run before alginit					// cpu计算特性的初始化
+	alginit()       // maps must not be used before this call	// 加密算法相关的初始化
 	modulesinit()   // provides activeModules
 	typelinksinit() // uses maps, activeModules
 	itabsinit()     // uses activeModules
@@ -786,8 +786,8 @@ func schedinit() {
 		throw("sched.timeToRun not aligned to 8 bytes")
 	}
 
-	goargs()
-	goenvs()
+	goargs() // 命令行参数初始化
+	goenvs() // 环境变量初始化
 	parsedebugvars()
 	// 垃圾回收器初始化
 	gcinit()
@@ -2580,11 +2580,17 @@ func mspinning() {
 // May run with m.p==nil, so write barriers are not allowed.
 // If spinning is set, the caller has incremented nmspinning and startm will
 // either decrement nmspinning or set m.spinning in the newly started M.
+// 安排一些M来运行p（必要时创建一个M）。
+// 如果p==nil，尝试获得一个空闲的P，如果没有空闲的P就不做任何事情。
+// 可以在m.p==nil的情况下运行，所以不允许写障碍。
+// 如果spinning被设置，调用者已经增加了nmspinning，startm将减少nmspinning或者在新启动的M中设置m.spinning。
 //
 // Callers passing a non-nil P must call from a non-preemptible context. See
 // comment on acquirem below.
+// 传递非零的P的调用者必须从一个不可抢占的上下文中调用。参见下面关于获取的评论。
 //
 // Must not have write barriers because this may be called without a P.
+// 必须没有写障碍，因为这可能在没有P的情况下被调用。
 //go:nowritebarrierrec
 func startm(_p_ *p, spinning bool) {
 	// Disable preemption.
@@ -2733,11 +2739,19 @@ func handoffp(_p_ *p) {
 
 // Tries to add one more P to execute G's.
 // Called when a G is made runnable (newproc, ready).
+// 试图增加一个P来执行G的。
+// 当一个G被变成可运行时被调用（newproc, ready）。
 func wakep() {
+	/*
+		如果当前空闲的p数量为0
+	*/
 	if atomic.Load(&sched.npidle) == 0 {
 		return
 	}
 	// be conservative about spinning threads
+	/*
+		自旋的个数不等于0 或 cas失败，返回
+	*/
 	if atomic.Load(&sched.nmspinning) != 0 || !atomic.Cas(&sched.nmspinning, 0, 1) {
 		return
 	}
@@ -4504,16 +4518,24 @@ func malg(stacksize int32) *g {
 // Create a new g running fn with siz bytes of arguments.
 // Put it on the queue of g's waiting to run.
 // The compiler turns a go statement into a call to this.
+// 创建一个新的g运行fn，参数为siz字节。
+// 把它放在等待运行的g的队列中。
+// 编译器把go语句变成了对它的调用。
 //
 // The stack layout of this call is unusual: it assumes that the
 // arguments to pass to fn are on the stack sequentially immediately
 // after &fn. Hence, they are logically part of newproc's argument
 // frame, even though they don't appear in its signature (and can't
 // because their types differ between call sites).
+// 这个调用的堆栈布局是不寻常的：它假定要传递给fn的参数是在紧跟&fn之后的堆栈中。
+// 因此，它们在逻辑上是newproc的参数框架的一部分，尽管它们没有出现在它的签名中
+// （也不能出现，因为它们的类型在不同的调用位置上是不同的）。
 //
 // This must be nosplit because this stack layout means there are
 // untyped arguments in newproc's argument frame. Stack copies won't
 // be able to adjust them and stack splits won't be able to copy them.
+// 这必须是nosplit，因为这种堆栈布局意味着newproc的参数框中有未定型的参数。
+// 堆栈拷贝将无法调整它们，堆栈拆分也无法复制它们。
 //
 //go:nosplit
 func newproc(siz int32, fn *funcval) {
@@ -4764,6 +4786,8 @@ func gfput(_p_ *p, gp *g) {
 
 // Get from gfree list.
 // If local list is empty, grab a batch from global list.
+// 从空闲g列表中获取一个g
+// 如果本地列表是空的，从全局列表中获取一批
 func gfget(_p_ *p) *g {
 retry:
 	// 如果 P 的空闲列表 gFree 为空，sched 的空闲列表 gFree 不为空

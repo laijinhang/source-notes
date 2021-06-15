@@ -127,9 +127,54 @@ type g struct {
 * 用于帮助标记内存专用后台的协程：runtime.gcBgMarkWorker
 * 用于管理finalizer的协程
 * 普通协程
-# 2、G的创建
-### 1. 初始化过程
-# 3、G的切换
+# 2、工作原理
+1. 通过runtime.newproc函数创建协程
+2. 如果P的本地队列没有满，则放入本地队列，否则放入全局队列中
+3. 如果在本地/全局队列，等待被调度，偷取
+4. 被M调度，执行
+5. 阻塞、休眠或销毁
+
+### 1. 创建
+runtime/proc.go
+```go
+func newproc(siz int32, fn *funcval) {
+	// 从fn的地址增加一个指针的长度，从而获取第一个参数地址
+	argp := add(unsafe.Pointer(&fn), sys.PtrSize)
+	// 获取当前的 G
+	gp := getg()
+	pc := getcallerpc() // 获取调用方 PC/IP 寄存器
+	// 用 g0 系统栈创建 Goroutine
+	// 传递的参数包括fn函数入口地址，argp参数起始地址，size参数长度，gp（g0），调用方pc（goroutine）
+	systemstack(func() {
+		// 获取新的 G 结构体
+		newg := newproc1(fn, argp, siz, gp, pc)
+
+		_p_ := getg().m.p.ptr()
+		// 将 G 加入到 P 的运行队列
+		runqput(_p_, newg, true)
+		// mainStarted为 True 表示主M已经启动
+
+		if mainStarted {
+			// 唤醒新的 P 执行 G
+			wakep()
+		}
+	})
+}
+```
+
+
+1. 什么时候创建？
+执行`go 函数()`代码
+2. 创建的时候做了什么？
+   1. 从当前协程所在p上尝试获取一个空闲g，如果没有获取到，则创建一个栈大小为2k的新协程，
+      通过cas去把这个新协程的状态从_Gidle改为_Gdead，之后将这个新协程加入到全局allgs列表
+   2. 通过cas去把这个新协程的状态从_Gdead改为_Grunnable
+   3. 为这个新协程分配一个id（这个id是全局唯一）
+   4. 将G加入到P的运行队列
+   5. 唤醒P执行G
+
+### 2. 初始化过程
+### 3. G的切换
 runtime/proc.go
 ```go
 /*
@@ -183,7 +228,7 @@ func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason w
 	mcall(park_m)
 }
 ```
-# 4、G的结束
+### 4. G的结束
 # 5、main的协程
 ### 1. main协程的创建
 ```go
