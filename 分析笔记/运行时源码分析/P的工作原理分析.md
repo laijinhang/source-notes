@@ -207,5 +207,38 @@ type schedt struct {
 # 2、本地队列的维护
 1. func runqget(_p_ *p) (gp *g, inheritTime bool)
 2. func runqput(_p_ *p, gp *g, next bool)
+3. func runqempty(_p_ *p) bool
+4. func runqputslow(_p_ *p, gp *g, h, t uint32) bool
+5. func runqputbatch(pp *p, q *gQueue, qsize int)
+6. func runqdrain(_p_ *p) (drainQ gQueue, n uint32)
+7. func runqgrab(_p_ *p, batch *[256]guintptr, batchHead uint32, stealRunNextG bool) uint32
+8. func runqsteal(_p_, p2 *p, stealRunNextG bool) *g
 ### 1. runget
+* 入参：p
+* 作用：从传入的p中的本地队列中获取g
+* 出参：获取到g（没获取到的话，则为nil），inheritTime（如果inheritTime为true，gp应该继承当前时间片的剩余时间。否则，它应该开始一个新的时间片。）
+
+1. 尝试先从p.runnext获取，如果runnext不为空，则直接获取并返回
+2. 如果runnext为空，则从本地队列头指针遍历本地队列
 ### 2. runput
+* 入参：p，协程，next
+* 作用：尝试将g放入到本地可运行队列中
+* 出参：无
+
+如果next为false，runqput将g添加到可运行队列的尾部
+如果next为true，runqput将g放入_p_.runnext中
+如果运行队列已满，runnext将g放到全局队列中。
+
+### 3. func runqempty(_p_ *p) bool
+* 入参：p
+* 作用：判断_p_的本地运行队列中有没有g
+* 出参：_p_的本地运行队列中有没有g
+
+### 4. func runqputslow(_p_ *p, gp *g, h, t uint32) bool
+* 入参：p，协程，p本地队列的头指针，p本地队列的尾指针
+* 作用：把g和本地可运行队列中的一批协程放到全局队列中
+* 出参：
+### 5. func runqputbatch(pp *p, q *gQueue, qsize int)
+### 6. func runqdrain(_p_ *p) (drainQ gQueue, n uint32)
+### 7. func runqgrab(_p_ *p, batch *[256]guintptr, batchHead uint32, stealRunNextG bool) uint32
+### 8. func runqsteal(_p_, p2 *p, stealRunNextG bool) *g

@@ -6508,6 +6508,9 @@ func runqputbatch(pp *p, q *gQueue, qsize int) {
 // If inheritTime is true, gp should inherit the remaining time in the
 // current time slice. Otherwise, it should start a new time slice.
 // Executed only by the owner P.
+// 从本地可运行队列中获取g。
+// 如果inheritTime为true，gp应该继承当前时间片的剩余时间。否则，它应该开始一个新的时间片。
+// 只由所有者P执行。
 func runqget(_p_ *p) (gp *g, inheritTime bool) {
 	// If there's a runnext, it's the next G to run.
 	// 如果 runnext 不为空，直接获取返回
@@ -6655,6 +6658,7 @@ func runqsteal(_p_, p2 *p, stealRunNextG bool) *g {
 
 // A gQueue is a dequeue of Gs linked through g.schedlink. A G can only
 // be on one gQueue or gList at a time.
+// 一个gQueue是一个通过g.schedlink链接的G的dequeue。一个G在同一时间只能在一个gQueue或gList上。
 type gQueue struct {
 	head guintptr
 	tail guintptr

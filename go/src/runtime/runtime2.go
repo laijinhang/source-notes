@@ -382,8 +382,11 @@ type gobuf struct {
 	// 系统调用的返回值，因为从系统调用返回之后如果p被其他工作线程抢占，
 	// 则这个goroutine会被放入全局队列被其它工作线程调度，其它线程需要知道系统调用的返回值
 	ret uintptr
-	lr  uintptr
+	lr  uintptr // 这是在 arm 上用的寄存器，不用关心
 	// 保存CPU的rip寄存器的值
+	/*
+		开启 GOEXPERIMENT=framepointer，才会有这个
+	*/
 	bp uintptr // for framepointer-enabled architectures
 }
 
@@ -397,6 +400,13 @@ type gobuf struct {
 //
 // sudogs are allocated from a special pool. Use acquireSudog and
 // releaseSudog to allocate and free them.
+/*
+sudog 代表在等待列表里的g，比如向 channel 发送/接收 内容时
+之所以需要 sudog 时因为 g 和同步对象之间的关系是多对多的
+一个 g 可能会在多个等待队列中，所以一个 g 可能被打包为多个 sudog
+因此对于一个同步对象就会有很多 sudog 了
+sudog 是从一个特殊的池中进行分配的，用 acquireSudog 和 releaseSudog 来分配和释放 sudog
+*/
 type sudog struct {
 	// The following fields are protected by the hchan.lock of the
 	// channel this sudog is blocking on. shrinkstack depends on
@@ -413,12 +423,21 @@ type sudog struct {
 	// For semaphores, all fields (including the ones above)
 	// are only accessed when holding a semaRoot lock.
 
+	/*
+	   下面这些字段则永远都不会被并发访问
+	   对于 channel 来说，waitlink 只会被 g 访问
+	   对于信号量来说，所有的字段，包括上面的那些字段都只在持有 semaRoot 锁时才可以访问
+	*/
 	acquiretime int64
 	releasetime int64
 	ticket      uint32
 
 	// isSelect indicates g is participating in a select, so
 	// g.selectDone must be CAS'd to win the wake-up race.
+	/*
+		isSelect 表示一个 g 释放正在参与 select 操作
+		所以 g.selectDone 必须用 CAS 来操作，以胜出唤醒的竞争
+	*/
 	isSelect bool
 
 	// success indicates whether communication over channel c

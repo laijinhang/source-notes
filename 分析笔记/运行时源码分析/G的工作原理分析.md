@@ -1,5 +1,19 @@
 # 一、结构
 ### 1、数据结构
+**g的现场：**
+```go
+// g 的运行现场
+type gobuf struct {
+    sp   uintptr    // sp 寄存器
+    pc   uintptr    // pc 寄存器
+    g    guintptr   // g 指针
+    ctxt unsafe.Pointer // 这个似乎是用来辅助 gc 的
+    ret  sys.Uintreg
+    lr   uintptr    // 这是在 arm 上用的寄存器，不用关心
+    bp   uintptr    // 开启 GOEXPERIMENT=framepointer，才会有这个
+}
+```
+**g的结构：**
 ```go
 type g struct {
 	// Stack parameters.
