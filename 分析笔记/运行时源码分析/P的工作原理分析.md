@@ -255,4 +255,53 @@ type gQueue struct {
 
 ```
 ### 2. 从全局队列中取值
+runtime/proc.go
+```go
+/*
+全局队列获取G
+globrunqget会从全局runq队列中获取n个G，其中第一个G用于执行，n-1个G从全局队列放入本地队列
+*/
+func globrunqget(_p_ *p, max int32) *g {
+	assertLockHeld(&sched.lock)
+
+	// 如果全局队列中没有 G 直接返回
+	if sched.runqsize == 0 {
+		return nil
+	}
+
+	// 计算 n 的个数
+	n := sched.runqsize/gomaxprocs + 1
+	if n > sched.runqsize {
+		n = sched.runqsize
+	}
+	// n 的最大个数
+	if max > 0 && n > max {
+		n = max
+	}
+	if n > int32(len(_p_.runq))/2 {
+		n = int32(len(_p_.runq)) / 2
+	}
+
+	// 那都全局队列队头 G
+	sched.runqsize -= n
+
+	gp := sched.runq.pop()
+	// 将其余 n-1 个 G 从全局队列放入本地队列
+	n--
+	for ; n > 0; n-- {
+		gp1 := sched.runq.pop()
+		runqput(_p_, gp1, false)
+	}
+	return gp
+}
+```
 ### 3. 往全局队列中写值
+runtime/proc.go
+```go
+func globrunqput(gp *g) {
+	assertLockHeld(&sched.lock)
+
+	sched.runq.pushBack(gp)
+	sched.runqsize++
+}
+```

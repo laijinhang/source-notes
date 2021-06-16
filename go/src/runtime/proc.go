@@ -349,6 +349,7 @@ func forcegchelper() {
 
 // Gosched yields the processor, allowing other goroutines to run. It does not
 // suspend the current goroutine, so execution resumes automatically.
+
 func Gosched() {
 	checkTimeouts()
 	mcall(gosched_m)
@@ -3786,14 +3787,23 @@ func park_m(gp *g) {
 }
 
 func goschedImpl(gp *g) {
+	/*
+		读取协程gp当前的状态
+	*/
 	status := readgstatus(gp)
 	if status&^_Gscan != _Grunning {
 		dumpgstatus(gp)
 		throw("bad g status")
 	}
+	/*
+		从拥有栈所有权、运行的状态 变成 不拥有栈所有权，非运行状态
+	*/
 	casgstatus(gp, _Grunning, _Grunnable)
 	dropg()
 	lock(&sched.lock)
+	/*
+		把go放入sched的全局队列runq
+	*/
 	globrunqput(gp)
 	unlock(&sched.lock)
 
@@ -6139,6 +6149,9 @@ func mput(mp *m) {
 // Try to get an m from midle list.
 // sched.lock must be held.
 // May run during STW, so write barriers are not allowed.
+// 尝试从midle列表中获取一个m。
+// 必须持有sched.lock。
+// 可能在STW期间运行，所以不允许有写障碍。
 //go:nowritebarrierrec
 func mget() *m {
 	assertLockHeld(&sched.lock)
@@ -6154,6 +6167,9 @@ func mget() *m {
 // Put gp on the global runnable queue.
 // sched.lock must be held.
 // May run during STW, so write barriers are not allowed.
+// 将 gp 放在全局可运行队列中。
+// 必须持有 sched.lock。
+// 可能在STW期间运行，所以不允许有写障碍。
 //go:nowritebarrierrec
 func globrunqput(gp *g) {
 	assertLockHeld(&sched.lock)
@@ -6165,6 +6181,9 @@ func globrunqput(gp *g) {
 // Put gp at the head of the global runnable queue.
 // sched.lock must be held.
 // May run during STW, so write barriers are not allowed.
+// 把 gp 放在全局可运行队列队头。
+// 必须持有 sched.lock。
+// 可能在STW期间运行，所以不允许有写障碍。
 //go:nowritebarrierrec
 func globrunqputhead(gp *g) {
 	assertLockHeld(&sched.lock)
@@ -6177,6 +6196,10 @@ func globrunqputhead(gp *g) {
 // This clears *batch.
 // sched.lock must be held.
 // May run during STW, so write barriers are not allowed.
+// 把一批可运行的goroutines放在全局可运行队列中。
+// 这将清除*batch。
+// 必须持有 sched.lock。
+// 可能在STW期间运行，所以不允许有写障碍。
 //go:nowritebarrierrec
 func globrunqputbatch(batch *gQueue, n int32) {
 	assertLockHeld(&sched.lock)
