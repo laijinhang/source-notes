@@ -6656,20 +6656,25 @@ func runqsteal(_p_, p2 *p, stealRunNextG bool) *g {
 	return gp
 }
 
+/*
+gQueue用于维护全局队列
+*/
 // A gQueue is a dequeue of Gs linked through g.schedlink. A G can only
 // be on one gQueue or gList at a time.
 // 一个gQueue是一个通过g.schedlink链接的G的dequeue。一个G在同一时间只能在一个gQueue或gList上。
 type gQueue struct {
-	head guintptr
-	tail guintptr
+	head guintptr // 头指针
+	tail guintptr // 尾指针
 }
 
 // empty reports whether q is empty.
+// empty报告q是否为空。
 func (q *gQueue) empty() bool {
 	return q.head == 0
 }
 
 // push adds gp to the head of q.
+// push将gp添加到q的头部。
 func (q *gQueue) push(gp *g) {
 	gp.schedlink = q.head
 	q.head.set(gp)
@@ -6679,6 +6684,7 @@ func (q *gQueue) push(gp *g) {
 }
 
 // pushBack adds gp to the tail of q.
+// pushBack将gp添加到q的尾部。
 func (q *gQueue) pushBack(gp *g) {
 	gp.schedlink = 0
 	if q.tail != 0 {
@@ -6691,6 +6697,7 @@ func (q *gQueue) pushBack(gp *g) {
 
 // pushBackAll adds all Gs in l2 to the tail of q. After this q2 must
 // not be used.
+// pushBackAll将l2中的所有G添加到q的尾部，此后q2不得再使用。
 func (q *gQueue) pushBackAll(q2 gQueue) {
 	if q2.tail == 0 {
 		return
@@ -6706,6 +6713,7 @@ func (q *gQueue) pushBackAll(q2 gQueue) {
 
 // pop removes and returns the head of queue q. It returns nil if
 // q is empty.
+// pop删除并返回队列q的头，如果q是空的，它返回nil。
 func (q *gQueue) pop() *g {
 	gp := q.head.ptr()
 	if gp != nil {
@@ -6718,6 +6726,7 @@ func (q *gQueue) pop() *g {
 }
 
 // popList takes all Gs in q and returns them as a gList.
+// popList接收q中的所有G，并将它们作为gList返回。
 func (q *gQueue) popList() gList {
 	stack := gList{q.head}
 	*q = gQueue{}
@@ -6726,22 +6735,26 @@ func (q *gQueue) popList() gList {
 
 // A gList is a list of Gs linked through g.schedlink. A G can only be
 // on one gQueue or gList at a time.
+// 一个gList是一个通过g.schedlink链接的G的列表。一个G在同一时间只能在一个gQueue或gList上。
 type gList struct {
 	head guintptr
 }
 
 // empty reports whether l is empty.
+// empty报告l是否为空。
 func (l *gList) empty() bool {
 	return l.head == 0
 }
 
 // push adds gp to the head of l.
+// push把gp加到l的头部。
 func (l *gList) push(gp *g) {
 	gp.schedlink = l.head
 	l.head.set(gp)
 }
 
 // pushAll prepends all Gs in q to l.
+// pushAll将q中的所有G都预加到l中。
 func (l *gList) pushAll(q gQueue) {
 	if !q.empty() {
 		q.tail.ptr().schedlink = l.head
@@ -6750,6 +6763,7 @@ func (l *gList) pushAll(q gQueue) {
 }
 
 // pop removes and returns the head of l. If l is empty, it returns nil.
+// 如果l是空的，它将返回nil。
 func (l *gList) pop() *g {
 	gp := l.head.ptr()
 	if gp != nil {
@@ -6772,6 +6786,9 @@ func setMaxThreads(in int) (out int) {
 	return
 }
 
+/*
+禁止当前协程被抢占
+*/
 //go:nosplit
 func procPin() int {
 	_g_ := getg()
@@ -6781,6 +6798,9 @@ func procPin() int {
 	return int(mp.p.ptr().id)
 }
 
+/*
+取消当前当前协程被抢占
+*/
 //go:nosplit
 func procUnpin() {
 	_g_ := getg()

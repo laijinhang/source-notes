@@ -242,3 +242,17 @@ type schedt struct {
 ### 6. func runqdrain(_p_ *p) (drainQ gQueue, n uint32)
 ### 7. func runqgrab(_p_ *p, batch *[256]guintptr, batchHead uint32, stealRunNextG bool) uint32
 ### 8. func runqsteal(_p_, p2 *p, stealRunNextG bool) *g
+# 3、全局队列的维护
+维护全局队列的结构
+```go
+type gQueue struct {
+	head guintptr
+	tail guintptr
+}
+```
+### 1. 全局队列初始化
+```go
+
+```
+### 2. 从全局队列中取值
+### 3. 往全局队列中写值
