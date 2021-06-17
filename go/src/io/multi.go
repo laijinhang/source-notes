@@ -47,7 +47,7 @@ func (mr *multiReader) Read(p []byte) (n int, err error) {
 // the provided input readers. They're read sequentially. Once all
 // inputs have returned EOF, Read will return EOF.  If any of the readers
 // return a non-nil, non-EOF error, Read will return that error.
-// MultiReader返回一个Reader，它是所提供的输入阅读器的逻辑串联。它们被依次读取。
+// MultiReader返回一个Reader，它是所提供的输入Reader的逻辑串联。它们被依次读取。
 // 一旦所有的输入都返回EOF，Read将返回EOF。 如果任何一个读取器返回一个非零、
 // 非EOF的错误，Read将返回该错误。
 func MultiReader(readers ...Reader) Reader {
@@ -100,10 +100,17 @@ func (t *multiWriter) WriteString(s string) (n int, err error) {
 
 // MultiWriter creates a writer that duplicates its writes to all the
 // provided writers, similar to the Unix tee(1) command.
+// MultiWriter创建了一个writer，该写入器重复写入所有提供的写入器，类似于Unix的tee(1)命令。
 //
 // Each write is written to each listed writer, one at a time.
 // If a listed writer returns an error, that overall write operation
 // stops and returns the error; it does not continue down the list.
+// 每个写操作都会被写到每个列出的写器上，一次一个。
+// 如果一个列出的写入器返回一个错误，那么整个写入操作就会停止并返回错误；它不会继续在列表中进行。
+/*
+先遍历writers，判断每一个Writer是不是*multiWriter类型，如果是，则说明，这个Writer里面可能会有多个Writer，
+则以新的方式新增到allWriters，如果不是，就以单个来算
+*/
 func MultiWriter(writers ...Writer) Writer {
 	allWriters := make([]Writer, 0, len(writers))
 	for _, w := range writers {

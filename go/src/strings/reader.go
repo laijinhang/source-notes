@@ -126,6 +126,14 @@ func (r *Reader) UnreadRune() error {
 
 // Seek implements the io.Seeker interface.
 // Seek实现了io.Seeker接口。
+/*
+其实现原理就是r结构里面有一个i用于标记当前读到哪里了，然后再根据whence来确定是从什么地方去偏移，
+对于如果偏移的位置小于0，则抛出 strings.Reader.Seek: negative position
+也就是重新设置i的值，
+	如果是从头开始的话，就把i的值设为offset；
+	如果从当前位置的话，就把i的值设为i+offset；
+	如果从末尾开始的话，就把i的值设为 长度+offset
+*/
 func (r *Reader) Seek(offset int64, whence int) (int64, error) {
 	r.prevRune = -1
 	var abs int64

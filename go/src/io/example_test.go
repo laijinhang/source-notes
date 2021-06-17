@@ -191,6 +191,10 @@ func ExampleTeeReader() {
 	// some io.Reader stream to be read
 }
 
+/*
+SectionReader的案例
+场景：将r数据从第五个到十七个拷贝到os.Stdout上
+*/
 func ExampleSectionReader() {
 	r := strings.NewReader("some io.Reader stream to be read\n")
 	s := io.NewSectionReader(r, 5, 17)
@@ -234,14 +238,18 @@ func ExampleSectionReader_Seek() {
 	// stream
 }
 
+/*
+Seeker_Seek的案例
+*/
 func ExampleSeeker_Seek() {
 	r := strings.NewReader("some io.Reader stream to be read\n")
 
-	r.Seek(5, io.SeekStart) // move to the 5th char from the start
+	r.Seek(5, io.SeekStart) // move to the 5th char from the start	// 开始位置第五个字符开始
 	if _, err := io.Copy(os.Stdout, r); err != nil {
 		log.Fatal(err)
 	}
 
+	// len(r) - 5 的位置开始读
 	r.Seek(-5, io.SeekEnd)
 	if _, err := io.Copy(os.Stdout, r); err != nil {
 		log.Fatal(err)
@@ -252,6 +260,11 @@ func ExampleSeeker_Seek() {
 	// read
 }
 
+/*
+MultiWriter的案例
+
+有点类似，一个份数据，向n个地方写入
+*/
 func ExampleMultiWriter() {
 	r := strings.NewReader("some io.Reader stream to be read\n")
 
