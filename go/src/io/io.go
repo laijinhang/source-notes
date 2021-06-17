@@ -434,9 +434,12 @@ func Copy(dst Writer, src Reader) (written int64, err error) {
 // provided buffer (if one is required) rather than allocating a
 // temporary one. If buf is nil, one is allocated; otherwise if it has
 // zero length, CopyBuffer panics.
+// CopyBuffer与Copy相同，只是它通过提供的缓冲区（如果需要的话），而不是分配一个临时的缓冲区。
+// 如果buf为nil，则分配一个；否则，如果它的长度为零，CopyBuffer就会抛出panics。
 //
 // If either src implements WriterTo or dst implements ReaderFrom,
 // buf will not be used to perform the copy.
+// 如果src实现了WriterTo或者dst实现了ReaderFrom，buf将不会被用来执行拷贝。
 func CopyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error) {
 	if buf != nil && len(buf) == 0 {
 		panic("empty buffer in CopyBuffer")
@@ -448,9 +451,21 @@ func CopyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error) {
 // if buf is nil, one is allocated.
 // copyBuffer是Copy和CopyBuffer的实际实现。如果buf是nil，就会分配一个。
 /*
-	1、如果传入的src带有WriterTo方法，则使用它来进行拷贝，避免了分配和复制
-	2、如果传入的dst带有ReadFrom方法，则使用它来进行拷贝
+	1、如果传入的src带有WriterTo方法，不是使用buf，则使用它来进行拷贝，避免了分配和复制
+	2、如果传入的dst带有ReadFrom方法，不是使用buf，则使用它来进行拷贝，避免了分配和复制
 	3、如果buf为空
+			如果src是*LimitedReader类型，则size的大小最大为 l.N，最小为1
+			如果src不是*LimitedReader类型，则size的大小为32KB
+
+		从src读一下，后就往dst写一次，直到从src上读取完，或者碰到错误
+
+		关于错误，有两种，第一种是从src读发生的错误，第二种是往dst写发生的错误
+		从src读发生的错误：非EOF的错误
+		往dst写发生的错误：
+			如果写入的长度小于0，或者写入的实际长度大于buf要写入到dst的长度，则直接返回 errInvalidWrite 错误
+			如果要写入的长度不等buf要写入到dst的长度，则直接返回 ErrShortWrite 错误
+
+	返回写成功的长度 和 错误
 */
 func copyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error) {
 	// If the reader has a WriteTo method, use it to do the copy.
@@ -465,7 +480,14 @@ func copyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error) {
 		return rt.ReadFrom(src)
 	}
 	if buf == nil {
+		/*
+			32K = 32 * 1024字节
+		*/
 		size := 32 * 1024
+		/*
+			如果src是*LimitedReader类型，则size的大小最大为 l.N，最小为1
+			如果src不是*LimitedReader类型，则size的大小为32KB
+		*/
 		if l, ok := src.(*LimitedReader); ok && int64(size) > l.N {
 			if l.N < 1 {
 				size = 1
@@ -475,9 +497,28 @@ func copyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error) {
 		}
 		buf = make([]byte, size)
 	}
+	/*
+		从src读一下，后就往dst写一次，直到从src上读取完，或者碰到错误
+
+		关于错误，有两种，第一种是从src读发生的错误，第二种是往dst写发生的错误
+		从src读发生的错误：非EOF的错误
+		往dst写发生的错误：
+			如果写入的长度小于0，或者写入的实际长度大于buf要写入到dst的长度，则直接返回 errInvalidWrite 错误
+			如果要写入的长度不等buf要写入到dst的长度，则直接返回 ErrShortWrite 错误
+	*/
 	for {
+		/*
+			将数据从src读到buf，并返回读取的个数，以及错误
+		*/
 		nr, er := src.Read(buf)
 		if nr > 0 {
+			/*
+				将buf读到的写入到dst里
+					如果写入的长度小于0，或者写入的实际长度大于buf要写入到dst的长度，则直接返回 errInvalidWrite 错误
+					如果要写入的长度不等buf要写入到dst的长度，则直接返回 ErrShortWrite 错误
+
+				并使用written记录实际写成功的长度
+			*/
 			nw, ew := dst.Write(buf[0:nr])
 			if nw < 0 || nr < nw {
 				nw = 0
@@ -517,8 +558,8 @@ func LimitReader(r Reader, n int64) Reader { return &LimitedReader{r, n} }
 // 一个有限读取器从R中读取数据，但将返回的数据量限制在N个字节。每次对Read的调用都会更新N，
 // 以反映新的剩余量。当N<=0或底层R返回EOF时，Read返回EOF。
 type LimitedReader struct {
-	R Reader // underlying reader
-	N int64  // max bytes remaining
+	R Reader // underlying reader	// 底层reader
+	N int64  // max bytes remaining	// 剩余的最大字节数
 }
 
 /*

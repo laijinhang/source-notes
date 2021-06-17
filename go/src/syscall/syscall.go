@@ -9,6 +9,7 @@
 // system, set $GOOS and $GOARCH to the desired system. For example, if
 // you want to view documentation for freebsd/arm on linux/amd64, set $GOOS
 // to freebsd and $GOARCH to arm.
+//
 // The primary use of syscall is inside other packages that provide a more
 // portable interface to the system, such as "os", "time" and "net".  Use
 // those packages rather than this one if you can.

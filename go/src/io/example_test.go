@@ -13,6 +13,11 @@ import (
 	"strings"
 )
 
+/*
+Copy的案例
+1. 创建一个strings.NewReader
+2. 将strings.NewReader内容拷贝到标准输出中
+*/
 func ExampleCopy() {
 	r := strings.NewReader("some io.Reader stream to be read\n")
 
@@ -24,6 +29,11 @@ func ExampleCopy() {
 	// some io.Reader stream to be read
 }
 
+/*
+CopyBuffer的案例
+1. 创建r1，r2 strings.NewReader
+2. io.CopyBuffer
+*/
 func ExampleCopyBuffer() {
 	r1 := strings.NewReader("first reader\n")
 	r2 := strings.NewReader("second reader\n")
