@@ -12,23 +12,35 @@ import (
 	"testing"
 )
 
+/*
+测试 设置环境环境 和 获取环境变量 功能
+*/
 func testSetGetenv(t *testing.T, key, value string) {
+	// 设置设置key，value环境
 	err := syscall.Setenv(key, value)
+	// 如果设置遇到错误，打印错误
 	if err != nil {
 		t.Fatalf("Setenv failed to set %q: %v", value, err)
 	}
+	// 获取环境变量
 	newvalue, found := syscall.Getenv(key)
+	// 如果没有找到，打印错误
 	if !found {
 		t.Fatalf("Getenv failed to find %v variable (want value %q)", key, value)
 	}
+	// 如果设置的和获取到的不一致
 	if newvalue != value {
 		t.Fatalf("Getenv(%v) = %q; want %q", key, newvalue, value)
 	}
 }
 
+/*
+测试 环境变量
+*/
 func TestEnv(t *testing.T) {
 	testSetGetenv(t, "TESTENV", "AVALUE")
 	// make sure TESTENV gets set to "", not deleted
+	// 确保TESTENV被设置为""，而不是被删除。
 	testSetGetenv(t, "TESTENV", "")
 }
 

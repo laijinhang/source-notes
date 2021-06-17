@@ -150,6 +150,9 @@ func testNEWUSERRemap(t *testing.T, uid, gid int, setgroups bool) {
 	}
 }
 
+/*
+测试 CLONE_NEWUSER
+*/
 func TestCloneNEWUSERAndRemapRootDisableSetgroups(t *testing.T) {
 	if os.Getuid() != 0 {
 		t.Skip("skipping root only test")
