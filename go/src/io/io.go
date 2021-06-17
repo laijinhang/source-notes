@@ -347,6 +347,9 @@ type StringWriter interface {
 // WriteString writes the contents of the string s to w, which accepts a slice of bytes.
 // If w implements StringWriter, its WriteString method is invoked directly.
 // Otherwise, w.Write is called exactly once.
+// WriteString将字符串s的内容写到w，w接受一个字节切片。
+// 如果w实现了StringWriter，它的WriteString方法被直接调用。
+// 否则，w.Write被调用一次。
 func WriteString(w Writer, s string) (n int, err error) {
 	if sw, ok := w.(StringWriter); ok {
 		return sw.WriteString(s)
@@ -362,10 +365,23 @@ func WriteString(w Writer, s string) (n int, err error) {
 // If min is greater than the length of buf, ReadAtLeast returns ErrShortBuffer.
 // On return, n >= min if and only if err == nil.
 // If r returns an error having read at least min bytes, the error is dropped.
+// ReadAtLeast从r读到buf，直到它至少读到了min字节。
+// 它返回复制的字节数，如果读取的字节数较少，则返回错误。
+// 只有在没有读到任何字节的情况下，错误才是EOF。
+// 如果在读取少于min字节后发生EOF。ReadAtLeast返回ErrUnexpectedEOF。
+// 如果 min 大于 buf 的长度，ReadAtLeast 返回 ErrShortBuffer。
+// 在返回时，n >= min，当且仅当err == nil。
+// 如果r在至少读完min字节后返回一个错误，这个错误将被放弃。
 func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error) {
+	/*
+		如果len(buf) < min，返回 ErrShortBuffer 的错误，也就是buf太小，小于最小的
+	*/
 	if len(buf) < min {
 		return 0, ErrShortBuffer
 	}
+	/*
+		将数据读到buf里
+	*/
 	for n < min && err == nil {
 		var nn int
 		nn, err = r.Read(buf[n:])
@@ -386,6 +402,12 @@ func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error) {
 // ReadFull returns ErrUnexpectedEOF.
 // On return, n == len(buf) if and only if err == nil.
 // If r returns an error having read at least len(buf) bytes, the error is dropped.
+/*
+读取buf全部
+如果 r的数据长度 >= len(buf)，则正常读取，不会返回错误
+如果 r的数据长度 为0，则会返回 EOF 的错误
+如果 r的数据长度 < len(buf)，则会返回 unexpected EOF 的错误
+*/
 func ReadFull(r Reader, buf []byte) (n int, err error) {
 	return ReadAtLeast(r, buf, len(buf))
 }
@@ -394,9 +416,15 @@ func ReadFull(r Reader, buf []byte) (n int, err error) {
 // It returns the number of bytes copied and the earliest
 // error encountered while copying.
 // On return, written == n if and only if err == nil.
+// CopyN从src复制n个字节（或直到出错）到dst。它返回复制的字节数和复制时遇到的最早的错误。
+// 返回时，如果且仅当err == nil时，written == n。
 //
 // If dst implements the ReaderFrom interface,
 // the copy is implemented using it.
+// 如果dst实现了ReaderFrom接口，则使用该接口实现拷贝。
+/*
+	Copy里的底层实现是copyBuffer
+*/
 func CopyN(dst Writer, src Reader, n int64) (written int64, err error) {
 	written, err = Copy(dst, LimitReader(src, n))
 	if written == n {
@@ -404,6 +432,7 @@ func CopyN(dst Writer, src Reader, n int64) (written int64, err error) {
 	}
 	if written < n && err == nil {
 		// src stopped early; must have been EOF.
+		// src提前停止，一定是EOF。
 		err = EOF
 	}
 	return
@@ -549,6 +578,7 @@ func copyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error) {
 // LimitReader returns a Reader that reads from r
 // but stops with EOF after n bytes.
 // The underlying implementation is a *LimitedReader.
+// LimitReader返回一个从r读取的Reader，但在n个字节后以EOF停止。底层实现是一个*LimitedReader。
 func LimitReader(r Reader, n int64) Reader { return &LimitedReader{r, n} }
 
 // A LimitedReader reads from R but limits the amount of

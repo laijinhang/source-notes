@@ -54,9 +54,15 @@ func ExampleCopyBuffer() {
 	// second reader
 }
 
+/*
+CopyN的案例
+*/
 func ExampleCopyN() {
 	r := strings.NewReader("some io.Reader stream to be read")
 
+	/*
+		每次从r读取至多4个字节的数据，然后写入到os.Stdout，依次重复这个过程，直到r中读取完
+	*/
 	if _, err := io.CopyN(os.Stdout, r, 4); err != nil {
 		log.Fatal(err)
 	}
@@ -65,6 +71,12 @@ func ExampleCopyN() {
 	// some
 }
 
+/*
+ReadAtLeast的案例：
+场景一：r的数据 > buf > min	正常
+场景二：r的数据 > min > buf	short buffer 的错误
+场景三：min > r的数据			unexpected EOF 的错误
+*/
 func ExampleReadAtLeast() {
 	r := strings.NewReader("some io.Reader stream to be read\n")
 
@@ -75,12 +87,14 @@ func ExampleReadAtLeast() {
 	fmt.Printf("%s\n", buf)
 
 	// buffer smaller than minimal read size.
+	// 缓冲区小于最小读取大小。
 	shortBuf := make([]byte, 3)
 	if _, err := io.ReadAtLeast(r, shortBuf, 4); err != nil {
 		fmt.Println("error:", err)
 	}
 
 	// minimal read size bigger than io.Reader stream
+	// 最小读取范围大于io.Reader流
 	longBuf := make([]byte, 64)
 	if _, err := io.ReadAtLeast(r, longBuf, 64); err != nil {
 		fmt.Println("error:", err)
@@ -92,6 +106,11 @@ func ExampleReadAtLeast() {
 	// error: unexpected EOF
 }
 
+/*
+ReadFull的案例：
+场景一：如果 r的数据长度 >= len(buf)，则正常读取，不会返回错误
+场景二：如果 r的数据长度 < len(buf)，则会返回 unexpected EOF 的错误
+*/
 func ExampleReadFull() {
 	r := strings.NewReader("some io.Reader stream to be read\n")
 
@@ -102,6 +121,7 @@ func ExampleReadFull() {
 	fmt.Printf("%s\n", buf)
 
 	// minimal read size bigger than io.Reader stream
+	// 最小读取 大于io.Reader流
 	longBuf := make([]byte, 64)
 	if _, err := io.ReadFull(r, longBuf); err != nil {
 		fmt.Println("error:", err)
@@ -112,6 +132,9 @@ func ExampleReadFull() {
 	// error: unexpected EOF
 }
 
+/*
+WriteString的案例
+*/
 func ExampleWriteString() {
 	if _, err := io.WriteString(os.Stdout, "Hello World"); err != nil {
 		log.Fatal(err)
@@ -120,6 +143,9 @@ func ExampleWriteString() {
 	// Output: Hello World
 }
 
+/*
+LimitReader的案例
+*/
 func ExampleLimitReader() {
 	r := strings.NewReader("some io.Reader stream to be read\n")
 	lr := io.LimitReader(r, 4)
@@ -132,6 +158,9 @@ func ExampleLimitReader() {
 	// some
 }
 
+/*
+MultiReader的案例
+*/
 func ExampleMultiReader() {
 	r1 := strings.NewReader("first reader ")
 	r2 := strings.NewReader("second reader ")
@@ -146,12 +175,16 @@ func ExampleMultiReader() {
 	// first reader second reader third reader
 }
 
+/*
+TeeReader的案例
+*/
 func ExampleTeeReader() {
 	var r io.Reader = strings.NewReader("some io.Reader stream to be read\n")
 
 	r = io.TeeReader(r, os.Stdout)
 
 	// Everything read from r will be copied to stdout.
+	// 从r读取的所有内容都将被复制到stdout。
 	io.ReadAll(r)
 
 	// Output:

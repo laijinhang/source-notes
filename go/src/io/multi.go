@@ -47,6 +47,9 @@ func (mr *multiReader) Read(p []byte) (n int, err error) {
 // the provided input readers. They're read sequentially. Once all
 // inputs have returned EOF, Read will return EOF.  If any of the readers
 // return a non-nil, non-EOF error, Read will return that error.
+// MultiReader返回一个Reader，它是所提供的输入阅读器的逻辑串联。它们被依次读取。
+// 一旦所有的输入都返回EOF，Read将返回EOF。 如果任何一个读取器返回一个非零、
+// 非EOF的错误，Read将返回该错误。
 func MultiReader(readers ...Reader) Reader {
 	r := make([]Reader, len(readers))
 	copy(r, readers)
