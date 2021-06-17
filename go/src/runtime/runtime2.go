@@ -193,6 +193,23 @@ const (
 // but on the contention path they sleep in the kernel.
 // A zeroed Mutex is unlocked (no need to initialize each lock).
 // Initialization is helpful for static lock ranking, but not required.
+// 互斥锁。 在没有强锁的情况下。
+// 和自旋锁一样快（只需要几条用户级指令）。
+// 但在争夺路径上，它们在内核中睡眠。
+// 一个归零的Mutex被解锁了（不需要初始化每个锁）。
+// 初始化对于静态锁竞争是有帮助的，但不是必须的。
+
+/*
+这个运行时mutex和sync.Mutex是两种不同的锁实现，两者之间的区别，前者是用于运行时，它会更底层，它的实现
+会比sync.Mutex更简单，没有饥饿处理等逻辑，后者是提供给开发使用的
+
+lockRankStruct是一个空结构, 为运行时的架构无关的锁( architecture-independent locks)定义了rank,并且又定义了一些运行时的锁的偏序（此锁之前允许持有哪些锁）。
+
+本质上来说，这个功能用来检查锁的顺序是不是按照文档设计的顺序执行的，如果有违反设定的顺序，就有可能死锁发生。因为缺乏准确的文档说明，并且这个功能主要是用来检查运行时锁的
+执行顺序的，所以在本文中我把这一段逻辑抹去不介绍了。实际Go运行时要开始这个检查的话，你需要设置变量GOEXPERIMENT=staticlockranking。
+
+也就是静态检查是否有死锁的存在
+*/
 type mutex struct {
 	// Empty struct if lock ranking is disabled, otherwise includes the lock rank
 	lockRankStruct
@@ -666,7 +683,10 @@ type m struct {
 	nextp puintptr
 	// 之前使用的P
 	oldp puintptr // the p that was attached before executing a syscall
-	id   int64
+	/*
+		m的id编号，从0开始
+	*/
+	id int64
 	/*
 		mallocing不等于0，表示正在执行分配任务
 	*/
@@ -811,9 +831,18 @@ type p struct {
 	/*
 		用于记录系统调度的次数，每个p之间是相互隔离的
 	*/
-	syscalltick uint32     // incremented on every system call		// 每次系统调用时递增
-	sysmontick  sysmontick // last tick observed by sysmon			// sysmon观察到的最后一个刻度
-	m           muintptr   // back-link to associated m (nil if idle)	// 反向链接到关联的m（nil则表示idle）
+	syscalltick uint32 // incremented on every system call		// 每次系统调用时递增
+	/*
+		sysmontick???
+	*/
+	sysmontick sysmontick // last tick observed by sysmon			// sysmon观察到的最后一个刻度
+	/*
+		被绑定的m
+
+		为nil的时候，表示没有被m绑定
+		设为nil的时候，表示与m进行解绑
+	*/
+	m muintptr // back-link to associated m (nil if idle)	// 反向链接到关联的m（nil则表示idle）
 	/*
 		当前m的内存缓存
 	*/
@@ -1414,7 +1443,12 @@ var (
 	ncpu       int32 // 系统中cpu核的数量，程序启动时由runtime代码初始化
 	forcegc    forcegcstate
 	sched      schedt // 调度器结构体对象，记录了调度器的工作状态
-	newprocs   int32
+	/*
+		这个变量一共在两个地方被使用了，
+		第一个是runtime.GOMAXPROCS设为时，将要设置的P数量值先放到newprocs这个变量里
+		第二个是runtime.startTheWorldWithSema，先判断newprocs是否等于0，如果不等于0，则将newprocs赋值给gomaxprocs，然后newprocs值设为0
+	*/
+	newprocs int32
 
 	// allpLock protects P-less reads and size changes of allp, idlepMask,
 	// and timerpMask, and all writes to allp.

@@ -309,6 +309,9 @@ const (
 // Note that in some situations involving plugins, there may be multiple
 // copies of a particular special runtime function.
 // Note: this list must match the list in cmd/internal/objabi/funcid.go.
+// 一个FuncID标识了需要被运行时特别对待的特定函数。
+// 注意在某些涉及到插件的情况下，一个特定的特殊运行时函数可能有多个副本。
+// 注意：这个列表必须与 cmd/internal/objabi/funcid.go 中的列表一致。
 type funcID uint8
 
 const (

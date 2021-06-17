@@ -148,7 +148,8 @@ type m struct {
 }
 ```
 
-M的最大数量限制在10000
+
+
 ```go
 // src/runtime/proc.go
 func schedinit() {
@@ -158,6 +159,11 @@ func schedinit() {
     ...
 }
 ```
+**M数量：**
+1. M的最大数量限制在10000
+2. runtime/debug包中的SetMaxThreads函数来设置
+3. 有⼀个M阻塞，会创建⼀个新的M
+4. 如果有M空闲，那么就会回收或者睡眠
 # 2、初始化
 ```go
 // src/runtime/proc.go

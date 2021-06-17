@@ -305,3 +305,6 @@ func globrunqput(gp *g) {
 	sched.runqsize++
 }
 ```
+# 4、P的维护
+* P的数量在初始化的时候，会成默认的个数
+* 可以通过runtime.GOMAXPROCS来设置P的个数
