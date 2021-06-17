@@ -3,8 +3,10 @@
 // license that can be found in the LICENSE file.
 
 // Package strings implements simple functions to manipulate UTF-8 encoded strings.
+// 软件包strings实现了简单的函数来处理UTF-8编码的字符串。
 //
 // For information about UTF-8 strings in Go, see https://blog.golang.org/strings.
+// 有关Go中UTF-8字符串的信息，请参见https://blog.golang.org/strings。
 package strings
 
 import (
@@ -16,6 +18,8 @@ import (
 // explode splits s into a slice of UTF-8 strings,
 // one string per Unicode character up to a maximum of n (n < 0 means no limit).
 // Invalid UTF-8 sequences become correct encodings of U+FFFD.
+// explode将s分割成一片UTF-8字符串，每个Unicode字符一个字符串，
+// 最多为n（n<0表示没有限制）。无效的UTF-8序列成为U+FFFD的正确编码。
 func explode(s string, n int) []string {
 	l := utf8.RuneCountInString(s)
 	if n < 0 || n > l {
@@ -38,8 +42,11 @@ func explode(s string, n int) []string {
 
 // Count counts the number of non-overlapping instances of substr in s.
 // If substr is an empty string, Count returns 1 + the number of Unicode code points in s.
+// Count计算s中substr的非重叠实例的数量。
+// 如果substr是一个空字符串，Count返回1 + s中Unicode代码点的数量。
 func Count(s, substr string) int {
 	// special case
+	// 特殊情况
 	if len(substr) == 0 {
 		return utf8.RuneCountInString(s) + 1
 	}
@@ -58,21 +65,25 @@ func Count(s, substr string) int {
 }
 
 // Contains reports whether substr is within s.
+// 包含报告substr是否在s内。
 func Contains(s, substr string) bool {
 	return Index(s, substr) >= 0
 }
 
 // ContainsAny reports whether any Unicode code points in chars are within s.
+// ContainsAny报告是否有任何Unicode代码点的字符在s内。
 func ContainsAny(s, chars string) bool {
 	return IndexAny(s, chars) >= 0
 }
 
 // ContainsRune reports whether the Unicode code point r is within s.
+// ContainsRune报告Unicode代码点r是否在s内。
 func ContainsRune(s string, r rune) bool {
 	return IndexRune(s, r) >= 0
 }
 
 // LastIndex returns the index of the last instance of substr in s, or -1 if substr is not present in s.
+// LastIndex返回s中substr的最后一个实例的索引，如果s中不存在substr，则返回-1。
 func LastIndex(s, substr string) int {
 	n := len(substr)
 	switch {
@@ -89,6 +100,7 @@ func LastIndex(s, substr string) int {
 		return -1
 	}
 	// Rabin-Karp search from the end of the string
+	// 从字符串的末端开始进行Rabin-Karp搜索
 	hashss, pow := bytealg.HashStrRev(substr)
 	last := len(s) - n
 	var h uint32
@@ -110,6 +122,7 @@ func LastIndex(s, substr string) int {
 }
 
 // IndexByte returns the index of the first instance of c in s, or -1 if c is not present in s.
+// IndexByte返回s中c的第一个实例的索引，如果c在s中不存在，则返回-1。
 func IndexByte(s string, c byte) int {
 	return bytealg.IndexByteString(s, c)
 }
@@ -118,6 +131,7 @@ func IndexByte(s string, c byte) int {
 // r, or -1 if rune is not present in s.
 // If r is utf8.RuneError, it returns the first instance of any
 // invalid UTF-8 byte sequence.
+// 如果r是utf8.RuneError，它将返回任何无效的UTF-8字节序列的第一个实例的索引，如果s中不存在符文，则返回-1。
 func IndexRune(s string, r rune) int {
 	switch {
 	case 0 <= r && r < utf8.RuneSelf:
@@ -138,6 +152,7 @@ func IndexRune(s string, r rune) int {
 
 // IndexAny returns the index of the first instance of any Unicode code point
 // from chars in s, or -1 if no Unicode code point from chars is present in s.
+// IndexAny返回s中chars的任何Unicode码位的第一个实例的索引，如果s中没有chars的Unicode码位，则返回-1。
 func IndexAny(s, chars string) int {
 	if chars == "" {
 		// Avoid scanning all of s.
@@ -145,6 +160,7 @@ func IndexAny(s, chars string) int {
 	}
 	if len(chars) == 1 {
 		// Avoid scanning all of s.
+		// 避免扫描所有的s。
 		r := rune(chars[0])
 		if r >= utf8.RuneSelf {
 			r = utf8.RuneError
@@ -172,6 +188,7 @@ func IndexAny(s, chars string) int {
 // LastIndexAny returns the index of the last instance of any Unicode code
 // point from chars in s, or -1 if no Unicode code point from chars is
 // present in s.
+// LastIndexAny返回s中chars中任何Unicode代码点的最后一个实例的索引，如果s中没有chars中的Unicode代码点，则返回-1。
 func LastIndexAny(s, chars string) int {
 	if chars == "" {
 		// Avoid scanning all of s.
@@ -222,6 +239,7 @@ func LastIndexAny(s, chars string) int {
 }
 
 // LastIndexByte returns the index of the last instance of c in s, or -1 if c is not present in s.
+// LastIndexByte返回s中c的最后一个实例的索引，如果c在s中不存在，则返回-1。
 func LastIndexByte(s string, c byte) int {
 	for i := len(s) - 1; i >= 0; i-- {
 		if s[i] == c {
@@ -233,6 +251,7 @@ func LastIndexByte(s string, c byte) int {
 
 // Generic split: splits after each instance of sep,
 // including sepSave bytes of sep in the subarrays.
+// 通用分割：在每个sep的实例之后进行分割，包括在子数组中保存sep的字节。
 func genSplit(s, sep string, sepSave, n int) []string {
 	if n == 0 {
 		return nil
@@ -262,52 +281,72 @@ func genSplit(s, sep string, sepSave, n int) []string {
 
 // SplitN slices s into substrings separated by sep and returns a slice of
 // the substrings between those separators.
+// SplitN 将 s 切成由 sep 分隔的子字符串，并返回这些分隔符之间的子字符串的一个片断。
 //
 // The count determines the number of substrings to return:
 //   n > 0: at most n substrings; the last substring will be the unsplit remainder.
 //   n == 0: the result is nil (zero substrings)
 //   n < 0: all substrings
+// 计数器决定了要返回的子串数量。
+// 	 n > 0: 最多有n个子串；最后一个子串将是未拆分的剩余部分。
+// 	 n == 0: 结果为nil (零子串)
+//   n < 0: 所有子串
 //
 // Edge cases for s and sep (for example, empty strings) are handled
 // as described in the documentation for Split.
+// s和sep的边缘情况（例如，空字符串）将按照Split的文档描述来处理。
 func SplitN(s, sep string, n int) []string { return genSplit(s, sep, 0, n) }
 
 // SplitAfterN slices s into substrings after each instance of sep and
 // returns a slice of those substrings.
+// SplitAfterN在每个sep实例之后将s切成子串，并返回这些子串的一个片断。
 //
 // The count determines the number of substrings to return:
 //   n > 0: at most n substrings; the last substring will be the unsplit remainder.
 //   n == 0: the result is nil (zero substrings)
 //   n < 0: all substrings
+// 计数器决定了要返回的子串数量。
+// 	 n > 0: 最多有n个子串；最后一个子串将是未拆分的剩余部分。
+// 	 n == 0: 结果为nil (零子串)
+// 	 n < 0: 所有子串
 //
 // Edge cases for s and sep (for example, empty strings) are handled
 // as described in the documentation for SplitAfter.
+// s和sep的边缘情况（例如，空字符串）将按照SplitAfter的文档描述来处理。
 func SplitAfterN(s, sep string, n int) []string {
 	return genSplit(s, sep, len(sep), n)
 }
 
 // Split slices s into all substrings separated by sep and returns a slice of
 // the substrings between those separators.
+// 将 s 分割成由 sep 分隔的所有子字符串，并返回这些分隔符之间的子字符串的一个切片。
 //
 // If s does not contain sep and sep is not empty, Split returns a
 // slice of length 1 whose only element is s.
+// 如果s不包含sep并且sep不是空的，Split返回一个长度为1的片断，其唯一的元素是s。
 //
 // If sep is empty, Split splits after each UTF-8 sequence. If both s
 // and sep are empty, Split returns an empty slice.
+// 如果sep是空的，Split在每个UTF-8序列之后进行分割。如果s和sep都是空的，Split返回一个空的片断。
 //
 // It is equivalent to SplitN with a count of -1.
+// 它等同于SplitN，其计数为-1。
 func Split(s, sep string) []string { return genSplit(s, sep, 0, -1) }
 
 // SplitAfter slices s into all substrings after each instance of sep and
 // returns a slice of those substrings.
+// SplitAfter 将 s 切成 sep 的每个实例之后的所有子字符串，并返回这些子字符串的一个切片。
 //
 // If s does not contain sep and sep is not empty, SplitAfter returns
 // a slice of length 1 whose only element is s.
+// 如果s不包含sep并且sep不是空的，SplitAfter返回一个长度为1的片断，其唯一元素是s。
 //
 // If sep is empty, SplitAfter splits after each UTF-8 sequence. If
 // both s and sep are empty, SplitAfter returns an empty slice.
+// 如果sep是空的，SplitAfter在每个UTF-8序列之后进行分割。如果s和sep都是空的，SplitAfter返回一个空的片断。
 //
 // It is equivalent to SplitAfterN with a count of -1.
+// 它等同于SplitAfterN，计数为-1。
 func SplitAfter(s, sep string) []string {
 	return genSplit(s, sep, len(sep), -1)
 }
@@ -317,12 +356,17 @@ var asciiSpace = [256]uint8{'\t': 1, '\n': 1, '\v': 1, '\f': 1, '\r': 1, ' ': 1}
 // Fields splits the string s around each instance of one or more consecutive white space
 // characters, as defined by unicode.IsSpace, returning a slice of substrings of s or an
 // empty slice if s contains only white space.
+// Fields将字符串s围绕一个或多个连续的空白字符的实例进行分割，正如unicode.IsSpace所定义的那样，
+// 返回s的子字符串的切片，如果s只包含空白，则返回一个空切片。
 func Fields(s string) []string {
 	// First count the fields.
 	// This is an exact count if s is ASCII, otherwise it is an approximation.
+	// 首先计算字段的数量。
+	// 如果s是ASCII，这是一个精确的计数，否则就是一个近似值。
 	n := 0
 	wasSpace := 1
 	// setBits is used to track which bits are set in the bytes of s.
+	// setBits用于跟踪s的字节中哪些位被设置。
 	setBits := uint8(0)
 	for i := 0; i < len(s); i++ {
 		r := s[i]
@@ -337,11 +381,13 @@ func Fields(s string) []string {
 		return FieldsFunc(s, unicode.IsSpace)
 	}
 	// ASCII fast path
+	// ASCII快速路径
 	a := make([]string, n)
 	na := 0
 	fieldStart := 0
 	i := 0
 	// Skip spaces in the front of the input.
+	// 跳过输入前面的空格。
 	for i < len(s) && asciiSpace[s[i]] != 0 {
 		i++
 	}
@@ -369,12 +415,16 @@ func Fields(s string) []string {
 // FieldsFunc splits the string s at each run of Unicode code points c satisfying f(c)
 // and returns an array of slices of s. If all code points in s satisfy f(c) or the
 // string is empty, an empty slice is returned.
+// FieldsFunc在每一个满足f(c)的Unicode代码点c的运行处对字符串s进行分割，并返回s的一个数组切片。
 //
 // FieldsFunc makes no guarantees about the order in which it calls f(c)
 // and assumes that f always returns the same value for a given c.
+// FieldsFunc不保证它调用f(c)的顺序，并假定f对给定的c总是返回相同的值。
 func FieldsFunc(s string, f func(rune) bool) []string {
 	// A span is used to record a slice of s of the form s[start:end].
 	// The start index is inclusive and the end index is exclusive.
+	// 一个跨度用来记录s[start:end]形式的s切片。
+	// 开始索引是包容的，结束索引是排他的。
 	type span struct {
 		start int
 		end   int
@@ -385,7 +435,9 @@ func FieldsFunc(s string, f func(rune) bool) []string {
 	// Doing this in a separate pass (rather than slicing the string s
 	// and collecting the result substrings right away) is significantly
 	// more efficient, possibly due to cache effects.
-	start := -1 // valid span start if >= 0
+	// 找到字段的开始和结束索引。在一个单独的过程中完成这个工作（而不是将字符串切片并立即收集结果子串），
+	// 效率明显更高，这可能是由于缓存效应。
+	start := -1 // valid span start if >= 0		// 有效跨度开始，如果>=0
 	for end, rune := range s {
 		if f(rune) {
 			if start >= 0 {
@@ -393,6 +445,8 @@ func FieldsFunc(s string, f func(rune) bool) []string {
 				// Set start to a negative value.
 				// Note: using -1 here consistently and reproducibly
 				// slows down this code by a several percent on amd64.
+				// 将起始点设为负值。
+				// 注意：在amd64上，在这里使用-1可以持续地、可重复地使这段代码的速度降低几个百分点。
 				start = ^start
 			}
 		} else {
@@ -403,6 +457,7 @@ func FieldsFunc(s string, f func(rune) bool) []string {
 	}
 
 	// Last field might end at EOF.
+	// 最后一个字段可能在EOF处结束。
 	if start >= 0 {
 		spans = append(spans, span{start, len(s)})
 	}
@@ -418,6 +473,7 @@ func FieldsFunc(s string, f func(rune) bool) []string {
 
 // Join concatenates the elements of its first argument to create a single string. The separator
 // string sep is placed between elements in the resulting string.
+// Join将其第一个参数中的元素连接起来，形成一个单一的字符串。分隔符sep被放在结果字符串的元素之间。
 func Join(elems []string, sep string) string {
 	switch len(elems) {
 	case 0:
@@ -1021,6 +1077,7 @@ func EqualFold(s, t string) bool {
 }
 
 // Index returns the index of the first instance of substr in s, or -1 if substr is not present in s.
+// Index返回s中substr的第一个实例的索引，如果s中不存在substr，则返回-1。
 func Index(s, substr string) int {
 	n := len(substr)
 	switch {
@@ -1037,6 +1094,7 @@ func Index(s, substr string) int {
 		return -1
 	case n <= bytealg.MaxLen:
 		// Use brute force when s and substr both are small
+		// 当s和substr都很小的时候，使用暴力求解
 		if len(s) <= bytealg.MaxBruteForce {
 			return bytealg.IndexString(s, substr)
 		}
