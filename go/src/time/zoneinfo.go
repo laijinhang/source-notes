@@ -16,6 +16,8 @@ import (
 // Typically, the Location represents the collection of time offsets
 // in use in a geographical area. For many Locations the time offset varies
 // depending on whether daylight savings time is in use at the time instant.
+// 一个位置将时间实例映射到当时使用的区域。通常情况下，Location代表一个地理区域内使用的时间偏移的集合。
+// 对于许多地点来说，时间偏移是不同的，这取决于该时间点是否在使用夏令时。
 type Location struct {
 	name string
 	zone []zone
@@ -26,6 +28,10 @@ type Location struct {
 	// The format is the TZ environment variable without a colon; see
 	// https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html.
 	// Example string, for America/Los_Angeles: PST8PDT,M3.2.0,M11.1.0
+	// Example string, for America/Los_Angeles: PST8PDT,M3.2.0,M11.1.0
+	// tzdata信息后面可以有一个字符串，描述如何处理zoneTrans中没有记录的DST转换。其格式是不带冒号的TZ环境变量；见
+	// https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html。
+	// 示例字符串，用于美国/洛杉矶。PST8PDT,M3.2.0,M11.1.0
 	extend string
 
 	// Most lookups will be for the current time.
@@ -37,38 +43,48 @@ type Location struct {
 	// The units for cacheStart and cacheEnd are seconds
 	// since January 1, 1970 UTC, to match the argument
 	// to lookup.
+	// 大多数查找将是针对当前时间的。
+	// 如果cacheStart <= t < cacheEnd, lookup可以返回cacheZone。
+	// cacheStart和cacheEnd的单位是自1970年1月1日UTC以来的秒数，以配合lookup的参数。
 	cacheStart int64
 	cacheEnd   int64
 	cacheZone  *zone
 }
 
 // A zone represents a single time zone such as CET.
+// 一个区代表一个单一的时区，如CET。
 type zone struct {
-	name   string // abbreviated name, "CET"
-	offset int    // seconds east of UTC
-	isDST  bool   // is this zone Daylight Savings Time?
+	name   string // abbreviated name, "CET"				// 缩写名称，"CET"
+	offset int    // seconds east of UTC					// 在UTC以东的秒数
+	isDST  bool   // is this zone Daylight Savings Time?	// 这个区是夏令时吗？
 }
 
 // A zoneTrans represents a single time zone transition.
+// 一个zoneTrans表示一个单一的时区转换。
 type zoneTrans struct {
-	when         int64 // transition time, in seconds since 1970 GMT
-	index        uint8 // the index of the zone that goes into effect at that time
-	isstd, isutc bool  // ignored - no idea what these mean
+	when         int64 // transition time, in seconds since 1970 GMT				// 过渡时间，自格林尼治标准时间1970年起，以秒为单位
+	index        uint8 // the index of the zone that goes into effect at that time	// 届时生效的该区的指数
+	isstd, isutc bool  // ignored - no idea what these mean					// 无视 - 不知道这些是什么意思
 }
 
 // alpha and omega are the beginning and end of time for zone
 // transitions.
+// alpha和omega是区域转换的时间起点和终点。
 const (
 	alpha = -1 << 63  // math.MinInt64
 	omega = 1<<63 - 1 // math.MaxInt64
 )
 
 // UTC represents Universal Coordinated Time (UTC).
+// UTC代表世界协调时间（UTC）。
 var UTC *Location = &utcLoc
 
 // utcLoc is separate so that get can refer to &utcLoc
 // and ensure that it never returns a nil *Location,
 // even if a badly behaved client has changed UTC.
+// utcLoc是独立的，这样get就可以引用&utcLoc，
+// 并确保它永远不会返回一个nil *Location，
+// 即使一个行为不良的客户端改变了UTC。
 var utcLoc = Location{name: "UTC"}
 
 // Local represents the system's local time zone.
@@ -77,10 +93,15 @@ var utcLoc = Location{name: "UTC"}
 // use the system default /etc/localtime.
 // TZ="" means use UTC.
 // TZ="foo" means use file foo in the system timezone directory.
+// Local代表系统的本地时区。
+// 在Unix系统中，Local查询TZ环境变量来寻找要使用的时区。
+// 没有TZ意味着使用系统默认的/etc/localtime。
+// TZ=""表示使用UTC。TZ="foo "意味着使用系统时区目录中的文件foo。
 var Local *Location = &localLoc
 
 // localLoc is separate so that initLocal can initialize
 // it even if a client has changed Local.
+// localLoc是独立的，这样即使客户端改变了Local，initLocal也能初始化它。
 var localLoc Location
 var localOnce sync.Once
 
@@ -96,12 +117,14 @@ func (l *Location) get() *Location {
 
 // String returns a descriptive name for the time zone information,
 // corresponding to the name argument to LoadLocation or FixedZone.
+// String返回时区信息的描述性名称，对应于LoadLocation或FixedZone的名称参数。
 func (l *Location) String() string {
 	return l.get().name
 }
 
 // FixedZone returns a Location that always uses
 // the given zone name and offset (seconds east of UTC).
+// FixedZone返回一个Location，它总是使用给定的区域名称和偏移量（UTC以东的秒数）。
 func FixedZone(name string, offset int) *Location {
 	l := &Location{
 		name:       name,
@@ -233,6 +256,7 @@ func (l *Location) lookupFirstZone() int {
 
 // firstZoneUsed reports whether the first zone is used by some
 // transition.
+// firstZoneUsed报告第一个区是否被某个过渡所使用。
 func (l *Location) firstZoneUsed() bool {
 	for _, tx := range l.tx {
 		if tx.index == 0 {
@@ -428,6 +452,7 @@ func tzsetOffset(s string) (offset int, rest string, ok bool) {
 }
 
 // ruleKind is the kinds of rules that can be seen in a tzset string.
+// ruleKind是在tzset字符串中可以看到的规则的种类。
 type ruleKind int
 
 const (
@@ -437,6 +462,7 @@ const (
 )
 
 // rule is a rule read from a tzset string.
+// rule是一个从tzset字符串中读取的规则。
 type rule struct {
 	kind ruleKind
 	day  int
@@ -624,6 +650,7 @@ var zoneinfo *string
 var zoneinfoOnce sync.Once
 
 // LoadLocation returns the Location with the given name.
+// LoadLocation返回具有给定名称的Location。
 //
 // If the name is "" or "UTC", LoadLocation returns UTC.
 // If the name is "Local", LoadLocation returns Local.

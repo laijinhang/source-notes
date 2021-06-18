@@ -13,6 +13,7 @@ import (
 )
 
 // for testing: whatever interrupts a sleep
+// 用于测试：无论什么东西都会中断睡眠
 func interrupt() {
 	syscall.Kill(syscall.Getpid(), syscall.SIGCHLD)
 }
