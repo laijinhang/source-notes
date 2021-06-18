@@ -30,6 +30,9 @@ var fileConnTests = []struct {
 	{"unixpacket"},
 }
 
+/*
+文件连接 的单元测试
+*/
 func TestFileConn(t *testing.T) {
 	switch runtime.GOOS {
 	case "plan9", "windows":

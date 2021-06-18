@@ -151,6 +151,13 @@ func testNEWUSERRemap(t *testing.T, uid, gid int, setgroups bool) {
 }
 
 /*
+CLONE_NEWNS（Linux 2.4.19）
+
+CLONE_NEWUSER对应Mount namespaces
+Mount namespace为一组进程隔离了一系列的文件挂载点，在不同Mount namespaces的进程有不同的文件系统层次视图。通过使用Mount namespaces，进程调用mount()和umount()函数时不再操作对所有进程可见的全局挂载点，而是只操作调用进程所关联的mount namespace。
+使用Mount namespaces可以象chroot方式一样创建环境。但是，与使用chroot调用对比，Mount namespaces方式更加安全和灵活。
+Mount namespaces是Linux中实现的第一种namespace（2002年）。
+
 测试 CLONE_NEWUSER
 */
 func TestCloneNEWUSERAndRemapRootDisableSetgroups(t *testing.T) {
