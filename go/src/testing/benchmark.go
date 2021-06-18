@@ -79,23 +79,29 @@ type InternalBenchmark struct {
 
 // B is a type passed to Benchmark functions to manage benchmark
 // timing and to specify the number of iterations to run.
+// B是传递给Benchmark函数的一个类型，用于管理基准时间和指定运行的迭代次数。
 //
 // A benchmark ends when its Benchmark function returns or calls any of the methods
 // FailNow, Fatal, Fatalf, SkipNow, Skip, or Skipf. Those methods must be called
 // only from the goroutine running the Benchmark function.
+// 当Benchmark函数返回或调用FailNow、Fatal、Fatalf、SkipNow、Skip或Skipf中的任何一个方法时，
+// 一个基准就结束。这些方法只能从运行Benchmark函数的goroutine中调用。
 // The other reporting methods, such as the variations of Log and Error,
 // may be called simultaneously from multiple goroutines.
+// 其他报告方法，如Log和Error的变体，可以从多个goroutine同时调用。
 //
 // Like in tests, benchmark logs are accumulated during execution
 // and dumped to standard output when done. Unlike in tests, benchmark logs
 // are always printed, so as not to hide output whose existence may be
 // affecting benchmark results.
+// 和测试一样，基准日志在执行过程中积累，完成后转储到标准输出。与测试不同的是，
+// 基准日志总是被打印出来，这样就不会隐藏那些可能影响基准结果的输出。
 type B struct {
 	common
-	importPath       string // import path of the package containing the benchmark
+	importPath       string // import path of the package containing the benchmark	// 包含基准的软件包的导入路径
 	context          *benchContext
 	N                int
-	previousN        int           // number of iterations in the previous run
+	previousN        int           // number of iterations in the previous run		// 上一次运行中的迭代次数
 	previousDuration time.Duration // total duration of the previous run
 	benchFunc        func(b *B)
 	benchTime        benchTimeFlag
@@ -351,18 +357,21 @@ func (b *B) ReportMetric(n float64, unit string) {
 }
 
 // BenchmarkResult contains the results of a benchmark run.
+// BenchmarkResult包含一个基准运行的结果。
 type BenchmarkResult struct {
-	N         int           // The number of iterations.
-	T         time.Duration // The total time taken.
-	Bytes     int64         // Bytes processed in one iteration.
-	MemAllocs uint64        // The total number of memory allocations.
-	MemBytes  uint64        // The total number of bytes allocated.
+	N         int           // The number of iterations.				// 迭代的次数。
+	T         time.Duration // The total time taken.					// 所花的总时间。
+	Bytes     int64         // Bytes processed in one iteration.		// 在一次迭代中处理的字节数。
+	MemAllocs uint64        // The total number of memory allocations.	// 内存分配的总数量。
+	MemBytes  uint64        // The total number of bytes allocated.		// 分配的字节总数。
 
 	// Extra records additional metrics reported by ReportMetric.
+	// 额外记录由ReportMetric报告的额外指标。
 	Extra map[string]float64
 }
 
 // NsPerOp returns the "ns/op" metric.
+// NsPerOp返回 "ns/op "指标。
 func (r BenchmarkResult) NsPerOp() int64 {
 	if v, ok := r.Extra["ns/op"]; ok {
 		return int64(v)
@@ -415,11 +424,16 @@ func (r BenchmarkResult) AllocedBytesPerOp() int64 {
 // Extra metrics override built-in metrics of the same name.
 // String does not include allocs/op or B/op, since those are reported
 // by MemString.
+// 字符串返回一个基准测试结果的摘要。
+// 它遵循https://golang.org/design/14313-benchmark-format 的基准结果行格式，
+// 不包括基准名称。额外的指标覆盖了同名的内置指标。String不包括allocs/op或B/op，
+// 因为这些是由MemString报告的。
 func (r BenchmarkResult) String() string {
 	buf := new(strings.Builder)
 	fmt.Fprintf(buf, "%8d", r.N)
 
 	// Get ns/op as a float.
+	// 以浮点数的形式获得ns/op。
 	ns, ok := r.Extra["ns/op"]
 	if !ok {
 		ns = float64(r.T.Nanoseconds()) / float64(r.N)
@@ -435,11 +449,13 @@ func (r BenchmarkResult) String() string {
 
 	// Print extra metrics that aren't represented in the standard
 	// metrics.
+	// 打印标准指标中没有体现的额外指标。
 	var extraKeys []string
 	for k := range r.Extra {
 		switch k {
 		case "ns/op", "MB/s", "B/op", "allocs/op":
 			// Built-in metrics reported elsewhere.
+			// 在其他地方报告的内置指标。
 			continue
 		}
 		extraKeys = append(extraKeys, k)
@@ -452,11 +468,17 @@ func (r BenchmarkResult) String() string {
 	return buf.String()
 }
 
+/*
+以打印相对精确的格式去打印 x的值，和unit字符串内容
+*/
 func prettyPrint(w io.Writer, x float64, unit string) {
 	// Print all numbers with 10 places before the decimal point
 	// and small numbers with four sig figs. Field widths are
 	// chosen to fit the whole part in 10 places while aligning
 	// the decimal point of all fractional formats.
+	// 打印所有小数点前有10位的数字和有4位数的小数。
+	// 字段宽度的选择是为了在10位中适合整个部分，
+	// 同时对齐所有小数格式的小数点。
 	var format string
 	switch y := math.Abs(x); {
 	case y == 0 || y >= 999.95:
@@ -496,12 +518,14 @@ func benchmarkName(name string, n int) string {
 type benchContext struct {
 	match *matcher
 
-	maxLen int // The largest recorded benchmark name.
-	extLen int // Maximum extension length.
+	maxLen int // The largest recorded benchmark name.	// 最大的记录基准名称
+	extLen int // Maximum extension length.				// 最大延伸长度
 }
 
 // RunBenchmarks is an internal function but exported because it is cross-package;
 // it is part of the implementation of the "go test" command.
+// RunBenchmarks是一个内部函数，但由于它是跨包的，所以被导出。
+// 它是实现 "go test "命令的一部分。
 func RunBenchmarks(matchString func(pat, str string) (bool, error), benchmarks []InternalBenchmark) {
 	runBenchmarks("", matchString, benchmarks)
 }

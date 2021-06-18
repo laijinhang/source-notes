@@ -733,12 +733,15 @@ func fmtInt(buf []byte, v uint64) int {
 }
 
 // Nanoseconds returns the duration as an integer nanosecond count.
+// Nanoseconds以整数纳秒计数的形式返回持续时间。
 func (d Duration) Nanoseconds() int64 { return int64(d) }
 
 // Microseconds returns the duration as an integer microsecond count.
+// Microseconds以整数微秒计数的形式返回持续时间。
 func (d Duration) Microseconds() int64 { return int64(d) / 1e3 }
 
 // Milliseconds returns the duration as an integer millisecond count.
+// Milliseconds以整数毫秒的形式返回持续时间。
 func (d Duration) Milliseconds() int64 { return int64(d) / 1e6 }
 
 // These methods return float64 because the dominant
@@ -749,8 +752,13 @@ func (d Duration) Milliseconds() int64 { return int64(d) / 1e6 }
 // way that a pure integer conversion would have, even in cases
 // where, say, float64(d.Nanoseconds())/1e9 would have rounded
 // differently.
+// 这些方法返回float64，因为主要的用例是打印1.5s这样的浮点数，而截断为整数
+// 会使它们在这些情况下没有用。分割整数和分数可以保证将返回的float64转换为
+// 整数的方式与纯整数转换的方式相同，即使在float64(d.Nanoseconds())/1e9
+// 会有不同的取整方式的情况下。
 
 // Seconds returns the duration as a floating point number of seconds.
+// Seconds 返回持续时间的浮点数，为秒。
 func (d Duration) Seconds() float64 {
 	sec := d / Second
 	nsec := d % Second

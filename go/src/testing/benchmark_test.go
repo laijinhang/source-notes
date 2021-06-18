@@ -35,7 +35,9 @@ var prettyPrintTests = []struct {
 func TestPrettyPrint(t *testing.T) {
 	for _, tt := range prettyPrintTests {
 		buf := new(strings.Builder)
+		// 以相对的精度内容写入到buf里
 		testing.PrettyPrint(buf, tt.v, "x")
+		// 校验prettyPrint方法的效果和单元用例的结果是否一致
 		if tt.expected != buf.String() {
 			t.Errorf("prettyPrint(%v): expected %q, actual %q", tt.v, tt.expected, buf.String())
 		}
@@ -44,13 +46,19 @@ func TestPrettyPrint(t *testing.T) {
 
 func TestResultString(t *testing.T) {
 	// Test fractional ns/op handling
+	// 测试小数点运算的处理方法
 	r := testing.BenchmarkResult{
 		N: 100,
 		T: 240 * time.Nanosecond,
 	}
+	/*
+		测试NsPerOp是否达到效果
+		r.NsPerOp()的计算结果是2点几，转化成整数就变成2
+	*/
 	if r.NsPerOp() != 2 {
 		t.Errorf("NsPerOp: expected 2, actual %v", r.NsPerOp())
 	}
+	// 检查r.String是否达到效果
 	if want, got := "     100\t         2.400 ns/op", r.String(); want != got {
 		t.Errorf("String: expected %q, actual %q", want, got)
 	}
