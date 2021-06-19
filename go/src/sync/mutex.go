@@ -133,6 +133,14 @@ func (m *Mutex) lockSlow() {
 			// Active spinning makes sense.
 			// Try to set mutexWoken flag to inform Unlock
 			// to not wake other blocked goroutines.
+			// 主动旋转是有意义的。
+			// 尝试设置mutexWoken标志，通知Unlock不要唤醒其他阻塞的goroutine。
+			/*
+				当前协程不是唤醒状态
+				锁的状态不是唤醒状态
+				当前等待唤醒的锁不为0
+				并且通过原子操作尝试唤醒，如果唤醒的话，则设置协程唤醒成功
+			*/
 			if !awoke && old&mutexWoken == 0 && old>>mutexWaiterShift != 0 &&
 				atomic.CompareAndSwapInt32(&m.state, old, old|mutexWoken) {
 				awoke = true // 设置当前协程唤醒成功
