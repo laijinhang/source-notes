@@ -218,7 +218,7 @@ func (m *Mutex) lockSlow() {
 					// Starvation mode is so inefficient, that two goroutines
 					// can go lock-step infinitely once they switch mutex
 					// to starvation mode.
-					// 8、如果当前goroutine不是饥饿状态，则从饥饿模式切换回正常模式
+					// 8、如果当前goroutine是饥饿状态，则从饥饿模式切换回正常模式
 					delta -= mutexStarving
 				}
 				// 9、设置状态
@@ -238,11 +238,15 @@ func (m *Mutex) lockSlow() {
 }
 
 // Unlock unlocks m.
+// Unlock解锁m。
 // It is a run-time error if m is not locked on entry to Unlock.
+// 如果m在进入Unlock时没有被锁定，这是一个运行时错误。
 //
 // A locked Mutex is not associated with a particular goroutine.
 // It is allowed for one goroutine to lock a Mutex and then
 // arrange for another goroutine to unlock it.
+// 锁定的Mutex不与特定的goroutine相关联。
+// 允许一个goroutine锁定一个Mutex，然后安排另一个goroutine来解锁它。
 func (m *Mutex) Unlock() {
 	if race.Enabled {
 		_ = m.state
