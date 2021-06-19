@@ -197,6 +197,10 @@ func (m *Mutex) lockSlow() {
 				waitStartTime = runtime_nanotime()
 			}
 			// 4、阻塞等待
+			/*
+				如果是新来的goroutine，那么waitStartTime=0，queueLifo为false，加入到等待队列的尾部
+				如果是唤醒的goroutine，那么waitStartTime!=0，queueLifo为true，加入到等待队列的头部
+			*/
 			runtime_SemacquireMutex(&m.sema, queueLifo, 1)
 			// 5、唤醒之后检查锁是否应该处于饥饿状态
 			starving = starving || runtime_nanotime()-waitStartTime > starvationThresholdNs
