@@ -495,6 +495,7 @@ retc:
 
 sclose:
 	// send on closed channel
+	// 在关闭的通道上发送
 	selunlock(scases, lockorder)
 	panic(plainError("send on closed channel"))
 }

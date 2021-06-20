@@ -283,6 +283,9 @@ func main() {
 		// has a main, but it is not executed.
 		return
 	}
+	/*
+		我们应用程序里面写的main函数，在下面开始执行
+	*/
 	fn := main_main // make an indirect call, as the linker doesn't know the address of the main package when laying down the runtime
 	fn()
 	if raceenabled {

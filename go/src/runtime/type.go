@@ -9,8 +9,10 @@ package runtime
 import "unsafe"
 
 // tflag is documented in reflect/type.go.
+// tflag在reflect/type.go中有记录。
 //
 // tflag values must be kept in sync with copies in:
+// tflag的值必须与下列文件中的副本保持同步：
 //	cmd/compile/internal/gc/reflect.go
 //	cmd/link/internal/ld/decodesym.go
 //	reflect/type.go
@@ -18,19 +20,31 @@ import "unsafe"
 type tflag uint8
 
 const (
-	tflagUncommon      tflag = 1 << 0
+	tflagUncommon      tflag = 1 << 0 // 是否包含一个指针
 	tflagExtraStar     tflag = 1 << 1
-	tflagNamed         tflag = 1 << 2
+	tflagNamed         tflag = 1 << 2 // 是否是命名变量，如 var a []int，[]int是匿名的，a是命名变量
 	tflagRegularMemory tflag = 1 << 3 // equal and hash can treat values of this type as a single region of t.size bytes
 )
 
+/*
+_type是go里面所有类型的集合
+*/
 // Needs to be in sync with ../cmd/link/internal/ld/decodesym.go:/^func.commonsize,
 // ../cmd/compile/internal/gc/reflect.go:/^func.dcommontype and
 // ../reflect/type.go:/^type.rtype.
 // ../internal/reflectlite/type.go:/^type.rtype.
 type _type struct {
-	size       uintptr
-	ptrdata    uintptr // size of memory prefix holding all pointers
+	/*
+		存储了类型占用的内存空间，为内存空间的分配提供信息
+	*/
+	size uintptr
+	/*
+		含有所有指针类型前缀大小
+	*/
+	ptrdata uintptr // size of memory prefix holding all pointers
+	/*
+		能够帮助我们快速确定类型是否相等
+	*/
 	hash       uint32
 	tflag      tflag
 	align      uint8
@@ -38,10 +52,16 @@ type _type struct {
 	kind       uint8
 	// function for comparing objects of this type
 	// (ptr to object A, ptr to object B) -> ==?
+	/*
+		用于判断当前类型的多个对象是否相等，该字段是为了减少 Go 语言二进制包大小从 typeAlg 结构体中迁移过来的
+	*/
 	equal func(unsafe.Pointer, unsafe.Pointer) bool
 	// gcdata stores the GC type data for the garbage collector.
 	// If the KindGCProg bit is set in kind, gcdata is a GC program.
 	// Otherwise it is a ptrmask bitmap. See mbitmap.go for details.
+	// gcdata为垃圾收集器存储GC类型数据。
+	// 如果 KindGCProg 位在种类中被设置，gcdata 是一个 GC 程序。
+	// 否则它是一个ptrmask位图。详见mbitmap.go。
 	gcdata    *byte
 	str       nameOff
 	ptrToThis typeOff
@@ -408,7 +428,15 @@ type arraytype struct {
 }
 
 type chantype struct {
-	typ  _type
+	/*
+		chan类型
+	*/
+	typ _type
+	/*
+		元素的类型，通过debug调试，你会发现这个变量里面的kind值是对应
+		runtime/typekind.go里面定义的，然后可以确定这个就是make chan
+		里面所传的类型
+	*/
 	elem *_type
 	dir  uintptr
 }

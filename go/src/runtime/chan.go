@@ -5,6 +5,7 @@
 package runtime
 
 // This file contains the implementation of Go channels.
+// 这个文件包含了Go通道的实现。
 
 // Invariants:
 //  At least one of c.sendq and c.recvq is empty,
@@ -12,10 +13,17 @@ package runtime
 //  blocked on it for both sending and receiving using a select statement,
 //  in which case the length of c.sendq and c.recvq is limited only by the
 //  size of the select statement.
+// 不变量。
+// 	c.sendq和c.recvq中至少有一个是空的。
+// 	除了在一个无缓冲通道上有一个单goroutine被阻塞的情况下，使用select语句发送和接收，
+//	在这种情况下，c.sendq和c.recvq的长度只受select语句的大小限制。
 //
 // For buffered channels, also:
 //  c.qcount > 0 implies that c.recvq is empty.
 //  c.qcount < c.dataqsiz implies that c.sendq is empty.
+// 对于有缓冲的通道，也是如此。
+// c.qcount > 0意味着c.recvq是空的。
+// c.qcount < c.dataqsiz implies that c.sendq is empty.
 
 import (
 	"runtime/internal/atomic"
@@ -41,9 +49,12 @@ const (
 互斥锁：保证并发安全
 */
 type hchan struct {
-	qcount   uint           // total data in the queue					// buffer中已放入的元素个数
-	dataqsiz uint           // size of the circular queue				// 用户构造 channel 时指定的 buf 大小，可以理解成类似数组中初始分配的长度
-	buf      unsafe.Pointer // points to an array of dataqsiz elements
+	qcount   uint // total data in the queue	// buffer中已放入的元素个数
+	dataqsiz uint // size of the circular queue	// 用户构造 channel 时指定的 buf 大小，可以理解成类似数组中初始分配的长度
+	/*
+		环形缓冲区
+	*/
+	buf      unsafe.Pointer // points to an array of dataqsiz elements	 // 指向一个dataqsiz元素的数组
 	elemsize uint16
 	closed   uint32 // 是否关闭，值为0表示未关闭
 	elemtype *_type // element type				// 元素的类型信息
@@ -93,8 +104,11 @@ func makechan64(t *chantype, size int64) *hchan {
 func makechan(t *chantype, size int) *hchan {
 	elem := t.elem
 
-	// 编译器会检查这一点，但要注意安全。
+	/*
+		校验，看会不会超出边界
+	*/
 	// compiler checks this but be safe.
+	// 编译器会检查这一点，但要注意安全。
 	if elem.size >= 1<<16 {
 		throw("makechan: invalid channel element type")
 	}
@@ -164,7 +178,11 @@ func full(c *hchan) bool {
 	return c.qcount == c.dataqsiz
 }
 
+/*
+c <- x 运行的代码
+*/
 // entry point for c <- x from compiled code
+// c <- x的入口点，来自编译后的代码
 //go:nosplit
 func chansend1(c *hchan, elem unsafe.Pointer) {
 	chansend(c, elem, true, getcallerpc())
@@ -385,11 +403,14 @@ func recvDirect(t *_type, sg *sudog, dst unsafe.Pointer) {
 }
 
 func closechan(c *hchan) {
+	// 1、如果clone未分配内存的chan，抛出 关闭空channel的错误
 	if c == nil {
 		panic(plainError("close of nil channel"))
 	}
 
+	// 2、上runtime内部实现的互斥锁
 	lock(&c.lock)
+	// 3、如果是关闭已关闭的chan，则抛出 关闭已关闭channel的错误
 	if c.closed != 0 {
 		unlock(&c.lock)
 		panic(plainError("close of closed channel"))
@@ -401,11 +422,16 @@ func closechan(c *hchan) {
 		racerelease(c.raceaddr())
 	}
 
+	// 设置关闭状态 为已关闭
 	c.closed = 1
 
 	var glist gList
 
+	/*
+		因为在channel可读为空的时候，再读会被阻塞，那么就有可能存在若干goroutine被阻塞在读等待，因此需要释放所有读等待的goroutine
+	*/
 	// release all readers
+	// 释放所有readers
 	for {
 		sg := c.recvq.dequeue()
 		if sg == nil {
@@ -427,7 +453,11 @@ func closechan(c *hchan) {
 		glist.push(gp)
 	}
 
+	/*
+		因为在关闭之前，有正在写或准备写的
+	*/
 	// release all writers (they will panic)
+	// 释放所有的writers（写已经关闭的，会导致panic）。
 	for {
 		sg := c.sendq.dequeue()
 		if sg == nil {
@@ -445,9 +475,11 @@ func closechan(c *hchan) {
 		}
 		glist.push(gp)
 	}
+	// 解锁
 	unlock(&c.lock)
 
 	// Ready all Gs now that we've dropped the channel lock.
+	// 准备好所有的G，现在我们已经放弃了通道锁。
 	for !glist.empty() {
 		gp := glist.pop()
 		gp.schedlink = 0
@@ -465,7 +497,11 @@ func empty(c *hchan) bool {
 	return atomic.Loaduint(&c.qcount) == 0
 }
 
+/*
+<- c 执行的对应的源码
+*/
 // entry points for <- c from compiled code
+// 来自编译后的代码的<- c的入口点
 //go:nosplit
 func chanrecv1(c *hchan, elem unsafe.Pointer) {
 	chanrecv(c, elem, true)

@@ -178,6 +178,8 @@ var gcenable_setup chan int
 // just before we're about to start letting user code run.
 // It kicks off the background sweeper goroutine, the background
 // scavenger goroutine, and enables GC.
+// gcenable是在大量的运行时初始化之后被调用的，就在我们要开始让用户代码运行之前。
+// 它启动了后台清扫程序和后台清理程序，并启动了GC。
 func gcenable() {
 	// Kick off sweeping and scavenging.
 	// 开启清扫的程序
