@@ -32,6 +32,7 @@ type lockRank int
 // Constants representing the lock rank of the architecture-independent locks in
 // the runtime. Locks with lower rank must be taken before locks with higher
 // rank.
+// 常量代表运行时中独立于架构的锁的等级。级别较低的锁必须在级别较高的锁之前被占用。
 const (
 	lockRankDummy lockRank = iota
 

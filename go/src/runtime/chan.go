@@ -109,6 +109,9 @@ func makechan64(t *chantype, size int64) *hchan {
 }
 
 func makechan(t *chantype, size int) *hchan {
+	/*
+		也就是 make(chan T, len) 中的T
+	*/
 	elem := t.elem
 
 	/*
@@ -128,6 +131,18 @@ func makechan(t *chantype, size int) *hchan {
 		math.MulUintptr(elem.size, uintptr(size))返回 elem.size * uintptr(size)的值，以及是否会越界
 	*/
 	mem, overflow := math.MulUintptr(elem.size, uintptr(size))
+	/*
+		如果溢出 或
+		为类型分配的内存 加上 hchan 需要分配的大小 大于最大分配大小 或
+		size 小于0
+
+		则 panic: makechan: size out of range
+
+		分配小于0 或 超过最大能分配大小
+
+		maxAlloc：281474976710656
+		hchanSize：96
+	*/
 	if overflow || mem > maxAlloc-hchanSize || size < 0 {
 		panic(plainError("makechan: size out of range"))
 	}
@@ -135,21 +150,36 @@ func makechan(t *chantype, size int) *hchan {
 	// Hchan does not contain pointers interesting for GC when elements stored in buf do not contain pointers.
 	// buf points into the same allocation, elemtype is persistent.
 	// SudoG's are referenced from their owning thread so they can't be collected.
+	// Hchan不包含指针，当存储在buf中的元素不包含指针时，对GC来说很有意思。
+	// buf指向同一个分配，elemtype是持久的。SudoG的引用来自它们自己的线程，所以它们不能被收集。
 	// TODO(dvyukov,rlh): Rethink when collector can move allocated objects.
+	// TODO(dvyukov,rlh): 重新考虑采集器何时可以移动分配的对象。
 	var c *hchan
 	switch {
 	case mem == 0:
+		/*
+			mem为0的时候，也就是无缓冲chan		make(chan T) or make(chan T, 0)
+		*/
 		// Queue or element size is zero.
+		// 队列或元素大小为零。
 		c = (*hchan)(mallocgc(hchanSize, nil, true))
 		// Race detector uses this location for synchronization.
+		// Race detector使用这个位置来进行同步。
 		c.buf = c.raceaddr()
 	case elem.ptrdata == 0:
+		/*
+			如果 make(chan, T, len)，则elem.ptrdata为0
+			如果 make(chan, *T, len)，则elem.ptrdata为8，一个指针的大小为8
+		*/
 		// Elements do not contain pointers.
 		// Allocate hchan and buf in one call.
+		// 元素不包含指针。
+		// 在一次调用中分配hchan和buf。
 		c = (*hchan)(mallocgc(hchanSize+mem, nil, true))
 		c.buf = add(unsafe.Pointer(c), hchanSize)
 	default:
 		// Elements contain pointers.
+		// 元素包含指针。
 		c = new(hchan)
 		c.buf = mallocgc(mem, elem, true)
 	}
@@ -157,7 +187,6 @@ func makechan(t *chantype, size int) *hchan {
 	c.elemsize = uint16(elem.size)
 	c.elemtype = elem
 	c.dataqsiz = uint(size)
-	println("dataqsiz", c.dataqsiz)
 	lockInit(&c.lock, lockRankHchan)
 
 	if debugChan {
@@ -896,6 +925,10 @@ func (c *hchan) raceaddr() unsafe.Pointer {
 	// or dataqsiz, because the len() and cap() builtins read
 	// those addresses, and we don't want them racing with
 	// operations like close().
+	// 将通道上的类似读和写的操作视为发生在这个地址上。
+	// 避免使用qcount或dataqsiz的地址，因为len()
+	// 和cap()内置程序会读取这些地址，而我们不希望
+	// 它们与close()这样的操作racing。
 	return unsafe.Pointer(&c.buf)
 }
 
