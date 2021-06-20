@@ -182,6 +182,11 @@ func chansend1(c *hchan, elem unsafe.Pointer) {
  * been closed.  it is easiest to loop and re-run
  * the operation; we'll see that it's now closed.
  */
+/*
+ * 如果block不是nil，那么协议就不会睡眠，而是在无法完成时返回。
+ *
+ * 当参与睡眠的通道被关闭时，睡眠可以用g.param == nil唤醒。最简单的方法是循环并重新运行操作；我们会看到它现在已经关闭了。
+ */
 func chansend(c *hchan, ep unsafe.Pointer, block bool, callerpc uintptr) bool {
 	if c == nil {
 		if !block {
