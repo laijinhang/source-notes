@@ -49,7 +49,14 @@ const (
 互斥锁：保证并发安全
 */
 type hchan struct {
-	qcount   uint // total data in the queue	// buffer中已放入的元素个数
+	qcount uint // total data in the queue	// buffer中已放入的元素个数
+	/*
+		这个字段里存放的就是初始make传入的那个chan长度，
+		如c := make(chan int, 10)，则qcount为10，
+		并且这个对象里在make之后，不会改变。重新make的话，那是另外一个chan对象了
+
+		在makechan的时候设置，makechan入参里面的那个形参size
+	*/
 	dataqsiz uint // size of the circular queue	// 用户构造 channel 时指定的 buf 大小，可以理解成类似数组中初始分配的长度
 	/*
 		环形缓冲区
@@ -150,6 +157,7 @@ func makechan(t *chantype, size int) *hchan {
 	c.elemsize = uint16(elem.size)
 	c.elemtype = elem
 	c.dataqsiz = uint(size)
+	println("dataqsiz", c.dataqsiz)
 	lockInit(&c.lock, lockRankHchan)
 
 	if debugChan {
@@ -159,6 +167,7 @@ func makechan(t *chantype, size int) *hchan {
 }
 
 // chanbuf(c, i) is pointer to the i'th slot in the buffer.
+// chanbuf(c, i)是指向缓冲区中第i个槽的指针。
 func chanbuf(c *hchan, i uint) unsafe.Pointer {
 	return add(c.buf, uintptr(i)*uintptr(c.elemsize))
 }
@@ -167,14 +176,23 @@ func chanbuf(c *hchan, i uint) unsafe.Pointer {
 // It uses a single word-sized read of mutable state, so although
 // the answer is instantaneously true, the correct answer may have changed
 // by the time the calling function receives the return value.
+// full报告在c上的发送是否会阻塞（也就是说，通道已满）。
+// 它使用了一个单字大小的可改变状态的读数，所以尽管答案是即时的，
+// 但当调用函数收到返回值时，正确的答案可能已经改变了。
 func full(c *hchan) bool {
 	// c.dataqsiz is immutable (never written after the channel is created)
 	// so it is safe to read at any time during channel operation.
+	// c.dataqsiz是不可改变的（在通道创建后从未写入），所以在通道运行过程中的任何时候都可以安全地读取它。
+	/*
+		c.dataqsiz == 0为true，也就是我们平时谈论的无缓冲chan了，c := make(chan int)或c := make(chan int, 0)
+	*/
 	if c.dataqsiz == 0 {
 		// Assumes that a pointer read is relaxed-atomic.
+		// 假设一个指针的读取是relaxed-atomic。
 		return c.recvq.first == nil
 	}
 	// Assumes that a uint read is relaxed-atomic.
+	// 假设一个uint的读取是relaxed-atomic。
 	return c.qcount == c.dataqsiz
 }
 
@@ -203,7 +221,8 @@ func chansend1(c *hchan, elem unsafe.Pointer) {
 /*
  * 如果block不是nil，那么协议就不会睡眠，而是在无法完成时返回。
  *
- * 当参与睡眠的通道被关闭时，睡眠可以用g.param == nil唤醒。最简单的方法是循环并重新运行操作；我们会看到它现在已经关闭了。
+ * 当参与睡眠的通道被关闭时，睡眠可以用g.param == nil唤醒。
+ * 最简单的方法是循环并重新运行操作；我们会看到它现在已经关闭了。
  */
 func chansend(c *hchan, ep unsafe.Pointer, block bool, callerpc uintptr) bool {
 	if c == nil {
@@ -339,6 +358,12 @@ func chansend(c *hchan, ep unsafe.Pointer, block bool, callerpc uintptr) bool {
 // Channel c must be empty and locked.  send unlocks c with unlockf.
 // sg must already be dequeued from c.
 // ep must be non-nil and point to the heap or the caller's stack.
+// 在一个空通道上处理一个发送操作 c.
+// 发送方发送的值ep被复制到接收方sg。
+// 然后，接收方被唤醒，继续其正常的执行。
+// 发送者用unlockf解除对c的锁定。
+// sg必须已经从c中脱队。
+// ep必须为非零，并指向堆或调用者的堆栈。
 func send(c *hchan, sg *sudog, ep unsafe.Pointer, unlockf func(), skip int) {
 	if raceenabled {
 		if c.dataqsiz == 0 {
@@ -347,6 +372,8 @@ func send(c *hchan, sg *sudog, ep unsafe.Pointer, unlockf func(), skip int) {
 			// Pretend we go through the buffer, even though
 			// we copy directly. Note that we need to increment
 			// the head/tail locations only when raceenabled.
+			// 假装我们穿过了缓冲区，尽管我们直接复制。
+			// 请注意，只有当raceenabled时，我们才需要递增头部/尾部的位置。
 			racenotify(c, c.recvx, nil)
 			racenotify(c, c.recvx, sg)
 			c.recvx++
@@ -489,8 +516,10 @@ func closechan(c *hchan) {
 
 // empty reports whether a read from c would block (that is, the channel is
 // empty).  It uses a single atomic read of mutable state.
+// empty报告从c读出的数据是否会阻塞（即通道为空）。它使用的是对易变状态的单次原子读取。
 func empty(c *hchan) bool {
 	// c.dataqsiz is immutable.
+	// c.dataqsiz是不可改变的。
 	if c.dataqsiz == 0 {
 		return atomic.Loadp(unsafe.Pointer(&c.sendq.first)) == nil
 	}
@@ -880,6 +909,8 @@ func racesync(c *hchan, sg *sudog) {
 // Notify the race detector of a send or receive involving buffer entry idx
 // and a channel c or its communicating partner sg.
 // This function handles the special case of c.elemsize==0.
+// 通知race检测器一个涉及缓冲区入口idx和通道c或其通信伙伴sg的发送或接收。
+// 这个函数处理c.elemsize==0的特殊情况。
 func racenotify(c *hchan, idx uint, sg *sudog) {
 	// We could have passed the unsafe.Pointer corresponding to entry idx
 	// instead of idx itself.  However, in a future version of this function,
