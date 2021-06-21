@@ -164,6 +164,10 @@ func schedinit() {
 2. runtime/debug包中的SetMaxThreads函数来设置
 3. 有⼀个M阻塞，会创建⼀个新的M
 4. 如果有M空闲，那么就会回收或者睡眠
+
+
+M0： 启动程序后编号为0的主线程，这个m0的实例在全局变量runtime.m0中，不需要在heap上分配，m0负责执行初始化操作和启动第一个G，在之后m0就和其他m一样了
+
 # 2、初始化
 ```go
 // src/runtime/proc.go

@@ -119,6 +119,7 @@ type g struct {
 	gcAssistBytes int64
 }
 ```
+
 ### 2、状态
 **Goroutine的状态：**
 * _Gidle：0，刚刚被分配并且还没有被初始化
@@ -136,7 +137,8 @@ type g struct {
 * _Gscanwaiting   = _Gscan + _Gwaiting   // 0x1004
 * _Gscanpreempted = _Gscan + _Gpreempted // 0x1009
 ### 3、种类
-* 主协程，g0
+* 主协程，g0：g0是每次启动一个m都会第一个创建的goroutine，g0仅用于负责调度g，g0不指向任何可执行的函数，
+  每个m都会有一个自己的g0。在调度或系统调用时会使用g0的栈空间，全局变量的g0是m0的g0。
 * 用于进行gc的协程
 * 用于帮助标记内存专用后台的协程：runtime.gcBgMarkWorker
 * 用于管理finalizer的协程
