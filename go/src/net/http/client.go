@@ -588,6 +588,22 @@ func Get(url string) (resp *Response, err error) {
 // To make a request with a specified context.Context, use NewRequestWithContext
 // and Client.Do.
 func (c *Client) Get(url string) (resp *Response, err error) {
+	// 1、先将url转成Request
+	/*
+		这个Request包含以下内容：
+		1. 数据部分：按http请求内容分
+			http请求行：GET URL HTTP/1.1
+				Method：GET
+				Url: u
+				Proto："HTTP/1.1"
+			http请求头：
+				Header
+				ContentLength：内容长度
+			http请求体：
+				Body：nil
+
+		2. 辅助请求部分
+	*/
 	req, err := NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
