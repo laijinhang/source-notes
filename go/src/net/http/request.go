@@ -874,16 +874,20 @@ func validMethod(method string) bool {
 }
 
 // NewRequest wraps NewRequestWithContext using context.Background.
+// NewRequest使用Context.Background来包装NewRequestWithContext。
 func NewRequest(method, url string, body io.Reader) (*Request, error) {
 	return NewRequestWithContext(context.Background(), method, url, body)
 }
 
 // NewRequestWithContext returns a new Request given a method, URL, and
 // optional body.
+// NewRequestWithContext 返回一个新的请求，带有一个方法、URL和可选的主体。
 //
 // If the provided body is also an io.Closer, the returned
 // Request.Body is set to body and will be closed by the Client
 // methods Do, Post, and PostForm, and Transport.RoundTrip.
+// 如果提供的body也是io.Closer，返回的Request.Body被设置为body，并将被客户端方法Do、
+// Post和PostForm以及Transport.RoundTrip关闭。
 //
 // NewRequestWithContext returns a Request suitable for use with
 // Client.Do or Transport.RoundTrip. To create a request for use with
@@ -894,25 +898,38 @@ func NewRequest(method, url string, body io.Reader) (*Request, error) {
 // obtaining a connection, sending the request, and reading the
 // response headers and body. See the Request type's documentation for
 // the difference between inbound and outbound request fields.
+// NewRequestWithContext返回一个适合与Client.Do或Transport.RoundTrip一起使用的请求。
+// 要创建一个用于测试服务器处理程序的请求，可以使用net/http/httptest包中的NewRequest函数，
+// 使用ReadRequest，或者手动更新请求字段。对于一个发出的客户端请求，上下文控制着一个请求及其响应的整个生命周期。
+// 获得一个连接，发送请求，并读取响应的头信息和正文。关于入站和出站请求字段的区别，请参见Request类型的文档。
 //
 // If body is of type *bytes.Buffer, *bytes.Reader, or
 // *strings.Reader, the returned request's ContentLength is set to its
 // exact value (instead of -1), GetBody is populated (so 307 and 308
 // redirects can replay the body), and Body is set to NoBody if the
 // ContentLength is 0.
+// 如果body是*bytes.Buffer、*bytes.Reader或*strings.Reader类型，返回请求的
+// ContentLength被设置为其精确值（而不是-1），GetBody被填充（因此307和308重定向
+// 可以重放body），如果ContentLength为0，Body被设置为NoBody。
 func NewRequestWithContext(ctx context.Context, method, url string, body io.Reader) (*Request, error) {
+	// 1、如果method，则默认为GET请求
 	if method == "" {
 		// We document that "" means "GET" for Request.Method, and people have
 		// relied on that from NewRequest, so keep that working.
 		// We still enforce validMethod for non-empty methods.
+		// 我们记录了""在Request.Method中的意思是 "GET"，人们在NewRequest中依赖它，所以保持它的作用。
+		// 我们仍然对非空的方法强制执行validMethod。
 		method = "GET"
 	}
+	// 2、校验method是不是有效的method，如果是无效的，则返回错误
 	if !validMethod(method) {
 		return nil, fmt.Errorf("net/http: invalid method %q", method)
 	}
+	// 3、判断上下文是不是nil，如果是，则返回空上下文
 	if ctx == nil {
 		return nil, errors.New("net/http: nil Context")
 	}
+	// 4、解析url
 	u, err := urlpkg.Parse(url)
 	if err != nil {
 		return nil, err
@@ -922,6 +939,7 @@ func NewRequestWithContext(ctx context.Context, method, url string, body io.Read
 		rc = io.NopCloser(body)
 	}
 	// The host's colon:port should be normalized. See Issue 14836.
+	// 主机的colon:port应该被规范化。参见第14836期。
 	u.Host = removeEmptyPort(u.Host)
 	req := &Request{
 		ctx:        ctx,
