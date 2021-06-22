@@ -657,10 +657,13 @@ func parseAuthority(authority string) (user *Userinfo, host string, err error) {
 
 // parseHost parses host as an authority without user
 // information. That is, as host[:port].
+// parseHost将host解析为一个没有用户信息的权限。就是说，作为host[:port]。
 func parseHost(host string) (string, error) {
 	if strings.HasPrefix(host, "[") {
 		// Parse an IP-Literal in RFC 3986 and RFC 6874.
 		// E.g., "[fe80::1]", "[fe80::1%25en0]", "[fe80::1]:80".
+		//解析RFC 3986和RFC 6874中的IP-Literal。
+		// 例如："[fe80::1]"、"[fe80::1%25en0]"、"[fe80::1]:80"。
 		i := strings.LastIndex(host, "]")
 		if i < 0 {
 			return "", errors.New("missing ']' in host")

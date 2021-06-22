@@ -5,14 +5,19 @@
 /*
 Package net provides a portable interface for network I/O, including
 TCP/IP, UDP, domain name resolution, and Unix domain sockets.
+包net为网络I/O提供了一个可移植的接口，包括 TCP/IP、UDP、域名解析和Unix域套接字。
 
 Although the package provides access to low-level networking
 primitives, most clients will need only the basic interface provided
 by the Dial, Listen, and Accept functions and the associated
 Conn and Listener interfaces. The crypto/tls package uses
 the same interfaces and similar Dial and Listen functions.
+尽管该软件包提供了对低级网络基元的访问的基元，但大多数客户只需要由Dial、Listen和
+Accept函数提供的基本接口和相关的拨号、监听和接受函数以及相关的 Conn和Listener接口。
+crypto/tls包使用 相同的接口和类似的拨号和监听函数。
 
 The Dial function connects to a server:
+拨号功能连接到一个服务器：
 
 	conn, err := net.Dial("tcp", "golang.org:80")
 	if err != nil {
@@ -23,6 +28,7 @@ The Dial function connects to a server:
 	// ...
 
 The Listen function creates servers:
+创建一个监听服务器：
 
 	ln, err := net.Listen("tcp", ":8080")
 	if err != nil {
@@ -37,14 +43,19 @@ The Listen function creates servers:
 	}
 
 Name Resolution
+域名解析
 
 The method for resolving domain names, whether indirectly with functions like Dial
 or directly with functions like LookupHost and LookupAddr, varies by operating system.
+解决域名的方法，无论是间接使用Dial或直接使用LookupHost和LookupAddr等函数，都因操作系统而异。
 
 On Unix systems, the resolver has two options for resolving names.
 It can use a pure Go resolver that sends DNS requests directly to the servers
 listed in /etc/resolv.conf, or it can use a cgo-based resolver that calls C
 library routines such as getaddrinfo and getnameinfo.
+在 Unix 系统上，解析器有两个选择来解析名字。
+它可以使用一个纯粹的Go解析器，直接向/etc/resolv.conf中列出的服务器发送DNS请求。
+中列出的服务器，或者可以使用基于 cgo 的解析器，调用 C 库例程，如 getaddrinfo 和 getnameinfo。
 
 By default the pure Go resolver is used, because a blocked DNS request consumes
 only a goroutine, while a blocked C call consumes an operating system thread.
@@ -56,24 +67,37 @@ when the ASR_CONFIG environment variable is non-empty (OpenBSD only),
 when /etc/resolv.conf or /etc/nsswitch.conf specify the use of features that the
 Go resolver does not implement, and when the name being looked up ends in .local
 or is an mDNS name.
+默认情况下，使用的是纯Go解析器，因为阻塞的DNS请求只消耗一个goroutine 而阻塞的 C 调用则会消耗一个操作系统线程。
+当cgo可用时，基于cgo的解析器会在各种情况下被使用。在不允许程序直接进行DNS请求的系统上（OS X）。当LOCALDOMAIN
+环境变量存在时（即使是空的）。当RES_OPTIONS或HOSTALIASES环境变量为非空时。当 ASR_CONFIG 环境变量为非空时(仅 OpenBSD)。
+当 /etc/resolv.conf 或 /etc/nsswitch.conf 指定使用 Go 解析器没有实现的功能时。Go解析器没有实现的功能，
+以及被查询的名称以.local结尾或为mDNS名称时。结尾或为 mDNS 名称时。
 
 The resolver decision can be overridden by setting the netdns value of the
 GODEBUG environment variable (see package runtime) to go or cgo, as in:
+解析器的决定可以通过设置netdns的值来重写 GODEBUG环境变量的netdns值（见包的运行时间）来覆盖决议，如：
 
 	export GODEBUG=netdns=go    # force pure Go resolver
 	export GODEBUG=netdns=cgo   # force cgo resolver
 
 The decision can also be forced while building the Go source tree
 by setting the netgo or netcgo build tag.
+在构建 Go 源代码树时，也可以通过设置 netgo 或 netcgo build 标签来强制决定 的时候，也可以通过设置 netgo 或 netcgo build 标签来强制做出决定。
 
 A numeric netdns setting, as in GODEBUG=netdns=1, causes the resolver
 to print debugging information about its decisions.
 To force a particular resolver while also printing debugging information,
 join the two settings by a plus sign, as in GODEBUG=netdns=go+1.
+一个数字的netdns设置，如GODEBUG=netdns=1，会导致解析器
+打印有关其决定的调试信息。
+要强制一个特定的解析器，同时打印调试信息。
+用加号连接这两个设置，如 GODEBUG=netdns=go+1。
 
 On Plan 9, the resolver always accesses /net/cs and /net/dns.
+在Plan 9 中，解析器总是访问 /net/cs 和 /net/dns。
 
 On Windows, the resolver always uses C library functions, such as GetAddrInfo and DnsQuery.
+在 Windows 上，解析器总是使用 C 库函数，例如 GetAddrInfo 和 DnsQuery。
 
 */
 package net
@@ -92,19 +116,22 @@ import (
 // netGo and netCgo contain the state of the build tags used
 // to build this binary, and whether cgo is available.
 // conf.go mirrors these into conf for easier testing.
+// netGo 和 netCgo 包含用于构建此二进制文件的构建标签的状态，以及 cgo 是否可用。conf.go 将这些内容镜像到 conf 中，以方便测试。
 var (
-	netGo  bool // set true in cgo_stub.go for build tag "netgo" (or no cgo)
-	netCgo bool // set true in conf_netcgo.go for build tag "netcgo"
+	netGo  bool // set true in cgo_stub.go for build tag "netgo" (or no cgo)	// 在cgo_stub.go中为构建标签 "netgo"（或没有cgo）设置true。
+	netCgo bool // set true in conf_netcgo.go for build tag "netcgo"			// 在conf_netcgo.go中为构建标签 "netcgo "设置true
 )
 
 // Addr represents a network end point address.
+// Addr代表一个网络端点地址。
 //
 // The two methods Network and String conventionally return strings
 // that can be passed as the arguments to Dial, but the exact form
 // and meaning of the strings is up to the implementation.
+// 这两个方法Network和String约定俗成地返回可以作为参数传递给Dial的字符串，但是字符串的具体形式和含义由实现决定。
 type Addr interface {
-	Network() string // name of the network (for example, "tcp", "udp")
-	String() string  // string form of address (for example, "192.0.2.1:25", "[2001:db8::1]:80")
+	Network() string // name of the network (for example, "tcp", "udp")								// 网络的名称（例如，"tcp"、"udp"）。
+	String() string  // string form of address (for example, "192.0.2.1:25", "[2001:db8::1]:80")	// 地址的字符串形式（例如，"192.0.2.1:25"，"[2001:db8::1]:80"）。
 }
 
 // Conn is a generic stream-oriented network connection.
