@@ -144,14 +144,23 @@ func poll_runtime_pollServerInit() {
 	netpollGenericInit()
 }
 
+/*
+保证netpoll只被初始化一次
+*/
 func netpollGenericInit() {
+	// 1、如果已经初始化，则直接结束
 	if atomic.Load(&netpollInited) == 0 {
 		lockInit(&netpollInitLock, lockRankNetpollInit)
+		// 2、上锁，在初始化完成之前，可能有多个goroutine进到这里进行初始化
 		lock(&netpollInitLock)
+		// 3、初始化完成前，可能有goroutine进到这里，所以需要再判断一下最新的初始化状态
 		if netpollInited == 0 {
+			// 4、初始化netpoll
 			netpollinit()
+			// 5、设置初始化状态为已初始化
 			atomic.Store(&netpollInited, 1)
 		}
+		// 6、解锁
 		unlock(&netpollInitLock)
 	}
 }

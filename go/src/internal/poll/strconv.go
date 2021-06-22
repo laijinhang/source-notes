@@ -9,6 +9,7 @@ package poll
 
 // stringsHasSuffix is strings.HasSuffix. It reports whether s ends in
 // suffix.
+// stringsHasSuffix是strings.HasSuffix。它报告s是否以suffix结束。
 func stringsHasSuffix(s, suffix string) bool {
 	return len(s) >= len(suffix) && s[len(s)-len(suffix):] == suffix
 }

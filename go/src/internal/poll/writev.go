@@ -13,10 +13,13 @@ import (
 )
 
 // Writev wraps the writev system call.
+// Writev封装了writeev系统调用。
 func (fd *FD) Writev(v *[][]byte) (int64, error) {
+	// 1、尝试获取写锁，如果获取失败，则返回0和对应错误
 	if err := fd.writeLock(); err != nil {
 		return 0, err
 	}
+	// 2、设置在函数结束时关闭写锁
 	defer fd.writeUnlock()
 	if err := fd.pd.prepareWrite(fd.isFile); err != nil {
 		return 0, err
