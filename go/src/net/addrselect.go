@@ -226,6 +226,7 @@ type policyTableEntry struct {
 type policyTable []policyTableEntry
 
 // RFC 6724 section 2.1.
+// rfc6724 策略表
 var rfc6724policyTable = policyTable{
 	{
 		Prefix:     mustCIDR("::1/128"),
@@ -295,13 +296,14 @@ func (s byMaskLength) Less(i, j int) bool {
 
 // mustCIDR calls ParseCIDR and panics on any error, or if the network
 // is not IPv6.
+// mustCIDR调用ParseCIDR，如果出现错误，或者网络不是IPv6，就会panic。
 func mustCIDR(s string) *IPNet {
 	ip, ipNet, err := ParseCIDR(s)
 	if err != nil {
 		panic(err.Error())
 	}
 	if len(ip) != IPv6len {
-		panic("unexpected IP length")
+		panic("unexpected IP length") // 意料之外的IP长度
 	}
 	return ipNet
 }
@@ -346,32 +348,52 @@ func classifyScope(ip IP) scope {
 	return scopeGlobal
 }
 
+/*
+计算公共前缀bit长度：
+1. 如果a，b是不同版本，则返回0
+2. 如果a，b是ipv6，则计算前8字节的
+*/
 // commonPrefixLen reports the length of the longest prefix (looking
 // at the most significant, or leftmost, bits) that the
 // two addresses have in common, up to the length of a's prefix (i.e.,
 // the portion of the address not including the interface ID).
+// commonPrefixLen报告两个地址共同拥有的最长前缀的长度（看最重要的，或最左边的位），直到a的前缀的长度（即地址中不包括接口ID的部分）。
 //
 // If a or b is an IPv4 address as an IPv6 address, the IPv4 addresses
 // are compared (with max common prefix length of 32).
 // If a and b are different IP versions, 0 is returned.
+// 如果a或b是一个IPv4地址作为一个IPv6地址，则比较IPv4地址（最大共同前缀长度为32）。
+// 如果a和b是不同的IP版本，则返回0。
 //
 // See https://tools.ietf.org/html/rfc6724#section-2.2
 func commonPrefixLen(a, b IP) (cpl int) {
+	/*
+		如果a是4字节和16字节的IPv4，则将a转成4字节
+	*/
 	if a4 := a.To4(); a4 != nil {
 		a = a4
 	}
+	/*
+		如果b是4字节和16字节的IPv4，则将b转成4字节
+	*/
 	if b4 := b.To4(); b4 != nil {
 		b = b4
 	}
+	// 如果a和b是不同版本，则返回0
 	if len(a) != len(b) {
 		return 0
 	}
 	// If IPv6, only up to the prefix (first 64 bits)
+	// 如果是IPv6，只需要到前缀（前64位，8字节）为止。
 	if len(a) > 8 {
 		a = a[:8]
 		b = b[:8]
 	}
+	/*
+		计算a, b从左到右的公共前缀bit数
+	*/
 	for len(a) > 0 {
+		// 如果a[0] == b[0]，则加上相等的8bit
 		if a[0] == b[0] {
 			cpl += 8
 			a = a[1:]
@@ -380,9 +402,14 @@ func commonPrefixLen(a, b IP) (cpl int) {
 		}
 		bits := 8
 		ab, bb := a[0], b[0]
+		/*
+			计算 从左到右相等的bit个数
+
+			因为a[0] != b[0]了，只计算这一次，计算完就退出
+		*/
 		for {
-			ab >>= 1
-			bb >>= 1
+			ab >>= 1 // 右移1bit
+			bb >>= 1 // 右移1bit
 			bits--
 			if ab == bb {
 				cpl += bits

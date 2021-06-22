@@ -32,6 +32,8 @@ var aLongTimeAgo = time.Unix(1, 0)
 // omitBundledHTTP2 is set by omithttp2.go when the nethttpomithttp2
 // build tag is set. That means h2_bundle.go isn't compiled in and we
 // shouldn't try to use it.
+// omitBundledHTTP2 是由 omithttp2.go 在 nethttpomithttp2 build 标签设置的。
+// 这意味着 h2_bundle.go 没有被编译进去，我们不应该尝试使用它。
 var omitBundledHTTP2 bool
 
 // TODO(bradfitz): move common stuff here. The other files have accumulated

@@ -65,6 +65,9 @@ func (w chanWriter) Write(p []byte) (n int, err error) {
 	return len(p), nil
 }
 
+/*
+Client的单元测试
+*/
 func TestClient(t *testing.T) {
 	setParallel(t)
 	defer afterTest(t)

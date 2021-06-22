@@ -766,8 +766,10 @@ type sysListener struct {
 }
 
 // Listen announces on the local network address.
+// 在本地网络地址上收听。
 //
 // The network must be "tcp", "tcp4", "tcp6", "unix" or "unixpacket".
+// 网络必须是 "tcp"、"tcp4"、"tcp6"、"unix "或 "unixpacket"。
 //
 // For TCP networks, if the host in the address parameter is empty or
 // a literal unspecified IP address, Listen listens on all available
@@ -780,12 +782,19 @@ type sysListener struct {
 // "127.0.0.1:" or "[::1]:0", a port number is automatically chosen.
 // The Addr method of Listener can be used to discover the chosen
 // port.
+// 对于TCP网络，如果地址参数中的主机是空的或者是一个未指定的IP地址，Listen将监听本地系统中所有可用的单播和任播IP地址。
+// 要只使用IPv4，使用网络 "tcp4"。
+// 地址可以使用主机名，但不推荐这样做，因为它最多只能为主机的一个IP地址创建监听器。
+// 如果地址参数中的端口为空或 "0"，如 "127.0.0.1: "或"[:1]:0"，则会自动选择一个端口号。
+// Listener的Addr方法可以用来发现选择的端口。
 //
 // See func Dial for a description of the network and address
 // parameters.
+// 关于网络和地址参数的描述，请参见func Dial。
 //
 // Listen uses context.Background internally; to specify the context, use
 // ListenConfig.Listen.
+// Listen在内部使用context.Background；要指定context，请使用ListenConfig.Listen。
 func Listen(network, address string) (Listener, error) {
 	var lc ListenConfig
 	return lc.Listen(context.Background(), network, address)

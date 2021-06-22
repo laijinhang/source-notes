@@ -395,6 +395,7 @@ func send(ireq *Request, rt RoundTripper, deadline time.Time) (resp *Response, d
 		}
 		resp.Body = io.NopCloser(strings.NewReader(""))
 	}
+	// 如果设置了超时时间
 	if !deadline.IsZero() {
 		resp.Body = &cancelTimerBody{
 			stop:          stopTimer,
@@ -421,6 +422,9 @@ func timeBeforeContextDeadline(t time.Time, ctx context.Context) bool {
 // optional semantics (notably contexts). The Request is used
 // to check whether this particular request is using an alternate protocol,
 // in which case we need to check the RoundTripper for that protocol.
+// knownRoundTripperImpl报告rt是否是一个由Go团队维护的RoundTripper，
+// 并且已知实现了最新的可选语义（特别是上下文）。Request用于检查这个特定的
+// 请求是否使用了其他的协议，在这种情况下，我们需要检查该协议的RoundTripper。
 func knownRoundTripperImpl(rt RoundTripper, req *Request) bool {
 	switch t := rt.(type) {
 	case *Transport:
@@ -446,13 +450,21 @@ func knownRoundTripperImpl(rt RoundTripper, req *Request) bool {
 // setRequestCancel sets req.Cancel and adds a deadline context to req
 // if deadline is non-zero. The RoundTripper's type is used to
 // determine whether the legacy CancelRequest behavior should be used.
+// setRequestCancel设置req.Cancel，如果截止日期为非零，则向req添加一个截止日期上下文。
+// RoundTripper的类型被用来决定是否应该使用传统的CancelRequest行为。
 //
 // As background, there are three ways to cancel a request:
 // First was Transport.CancelRequest. (deprecated)
 // Second was Request.Cancel.
 // Third was Request.Context.
 // This function populates the second and third, and uses the first if it really needs to.
+// 作为background，有三种取消请求的方法。
+// 首先是Transport.CancelRequest。(已废止)
+// 第二种是Request.Cancel。
+// 第三种是Request.Context。
+// 这个函数填充了第二种和第三种，如果真的需要，则使用第一种。
 func setRequestCancel(req *Request, rt RoundTripper, deadline time.Time) (stopTimer func(), didTimeout func() bool) {
+	// 没有设置超时
 	if deadline.IsZero() {
 		return nop, alwaysFalse
 	}
@@ -526,6 +538,9 @@ func setRequestCancel(req *Request, rt RoundTripper, deadline time.Time) (stopTi
 // separated by a single colon (":") character, within a base64
 // encoded string in the credentials."
 // It is not meant to be urlencoded.
+// 见2（第4页末） https://www.ietf.org/rfc/rfc2617.txt "为了接收授权，
+// 客户端在凭证中的base64编码的字符串内发送用户名和密码，用一个冒号（":"）字
+// 符分开。" 这并不是说要进行urlencoded。
 func basicAuth(username, password string) string {
 	auth := username + ":" + password
 	return base64.StdEncoding.EncodeToString([]byte(auth))
@@ -1134,8 +1149,11 @@ func (c *Client) CloseIdleConnections() {
 // 1) on Read error or close, the stop func is called.
 // 2) On Read failure, if reqDidTimeout is true, the error is wrapped and
 //    marked as net.Error that hit its timeout.
+// cancelTimerBody是一个io.ReadCloser，它用两个特性包装了rc：
+// 1）在读取错误或关闭时，会调用停止函数。
+// 2) 在读取失败时，如果reqDidTimeout为真，错误会被包裹起来，并被标记为net.Error，击中其超时。
 type cancelTimerBody struct {
-	stop          func() // stops the time.Timer waiting to cancel the request
+	stop          func() // stops the time.Timer waiting to cancel the request	// 停止等待取消请求的time.Timer。
 	rc            io.ReadCloser
 	reqDidTimeout func() bool
 }

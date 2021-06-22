@@ -89,7 +89,10 @@ func goroutineLeaked() bool {
 // setParallel marks t as a parallel test if we're in short mode
 // (all.bash), but as a serial test otherwise. Using t.Parallel isn't
 // compatible with the afterTest func in non-short mode.
+// setParallel将t标记为并行测试，如果我们在短模式（all.bash）下，则标记为串行测试。
+// 使用t.Parallel与非短模式下的afterTest func不兼容。
 func setParallel(t *testing.T) {
+	// 如果 HTTP2 在t.Name 里面，则设置
 	if strings.Contains(t.Name(), "HTTP2") {
 		http.CondSkipHTTP2(t)
 	}

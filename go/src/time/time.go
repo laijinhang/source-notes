@@ -454,8 +454,12 @@ const (
 	internalToWall int64 = -wallToInternal
 )
 
+/*
+未分配时的time，也是零点时刻，如var t time.Time，此时它的IsZero是true
+*/
 // IsZero reports whether t represents the zero time instant,
 // January 1, year 1, 00:00:00 UTC.
+// IsZero报告t是否代表零点时刻，1年1月1日，00:00:00 UTC。
 func (t Time) IsZero() bool {
 	return t.sec() == 0 && t.nsec() == 0
 }

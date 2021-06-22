@@ -5,10 +5,16 @@
 // Package url parses URLs and implements query escaping.
 package url
 
+/*
+RFC 3986相关中文资料：
+* [RFC 3986](https://yesphet.github.io/posts/rfc3986/)
+*/
 // See RFC 3986. This package generally follows RFC 3986, except where
 // it deviates for compatibility reasons. When sending changes, first
 // search old issues for history on decisions. Unit tests should also
 // contain references to issue numbers with details.
+// 见RFC 3986。本软件包一般遵循RFC 3986，除了因兼容性原因而偏离的地方。当发生更改时，
+// 首先搜索旧的问题以了解决定的历史。单元测试也应该包含对带有细节的问题编号的引用。
 
 import (
 	"errors"
@@ -19,10 +25,11 @@ import (
 )
 
 // Error reports an error and the operation and URL that caused it.
+// Error报告一个错误以及导致该错误的操作和URL。
 type Error struct {
-	Op  string
-	URL string
-	Err error
+	Op  string // 导致错误的操作
+	URL string // URL
+	Err error  // 错误原因
 }
 
 func (e *Error) Unwrap() error { return e.Err }
@@ -44,6 +51,9 @@ func (e *Error) Temporary() bool {
 
 const upperhex = "0123456789ABCDEF"
 
+/*
+检查字符c是否为16进制范围的字符
+*/
 func ishex(c byte) bool {
 	switch {
 	case '0' <= c && c <= '9':
@@ -56,6 +66,9 @@ func ishex(c byte) bool {
 	return false
 }
 
+/*
+十六进制的字符转成十进制数字
+*/
 func unhex(c byte) byte {
 	switch {
 	case '0' <= c && c <= '9':
@@ -94,11 +107,14 @@ func (e InvalidHostError) Error() string {
 
 // Return true if the specified character should be escaped when
 // appearing in a URL string, according to RFC 3986.
+// 如果指定的字符在URL字符串中出现时应该被转义，根据RFC 3986，返回true。
 //
 // Please be informed that for now shouldEscape does not check all
 // reserved characters correctly. See golang.org/issue/5684.
+// 请注意，目前shouldEscape并没有正确检查所有的保留字符。参见 golang.org/issue/5684。
 func shouldEscape(c byte, mode encoding) bool {
 	// §2.3 Unreserved characters (alphanum)
+	// §2.3 未保留的字符（字母）。
 	if 'a' <= c && c <= 'z' || 'A' <= c && c <= 'Z' || '0' <= c && c <= '9' {
 		return false
 	}
@@ -113,6 +129,12 @@ func shouldEscape(c byte, mode encoding) bool {
 		// we could possibly allow, and Parse will reject them if we
 		// escape them (because hosts can't use %-encoding for
 		// ASCII bytes).
+		// §3.2.2 主机允许
+		// 子项 = "！" / "$" / "&" / "'" / "（" / "）" / "*" / "+" / "," / ";" / "="
+		// 作为注册名的一部分。
+		// 我们添加了 : 因为我们把 :port 作为 host 的一部分。
+		// 我们添加 [ ] 是因为我们把 [ipv6]:port 作为主机的一部分。
+		// 我们添加< >，因为它们是我们唯一可能允许的字符，如果我们转义它们，Parse会拒绝它们（因为主机不能对ASCII字节使用%编码）。
 		switch c {
 		case '!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '=', ':', '[', ']', '<', '>', '"':
 			return false
@@ -871,16 +893,24 @@ func (u *URL) Redacted() string {
 	return ru.String()
 }
 
+/*
+因为是map，所以在使用之前，需要进行初始化一下
+*/
 // Values maps a string key to a list of values.
 // It is typically used for query parameters and form values.
 // Unlike in the http.Header map, the keys in a Values map
 // are case-sensitive.
+// Values将一个字符串键映射到一个值的列表中。
+// 它通常用于查询参数和表单值。
+// 与http.Header映射不同，Value映射中的键是区分大小写的。
 type Values map[string][]string
 
 // Get gets the first value associated with the given key.
 // If there are no values associated with the key, Get returns
 // the empty string. To access multiple values, use the map
 // directly.
+// Get获得与给定键相关的第一个值。
+// 如果没有与该键相关的值，Get将返回空字符串。要访问多个值，请直接使用map。
 func (v Values) Get(key string) string {
 	if v == nil {
 		return ""
@@ -894,22 +924,26 @@ func (v Values) Get(key string) string {
 
 // Set sets the key to value. It replaces any existing
 // values.
+// 设置将键设置为值。它取代了任何现有的值。
 func (v Values) Set(key, value string) {
 	v[key] = []string{value}
 }
 
 // Add adds the value to key. It appends to any existing
 // values associated with key.
+// 添加将该值添加到键中。它附加到任何与键相关的现有值上。
 func (v Values) Add(key, value string) {
 	v[key] = append(v[key], value)
 }
 
 // Del deletes the values associated with key.
+// 删除与键相关的值。
 func (v Values) Del(key string) {
 	delete(v, key)
 }
 
 // Has checks whether a given key is set.
+// 已经检查了一个给定的键是否被设置。
 func (v Values) Has(key string) bool {
 	_, ok := v[key]
 	return ok
@@ -920,10 +954,13 @@ func (v Values) Has(key string) bool {
 // ParseQuery always returns a non-nil map containing all the
 // valid query parameters found; err describes the first decoding error
 // encountered, if any.
+// ParseQuery解析了URL编码的查询字符串，并返回一个列出每个键的指定值的地图。
+// ParseQuery总是返回一个非零的地图，其中包含所有发现的有效查询参数；err描述遇到的第一个解码错误，如果有的话。
 //
 // Query is expected to be a list of key=value settings separated by
 // ampersands or semicolons. A setting without an equals sign is
 // interpreted as a key set to an empty value.
+// 查询被认为是一个由符号或分号分隔的key=value设置的列表。一个没有等号的设置被解释为一个键设置为空值。
 func ParseQuery(query string) (Values, error) {
 	m := make(Values)
 	err := parseQuery(m, query)
@@ -966,6 +1003,7 @@ func parseQuery(m Values, query string) (err error) {
 
 // Encode encodes the values into ``URL encoded'' form
 // ("bar=baz&foo=quux") sorted by key.
+// Encode将数值编码成``URL编码''的形式（"bar=baz&foo=quux"），按键排序。
 func (v Values) Encode() string {
 	if v == nil {
 		return ""

@@ -100,18 +100,25 @@ func strSliceContainsPrefix(v []string, pre string) bool {
 
 // NewServer starts and returns a new Server.
 // The caller should call Close when finished, to shut it down.
+// NewServer启动并返回一个新的服务器。
+// 调用者应该在完成后调用Close，以关闭它。
 func NewServer(handler http.Handler) *Server {
+	// 1、创建一个新的服务器
 	ts := NewUnstartedServer(handler)
+	// 2、启动这个服务器
 	ts.Start()
 	return ts
 }
 
 // NewUnstartedServer returns a new Server but doesn't start it.
+// NewUnstartedServer返回一个新的服务器，但并不启动它。
 //
 // After changing its configuration, the caller should call Start or
 // StartTLS.
+// 在改变其配置后，调用者应该调用Start或StartTLS。
 //
 // The caller should call Close when finished, to shut it down.
+// 调用者在完成后应该调用Close，以关闭它。
 func NewUnstartedServer(handler http.Handler) *Server {
 	return &Server{
 		Listener: newLocalListener(),
@@ -120,6 +127,7 @@ func NewUnstartedServer(handler http.Handler) *Server {
 }
 
 // Start starts a server from NewUnstartedServer.
+// Start从NewUnstartedServer启动一个服务器。
 func (s *Server) Start() {
 	if s.URL != "" {
 		panic("Server already started")
