@@ -2,6 +2,29 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+/*
+TLS即Transport Layer Security传输层安全协议，它的前身是SSL，Security Socket Layer安全套接字协议。
+它工作在OSI七层模型中的表示层。
+
+TLS协议可以分为两部分：
+1. 记录协议：负责在传输连接上交换的所以底层消息，并可以配置加密
+2. 握手协议：负责协商连接参数，完成客户端服务器身份验证
+
+一次完整的TSL握手过程：
+1. ClientHello：客户端发起握手请求，携带自己支持的协议以及版本加密方式等参数
+2. ServerHello：服务器选择连接参数并告诉客户端
+3. Certificate*：服务器发送自己的证书给客户端
+4. ServerKeyExchange*：根据选择的密钥交换方式，服务器发送生成主密钥的额外信息
+5. CertificateRequest：服务器请求客户端证书
+6. ServerHelloDone：服务器完成sayhello过程
+7. Certificate：客户端发送证书给服务器
+8. ClientKeyExchange：客户端发送生成主密钥所需的额外信息
+9. CertificateVerify：验证证书
+10. ChangeCipherSpec：客户端切换加密方式并通知服务器
+11. Finished：客户端完成握手
+12.ChangeCipherSpec：服务器切换加密方式并通知客户端
+13. Finished：服务器握手完成
+*/
 // Package tls partially implements TLS 1.2, as specified in RFC 5246,
 // and TLS 1.3, as specified in RFC 8446.
 package tls

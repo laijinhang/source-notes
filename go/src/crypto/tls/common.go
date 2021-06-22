@@ -26,33 +26,63 @@ import (
 )
 
 const (
+	/*
+		TLS1.0 1999
+	*/
 	VersionTLS10 = 0x0301
+	/*
+		TLS1.1 2006
+	*/
 	VersionTLS11 = 0x0302
+	/*
+		TLS1.2 2008
+	*/
 	VersionTLS12 = 0x0303
+	/*
+		TLS1.3 2018
+	*/
 	VersionTLS13 = 0x0304
 
 	// Deprecated: SSLv3 is cryptographically broken, and is no longer
 	// supported by this package. See golang.org/issue/32716.
+	// 废弃了。SSLv3在密码学上已经失效，本软件包不再支持。参见golang.org/issue/32716。
+	/*
+		SSL3.0 1999
+	*/
 	VersionSSL30 = 0x0300
 )
 
 const (
-	maxPlaintext       = 16384        // maximum plaintext payload length
-	maxCiphertext      = 16384 + 2048 // maximum ciphertext payload length
-	maxCiphertextTLS13 = 16384 + 256  // maximum ciphertext length in TLS 1.3
-	recordHeaderLen    = 5            // record header length
-	maxHandshake       = 65536        // maximum handshake we support (protocol max is 16 MB)
-	maxUselessRecords  = 16           // maximum number of consecutive non-advancing records
+	maxPlaintext       = 16384        // maximum plaintext payload length						// 最大明文有效载荷长度
+	maxCiphertext      = 16384 + 2048 // maximum ciphertext payload length						// 最大密码文本有效载荷长度
+	maxCiphertextTLS13 = 16384 + 256  // maximum ciphertext length in TLS 1.3					// TLS 1.3中的最大密码文本长度
+	recordHeaderLen    = 5            // record header length									// 记录头的长度
+	maxHandshake       = 65536        // maximum handshake we support (protocol max is 16 MB)	// 我们支持的最大握手（协议最大为16MB）。
+	maxUselessRecords  = 16           // maximum number of consecutive non-advancing records	// 连续不前进记录的最大数量
 )
 
 // TLS record types.
+// TLS记录类型。
 type recordType uint8
 
 const (
+	/*
+		changecipherspec表明发送端已取得用以生成连接参数的足够信息。
+		内容随密码套件不同
+	*/
 	recordTypeChangeCipherSpec recordType = 20
-	recordTypeAlert            recordType = 21
-	recordTypeHandshake        recordType = 22
-	recordTypeApplicationData  recordType = 23
+	/*
+		alert协议类型
+	*/
+	recordTypeAlert recordType = 21
+	/*
+		握手协议类型
+	*/
+	recordTypeHandshake recordType = 22
+	/*
+		应用数据协议类型
+	*/
+	recordTypeApplicationData recordType = 23
 )
 
 // TLS handshake message types.

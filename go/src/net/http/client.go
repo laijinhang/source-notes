@@ -318,18 +318,26 @@ func send(ireq *Request, rt RoundTripper, deadline time.Time) (resp *Response, d
 
 	// forkReq forks req into a shallow clone of ireq the first
 	// time it's called.
+	// forkReq在第一次调用时将req复制成ireq的一个浅拷贝。
+	/*
+		有一部分进行了深度拷贝（如Method string等），也有一部分进行浅拷贝的（如URL *url.URL等）
+	*/
 	forkReq := func() {
 		if ireq == req {
 			req = new(Request)
-			*req = *ireq // shallow clone
+			*req = *ireq // shallow clone	// 浅拷贝
 		}
 	}
 
 	// Most the callers of send (Get, Post, et al) don't need
 	// Headers, leaving it uninitialized. We guarantee to the
 	// Transport that this has been initialized, though.
+	// 大多数调用send（Get、Post等）的人都不需要Headers，让它不被初始化。
+	// 不过我们向Transport保证，它已经被初始化了。
 	if req.Header == nil {
+		// 浅拷贝一份
 		forkReq()
+		// 初始化req.Header
 		req.Header = make(Header)
 	}
 
@@ -356,6 +364,7 @@ func send(ireq *Request, rt RoundTripper, deadline time.Time) (resp *Response, d
 			// If we get a bad TLS record header, check to see if the
 			// response looks like HTTP and give a more helpful error.
 			// See golang.org/issue/11111.
+			// 如果我们得到一个坏的TLS记录头，检查一下响应是否看起来像HTTP，并给出一个更有帮助的错误。参见 golang.org/issue/11111。
 			if string(tlsErr.RecordHeader[:]) == "HTTP/" {
 				err = errors.New("http: server gave HTTP response to HTTPS client")
 			}
@@ -373,9 +382,14 @@ func send(ireq *Request, rt RoundTripper, deadline time.Time) (resp *Response, d
 		// RoundTripper implementations in the wild (mostly in tests) assume that
 		// they can use a nil Body to mean an empty one (similar to Request.Body).
 		// (See https://golang.org/issue/38095.)
+		// 关于Body字段的文档说："http客户端和传输保证Body总是非零，即使在没有body的响应或body长度为零的响应上也是如此。"
+		// 不幸的是，我们没有为任意的RoundTripper实现记录同样的约束，而且野外的RoundTripper实现（主要是在测试中）认为他们
+		// 可以使用nil Body来表示空的（类似于Request.Body）。
+		// 参见https://golang.org/issue/38095）。
 		//
 		// If the ContentLength allows the Body to be empty, fill in an empty one
 		// here to ensure that it is non-nil.
+		// 如果ContentLength允许Body为空，则在这里填入一个空的，以确保它不是空的。
 		if resp.ContentLength > 0 && req.Method != "HEAD" {
 			return nil, didTimeout, fmt.Errorf("http: RoundTripper implementation (%T) returned a *Response with content length %d but a nil Body", rt, resp.ContentLength)
 		}

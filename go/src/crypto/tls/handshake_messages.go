@@ -67,23 +67,23 @@ func readUint24LengthPrefixed(s *cryptobyte.String, out *[]byte) bool {
 }
 
 type clientHelloMsg struct {
-	raw                              []byte
-	vers                             uint16
-	random                           []byte
-	sessionId                        []byte
-	cipherSuites                     []uint16
-	compressionMethods               []uint8
-	serverName                       string
-	ocspStapling                     bool
-	supportedCurves                  []CurveID
-	supportedPoints                  []uint8
-	ticketSupported                  bool
-	sessionTicket                    []uint8
+	raw                              []byte    // 原始数据
+	vers                             uint16    // 协议版本，指定客户端支持的最大协议版本
+	random                           []byte    // 随机数，32字节
+	sessionId                        []byte    // 回话ID，第一次为空，服务端借助会话ID，需要服务端缓存
+	cipherSuites                     []uint16  // 客户端支持的加密套件列表
+	compressionMethods               []uint8   // 客户端支持的压缩方法，默认为null
+	serverName                       string    // 扩展SNI，服务器名称，通常为域名，默认为目标地址主机名。支持SNI扩展需要的字段
+	ocspStapling                     bool      // 扩展status_request是否支持ocsp staping。全称在线证书状态检查协议（rfc6960）
+	supportedCurves                  []CurveID // 扩展ellipc surve列出支持的椭圆曲线名称
+	supportedPoints                  []uint8   // 扩展Points Formats对椭圆曲线顶点进行可选压缩
+	ticketSupported                  bool      // 扩展Sessionticket，是否支持会话ticket
+	sessionTicket                    []uint8   // 扩展Sessionticket，会话ticket，区别于sessionId的新的会话恢复机制，这种机制不需要服务器端缓存
 	supportedSignatureAlgorithms     []SignatureScheme
 	supportedSignatureAlgorithmsCert []SignatureScheme
-	secureRenegotiationSupported     bool
-	secureRenegotiation              []byte
-	alpnProtocols                    []string
+	secureRenegotiationSupported     bool     // 扩展RenegotiationInfo 是否支持renegotiation_info扩展 安全重新协商
+	secureRenegotiation              []byte   // 扩展RenegotiationInfo 如果请求重新协商，就会发起一次新的握手。
+	alpnProtocols                    []string // 扩展ALPN 应用层协议协商。
 	scts                             bool
 	supportedVersions                []uint16
 	cookie                           []byte
@@ -590,18 +590,18 @@ func (m *clientHelloMsg) unmarshal(data []byte) bool {
 }
 
 type serverHelloMsg struct {
-	raw                          []byte
-	vers                         uint16
-	random                       []byte
+	raw                          []byte // 原始数据
+	vers                         uint16 // 服务端选择的版本号 通常为client server都支持的版本中最高的。 common.go:mutualVersion()
+	random                       []byte // 服务端生成的随机数  32字节
 	sessionId                    []byte
-	cipherSuite                  uint16
-	compressionMethod            uint8
+	cipherSuite                  uint16 // 服务端选择的加密套件  通常为client server都支持的套件中，最靠前的。所以套件的顺序是有讲究的。
+	compressionMethod            uint8  // 选择的压缩方法 只会选择不压缩。如果客户端不支持不压缩，会报错
 	ocspStapling                 bool
 	ticketSupported              bool
 	secureRenegotiationSupported bool
 	secureRenegotiation          []byte
-	alpnProtocol                 string
-	scts                         [][]byte
+	alpnProtocol                 string   // 服务端选择的应用层协议，client server都支持的协议中，最靠前的。如果client端为空，则填充为服务器支持的协议
+	scts                         [][]byte // 签名的证书时间戳？
 	supportedVersion             uint16
 	serverShare                  keyShare
 	selectedIdentityPresent      bool
