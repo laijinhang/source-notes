@@ -1270,9 +1270,12 @@ func tRunner(t *T, fn func(t *T)) {
 // Run runs f as a subtest of t called name. It runs f in a separate goroutine
 // and blocks until f returns or calls t.Parallel to become a parallel test.
 // Run reports whether f succeeded (or at least did not fail before calling t.Parallel).
+// 运行f作为t的一个子测试，称为name。它在一个单独的goroutine中运行f，并阻塞直到f返回或调用t.Parallel成为一个并行测试。
+// Run报告f是否成功了（或者至少在调用t.Parallel之前没有失败）。
 //
 // Run may be called simultaneously from multiple goroutines, but all such calls
 // must return before the outer test function for t returns.
+// Run可以从多个goroutine中同时调用，但是所有这些调用必须在t的外层测试函数返回之前返回。
 func (t *T) Run(name string, f func(t *T)) bool {
 	atomic.StoreInt32(&t.hasSub, 1)
 	testName, ok, _ := t.context.match.fullName(&t.common, name)

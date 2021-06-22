@@ -360,12 +360,15 @@ func escape(s string, mode encoding) string {
 }
 
 // A URL represents a parsed URL (technically, a URI reference).
+// 一个URL代表一个解析过的URL（技术上来说，是一个URI引用）。
 //
 // The general form represented is:
+// 代表的一般形式是：
 //
 //	[scheme:][//[userinfo@]host][/]path[?query][#fragment]
 //
 // URLs that do not start with a slash after the scheme are interpreted as:
+// 方案后面不以斜线开头的URL被解释为：
 //
 //	scheme:opaque[?query][#fragment]
 //
@@ -374,36 +377,45 @@ func escape(s string, mode encoding) string {
 // slashes in the raw URL and which were %2f. This distinction is rarely important,
 // but when it is, the code should use RawPath, an optional field which only gets
 // set if the default encoding is different from Path.
+// 注意路径字段是以解码形式存储的。/%47%6f%2f变成了/Go/。
+// 这样做的后果是，我们不可能分辨出Path中的哪些斜杠是原始URL中的斜杠，哪些是%2f。
+// 这种区别很少是重要的，但是当它是重要的时候，代码应该使用RawPath，这是一个可选的字段，
+// 只有在默认编码与Path不同时才会被设置。
 //
 // URL's String method uses the EscapedPath method to obtain the path. See the
 // EscapedPath method for more details.
+// URL的String方法使用EscapedPath方法来获取路径。更多细节请参见EscapedPath方法。
 type URL struct {
 	Scheme      string
-	Opaque      string    // encoded opaque data
-	User        *Userinfo // username and password information
-	Host        string    // host or host:port
-	Path        string    // path (relative paths may omit leading slash)
-	RawPath     string    // encoded path hint (see EscapedPath method)
-	ForceQuery  bool      // append a query ('?') even if RawQuery is empty
-	RawQuery    string    // encoded query values, without '?'
-	Fragment    string    // fragment for references, without '#'
-	RawFragment string    // encoded fragment hint (see EscapedFragment method)
+	Opaque      string    // encoded opaque data								// 编码的不透明数据
+	User        *Userinfo // username and password information					// 用户名和密码信息
+	Host        string    // host or host:port									// 主机或主机:端口
+	Path        string    // path (relative paths may omit leading slash)		// 路径（相对路径可以省略前面的斜线）。
+	RawPath     string    // encoded path hint (see EscapedPath method)			// 编码的路径提示（见EscapedPath方法）。
+	ForceQuery  bool      // append a query ('?') even if RawQuery is empty		// 即使RawQuery是空的，也要附加一个查询('?')
+	RawQuery    string    // encoded query values, without '?'					// 编码的查询值，不含'?
+	Fragment    string    // fragment for references, without '#'				// 用于引用的片段，没有'#'。
+	RawFragment string    // encoded fragment hint (see EscapedFragment method)	// 编码的片段提示（见EscapedFragment方法）。
 }
 
 // User returns a Userinfo containing the provided username
 // and no password set.
+// User返回一个包含所提供的用户名和没有设置密码的Userinfo。
 func User(username string) *Userinfo {
 	return &Userinfo{username, "", false}
 }
 
 // UserPassword returns a Userinfo containing the provided username
 // and password.
+// UserPassword返回一个包含所提供的用户名和密码的Userinfo。
 //
 // This functionality should only be used with legacy web sites.
 // RFC 2396 warns that interpreting Userinfo this way
 // ``is NOT RECOMMENDED, because the passing of authentication
 // information in clear text (such as URI) has proven to be a
 // security risk in almost every case where it has been used.''
+// 这种功能只能用于传统的网站。
+// RFC2396警告说，以这种方式解释Userinfo``不推荐，因为以明文（如URI）传递认证信息在几乎所有使用过的情况下都被证明是一种安全风险。
 func UserPassword(username, password string) *Userinfo {
 	return &Userinfo{username, password, true}
 }
@@ -412,6 +424,7 @@ func UserPassword(username, password string) *Userinfo {
 // password details for a URL. An existing Userinfo value is guaranteed
 // to have a username set (potentially empty, as allowed by RFC 2396),
 // and optionally a password.
+// Userinfo类型是对一个URL的用户名和密码细节的不可改变的封装。一个现有的Userinfo值被保证有一个用户名集（可能是空的，如RFC2396所允许的），和一个可选的密码。
 type Userinfo struct {
 	username    string
 	password    string
@@ -419,6 +432,7 @@ type Userinfo struct {
 }
 
 // Username returns the username.
+// Username 返回用户名。
 func (u *Userinfo) Username() string {
 	if u == nil {
 		return ""
@@ -427,6 +441,7 @@ func (u *Userinfo) Username() string {
 }
 
 // Password returns the password in case it is set, and whether it is set.
+// 密码在设置了密码的情况下返回密码，以及是否设置了密码。
 func (u *Userinfo) Password() (string, bool) {
 	if u == nil {
 		return "", false
@@ -436,6 +451,7 @@ func (u *Userinfo) Password() (string, bool) {
 
 // String returns the encoded userinfo information in the standard form
 // of "username[:password]".
+// 字符串以 "username[:password]"的标准形式返回编码后的userinfo信息。
 func (u *Userinfo) String() string {
 	if u == nil {
 		return ""
@@ -450,6 +466,9 @@ func (u *Userinfo) String() string {
 // Maybe rawURL is of the form scheme:path.
 // (Scheme must be [a-zA-Z][a-zA-Z0-9+-.]*)
 // If so, return scheme, path; else return "", rawURL.
+// 也许rawURL的形式是scheme:path。
+// (Scheme必须是[a-zA-Z][a-zA-Z0-9+-.]*)
+// 如果是，返回scheme, path; 否则返回"", rawURL。
 func getScheme(rawURL string) (scheme, path string, err error) {
 	for i := 0; i < len(rawURL); i++ {
 		c := rawURL[i]
