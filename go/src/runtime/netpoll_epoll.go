@@ -93,6 +93,9 @@ func netpollopen(fd uintptr, pd *pollDesc) int32 {
 
 func netpollclose(fd uintptr) int32 {
 	var ev epollevent
+	/*
+		_EPOLL_CTL_DEL：移除监听fd
+	*/
 	return -epollctl(epfd, _EPOLL_CTL_DEL, int32(fd), &ev)
 }
 

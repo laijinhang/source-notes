@@ -1284,6 +1284,7 @@ func sync_throw(s string) {
 func throw(s string) {
 	// Everything throw does should be recursively nosplit so it
 	// can be called even when it's unsafe to grow the stack.
+	// throw所做的一切都应该是递归性的，所以即使在堆栈增长不安全的情况下也可以调用它。
 	systemstack(func() {
 		print("fatal error: ", s, "\n")
 	})
@@ -1292,7 +1293,7 @@ func throw(s string) {
 		gp.m.throwing = 1
 	}
 	fatalthrow()
-	*(*int)(nil) = 0 // not reached
+	*(*int)(nil) = 0 // not reached	// 未达到
 }
 
 // runningPanicDefers is non-zero while running deferred functions for panic.
@@ -1337,6 +1338,7 @@ func recovery(gp *g) {
 // fatalthrow implements an unrecoverable runtime throw. It freezes the
 // system, prints stack traces starting from its caller, and terminates the
 // process.
+// fatalthrow实现了一个无法恢复的运行时抛出。它冻结了系统，打印了从调用者开始的堆栈痕迹，并终止了进程。
 //
 //go:nosplit
 func fatalthrow() {
@@ -1345,6 +1347,7 @@ func fatalthrow() {
 	gp := getg()
 	// Switch to the system stack to avoid any stack growth, which
 	// may make things worse if the runtime is in a bad state.
+	// 切换到系统堆栈，以避免任何堆栈增长，如果运行时处于不良状态，这可能会使事情变得更糟。
 	systemstack(func() {
 		startpanic_m()
 
@@ -1352,13 +1355,14 @@ func fatalthrow() {
 			// crash uses a decent amount of nosplit stack and we're already
 			// low on stack in throw, so crash on the system stack (unlike
 			// fatalpanic).
+			// 崩溃使用了相当数量的nosplit堆栈，而且我们在抛出时堆栈已经很低了，所以在系统堆栈上崩溃（与fatalpanic不同）。
 			crash()
 		}
 
 		exit(2)
 	})
 
-	*(*int)(nil) = 0 // not reached
+	*(*int)(nil) = 0 // not reached	// 未达到
 }
 
 // fatalpanic implements an unrecoverable panic. It is like fatalthrow, except

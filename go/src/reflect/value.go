@@ -13,35 +13,48 @@ import (
 	"unsafe"
 )
 
-const ptrSize = 4 << (^uintptr(0) >> 63) // unsafe.Sizeof(uintptr(0)) but an ideal const
+const ptrSize = 4 << (^uintptr(0) >> 63) // unsafe.Sizeof(uintptr(0)) but an ideal const	// unsafe.Sizeof(uintptr(0))，但这是一个理想的常量。
 
 // Value is the reflection interface to a Go value.
+// Value是Go值的反射接口。
 //
 // Not all methods apply to all kinds of values. Restrictions,
 // if any, are noted in the documentation for each method.
 // Use the Kind method to find out the kind of value before
 // calling kind-specific methods. Calling a method
 // inappropriate to the kind of type causes a run time panic.
+// 不是所有的方法都适用于所有种类的值。如果有限制，会在每个方法的文档中指出。
+// 在调用特定种类的方法之前，使用Kind方法来找出值的种类。调用不适合该类型的方法会引起运行时的恐慌。
 //
 // The zero Value represents no value.
 // Its IsValid method returns false, its Kind method returns Invalid,
 // its String method returns "<invalid Value>", and all other methods panic.
 // Most functions and methods never return an invalid value.
 // If one does, its documentation states the conditions explicitly.
+// 零值代表没有价值。
+// 它的IsValid方法返回false，它的Kind方法返回Invalid，它的String方法返回"<invalid Value>"，所有其他的方法都会恐慌。
+// 大多数函数和方法都不会返回一个无效的值。
+// 如果有的话，它的文档中会明确说明这些条件。
 //
 // A Value can be used concurrently by multiple goroutines provided that
 // the underlying Go value can be used concurrently for the equivalent
 // direct operations.
+// 一个Value可以被多个goroutine同时使用，前提是底层的Go值可以同时被用于同等的直接操作。
 //
 // To compare two Values, compare the results of the Interface method.
 // Using == on two Values does not compare the underlying values
 // they represent.
+// 要比较两个值，请比较接口方法的结果。
+// 在两个值上使用==并不能比较它们所代表的基本值。
 type Value struct {
 	// typ holds the type of the value represented by a Value.
+	// typ持有一个Value所代表的值的类型。
 	typ *rtype
 
 	// Pointer-valued data or, if flagIndir is set, pointer to data.
 	// Valid when either flagIndir is set or typ.pointers() is true.
+	// 指针值的数据，如果flagIndir被设置，则为数据的指针。
+	// 当flagIndir被设置或typ.pointers()为真时有效。
 	ptr unsafe.Pointer
 
 	// flag holds metadata about the value.
@@ -56,6 +69,18 @@ type Value struct {
 	// The remaining 23+ bits give a method number for method values.
 	// If flag.kind() != Func, code can assume that flagMethod is unset.
 	// If ifaceIndir(typ), code can assume that flagIndir is set.
+	// 标志持有关于该值的元数据。
+	// 最低位是标志位。
+	// - flagStickyRO：通过未导出的非嵌入字段获得，所以是只读的。
+	// - flagEmbedRO：通过未导出的嵌入字段获得，所以是只读的。
+	// - flagIndir: val持有一个指向数据的指针。
+	// - flagAddr: v.CanAddr为真（意味着flagIndir)
+	// - flagMethod: v是一个方法值。
+	// 接下来的五位给出了该值的Kind。
+	// 除了方法值之外，这与typ.Kind()重复。
+	// 剩下的23位以上给了方法值的方法号。
+	// 如果flag.kind() != Func，代码可以认为flagMethod没有被设置。
+	// 如果ifaceIndir(typ)，代码可以认为flagIndir被设置。
 	flag
 
 	// A method value represents a curried method invocation
@@ -63,6 +88,7 @@ type Value struct {
 	// the receiver r, but the flag's Kind bits say Func (methods are
 	// functions), and the top bits of the flag give the method number
 	// in r's type's method table.
+	// typ+val+flag位描述了接收器r，但是标志的Kind位说的是Func（方法是函数），而标志的最高位给出了r的类型的方法表中的方法编号。
 }
 
 type flag uintptr
@@ -1404,6 +1430,11 @@ func (v Value) IsNil() bool {
 // If IsValid returns false, all other methods except String panic.
 // Most functions and methods never return an invalid Value.
 // If one does, its documentation states the conditions explicitly.
+// IsValid报告v是否代表一个值。
+// 如果v是零值，它返回false。
+// 如果IsValid返回false，除了String以外的所有其他方法都会恐慌。
+// 大多数函数和方法不会返回一个无效的值。
+// 如果有的话，它的文档会明确说明条件。
 func (v Value) IsValid() bool {
 	return v.flag != 0
 }

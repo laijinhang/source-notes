@@ -17,6 +17,9 @@ import (
 // but sigTabT is the same for all Unixy systems.
 // The sigtable array is indexed by a system signal number to get the flags
 // and printable name of each signal.
+// sigTabT是全局sigtable数组中一个条目的类型。
+// sigtable本质上取决于系统，并出现在操作系统特定的文件中，但sigTabT对所有Unixy系统都是一样的。
+// sigtable数组以系统信号编号为索引，以获得每个信号的标志和可打印名称。
 type sigTabT struct {
 	flags int32
 	name  string
@@ -40,6 +43,7 @@ const (
 )
 
 // sigPreempt is the signal used for non-cooperative preemption.
+// sigPreempt是用于抢占式的信号。
 //
 // There's no good way to choose this signal, but there are some
 // heuristics:
@@ -47,10 +51,14 @@ const (
 // 1. It should be a signal that's passed-through by debuggers by
 // default. On Linux, this is SIGALRM, SIGURG, SIGCHLD, SIGIO,
 // SIGVTALRM, SIGPROF, and SIGWINCH, plus some glibc-internal signals.
+// 1. 它应该是调试器默认通过的信号。在Linux上，这是SIGALRM、SIGURG、SIGCHLD、SIGIO、
+// SIGVTALRM、SIGPROF和SIGWINCH，还有一些glibc内部的信号。
 //
 // 2. It shouldn't be used internally by libc in mixed Go/C binaries
 // because libc may assume it's the only thing that can handle these
 // signals. For example SIGCANCEL or SIGSETXID.
+// 2. 它不应该被混合Go/C二进制文件中的libc内部使用，因为libc可能认为它是唯一能处理这些信号的东西。
+// 例如 SIGCANCEL 或 SIGSETXID。
 //
 // 3. It should be a signal that can happen spuriously without
 // consequences. For example, SIGALRM is a bad choice because the
@@ -107,16 +115,21 @@ var signalsOK bool
 
 // Initialize signals.
 // Called by libpreinit so runtime may not be initialized.
+// 初始化信号。
+// 由libpreinit调用，所以运行时可能没有被初始化。
 //go:nosplit
 //go:nowritebarrierrec
 func initsig(preinit bool) {
 	if !preinit {
 		// It's now OK for signal handlers to run.
+		// 现在信号处理程序可以运行了。
 		signalsOK = true
 	}
 
 	// For c-archive/c-shared this is called by libpreinit with
 	// preinit == true.
+	// 现在信号处理程序可以运行了。
+	// 对于c-archive/c-shared来说，这是由libpreinit调用的，preinit == true。
 	if (isarchive || islibrary) && !preinit {
 		return
 	}
@@ -129,11 +142,13 @@ func initsig(preinit bool) {
 
 		// We don't need to use atomic operations here because
 		// there shouldn't be any other goroutines running yet.
+		// 我们不需要在这里使用原子操作，因为现在应该还没有任何其他的goroutines在运行。
 		fwdSig[i] = getsig(i)
 
 		if !sigInstallGoHandler(i) {
 			// Even if we are not installing a signal handler,
 			// set SA_ONSTACK if necessary.
+			// 即使我们没有安装信号处理程序，必要时也要设置SA_ONSTACK。
 			if fwdSig[i] != _SIG_DFL && fwdSig[i] != _SIG_IGN {
 				setsigstack(i)
 			} else if fwdSig[i] == _SIG_IGN {
@@ -760,6 +775,9 @@ func sigpanic() {
 // dieFromSignal kills the program with a signal.
 // This provides the expected exit status for the shell.
 // This is only called with fatal signals expected to kill the process.
+// dieFromSignal用一个信号杀死程序。
+// 这提供了shell的预期退出状态。
+// 只有在预期杀死程序的致命信号下才会调用此功能。
 //go:nosplit
 //go:nowritebarrierrec
 func dieFromSignal(sig uint32) {
@@ -854,6 +872,9 @@ func crash() {
 	// this means the OS X core file will be >128 GB and even on a zippy
 	// workstation can take OS X well over an hour to write (uninterruptible).
 	// Save users from making that mistake.
+	// OS X核心转储是映射内存的线性转储，从第一个虚拟字节到最后一个字节，空隙处有零。
+	// 由于我们在64位系统上安排地址空间的方式，这意味着OS X的核心文件将超过128GB，即使在一个快速的工作站上，OS X也需要一个多小时才能写入（不间断）。
+	// 避免用户犯这种错误。
 	if GOOS == "darwin" && GOARCH == "amd64" {
 		return
 	}

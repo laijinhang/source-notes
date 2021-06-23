@@ -115,6 +115,33 @@ func poll_runtime_pollOpen(fd uintptr) (*pollDesc, int) {
 ```
 ### 3. runtime_pollClose
 func runtime_pollClose(ctx uintptr)
+
+runtime/netpoll_epoll.go
+```go
+
+//go:linkname poll_runtime_pollClose internal/poll.runtime_pollClose
+func poll_runtime_pollClose(pd *pollDesc) {
+    if !pd.closing {
+        throw("runtime: close polldesc w/o unblock")
+    }
+    if pd.wg != 0 && pd.wg != pdReady {
+        throw("runtime: blocked write on closing polldesc")
+    }
+    if pd.rg != 0 && pd.rg != pdReady {
+        throw("runtime: blocked read on closing polldesc")
+    }
+    netpollclose(pd.fd)
+    pollcache.free(pd)
+}
+
+func netpollclose(fd uintptr) int32 {
+	var ev epollevent
+	/*
+		_EPOLL_CTL_DEL：移除监听fd
+	*/
+	return -epollctl(epfd, _EPOLL_CTL_DEL, int32(fd), &ev)
+}
+```
 ### 4. runtime_pollWait
 func runtime_pollWait(ctx uintptr, mode int) int
 ### 5. runtime_pollWaitCanceled

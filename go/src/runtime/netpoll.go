@@ -77,8 +77,14 @@ const (
 // nil - none of the above.
 // nil - 上述情况都不存在。
 const (
-	pdReady uintptr = 1 // io准备就绪通知正在等待
-	pdWait  uintptr = 2 // 等待
+	pdReady uintptr = 1 // io准备就绪通知正在等待，处理完之后应该设置为 nil
+	/*
+		当值为 pdWait 时，即等待被挂起（现在并未被挂起），后面可能出现的情况是：
+		1. goroutine 被挂起并设置为 goroutine 的地址
+		2. 收到了 IO 通知就绪
+		3. 超时或者被关闭设置为nil
+	*/
+	pdWait uintptr = 2 // 等待
 )
 
 const pollBlockSize = 4 * 1024
@@ -456,6 +462,7 @@ func netpollready(toRun *gList, pd *pollDesc, mode int32) {
 }
 
 func netpollcheckerr(pd *pollDesc, mode int32) int {
+	// 1、
 	if pd.closing {
 		return pollErrClosing
 	}
@@ -465,6 +472,8 @@ func netpollcheckerr(pd *pollDesc, mode int32) int {
 	// Report an event scanning error only on a read event.
 	// An error on a write event will be captured in a subsequent
 	// write call that is able to report a more specific error.
+	// 只在读事件中报告事件扫描错误。
+	// 写事件中的错误将在随后的写调用中被捕获，该调用能够报告一个更具体的错误。
 	if mode == 'r' && pd.everr {
 		return pollErrNotPollable
 	}
@@ -498,8 +507,9 @@ func netpollblock(pd *pollDesc, mode int32, waitio bool) bool {
 	}
 
 	// set the gpp semaphore to pdWait
-	//将gpp信号灯设为pdWait
+	// 将gpp信号灯设为pdWait
 	for {
+		// 根据mode获取对应的信号量地址 gpp，判断当前是否pdReady
 		old := *gpp
 		if old == pdReady {
 			*gpp = 0
@@ -508,6 +518,7 @@ func netpollblock(pd *pollDesc, mode int32, waitio bool) bool {
 		if old != 0 {
 			throw("runtime: double wait")
 		}
+		// 如果gpp的值等于0，将gpp的值更替为pdWait，改操作属于原子操作切内部实现了自旋锁
 		if atomic.Casuintptr(gpp, 0, pdWait) {
 			break
 		}

@@ -21,6 +21,7 @@ type visit struct {
 // Tests for deep equality using reflected types. The map argument tracks
 // comparisons that have already been seen, which allows short circuiting on
 // recursive types.
+// 使用反射类型测试深度平等。map参数跟踪已经被看到的比较，这允许对递归类型进行短路。
 func deepValueEqual(v1, v2 Value, visited map[visit]bool) bool {
 	if !v1.IsValid() || !v2.IsValid() {
 		return v1.IsValid() == v2.IsValid()
@@ -206,14 +207,21 @@ func deepValueEqual(v1, v2 Value, visited map[visit]bool) bool {
 // values that have been compared before, it treats the values as
 // equal rather than examining the values to which they point.
 // This ensures that DeepEqual terminates.
+
+/*
+DeepEqual返回x,y是否一致
+*/
 func DeepEqual(x, y interface{}) bool {
+	// 1、x，y中有一个为nil，则直接比较
 	if x == nil || y == nil {
 		return x == y
 	}
+	// 2、如果v1和v2的类型不一致，则返回false
 	v1 := ValueOf(x)
 	v2 := ValueOf(y)
 	if v1.Type() != v2.Type() {
 		return false
 	}
+	// 3、深度比较
 	return deepValueEqual(v1, v2, make(map[visit]bool))
 }
