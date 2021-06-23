@@ -71,6 +71,48 @@ func netpollinit() {
 ```
 ### 2. runtime_pollOpen
 func runtime_pollOpen(fd uintptr) (uintptr, int)
+
+runtime/net_epoll.go
+```go
+//go:linkname poll_runtime_pollOpen internal/poll.runtime_pollOpen
+func poll_runtime_pollOpen(fd uintptr) (*pollDesc, int) {
+	// 1、从pollcache里拿出第一个pollDesc，如果pollcache里面第一个是空的，则为其分配一个，然后返回第一个，pollcache指向第二个
+	pd := pollcache.alloc()
+	// 2、上锁
+	lock(&pd.lock)
+
+	// 3、正在写
+	if pd.wg != 0 && pd.wg != pdReady {
+		throw("runtime: blocked write on free polldesc") // 运行时：在空闲的Polldesc上写东西受阻
+	}
+	// 4、正在读
+	if pd.rg != 0 && pd.rg != pdReady {
+		throw("runtime: blocked read on free polldesc") // 运行时：阻断了对free polldesc的读取
+	}
+	// 5、初始化pd
+	pd.fd = fd
+	pd.closing = false
+	pd.everr = false
+	pd.rseq++
+	pd.rg = 0
+	pd.rd = 0
+	pd.wseq++
+	pd.wg = 0
+	pd.wd = 0
+	pd.self = pd
+	// 6、解锁
+	unlock(&pd.lock)
+	// 7、事件注册函数，将监听套接字描述符加入监听事件
+	errno := netpollopen(fd, pd)
+	// 8、如果注册事件失败，则将其放回到pollcache，并返回错误信息
+	if errno != 0 {
+		pollcache.free(pd)
+		return nil, int(errno)
+	}
+	return pd, 0
+}
+
+```
 ### 3. runtime_pollClose
 func runtime_pollClose(ctx uintptr)
 ### 4. runtime_pollWait

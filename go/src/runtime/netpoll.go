@@ -58,19 +58,27 @@ const (
 
 // pollDesc contains 2 binary semaphores, rg and wg, to park reader and writer
 // goroutines respectively. The semaphore can be in the following states:
+// pollDesc包含2个二进制信号，rg和wg，分别用于停放读者和写者的程序。这些信号灯可以处于以下状态：
 // pdReady - io readiness notification is pending;
+// pdReady - io准备就绪通知正在等待；
 //           a goroutine consumes the notification by changing the state to nil.
+// 			一个goroutine通过改变状态为nil来消耗该通知。
 // pdWait - a goroutine prepares to park on the semaphore, but not yet parked;
+// pdWait - 一个goroutine准备在semaphore上，但还没有。
 //          the goroutine commits to park by changing the state to G pointer,
 //          or, alternatively, concurrent io notification changes the state to pdReady,
 //          or, alternatively, concurrent timeout/close changes the state to nil.
+// 			协作程序通过改变状态为G指针来承诺停放，或者，同时进行的io通知将状态改为pdReady，或者，同时进行的超时/关闭将状态改为nil。
 // G pointer - the goroutine is blocked on the semaphore;
+// G指针--goroutine在semaphore上被阻塞了；
 //             io notification or timeout/close changes the state to pdReady or nil respectively
 //             and unparks the goroutine.
+// 			   io通知或超时/关闭分别将状态变为pdReady或nil，并解除对goroutine的阻塞。
 // nil - none of the above.
+// nil - 上述情况都不存在。
 const (
-	pdReady uintptr = 1
-	pdWait  uintptr = 2
+	pdReady uintptr = 1 // io准备就绪通知正在等待
+	pdWait  uintptr = 2 // 等待
 )
 
 const pollBlockSize = 4 * 1024
@@ -135,6 +143,9 @@ var (
 	// 如果netpollInited值为0，则表示netpoll没有进行初始化
 	netpollInited uint32
 
+	/*
+		管理了一个pollDesc池，以链表的方式
+	*/
 	pollcache      pollCache
 	netpollWaiters uint32
 )
@@ -180,14 +191,20 @@ func poll_runtime_isPollServerDescriptor(fd uintptr) bool {
 
 //go:linkname poll_runtime_pollOpen internal/poll.runtime_pollOpen
 func poll_runtime_pollOpen(fd uintptr) (*pollDesc, int) {
+	// 1、从pollcache里拿出第一个pollDesc，如果pollcache里面第一个是空的，则为其分配一个，然后返回第一个，pollcache指向第二个
 	pd := pollcache.alloc()
+	// 2、上锁
 	lock(&pd.lock)
+
+	// 3、正在写
 	if pd.wg != 0 && pd.wg != pdReady {
-		throw("runtime: blocked write on free polldesc")
+		throw("runtime: blocked write on free polldesc") // 运行时：在空闲的Polldesc上写东西受阻
 	}
+	// 4、正在读
 	if pd.rg != 0 && pd.rg != pdReady {
-		throw("runtime: blocked read on free polldesc")
+		throw("runtime: blocked read on free polldesc") // 运行时：阻断了对free polldesc的读取
 	}
+	// 5、初始化pd
 	pd.fd = fd
 	pd.closing = false
 	pd.everr = false
@@ -198,9 +215,11 @@ func poll_runtime_pollOpen(fd uintptr) (*pollDesc, int) {
 	pd.wg = 0
 	pd.wd = 0
 	pd.self = pd
+	// 6、解锁
 	unlock(&pd.lock)
-
+	// 7、事件注册函数，将监听套接字描述符加入监听事件
 	errno := netpollopen(fd, pd)
+	// 8、如果注册事件失败，则将其放回到pollcache，并返回错误信息
 	if errno != 0 {
 		pollcache.free(pd)
 		return nil, int(errno)
@@ -598,15 +617,19 @@ func netpollWriteDeadline(arg interface{}, seq uintptr) {
 }
 
 func (c *pollCache) alloc() *pollDesc {
+	// 1、上锁
 	lock(&c.lock)
+	// 2、c.first为空的话，就先分配
 	if c.first == nil {
 		const pdSize = unsafe.Sizeof(pollDesc{})
+		// 4kb / pdSize，看后面又乘上除数的结果，应该是为了分配大小是pdSize的整数倍
 		n := pollBlockSize / pdSize
 		if n == 0 {
 			n = 1
 		}
 		// Must be in non-GC memory because can be referenced
 		// only from epoll/kqueue internals.
+		// 必须在非GC内存中，因为只能从epoll/kqueue内部引用。
 		mem := persistentalloc(n*pdSize, 0, &memstats.other_sys)
 		for i := uintptr(0); i < n; i++ {
 			pd := (*pollDesc)(add(mem, i*pdSize))
@@ -616,7 +639,9 @@ func (c *pollCache) alloc() *pollDesc {
 	}
 	pd := c.first
 	c.first = pd.link
+	// 3、初始化pd.lock
 	lockInit(&pd.lock, lockRankPollDesc)
+	// 4、解锁
 	unlock(&c.lock)
 	return pd
 }

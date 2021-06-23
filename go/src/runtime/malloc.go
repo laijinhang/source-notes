@@ -1367,8 +1367,13 @@ var persistentChunks *notInHeap
 // Intended for things like function/type/debug-related persistent data.
 // If align is 0, uses default align (currently 8).
 // The returned memory will be zeroed.
+// 围绕sysAlloc的封装器，可以分配小块。
+// 没有相关的释放操作。 适用于像函数/类型/调试相关的持久性数据。
+// 如果对齐方式为0，则使用默认对齐方式（目前为8）。
+// 返回的内存将被清零。
 //
 // Consider marking persistentalloc'd types go:notinheap.
+// 考虑将持久化分配的类型标记为go:notinheap。
 func persistentalloc(size, align uintptr, sysStat *sysMemStat) unsafe.Pointer {
 	var p *notInHeap
 	systemstack(func() {
@@ -1380,9 +1385,12 @@ func persistentalloc(size, align uintptr, sysStat *sysMemStat) unsafe.Pointer {
 // Must run on system stack because stack growth can (re)invoke it.
 // See issue 9174.
 //go:systemstack
+// 必须在系统堆栈上运行，因为堆栈增长会（重新）调用它。
+//参见issue9174。
+//go:systemstack
 func persistentalloc1(size, align uintptr, sysStat *sysMemStat) *notInHeap {
 	const (
-		maxBlock = 64 << 10 // VM reservation granularity is 64K on windows
+		maxBlock = 64 << 10 // VM reservation granularity is 64K on windows	// 在windows系统中，虚拟机的保留颗粒度为64K。
 	)
 
 	if size == 0 {
@@ -1422,6 +1430,7 @@ func persistentalloc1(size, align uintptr, sysStat *sysMemStat) *notInHeap {
 		}
 
 		// Add the new chunk to the persistentChunks list.
+		// 将新的块添加到persistentChunks列表中。
 		for {
 			chunks := uintptr(unsafe.Pointer(persistentChunks))
 			*(*uintptr)(unsafe.Pointer(persistent.base)) = chunks

@@ -79,6 +79,13 @@ func netpollIsPollDescriptor(fd uintptr) bool {
 
 func netpollopen(fd uintptr, pd *pollDesc) int32 {
 	var ev epollevent
+	/*
+		_EPOLLIN事件：水平触发，只有当端有数据写入时才会触发，所以触发一次后需要不断读取所有数据直到读完为止。
+					否则剩下的数据只有在下次对端有写入时才能一起取出来了
+		_EPOLLOUT事件
+		_EPOLLRDHUP事件
+		_EPOLLET事件
+	*/
 	ev.events = _EPOLLIN | _EPOLLOUT | _EPOLLRDHUP | _EPOLLET
 	*(**pollDesc)(unsafe.Pointer(&ev.data)) = pd
 	return -epollctl(epfd, _EPOLL_CTL_ADD, int32(fd), &ev)
