@@ -231,6 +231,8 @@ type Type interface {
 
 // A Kind represents the specific kind of type that a Type represents.
 // The zero Kind is not a valid kind.
+// 一个Kind代表一个Type所代表的特定类型。
+// 零的Kind不是一个有效的类型。
 type Kind uint
 
 const (
@@ -275,6 +277,7 @@ type tflag uint8
 const (
 	// tflagUncommon means that there is a pointer, *uncommonType,
 	// just beyond the outer type structure.
+	// tflagUncommon意味着有一个指针，*uncommonType，就在外部类型结构之外。
 	//
 	// For example, if t.Kind() == Struct and t.tflag&tflagUncommon != 0,
 	// then t has uncommonType data and it can be accessed as:
@@ -302,22 +305,84 @@ const (
 
 // rtype is the common implementation of most values.
 // It is embedded in other struct types.
+// rtype是大多数数值的通用实现。
+// 它被嵌入到其他结构类型中。
 //
 // rtype must be kept in sync with ../runtime/type.go:/^type._type.
+// rtype必须与./runtime/type.go:/^type._type保持同步。
 type rtype struct {
-	size       uintptr
-	ptrdata    uintptr // number of bytes in the type that can contain pointers
-	hash       uint32  // hash of type; avoids computation in hash tables
-	tflag      tflag   // extra type information flags
-	align      uint8   // alignment of variable with this type
-	fieldAlign uint8   // alignment of struct field with this type
-	kind       uint8   // enumeration for C
+	/*
+		类型占用的内存大小，值是固定的，如int 8字节，string 16字节
+	*/
+	size uintptr
+	/*
+		对于值传递的变量（排除带指针对象的结构体），其值是0
+		对于引用传递的变量，其值是8
+
+		对于结构体：
+			1、值为0
+			struct {
+			}{}
+			struct {
+				A struct {
+				}
+			}{})
+			2、值为8
+			&struct {
+			}{}
+			struct {
+				S string
+			}{})
+			struct {
+				A struct {
+					S string
+				}
+			}{})
+			3、值为24
+			reflect.P(struct {
+				A string
+				B string
+			}{})
+			4、值为40
+			reflect.P(struct {
+				A string
+				B string
+				C string
+			}{})
+			5、值为64
+			reflect.P(struct {
+				A string
+				B string
+				C string
+				D string
+			}{})
+	*/
+	ptrdata uintptr // number of bytes in the type that can contain pointers	// 包含指针的类型需要的字节数
+	/*
+		通过测试，会发现每种类型对应的哈希值是固定的
+	*/
+	hash uint32 // hash of type; avoids computation in hash tables		// 类型的哈希避免在哈希表中进行计算
+	/*
+	 */
+	tflag      tflag // extra type information flags	// 额外类型信息标志
+	align      uint8 // alignment of variable with this type
+	fieldAlign uint8 // alignment of struct field with this type
+	kind       uint8 // enumeration for C
 	// function for comparing objects of this type
 	// (ptr to object A, ptr to object B) -> ==?
-	equal     func(unsafe.Pointer, unsafe.Pointer) bool
-	gcdata    *byte   // garbage collection data
-	str       nameOff // string form
-	ptrToThis typeOff // type for pointer to this type, may be zero
+	equal  func(unsafe.Pointer, unsafe.Pointer) bool
+	gcdata *byte // garbage collection data
+	/*
+		类型对应的字符串形式，其值也是固定的，根据类型：
+		如：
+			int类型是 651
+			float32类型是 4707
+			float64类型是 4718
+			string类型是 3554
+			struct类型是 7015
+	*/
+	str       nameOff // string form	// 字符串形式
+	ptrToThis typeOff // type for pointer to this type, may be zero	// 指向此类型的指针的类型，可以为零
 }
 
 // Method on non-interface type
@@ -617,9 +682,9 @@ func (m Method) IsExported() bool {
 }
 
 const (
-	kindDirectIface = 1 << 5
-	kindGCProg      = 1 << 6 // Type.gc points to GC program
-	kindMask        = (1 << 5) - 1
+	kindDirectIface = 1 << 5       // 32 对应二进制值 111111
+	kindGCProg      = 1 << 6       // Type.gc points to GC program
+	kindMask        = (1 << 5) - 1 // 31 对应二进制值 11111
 )
 
 // String returns the name of k.
@@ -812,6 +877,10 @@ func (t *rtype) Align() int { return int(t.align) }
 
 func (t *rtype) FieldAlign() int { return int(t.fieldAlign) }
 
+/*
+目前Kind定义的值从0~26，KindMask十进制值对应31，二进制对应11111
+这边进行与操作，t.kind & 11111
+*/
 func (t *rtype) Kind() Kind { return Kind(t.kind & kindMask) }
 
 func (t *rtype) pointers() bool { return t.ptrdata != 0 }
@@ -3093,6 +3162,7 @@ func funcLayout(t *funcType, rcvr *rtype) (frametype *rtype, framePool *sync.Poo
 }
 
 // ifaceIndir reports whether t is stored indirectly in an interface value.
+// ifaceIndir报告t是否被间接存储在一个接口值中。
 func ifaceIndir(t *rtype) bool {
 	return t.kind&kindDirectIface == 0
 }

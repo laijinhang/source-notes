@@ -94,8 +94,17 @@ type Value struct {
 type flag uintptr
 
 const (
-	flagKindWidth        = 5 // there are 27 kinds
-	flagKindMask    flag = 1<<flagKindWidth - 1
+	/*
+		0~26，27种类型，至少需要5bit表示
+	*/
+	flagKindWidth = 5 // there are 27 kinds
+	/*
+	   类型掩码，用于提取类型，11111
+	*/
+	flagKindMask flag = 1<<flagKindWidth - 1
+	/*
+
+	 */
 	flagStickyRO    flag = 1 << 5
 	flagEmbedRO     flag = 1 << 6
 	flagIndir       flag = 1 << 7
@@ -119,6 +128,9 @@ func (f flag) ro() flag {
 // pointer returns the underlying pointer represented by v.
 // v.Kind() must be Ptr, Map, Chan, Func, or UnsafePointer
 // if v.Kind() == Ptr, the base type must not be go:notinheap.
+// 指针返回v所代表的底层指针。
+// v.Kind() 必须是 Ptr, Map, Chan, Func, 或 UnsafePointer
+// 如果 v.Kind() == Ptr, 基本类型必须不是 go:notinheap。
 func (v Value) pointer() unsafe.Pointer {
 	if v.typ.size != ptrSize || !v.typ.pointers() {
 		panic("can't call pointer on a non-pointer Value")
@@ -167,13 +179,30 @@ func packEface(v Value) interface{} {
 }
 
 // unpackEface converts the empty interface i to a Value.
+// unpackEface将空接口i转换为一个Value。
 func unpackEface(i interface{}) Value {
+	/*
+		如果i是nil，e.typ = nil，t.word=nil
+	*/
 	e := (*emptyInterface)(unsafe.Pointer(&i))
 	// NOTE: don't read e.word until we know whether it is really a pointer or not.
+	// 注意：在我们知道e.word是否真的是一个指针之前，不要读它。
 	t := e.typ
 	if t == nil {
 		return Value{}
 	}
+	/*
+		t.Kind 为 类型在对应type.go里面的值
+		f的计算过程：
+			十进制：(t.kind & 31) & 32
+					f=(t.kind & 31)，定义的type范围为0~26
+					如果 f & 32 不等于0
+					如果 f & 32 等于0，则 f = f | 32
+			二进制：
+					f=(t.kind & 11111)
+					如果 f & 100000 不等于0
+					如果 f & 100000 等于0，则 f = f | 10000000
+	*/
 	f := flag(t.Kind())
 	if ifaceIndir(t) {
 		f |= flagIndir
@@ -219,6 +248,7 @@ func methodNameSkip() string {
 }
 
 // emptyInterface is the header for an interface{} value.
+// emptyInterface是一个 interface{}值的头。
 type emptyInterface struct {
 	typ  *rtype
 	word unsafe.Pointer
@@ -2246,8 +2276,10 @@ func (v Value) TrySend(x Value) bool {
 }
 
 // Type returns v's type.
+// 类型返回v的类型。
 func (v Value) Type() Type {
 	f := v.flag
+	// 无效类型
 	if f == 0 {
 		panic(&ValueError{"reflect.Value.Type", Invalid})
 	}
@@ -2258,6 +2290,8 @@ func (v Value) Type() Type {
 
 	// Method value.
 	// v.typ describes the receiver, not the method type.
+	// 方法值。
+	// v.typ描述的是接收器，而不是方法类型。
 	i := int(v.flag) >> flagMethodShift
 	if v.typ.Kind() == Interface {
 		// Method on interface.
@@ -2692,15 +2726,21 @@ func Indirect(v Value) Value {
 
 // ValueOf returns a new Value initialized to the concrete value
 // stored in the interface i. ValueOf(nil) returns the zero Value.
+// ValueOf返回一个新的Value，初始化为存储在接口i中的具体值。ValueOf(nil)返回零值。
+/*
+这里的零值指Value{}，不是nil
+*/
 func ValueOf(i interface{}) Value {
 	if i == nil {
 		return Value{}
 	}
 
 	// TODO: Maybe allow contents of a Value to live on the stack.
+	// TODO: 也许允许Value的内容在堆栈中生存。
 	// For now we make the contents always escape to the heap. It
 	// makes life easier in a few places (see chanrecv/mapassign
 	// comment below).
+	// 现在我们让内容总是逃到堆里。这使得一些地方的生活更容易（见下面的chanrecv/mapassign注释）。
 	escapes(i)
 
 	return unpackEface(i)

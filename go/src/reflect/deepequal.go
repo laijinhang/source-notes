@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Deep equality test via reflection
+// 通过反射进行深度平等测试
 
 package reflect
 
@@ -23,9 +24,11 @@ type visit struct {
 // recursive types.
 // 使用反射类型测试深度平等。map参数跟踪已经被看到的比较，这允许对递归类型进行短路。
 func deepValueEqual(v1, v2 Value, visited map[visit]bool) bool {
+	// v1.IsValid()无效的话，返回false
 	if !v1.IsValid() || !v2.IsValid() {
 		return v1.IsValid() == v2.IsValid()
 	}
+	// 比较v1和v2的类型
 	if v1.Type() != v2.Type() {
 		return false
 	}
