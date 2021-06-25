@@ -142,11 +142,13 @@ func (v Value) pointer() unsafe.Pointer {
 }
 
 // packEface converts v to the empty interface.
+// packEface将v转换为空接口。
 func packEface(v Value) interface{} {
 	t := v.typ
 	var i interface{}
 	e := (*emptyInterface)(unsafe.Pointer(&i))
 	// First, fill in the data portion of the interface.
+	// 首先，填入接口的数据部分。
 	switch {
 	case ifaceIndir(t):
 		if v.flag&flagIndir == 0 {
@@ -157,6 +159,7 @@ func packEface(v Value) interface{} {
 		if v.flag&flagAddr != 0 {
 			// TODO: pass safe boolean from valueInterface so
 			// we don't need to copy if safe==true?
+			// 我们不需要复制，如果safe==true?
 			c := unsafe_New(t)
 			typedmemmove(t, c, ptr)
 			ptr = c
@@ -213,6 +216,7 @@ func unpackEface(i interface{}) Value {
 // A ValueError occurs when a Value method is invoked on
 // a Value that does not support it. Such cases are documented
 // in the description of each method.
+// 当一个 Value 方法被调用到一个不支持它的 Value 上时，就会发生 ValueError。这种情况在每个方法的描述中都有记载。
 type ValueError struct {
 	Method string
 	Kind   Kind
@@ -239,6 +243,8 @@ func methodName() string {
 
 // methodNameSkip is like methodName, but skips another stack frame.
 // This is a separate function so that reflect.flag.mustBe will be inlined.
+// methodNameSkip 和 methodName 一样，但是跳过了另一个堆栈帧。
+// 这是一个独立的函数，这样reflect.flag.mustBe就会被内联。
 func methodNameSkip() string {
 	pc, _, _, _ := runtime.Caller(3)
 	f := runtime.FuncForPC(pc)
@@ -256,12 +262,13 @@ type emptyInterface struct {
 }
 
 // nonEmptyInterface is the header for an interface value with methods.
+// nonEmptyInterface是一个带有方法的接口值的头。
 type nonEmptyInterface struct {
 	// see ../runtime/iface.go:/Itab
 	itab *struct {
-		ityp *rtype // static interface type
-		typ  *rtype // dynamic concrete type
-		hash uint32 // copy of typ.hash
+		ityp *rtype // static interface type	// 静态接口类型
+		typ  *rtype // dynamic concrete type	// 动态的具体类型
+		hash uint32 // copy of typ.hash			// typ.hash的副本
 		_    [4]byte
 		fun  [100000]unsafe.Pointer // method table
 	}
@@ -290,6 +297,7 @@ func (f flag) mustBe(expected Kind) {
 
 // mustBeExported panics if f records that the value was obtained using
 // an unexported field.
+// 如果f记录到该值是用一个未导出的字段获得的，mustBeExported就会panic。
 func (f flag) mustBeExported() {
 	if f == 0 || f&flagRO != 0 {
 		f.mustBeExportedSlow()
@@ -308,6 +316,7 @@ func (f flag) mustBeExportedSlow() {
 // mustBeAssignable panics if f records that the value is not assignable,
 // which is to say that either it was obtained using an unexported field
 // or it is not addressable.
+// mustBeAssignable如果f记录到该值不可分配，也就是说，要么它是用一个未导出的字段获得的，要么它是不可寻址的，就会出现panic。
 func (f flag) mustBeAssignable() {
 	if f&flagRO != 0 || f&flagAddr == 0 {
 		f.mustBeAssignableSlow()
@@ -319,6 +328,7 @@ func (f flag) mustBeAssignableSlow() {
 		panic(&ValueError{methodNameSkip(), Invalid})
 	}
 	// Assignable if addressable and not read-only.
+	// 可分配的，如果可寻址且非只读。
 	if f&flagRO != 0 {
 		panic("reflect: " + methodNameSkip() + " using value obtained using unexported field")
 	}
@@ -389,7 +399,11 @@ func (v Value) runes() []rune {
 // an element of a slice, an element of an addressable array,
 // a field of an addressable struct, or the result of dereferencing a pointer.
 // If CanAddr returns false, calling Addr will panic.
+// CanAddr报告该值的地址是否可以用Addr获得。
+// 这样的值被称为可寻址。如果一个值是一个片断的元素，一个可寻址数组的元素，一个可寻址结构的字段，或者是解除引用指针的结果，那么这个值就是可寻址的。
+// 如果CanAddr返回false，则调用Addr会产生panic。
 func (v Value) CanAddr() bool {
+	// v.flag & 100000000
 	return v.flag&flagAddr != 0
 }
 
@@ -398,6 +412,9 @@ func (v Value) CanAddr() bool {
 // obtained by the use of unexported struct fields.
 // If CanSet returns false, calling Set or any type-specific
 // setter (e.g., SetBool, SetInt) will panic.
+// CanSet报告v的值是否可以被改变。
+// 只有当一个值是可寻址的，并且不是通过使用未导出的结构字段获得的，才可以改变它。
+// 如果CanSet返回false，调用Set或任何特定类型的 Setter（例如：SetBool, SetInt）会引起panic。
 func (v Value) CanSet() bool {
 	return v.flag&(flagAddr|flagRO) == flagAddr
 }
@@ -410,7 +427,15 @@ func (v Value) CanSet() bool {
 // type of the function's corresponding input parameter.
 // If v is a variadic function, Call creates the variadic slice parameter
 // itself, copying in the corresponding values.
+// Call用输入参数in调用函数v。
+// 例如，如果len(in) == 3，v.Call(in)代表Go调用v(in[0], in[1], in[2]) 。
+// 如果v的Kind不是Func，那么调用就会panic。
+// 它将输出结果作为数值返回。
+// 和Go中一样，每个输入参数必须可以分配给函数对应的输入参数的类型。
+// 如果v是一个变量函数，Call就会创建变量分片的参数。
+//自身，并复制相应的值。
 func (v Value) Call(in []Value) []Value {
+	// 如果不是函数类型，则panic
 	v.mustBe(Func)
 	v.mustBeExported()
 	return v.call("Call", in)
@@ -429,12 +454,13 @@ func (v Value) CallSlice(in []Value) []Value {
 	return v.call("CallSlice", in)
 }
 
-var callGC bool // for testing; see TestCallMethodJump
+var callGC bool // for testing; see TestCallMethodJump	// 用于测试；见TestCallMethodJump
 
 const debugReflectCall = false
 
 func (v Value) call(op string, in []Value) []Value {
 	// Get function pointer, type.
+	// 获取函数指针，类型。
 	t := (*funcType)(unsafe.Pointer(v.typ))
 	var (
 		fn       unsafe.Pointer

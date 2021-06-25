@@ -17,13 +17,16 @@ import (
 // data very near to a page boundary. We want to make sure those
 // operations do not read across the boundary and cause a page
 // fault where they shouldn't.
+// 这个文件测试的是字节操作检查数据时非常接近页面边界的情况。我们要确保这些操作不会越过边界而导致不应该出现的页面故障。
 
 // These tests run only on linux. The code being tested is
 // not OS-specific, so it does not need to be tested on all
 // operating systems.
+// 这些测试只在linux上运行。被测试的代码不是针对操作系统的，所以不需要在所有操作系统上测试。
 
 // dangerousSlice returns a slice which is immediately
 // preceded and followed by a faulting page.
+// dangerousSlice返回一个紧接在故障页之前和之后的切片。
 func dangerousSlice(t *testing.T) []byte {
 	pagesize := syscall.Getpagesize()
 	b, err := syscall.Mmap(0, 0, 3*pagesize, syscall.PROT_READ|syscall.PROT_WRITE, syscall.MAP_ANONYMOUS|syscall.MAP_PRIVATE)
