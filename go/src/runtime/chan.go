@@ -868,6 +868,9 @@ func reflect_chancap(c *hchan) int {
 	return int(c.dataqsiz)
 }
 
+/*
+关闭Channel
+*/
 //go:linkname reflect_chanclose reflect.chanclose
 func reflect_chanclose(c *hchan) {
 	closechan(c)

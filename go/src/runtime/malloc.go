@@ -641,11 +641,16 @@ func mallocinit() {
 // h.arenas metadata. The returned size is always a multiple of
 // heapArenaBytes. sysAlloc returns nil on failure.
 // There is no corresponding free function.
+// sysAlloc分配了至少n个字节的堆内存空间。返回的指针总是与heapArenaBytes对齐，
+// 并由h. arenas元数据支持。返回的大小总是heapArenaBytes的倍数。
+// sysAlloc失败时返回nil。没有相应的释放函数。
 //
 // sysAlloc returns a memory region in the Reserved state. This region must
 // be transitioned to Prepared and then Ready before use.
+// sysAlloc返回一个处于保留状态的内存区域。这个区域在使用前必须先过渡到准备状态，然后再过渡到就绪状态。
 //
 // h must be locked.
+// h必须被锁定。
 func (h *mheap) sysAlloc(n uintptr) (v unsafe.Pointer, size uintptr) {
 	assertLockHeld(&h.lock)
 

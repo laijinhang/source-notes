@@ -332,12 +332,17 @@ func (f flag) mustBeAssignableSlow() {
 // Addr is typically used to obtain a pointer to a struct field
 // or slice element in order to call a method that requires a
 // pointer receiver.
+// Addr返回一个代表v的地址的指针值。
+// 如果CanAddr()返回错误，它就会panic。
+// Addr通常用于获取一个结构字段或片状元素的指针，以便调用一个需要指针接收器的方法。
 func (v Value) Addr() Value {
 	if v.flag&flagAddr == 0 {
+		// reflect.Value.Addr是不可寻址的值
 		panic("reflect.Value.Addr of unaddressable value")
 	}
 	// Preserve flagRO instead of using v.flag.ro() so that
 	// v.Addr().Elem() is equivalent to v (#32772)
+	// 保留flagRO，而不是使用v.flag.ro()，这样v.Addr().Elem()就等同于v (#32772)
 	fl := v.flag & flagRO
 	return Value{v.typ.ptrTo(), v.ptr, fl | flag(Ptr)}
 }
@@ -353,12 +358,18 @@ func (v Value) Bool() bool {
 
 // Bytes returns v's underlying value.
 // It panics if v's underlying value is not a slice of bytes.
+// Bytes返回v的基础值。
+// 如果v的底层值不是切片，它就会panic。
 func (v Value) Bytes() []byte {
+	// 如果这个类型不是切片，panic
 	v.mustBe(Slice)
+	// 如果不是 []uint8/[]byte 类型，panic
 	if v.typ.Elem().Kind() != Uint8 {
+		// reflect.Value.Bytes 非字节片
 		panic("reflect.Value.Bytes of non-byte slice")
 	}
 	// Slice is always bigger than a word; assume flagIndir.
+	// 切片总是比一个字大；假设flagIndir。
 	return *(*[]byte)(v.ptr)
 }
 
@@ -1164,6 +1175,8 @@ func (v Value) Cap() int {
 
 // Close closes the channel v.
 // It panics if v's Kind is not Chan.
+// Close关闭channel v。
+// 如果v的类型不是chan，会panic。
 func (v Value) Close() {
 	v.mustBe(Chan)
 	v.mustBeExported()
@@ -1821,17 +1834,23 @@ func (v Value) OverflowUint(x uint64) bool {
 // This prevents inlining Value.Pointer when -d=checkptr is enabled,
 // which ensures cmd/compile can recognize unsafe.Pointer(v.Pointer())
 // and make an exception.
+// 这可以防止在启用-d=checkptr时内联Value.Pointer，这可以确保cmd/compile可以识别unsafe.Pointer(v.Pointer())并产生异常。
 
 // Pointer returns v's value as a uintptr.
 // It returns uintptr instead of unsafe.Pointer so that
 // code using reflect cannot obtain unsafe.Pointers
 // without importing the unsafe package explicitly.
 // It panics if v's Kind is not Chan, Func, Map, Ptr, Slice, or UnsafePointer.
+// Pointer将v的值作为一个uintptr返回。 它返回uintptr而不是unsafe.Pointer，
+// 这样使用reflect的代码就不能在不明确导入unsafe包的情况下获得unsafe.Pointers。
+// 如果v的Kind不是Chan、Func、Map、Ptr、Slice或UnsafePointer，它就会panic。
 //
 // If v's Kind is Func, the returned pointer is an underlying
 // code pointer, but not necessarily enough to identify a
 // single function uniquely. The only guarantee is that the
 // result is zero if and only if v is a nil func Value.
+// 如果v的Kind是Func，返回的指针是一个底层代码指针，但不一定足以唯一地识别一个函数。
+// 唯一的保证是，当且仅当v是一个nil func值时，结果为零。
 //
 // If v's Kind is Slice, the returned pointer is to the first
 // element of the slice. If the slice is nil the returned value
