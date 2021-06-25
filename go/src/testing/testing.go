@@ -681,9 +681,12 @@ var _ TB = (*B)(nil)
 // 其他报告方法，如Log和Error的变体，可以从多个goroutine同时调用。
 type T struct {
 	common
-	isParallel bool
+	isParallel bool // 表示当前测试是否需要并发，如果测试中执行了t.Parallel()，则此值为true
 	isEnvSet   bool
-	context    *testContext // For running tests and subtests.	// 用于运行测试和子测试。
+	/*
+		控制测试的并发调度
+	*/
+	context *testContext // For running tests and subtests.	// 用于运行测试和子测试。
 }
 
 func (c *common) private() {}
@@ -1075,6 +1078,7 @@ func pcToName(pc uintptr) string {
 // other parallel tests. When a test is run multiple times due to use of
 // -test.count or -test.cpu, multiple instances of a single test never run in
 // parallel with each other.
+// 并行信号，该测试将与（且仅与）其他并行测试并行运行。当一个测试由于使用 -test.count 或 -test.cpu 而被多次运行时，一个测试的多个实例永远不会相互平行运行。
 func (t *T) Parallel() {
 	if t.isParallel {
 		panic("testing: t.Parallel called multiple times")
@@ -1293,7 +1297,7 @@ func (t *T) Run(name string, f func(t *T)) bool {
 			signal:  make(chan bool, 1),
 			name:    testName,
 			parent:  &t.common,
-			level:   t.level + 1,
+			level:   t.level + 1, // 子测试层次+1
 			creator: pc[:n],
 			chatty:  t.chatty,
 		},
@@ -1330,22 +1334,34 @@ func (t *T) Deadline() (deadline time.Time, ok bool) {
 // testContext holds all fields that are common to all tests. This includes
 // synchronization primitives to run at most *parallel tests.
 type testContext struct {
-	match    *matcher
+	match    *matcher // 匹配器
 	deadline time.Time
 
-	mu sync.Mutex
+	mu sync.Mutex // 互斥锁，用于控制testContext成员的互斥访问
 
 	// Channel used to signal tests that are ready to be run in parallel.
+	/*
+		用于通知测试可以并发执行的控制管道，测试并发达到最大限制时，需要阻塞等待该管道的通知事件
+	*/
 	startParallel chan bool
 
 	// running is the number of tests currently running in parallel.
 	// This does not include tests that are waiting for subtests to complete.
+	/*
+		当前并发执行的测试个数
+	*/
 	running int
 
 	// numWaiting is the number tests waiting to be run in parallel.
+	/*
+		等待并发执行的测试个数，所有等待执行的测试都阻塞在startParallel管道处
+	*/
 	numWaiting int
 
 	// maxParallel is a copy of the parallel flag.
+	/*
+		最大并发数，默认为系统CPU数，可以通过参数-parallel n指定
+	*/
 	maxParallel int
 }
 
@@ -1358,25 +1374,46 @@ func newTestContext(maxParallel int, m *matcher) *testContext {
 	}
 }
 
+/*
+testContext实现了两个方法用于控制测试并发调度
+1. waitParallel
+2. release
+*/
+
 func (c *testContext) waitParallel() {
 	c.mu.Lock()
+	/*
+		如果当前运行的测试数未达到最大值，直接返回
+	*/
 	if c.running < c.maxParallel {
 		c.running++
 		c.mu.Unlock()
 		return
 	}
+	/*
+		如果当前运行的测试数已达到最大数，需要阻塞等待
+	*/
 	c.numWaiting++
 	c.mu.Unlock()
 	<-c.startParallel
 }
 
+/*
+当并发测试结束后，会通过release()方法释放一个信号，用于启动其他等待并发测试的函数
+*/
 func (c *testContext) release() {
 	c.mu.Lock()
+	/*
+		如果没有函数在等待，直接返回
+	*/
 	if c.numWaiting == 0 {
 		c.running--
 		c.mu.Unlock()
 		return
 	}
+	/*
+		如果有函数在等待，释放一个信号
+	*/
 	c.numWaiting--
 	c.mu.Unlock()
 	c.startParallel <- true // Pick a waiting test to be run.

@@ -97,43 +97,51 @@ type InternalBenchmark struct {
 // 和测试一样，基准日志在执行过程中积累，完成后转储到标准输出。与测试不同的是，
 // 基准日志总是被打印出来，这样就不会隐藏那些可能影响基准结果的输出。
 type B struct {
-	common
+	common                  // 与testing.T共享的testing.common，负责记录日志，状态等
 	importPath       string // import path of the package containing the benchmark	// 包含基准的软件包的导入路径
 	context          *benchContext
-	N                int
+	N                int           // 目标代码执行次数，不需要用户了解具体值，会自动调整
 	previousN        int           // number of iterations in the previous run		// 上一次运行中的迭代次数
 	previousDuration time.Duration // total duration of the previous run
-	benchFunc        func(b *B)
-	benchTime        benchTimeFlag
-	bytes            int64
-	missingBytes     bool // one of the subbenchmarks does not have bytes set.
-	timerOn          bool
+	benchFunc        func(b *B)    // 要进行性能测试的函数
+	benchTime        benchTimeFlag // 性能测试函数最少执行的时间，默认为1s，可以通过参数'-banchtime 10s'指定
+	bytes            int64         // 每次迭代处理的字节数
+	missingBytes     bool          // one of the subbenchmarks does not have bytes set.
+	timerOn          bool          // 是否已开始计时
 	showAllocResult  bool
-	result           BenchmarkResult
-	parallelism      int // RunParallel creates parallelism*GOMAXPROCS goroutines
+	result           BenchmarkResult // 测试结果
+	parallelism      int             // RunParallel creates parallelism*GOMAXPROCS goroutines
 	// The initial states of memStats.Mallocs and memStats.TotalAlloc.
-	startAllocs uint64
-	startBytes  uint64
+	startAllocs uint64 // 计时开始时堆分配的对象总数
+	startBytes  uint64 // 计时开始时堆中分配的字节总数
 	// The net total of this test after being run.
-	netAllocs uint64
-	netBytes  uint64
+	netAllocs uint64 // 计时结束时，堆中增加的对象总数
+	netBytes  uint64 // 计时结束时，堆中增加的字节总数
 	// Extra metrics collected by ReportMetric.
 	extra map[string]float64
 }
 
+/*
+StartTimer(0负责启动计时并初始化内存相关计数，测试执行会自动调用，一般不需要用户启动
+
+不管是否有"-benchmem"参数，内存都会被统计，参数只决定是否要在结果中输出
+*/
 // StartTimer starts timing a test. This function is called automatically
 // before a benchmark starts, but it can also be used to resume timing after
 // a call to StopTimer.
 func (b *B) StartTimer() {
 	if !b.timerOn {
-		runtime.ReadMemStats(&memStats)
-		b.startAllocs = memStats.Mallocs
-		b.startBytes = memStats.TotalAlloc
-		b.start = time.Now()
-		b.timerOn = true
+		runtime.ReadMemStats(&memStats)    // 读取当前堆内存分配信息
+		b.startAllocs = memStats.Mallocs   // 记录当前堆内存分配的对象数
+		b.startBytes = memStats.TotalAlloc // 记录当前堆内存的字节数
+		b.start = time.Now()               // 记录测试启动时间
+		b.timerOn = true                   // 标记计时标志
 	}
 }
 
+/*
+
+ */
 // StopTimer stops timing a test. This can be used to pause the timer
 // while performing complex initialization that you don't
 // want to measure.
@@ -147,6 +155,9 @@ func (b *B) StopTimer() {
 	}
 }
 
+/*
+ResetTime用于重置计时器，相应的也会把其他统计值也重置
+*/
 // ResetTimer zeroes the elapsed benchmark time and memory allocation counters
 // and deletes user-reported metrics.
 // It does not affect whether the timer is running.
@@ -161,20 +172,29 @@ func (b *B) ResetTimer() {
 		}
 	}
 	if b.timerOn {
-		runtime.ReadMemStats(&memStats)
-		b.startAllocs = memStats.Mallocs
-		b.startBytes = memStats.TotalAlloc
-		b.start = time.Now()
+		runtime.ReadMemStats(&memStats)    // 读取当前堆内存分配信息
+		b.startAllocs = memStats.Mallocs   // 记录当前堆内存分配的对象数
+		b.startBytes = memStats.TotalAlloc // 记录当前堆内存分配的字节数
+		b.start = time.Now()               // 记录测试启动时间
 	}
-	b.duration = 0
-	b.netAllocs = 0
-	b.netBytes = 0
+	b.duration = 0  // 清空耗时
+	b.netAllocs = 0 // 清空内存分配对象数
+	b.netBytes = 0  // 清空内存分配字节数
 }
 
+/*
+设置处理字节数
+
+作用：用来设置单词迭代处理的字节数，一旦设置了这个字节数，那么输出报告中将会呈现"xxx MB/s"的信息，
+用来表示待测函数处理字节的性能。
+*/
 // SetBytes records the number of bytes processed in a single operation.
 // If this is called, the benchmark will report ns/op and MB/s.
 func (b *B) SetBytes(n int64) { b.bytes = n }
 
+/*
+报告内存信息，用于设置是否打印内存统计信息，与命令行参数"-benchmem"一致，单本方法只用于单个测试函数
+*/
 // ReportAllocs enables malloc statistics for this benchmark.
 // It is equivalent to setting -test.benchmem, but it only affects the
 // benchmark function that calls ReportAllocs.
@@ -189,14 +209,14 @@ func (b *B) runN(n int) {
 	defer b.runCleanup(normalPanic)
 	// Try to get a comparable environment for each run
 	// by clearing garbage from previous runs.
-	runtime.GC()
+	runtime.GC() // 运行GC
 	b.raceErrors = -race.Errors()
-	b.N = n
-	b.parallelism = 1
-	b.ResetTimer()
-	b.StartTimer()
-	b.benchFunc(b)
-	b.StopTimer()
+	b.N = n           // 指定B.N
+	b.parallelism = 1 // 清空统计数据
+	b.ResetTimer()    // 清空统计数据
+	b.StartTimer()    // 开始计时
+	b.benchFunc(b)    // 执行要测试的函数
+	b.StopTimer()     // 停止计时
 	b.previousN = n
 	b.previousDuration = b.duration
 	b.raceErrors += race.Errors()
@@ -654,7 +674,7 @@ func (b *B) Run(name string, f func(b *B)) bool {
 	}
 	var pc [maxStackLen]uintptr
 	n := runtime.Callers(2, pc[:])
-	sub := &B{
+	sub := &B{ // 新建子测试数据结构
 		common: common{
 			signal:  make(chan bool),
 			name:    benchName,
@@ -691,10 +711,10 @@ func (b *B) Run(name string, f func(b *B)) bool {
 		fmt.Println(benchName)
 	}
 
-	if sub.run1() {
+	if sub.run1() { // 先执行一次子测试，如果子测试不出错且子测试没有子测试的话继续执行sub.run()
 		sub.run()
 	}
-	b.add(sub.result)
+	b.add(sub.result) // 累加统计结果到父测试中
 	return !sub.failed
 }
 
