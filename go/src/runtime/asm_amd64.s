@@ -357,6 +357,10 @@ TEXT runtime·mcall(SB), NOSPLIT, $0-8
 TEXT runtime·systemstack_switch(SB), NOSPLIT, $0-0
 	RET
 
+// systemstack函数的作用是在系统栈中执行只能由g0（或gsignal）执行的调度代码，
+// 和mcall不同的是，在执行完调度代码后会切回到现在正在执行的代码。
+// 主要的流程是先判断当前运行的g是否为g0或者gsignal，如果是则直接运行，不是则先
+// 切换到g0，执行完函数后切换为g返回调用处。
 // func systemstack(fn func())
 TEXT runtime·systemstack(SB), NOSPLIT, $0-8
 	MOVQ	fn+0(FP), DI	// DI = fn
@@ -364,14 +368,14 @@ TEXT runtime·systemstack(SB), NOSPLIT, $0-8
 	MOVQ	g(CX), AX	// AX = g
 	MOVQ	g_m(AX), BX	// BX = m
 
-	CMPQ	AX, m_gsignal(BX)
+	CMPQ	AX, m_gsignal(BX)   // 判断 g == m.gsignal
 	JEQ	noswitch
 
 	MOVQ	m_g0(BX), DX	// DX = g0
-	CMPQ	AX, DX
+	CMPQ	AX, DX      // 判断 g == g0
 	JEQ	noswitch
 
-	CMPQ	AX, m_curg(BX)
+	CMPQ	AX, m_curg(BX)  // 判断 g != m.curg
 	JNE	bad
 
 	// switch stacks

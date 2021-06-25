@@ -155,9 +155,12 @@ const (
 	// heapAddrBits is the number of bits in a heap address. On
 	// amd64, addresses are sign-extended beyond heapAddrBits. On
 	// other arches, they are zero-extended.
+	// heapAddrBits是堆地址中的比特数。在amd64上，地址被符号扩展到heapAddrBits之外。
+	// 在其他heapAddrBits上，它们是零扩展的。
 	//
 	// On most 64-bit platforms, we limit this to 48 bits based on a
 	// combination of hardware and OS limitations.
+	// 在大多数64位平台上，基于硬件和操作系统的限制，我们将其限制在48位。
 	//
 	// amd64 hardware limits addresses to 48 bits, sign-extended
 	// to 64 bits. Addresses where the top 16 bits are not either
@@ -169,9 +172,15 @@ const (
 	// supports this extension and the kernel will never choose an
 	// address above 1<<47 unless mmap is called with a hint
 	// address above 1<<47 (which we never do).
+	// amd64硬件将地址限制在48位，符号扩展到64位。前16位不是全部为0或全部为1的地址是
+	// "非经典 "和无效的。由于这些 "负 "地址，在amd64上，我们在计算进入堆场索引的索引
+	// 之前，将地址偏移1<<47（arenaBaseOffset）。在2017年，amd64硬件增加了对57位
+	// 地址的支持；然而，目前只有Linux支持这个扩展，内核永远不会选择高于1<<47的地址，
+	// 除非用高于1<<47的提示地址调用mmap（我们从不这样做）。
 	//
 	// arm64 hardware (as of ARMv8) limits user addresses to 48
 	// bits, in the range [0, 1<<48).
+	// arm64硬件（从ARMv8开始）将用户地址限制在48位，范围为[0, 1<<48)。
 	//
 	// ppc64, mips64, and s390x support arbitrary 64 bit addresses
 	// in hardware. On Linux, Go leans on stricter OS limits. Based
@@ -214,6 +223,8 @@ const (
 	// 32-bit, however, this is one less than 1<<32 because the
 	// number of bytes in the address space doesn't actually fit
 	// in a uintptr.
+	// maxAlloc是一个分配的最大尺寸。在64位上，理论上可以分配1<<heapAddrBits字节。
+	// 然而在32位上，这比1<<32少一个，因为地址空间的字节数实际上并不适合一个uintptr。
 	maxAlloc = (1 << heapAddrBits) - (1-_64bit)*1
 
 	// The number of bits in a heap address, the size of heap
@@ -844,6 +855,7 @@ retry:
 }
 
 // base address for all 0-byte allocations
+// 所有0字节分配的基础地址
 var zerobase uintptr
 
 // nextFreeFast returns the next free object if one is quickly available.
@@ -908,8 +920,13 @@ func (c *mcache) nextFree(spc spanClass) (v gclinkptr, s *mspan, shouldhelpgc bo
 // Allocate an object of size bytes.
 // Small objects are allocated from the per-P cache's free lists.
 // Large objects (> 32 kB) are allocated straight from the heap.
+// 分配一个大小为字节的对象。
+// 小对象从per-P缓存的空闲列表中分配。
+// 大型对象（> 32 kB）直接从堆中分配。
 func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {
+	// 在写屏障的时候进行分配了
 	if gcphase == _GCmarktermination {
+		// 调用mallocgc时，gcphase == _GCmarktermination
 		throw("mallocgc called with gcphase == _GCmarktermination")
 	}
 

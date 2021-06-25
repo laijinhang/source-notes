@@ -197,11 +197,11 @@ func unpackEface(i interface{}) Value {
 			十进制：(t.kind & 31) & 32
 					f=(t.kind & 31)，定义的type范围为0~26
 					如果 f & 32 不等于0
-					如果 f & 32 等于0，则 f = f | 32
+					如果 t.kind & 32 等于0，则 f = f | 32
 			二进制：
 					f=(t.kind & 11111)
 					如果 f & 100000 不等于0
-					如果 f & 100000 等于0，则 f = f | 10000000
+					如果 t.kind & 100000 等于0，则 f = f | 10000000
 	*/
 	f := flag(t.Kind())
 	if ifaceIndir(t) {
@@ -227,6 +227,7 @@ func (e *ValueError) Error() string {
 
 // methodName returns the name of the calling method,
 // assumed to be two stack frames above.
+// methodName返回调用方法的名称，假定是在两个堆栈帧之上。
 func methodName() string {
 	pc, _, _, _ := runtime.Caller(2)
 	f := runtime.FuncForPC(pc)
@@ -273,8 +274,15 @@ type nonEmptyInterface struct {
 // the very clear v.mustBe(Bool) and have it compile into
 // v.flag.mustBe(Bool), which will only bother to copy the
 // single important word for the receiver.
+// 如果f的种类不是预期的，mustBe会panic。
+// 将这个方法作为标志的方法而不是价值的方法（并将标志嵌入到价值中）
+// 意味着我们可以写出非常清晰的 v.mustBe(Bool) 并让它编译成
+// v.flag.mustBe(Bool)，这将只为接收者复制一个重要的字。
 func (f flag) mustBe(expected Kind) {
 	// TODO(mvdan): use f.kind() again once mid-stack inlining gets better
+	// TODO(mvdan): 一旦堆栈中间的内联变得更好，再使用f.kind()。
+	/*
+	 */
 	if Kind(f&flagKindMask) != expected {
 		panic(&ValueError{methodName(), f.kind()})
 	}
@@ -336,6 +344,8 @@ func (v Value) Addr() Value {
 
 // Bool returns v's underlying value.
 // It panics if v's kind is not Bool.
+// Bool返回v的基础值。
+// 如果v的种类不是Bool，它就会panic。
 func (v Value) Bool() bool {
 	v.mustBe(Bool)
 	return *(*bool)(v.ptr)
@@ -1471,6 +1481,8 @@ func (v Value) IsValid() bool {
 
 // IsZero reports whether v is the zero value for its type.
 // It panics if the argument is invalid.
+// IsZero报告v是否是其类型的零值。
+// 如果参数是无效的，它就会panic。
 func (v Value) IsZero() bool {
 	switch v.kind() {
 	case Bool:
@@ -1505,6 +1517,7 @@ func (v Value) IsZero() bool {
 	default:
 		// This should never happens, but will act as a safeguard for
 		// later, as a default value doesn't makes sense here.
+		// 这不应该发生，但将作为以后的保障，因为默认值在这里是没有意义的。
 		panic(&ValueError{"reflect.Value.IsZero", v.Kind()})
 	}
 }
@@ -2236,12 +2249,22 @@ func (v Value) Slice3(i, j, k int) Value {
 	return Value{typ.common(), unsafe.Pointer(&x), fl}
 }
 
+/*
+1、如果v是无效类型，则返回字符串 <invalid Value>
+2、如果v是string类型，则返回它里面的数据
+3、其他情况返回 <这个变量v的类型 Value>
+*/
 // String returns the string v's underlying value, as a string.
 // String is a special case because of Go's String method convention.
 // Unlike the other getters, it does not panic if v's Kind is not String.
 // Instead, it returns a string of the form "<T value>" where T is v's type.
 // The fmt package treats Values specially. It does not call their String
 // method implicitly but instead prints the concrete values they hold.
+// String返回字符串v的底层值，作为一个字符串。
+// 由于Go的String方法惯例，String是一个特殊的例子。
+// 与其他的获取器不同，如果v的Kind不是String，它不会panic。
+// 相反，它返回一个"<T value>"形式的字符串，其中T是v的类型。
+// fmt包特别对待Value。它不会隐含地调用它们的String方法，而是打印出它们持有的具体数值。
 func (v Value) String() string {
 	switch k := v.kind(); k {
 	case Invalid:
@@ -2251,6 +2274,7 @@ func (v Value) String() string {
 	}
 	// If you call String on a reflect.Value of other type, it's better to
 	// print something than to panic. Useful in debugging.
+	// 如果你在其他类型的reflect.Value上调用String，与其panic，不如打印一些东西。在调试时很有用。
 	return "<" + v.Type().String() + " Value>"
 }
 
