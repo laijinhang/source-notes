@@ -670,6 +670,8 @@ func deferreturn() {
 // Goexit terminates the goroutine that calls it. No other goroutine is affected.
 // Goexit runs all deferred calls before terminating the goroutine. Because Goexit
 // is not a panic, any recover calls in those deferred functions will return nil.
+// Goexit会终止调用它的goroutine。其他goroutine不受影响。
+// Goexit在终止goroutine之前运行所有延迟调用。因为Goexit不是一个恐慌，那些延迟函数中的任何恢复调用都将返回nil。
 //
 // Calling Goexit from the main goroutine terminates that goroutine
 // without func main returning. Since func main has not returned,
@@ -679,26 +681,61 @@ func Goexit() {
 	// Run all deferred functions for the current goroutine.
 	// This code is similar to gopanic, see that implementation
 	// for detailed comments.
+	// 运行当前goroutine的所有递延函数。
+	// 这段代码与gopanic类似，详细注释见该实现。
+	/*
+		获取当前运行的g
+	*/
 	gp := getg()
 
 	// Create a panic object for Goexit, so we can recognize when it might be
 	// bypassed by a recover().
+	// Goexit创建一个panic对象，这样我们就能识别它何时可能被recover()绕过。
+	/*
+		创建一个panic对象
+	*/
 	var p _panic
+	/*
+		设置为退出状态
+	*/
 	p.goexit = true
+	/*
+		指向当前协程的panic链路
+	*/
 	p.link = gp._panic
+	/*
+		把这个panic复制给当前协程
+
+		这几步流程非常类似在链表头部新增一个节点
+	*/
 	gp._panic = (*_panic)(noescape(unsafe.Pointer(&p)))
 
 	addOneOpenDeferFrame(gp, getcallerpc(), unsafe.Pointer(getcallersp()))
+	/*
+		处理当前协程上的defer链路
+	*/
 	for {
+		/*
+			获取当前协程上的defer头节点
+		*/
 		d := gp._defer
+		/*
+			如果没有defer，说明不需要执行defer，则直接退出
+		*/
 		if d == nil {
 			break
 		}
+		/*
+			如果这个defer已经被执行过了
+		*/
 		if d.started {
 			if d._panic != nil {
 				d._panic.aborted = true
 				d._panic = nil
 			}
+			/*
+				d.openDefer???
+			*/
 			if !d.openDefer {
 				d.fn = nil
 				gp._defer = d.link
@@ -706,6 +743,9 @@ func Goexit() {
 				continue
 			}
 		}
+		/*
+			设置这个defer的状态为已执行过
+		*/
 		d.started = true
 		d._panic = (*_panic)(noescape(unsafe.Pointer(&p)))
 		if d.openDefer {
@@ -728,6 +768,7 @@ func Goexit() {
 			if goexperiment.RegabiDefer {
 				// Save the pc/sp in deferCallSave(), so we can "recover" back to this
 				// loop if necessary.
+				// 在reflectcallSave()中保存pc/sp，这样我们可以在必要时 "恢复 "到这个循环。
 				deferCallSave(&p, deferFunc(d))
 			} else {
 				// Save the pc/sp in reflectcallSave(), so we can "recover" back to this
@@ -1038,21 +1079,33 @@ refectcall方法若在执行过程中需要运行 recover 将会调用 gorecover
 */
 
 // The implementation of the predeclared function panic.
+// 预先声明的函数panic的实现。
 func gopanic(e interface{}) {
 	gp := getg()
+	/*
+		在系统堆栈中出现panic
+	*/
 	if gp.m.curg != gp {
 		print("panic: ")
+		/*
+			打印e的内容，里面的实现是判断出对应的类型，然后再强转类型之后打印
+		*/
 		printany(e)
 		print("\n")
 		throw("panic on system stack")
 	}
-
+	/*
+		在malloc过程中出现panic
+	*/
 	if gp.m.mallocing != 0 {
 		print("panic: ")
 		printany(e)
 		print("\n")
 		throw("panic during malloc")
 	}
+	/*
+		during preemptoff过程出现panic
+	*/
 	if gp.m.preemptoff != "" {
 		print("panic: ")
 		printany(e)
@@ -1062,6 +1115,9 @@ func gopanic(e interface{}) {
 		print("\n")
 		throw("panic during preemptoff")
 	}
+	/*
+		持有锁导致的panic
+	*/
 	if gp.m.locks != 0 {
 		print("panic: ")
 		printany(e)
@@ -1299,6 +1355,9 @@ func throw(s string) {
 // runningPanicDefers is non-zero while running deferred functions for panic.
 // runningPanicDefers is incremented and decremented atomically.
 // This is used to try hard to get a panic stack trace out when exiting.
+// runningPanicDefers在运行panic defer函数时为非零。
+// runningPanicDefers是原子性地递增和递减的。
+// 这是用来在退出时努力争取panic堆栈跟踪出来。
 var runningPanicDefers uint32
 
 // panicking is non-zero when crashing the program for an unrecovered panic.

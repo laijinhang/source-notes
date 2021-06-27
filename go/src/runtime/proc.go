@@ -1562,15 +1562,19 @@ func mstart1() {
 }
 
 // mstartm0 implements part of mstart1 that only runs on the m0.
+// mstartm0实现了mstart1的一部分，只在m0上运行。
 //
 // Write barriers are allowed here because we know the GC can't be
 // running yet, so they'll be no-ops.
+// 这里允许写障碍，因为我们知道GC还不能运行，所以它们将是无作用的。
 //
 //go:yeswritebarrierrec
 func mstartm0() {
 	// Create an extra M for callbacks on threads not created by Go.
 	// An extra M is also needed on Windows for callbacks created by
 	// syscall.NewCallback. See issue #6751 for details.
+	// 为非Go创建的线程的回调创建一个额外的M。
+	// 在Windows下，对于由syscall.NewCallback创建的回调，也需要一个额外的M。详见问题#6751。
 	if (iscgo || GOOS == "windows") && !cgoHasExtraM {
 		cgoHasExtraM = true
 		newextram()
@@ -2151,6 +2155,8 @@ var earlycgocallback = []byte("fatal error: cgo callback before cgo call\n")
 // newextram allocates m's and puts them on the extra list.
 // It is called with a working local m, so that it can do things
 // like call schedlock and allocate.
+// newextram分配m并把它们放在额外的列表中。
+// 它被调用时有一个工作的本地m，这样它就可以做一些事情，比如调用schedlock和allocate。
 func newextram() {
 	c := atomic.Xchg(&extraMWaiters, 0)
 	if c > 0 {
@@ -2168,12 +2174,16 @@ func newextram() {
 }
 
 // oneNewExtraM allocates an m and puts it on the extra list.
+// oneNewExtraM分配了一个m，并把它放在额外列表中。
 func oneNewExtraM() {
 	// Create extra goroutine locked to extra m.
 	// The goroutine is the context in which the cgo callback will run.
 	// The sched.pc will never be returned to, but setting it to
 	// goexit makes clear to the traceback routines where
 	// the goroutine stack ends.
+	// 创建额外的goroutine，锁定到额外的m。
+	// 这个goroutine是cgo回调运行的环境。
+	// sched.pc将永远不会被返回，但将其设置为goexit会使回溯程序清楚地知道goroutine栈的结束位置。
 	mp := allocm(nil, nil, -1)
 	gp := malg(4096)
 	gp.sched.pc = abi.FuncPCABI0(goexit) + sys.PCQuantum
@@ -2199,6 +2209,7 @@ func oneNewExtraM() {
 		gp.racectx = racegostart(funcPC(newextram) + sys.PCQuantum)
 	}
 	// put on allg for garbage collector
+	// 放在垃圾收集器的allg上
 	allgadd(gp)
 
 	// gp is now on the allg list, but we don't want it to be
@@ -3901,6 +3912,7 @@ func goyield_m(gp *g) {
 }
 
 // Finishes execution of the current goroutine.
+// 完成当前goroutine的执行。
 func goexit1() {
 	if raceenabled {
 		racegoend()

@@ -1278,6 +1278,8 @@ type _defer struct {
 	// openDefer indicates that this _defer is for a frame with open-coded
 	// defers. We have only one defer record for the entire frame (which may
 	// currently have 0, 1, or more defers active).
+	// openDefer表示这个_defer是为一个有开放编码的defer的帧准备的。
+	// 我们对整个框架只有一条defer记录（目前可能有0个、1个或更多的defer处于激活状态）。
 	openDefer bool
 	// 函数栈指针寄存器，一般指向当前函数栈的栈顶
 	sp uintptr // sp at time of defer
@@ -1321,6 +1323,7 @@ type _defer struct {
 3. link：指向上一个调用的 _panic，这里说明panci也是一个链表
 4. recovered：panic是否已经被处理过，也就是是否被recover接收掉了
 5. aborted：panic是否被终止
+6. goexit：是否退出
 */
 type _panic struct {
 	argp      unsafe.Pointer // pointer to arguments of deferred call run during panic; cannot move - known to liblink

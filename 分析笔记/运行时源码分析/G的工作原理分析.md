@@ -136,7 +136,13 @@ type g struct {
 * _Gscansyscall   = _Gscan + _Gsyscall   // 0x1003
 * _Gscanwaiting   = _Gscan + _Gwaiting   // 0x1004
 * _Gscanpreempted = _Gscan + _Gpreempted // 0x1009
-### 3、种类
+### 3、状态流转
+* 创建g并进行初始化时：_Gidle --- newproc1 ---> _Gdead
+* _Grunning --- goexit0 ---> _Gdead
+* _Gdead --- newproc ---> _Grunnable
+* _Grunning --- Gosched ---> _Grunnable
+
+### 4、种类
 * 主协程，g0：g0是每次启动一个m都会第一个创建的goroutine，g0仅用于负责调度g，g0不指向任何可执行的函数，
   每个m都会有一个自己的g0。在调度或系统调用时会使用g0的栈空间，全局变量的g0是m0的g0。
 * 用于进行gc的协程

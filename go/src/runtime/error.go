@@ -210,6 +210,8 @@ type stringer interface {
 // printany prints an argument passed to panic.
 // If panic is called with a value that has a String or Error method,
 // it has already been converted into a string by preprintpanics.
+// printany打印传递给panic的一个参数。
+// 如果panic被调用的值有一个String或Error方法，那么它已经被preprintpanics转换为一个字符串了。
 func printany(i interface{}) {
 	switch v := i.(type) {
 	case nil:
