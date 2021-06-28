@@ -154,27 +154,32 @@ func growslice(et *_type, old slice, cap int) slice {
 		msanread(old.array, uintptr(old.len*int(et.size)))
 	}
 
+	// 如果新要扩容的容量比原来的容量还要小，这代表要缩容了，那么可以直接报panic了
 	if cap < old.cap {
 		panic(errorString("growslice: cap out of range"))
 	}
 
+	// 如果当前切片的大小为0，还调用了扩容方法，那么就新生成一个新的容量的切片返回
 	if et.size == 0 {
 		// append should not create a slice with nil pointer but non-zero len.
 		// We assume that append doesn't need to preserve old.array in this case.
 		return slice{unsafe.Pointer(&zerobase), old.len, cap}
 	}
 
+	// 这里是扩容的策略
 	newcap := old.cap
 	doublecap := newcap + newcap
 	if cap > doublecap {
 		newcap = cap
 	} else {
+		// 小于1024按2倍扩容
 		if old.cap < 1024 {
 			newcap = doublecap
 		} else {
 			// Check 0 < newcap to detect overflow
 			// and prevent an infinite loop.
 			for 0 < newcap && newcap < cap {
+				// 大于等于1024就按1.25倍扩容
 				newcap += newcap / 4
 			}
 			// Set newcap to the requested cap when
@@ -185,6 +190,7 @@ func growslice(et *_type, old slice, cap int) slice {
 		}
 	}
 
+	// 计算新的切片的容量，长度
 	var overflow bool
 	var lenmem, newlenmem, capmem uintptr
 	// Specialize for common values of et.size.
@@ -238,17 +244,22 @@ func growslice(et *_type, old slice, cap int) slice {
 	//   s = append(s, d, d, d, d)
 	//   print(len(s), "\n")
 	// }
+	// 判断非法的值，保证容量是在增加，并且容量不超过最大容量
 	if overflow || capmem > maxAlloc {
 		panic(errorString("growslice: cap out of range"))
 	}
 
 	var p unsafe.Pointer
 	if et.ptrdata == 0 {
+		// 在老的切片后面继续扩容
 		p = mallocgc(capmem, nil, false)
 		// The append() that calls growslice is going to overwrite from old.len to cap (which will be the new length).
 		// Only clear the part that will not be overwritten.
+		// 先将 P 地址加上新的容量得到新切片容量的地址，然后将新切片容量地址后面的 capmem-newlenmem 个 bytes 这块内存初始化。为之后继续 append() 操作腾出空间。
 		memclrNoHeapPointers(add(p, newlenmem), capmem-newlenmem)
 	} else {
+		// 重新申请新的数组给新切片
+		// 重新申请 capmen 这个大的内存地址，并且初始化为0值
 		// Note: can't use rawmem (which avoids zeroing of memory), because then GC can scan uninitialized memory.
 		p = mallocgc(capmem, et, true)
 		if lenmem > 0 && writeBarrier.enabled {
@@ -257,8 +268,10 @@ func growslice(et *_type, old slice, cap int) slice {
 			bulkBarrierPreWriteSrcOnly(uintptr(p), uintptr(old.array), lenmem-et.size+et.ptrdata)
 		}
 	}
+	// 如果还不能打开写锁，那么只能把 lenmem 大小的 bytes 字节从 old.array 拷贝到 p 的地址处
 	memmove(p, old.array, lenmem)
 
+	// 返回最终新切片，容量更新为最新扩容之后的容量
 	return slice{p, old.len, newcap}
 }
 
