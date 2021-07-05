@@ -3,8 +3,10 @@
 // license that can be found in the LICENSE file.
 
 // Memory allocator.
+// 内存分配器
 //
 // This was originally based on tcmalloc, but has diverged quite a bit.
+// 这最初是基于tcmalloc的，但已经有了很大的分歧。
 // http://goog-perftools.sourceforge.net/doc/tcmalloc.html
 
 // The main allocator works in runs of pages.
@@ -358,6 +360,7 @@ var (
 )
 
 // OS memory management abstraction layer
+// 操作系统的内存管理抽象层
 //
 // Regions of the address space managed by the runtime may be in one of four
 // states at any given time:
@@ -426,27 +429,34 @@ var (
 // marks a region such that it will always fault if accessed. Used only for
 // debugging the runtime.
 
+/*
+malloc初始化
+*/
 func mallocinit() {
+	// 检测class_to_size这个变量是否正确
 	if class_to_size[_TinySizeClass] != _TinySize {
 		throw("bad TinySizeClass")
 	}
 
 	testdefersizes()
-
 	if heapArenaBitmapBytes&(heapArenaBitmapBytes-1) != 0 {
 		// heapBits expects modular arithmetic on bitmap
 		// addresses to work.
+		// heapBits希望在位图地址上进行模块化算术，以便工作。
 		throw("heapArenaBitmapBytes not a power of 2")
 	}
 
 	// Copy class sizes out for statistics table.
+	// 为统计表复制出类的大小。
 	for i := range class_to_size {
 		memstats.by_size[i].size = uint32(class_to_size[i])
 	}
 
 	// Check physPageSize.
+	// 检查physPageSize。
 	if physPageSize == 0 {
 		// The OS init code failed to fetch the physical page size.
+		// 操作系统的初始代码未能获取物理页的大小。
 		throw("failed to get system page size")
 	}
 	if physPageSize > maxPhysPageSize {
@@ -489,6 +499,7 @@ func mallocinit() {
 	}
 
 	// Initialize the heap.
+	// 初始化堆。
 	mheap_.init()
 	mcache0 = allocmcache()
 	lockInit(&gcBitsArenas.lock, lockRankGcBitsArenas)

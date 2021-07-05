@@ -391,10 +391,11 @@ func deferprocStack(d *_defer) {
 const (
 	deferHeaderSize = unsafe.Sizeof(_defer{})
 	minDeferAlloc   = (deferHeaderSize + 15) &^ 15
-	minDeferArgs    = minDeferAlloc - deferHeaderSize
+	minDeferArgs    = minDeferAlloc - deferHeaderSize // 8
 )
 
 // defer size class for arg size sz
+// defer为参数大小sz大小类
 //go:nosplit
 func deferclass(siz uintptr) uintptr {
 	if siz <= minDeferArgs {
@@ -413,7 +414,9 @@ func totaldefersize(siz uintptr) uintptr {
 
 // Ensure that defer arg sizes that map to the same defer size class
 // also map to the same malloc size class.
+// 确保映射到同一defer大小类的defer arg大小也映射到同一malloc大小类。
 func testdefersizes() {
+	// len(p{}.deferpool)值是5
 	var m [len(p{}.deferpool)]int32
 
 	for i := range m {
