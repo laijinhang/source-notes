@@ -5,6 +5,7 @@
 package runtime
 
 // This file contains the implementation of Go's map type.
+// 这个文件包含了Go的map类型的实现。
 //
 // A map is just a hash table. The data is arranged
 // into an array of buckets. Each bucket contains up to
@@ -12,13 +13,18 @@ package runtime
 // used to select a bucket. Each bucket contains a few
 // high-order bits of each hash to distinguish the entries
 // within a single bucket.
+// map实际上是一个hash表。数据被整理好放入一个buckes的数组中，每个bucket包含8个键值对。
+// 哈希的低阶位被用于指向对应的bucket。每个bucket包含每个哈希值的几个高阶位，以区分单个桶内的条目。
 //
 // If more than 8 keys hash to a bucket, we chain on
 // extra buckets.
+// 如果超过8个键散列到一个桶中，我们就在extra的buckets上进行链接。
 //
 // When the hashtable grows, we allocate a new array
 // of buckets twice as big. Buckets are incrementally
 // copied from the old bucket array to the new bucket array.
+// 当hashtable增长时，我们分配一个新的两倍大的buckets数组。
+// Buckets被从旧的Bucket数组增量复制到新的Bucket数组。
 //
 // Map iterators walk through the array of buckets and
 // return the keys in walk order (bucket #, then overflow
@@ -29,6 +35,9 @@ package runtime
 // old table and must check the new table if the bucket
 // they are iterating through has been moved ("evacuated")
 // to the new table.
+// map迭代器在桶的数组中遍历，并按行走顺序返回键（bucket#，然后是溢出链顺序，然后是bucket的索引）。
+// 为了保持迭代语义，我们从不在其桶内移动键（如果我们这样做，键可能被返回0或2次）。
+// 当增长表时，迭代器仍然通过旧表进行迭代，并且必须检查新表，如果他们正在迭代的bucket已经被移动（"疏散"）到新表中。
 
 // Picking loadFactor: too large and we have lots of overflow
 // buckets, too small and we waste a lot of space. I wrote
@@ -62,11 +71,20 @@ import (
 
 const (
 	// Maximum number of key/elem pairs a bucket can hold.
+	// 一个桶可以容纳的最大数量的键/元素对。
+	/*
+		一个桶的桶数bit位
+	*/
 	bucketCntBits = 3
-	bucketCnt     = 1 << bucketCntBits
+	/*
+		一个桶里面能够存放的个数
+	*/
+	bucketCnt = 1 << bucketCntBits // 8
 
 	// Maximum average load of a bucket that triggers growth is 6.5.
 	// Represent as loadFactorNum/loadFactorDen, to allow integer math.
+	// 触发增长的桶的最大平均负荷是6.5。
+	// 表示为loadFactorNum/loadFactorDen，以便进行整数计算。
 	loadFactorNum = 13
 	loadFactorDen = 2
 
@@ -74,12 +92,17 @@ const (
 	// Must fit in a uint8.
 	// Fast versions cannot handle big elems - the cutoff size for
 	// fast versions in cmd/compile/internal/gc/walk.go must be at most this elem.
+	// 保持内联的最大键或元素大小（而不是每个元素的malloc）。
+	// 必须适合于一个uint8。
+	// 快速版本不能处理大的元素--cmd/compile/internal/gc/walk.go中快速版本的截断大小。
+	// cmd/compile/internal/gc/walk.go中的快速版本必须是最多这个元素。
 	maxKeySize  = 128
 	maxElemSize = 128
 
 	// data offset should be the size of the bmap struct, but needs to be
 	// aligned correctly. For amd64p32 this means 64-bit alignment
 	// even though pointers are 32 bit.
+	// 数据偏移量应该是bmap结构的大小，但需要正确对齐。对于amd64p32来说，这意味着64位对齐，尽管指针是32位。
 	dataOffset = unsafe.Offsetof(struct {
 		b bmap
 		v int64
@@ -115,13 +138,27 @@ func isEmpty(x uint8) bool {
 type hmap struct {
 	// Note: the format of the hmap is also encoded in cmd/compile/internal/reflectdata/reflect.go.
 	// Make sure this stays in sync with the compiler's definition.
-	count     int // # live cells == size of map.  Must be first (used by len() builtin)
+	/*
+		当前保存的元素个数
+		也就是len(map变量)取的值
+	*/
+	count int // # live cells == size of map.  Must be first (used by len() builtin)
+	/*
+		标识位
+		iterator     = 1 // there may be an iterator using buckets
+		oldIterator  = 2 // there may be an iterator using oldbuckets
+		hashWriting  = 4 // a goroutine is writing to the map
+		sameSizeGrow = 8 // the current map growth is to a new map of the same size
+	*/
 	flags     uint8
 	B         uint8  // log_2 of # of buckets (can hold up to loadFactor * 2^B items)
 	noverflow uint16 // approximate number of overflow buckets; see incrnoverflow for details
 	hash0     uint32 // hash seed
 
-	buckets    unsafe.Pointer // array of 2^B Buckets. may be nil if count==0.
+	buckets unsafe.Pointer // array of 2^B Buckets. may be nil if count==0.
+	/*
+		用于在扩容时候，指向旧的bucket地址
+	*/
 	oldbuckets unsafe.Pointer // previous bucket array of half the size, non-nil only when growing
 	nevacuate  uintptr        // progress counter for evacuation (buckets less than this have been evacuated)
 
@@ -849,6 +886,7 @@ func mapiterinit(t *maptype, h *hmap, it *hiter) {
 }
 
 func mapiternext(it *hiter) {
+	println(it.key)
 	h := it.h
 	if raceenabled {
 		callerpc := getcallerpc()
