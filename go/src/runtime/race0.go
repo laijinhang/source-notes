@@ -14,6 +14,25 @@ import (
 )
 
 // 是否启用竞态检测器，默认是不启动
+/*
+go的build和run命令支持选项-race。如果启用该选项，发现存在数据竞态就会报警。
+-race在源码中对应的变量就是raceenabled，当启用-race， raceenabled 就是 true。
+
+竞态就是多个协程并发不安全的操作共享变量，比如如下一段代码
+
+func main()  {
+	for i := 0;i < 10;i++ {
+		go func() {
+			fmt.Println(i)
+		}()
+	}
+	time.Sleep(10*time.Second)
+}
+
+go run -race x.go
+
+就会抛出警告。。。
+ */
 const raceenabled = false
 
 // Because raceenabled is false, none of these functions should be called.

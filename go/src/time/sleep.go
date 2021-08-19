@@ -99,6 +99,7 @@ func (t *Timer) Stop() bool {
 // the current time on its channel after at least duration d.
 // NewTimer创建一个新的Timer，它将在至少持续时间d之后在其通道上发送当前时间。
 func NewTimer(d Duration) *Timer {
+	// 创建一个长度为1的缓冲
 	c := make(chan Time, 1)
 	t := &Timer{
 		C: c,
