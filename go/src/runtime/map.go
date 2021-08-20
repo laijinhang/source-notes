@@ -886,7 +886,6 @@ func mapiterinit(t *maptype, h *hmap, it *hiter) {
 }
 
 func mapiternext(it *hiter) {
-	println(it.key)
 	h := it.h
 	if raceenabled {
 		callerpc := getcallerpc()
