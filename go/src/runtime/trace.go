@@ -39,7 +39,7 @@ const (
 	traceEvGoStop            = 16 // goroutine stops (like in select{}) [timestamp, stack]
 	traceEvGoSched           = 17 // goroutine calls Gosched [timestamp, stack]
 	traceEvGoPreempt         = 18 // goroutine is preempted [timestamp, stack]
-	traceEvGoSleep           = 19 // goroutine calls Sleep [timestamp, stack]
+	traceEvGoSleep           = 19 // goroutine calls Sleep [timestamp, stack]												goroutine调用Sleep [timestamp, stack] 。
 	traceEvGoBlock           = 20 // goroutine blocks [timestamp, stack]
 	traceEvGoUnblock         = 21 // goroutine is unblocked [timestamp, goroutine id, seq, stack]
 	traceEvGoBlockSend       = 22 // goroutine blocks on chan send [timestamp, stack]

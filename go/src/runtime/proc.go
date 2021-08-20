@@ -367,26 +367,33 @@ func goschedguarded() {
 
 // Puts the current goroutine into a waiting state and calls unlockf on the
 // system stack.
+// 将当前的goroutine放入等待状态，并在系统堆栈上调用unlockf。
 //
 // If unlockf returns false, the goroutine is resumed.
+// 如果unlockf返回false，则goroutine被恢复。
 //
 // unlockf must not access this G's stack, as it may be moved between
 // the call to gopark and the call to unlockf.
+// unlockf不能访问这个G的堆栈，因为它可能在调用gopark和调用unlockf之间被移动。
 //
 // Note that because unlockf is called after putting the G into a waiting
 // state, the G may have already been readied by the time unlockf is called
 // unless there is external synchronization preventing the G from being
 // readied. If unlockf returns false, it must guarantee that the G cannot be
 // externally readied.
+// 请注意，由于unlockf是在G进入等待状态后调用的，所以在调用unlockf时，G可能已经被准备好了，
+// 除非有外部同步阻止G被准备好。如果unlockf返回false，它必须保证G不能被外部读出。
 //
 // Reason explains why the goroutine has been parked. It is displayed in stack
 // traces and heap dumps. Reasons should be unique and descriptive. Do not
 // re-use reasons, add new ones.
+// Reason解释了goroutine被停放的原因。它将显示在堆栈跟踪和堆转储中。原因应该是唯一的并且是描述性的。不要重复使用原因，要添加新的原因。
 /*
 gopack用于协程的切换，协程切换的原因一般有以下几种情况：
 1. 系统调用
 2. channel读写条件不满足
 3. 抢占式调度时间片结束
+4. 调用sleep触发
 gopack函数做的主要事情分为两点：
 1. 解除当前goroutine与m的绑定关闭，将当前goroutine状态机切换为等待状态；
 2. 调用一次schedule()函数，在局部调度器P发起一轮新的调度。
@@ -429,6 +436,8 @@ func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason w
 		它将当前正在执行的协程状态保存起来，然后在m->g0的堆栈上调用新的函数。在新的函数内会将之前运行的协程放弃，
 		然后调用一次schedule()来挑选新的协程运行（也就是在传入的函数中调用一次schedule()函数进行一次schedule的重新调度，
 		让m去运行其余的goroutine）。
+
+		linux64 -> runtime/asm_amd64.s
 	*/
 	mcall(park_m)
 }

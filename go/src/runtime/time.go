@@ -160,12 +160,16 @@ const (
 )
 
 // maxWhen is the maximum value for timer's when field.
+// maxWhen是定时器的when字段的最大值。
 const maxWhen = 1<<63 - 1
 
 // verifyTimers can be set to true to add debugging checks that the
 // timer heaps are valid.
 const verifyTimers = false
 
+/*
+time.Sleep的实现
+ */
 // Package time APIs.
 // Godoc uses the comments in package time, not these.
 
@@ -174,10 +178,12 @@ const verifyTimers = false
 // timeSleep puts the current goroutine to sleep for at least ns nanoseconds.
 //go:linkname timeSleep time.Sleep
 func timeSleep(ns int64) {
+	// 如果ns小于等于0，则不睡眠
 	if ns <= 0 {
 		return
 	}
 
+	// 获取当前协程
 	gp := getg()
 	t := gp.timer
 	if t == nil {
@@ -186,10 +192,22 @@ func timeSleep(ns int64) {
 	}
 	t.f = goroutineReady
 	t.arg = gp
+	// 下一次唤醒的时间
 	t.nextwhen = nanotime() + ns
+	// 检查是否溢出
 	if t.nextwhen < 0 { // check for overflow.
 		t.nextwhen = maxWhen
 	}
+	/*
+		unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason waitReason, traceEv byte, traceskip int
+		resetForSleep, 							unsafe.Pointer(t), 	waitReasonSleep, 	traceEvGoSleep, 1
+
+		是否切换：如果这个函数返回true，则会切出，如果这个函数返回false，则会被唤醒
+		锁：
+		切换原因：waitReasonSleep，sleep触发的
+		追踪事件：traceEvGoSleep，sleep触发的
+		traceskip
+	 */
 	gopark(resetForSleep, unsafe.Pointer(t), waitReasonSleep, traceEvGoSleep, 1)
 }
 

@@ -33,6 +33,7 @@ type runtimeTimer struct {
 // 它返回未来的时间，以纳秒为单位，时间为d。如果d为负数，则被忽略。
 // 如果由于溢出，返回值将小于0，则返回MaxInt64。
 func when(d Duration) int64 {
+	// 如果d小于等于0，则返回当前纳秒时间
 	if d <= 0 {
 		return runtimeNano()
 	}
