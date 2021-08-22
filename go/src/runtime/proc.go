@@ -402,9 +402,9 @@ func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason w
 	if reason != waitReasonSleep {
 		checkTimeouts() // timeouts may expire while two goroutines keep the scheduler busy
 	}
-	mp := acquirem()
-	gp := mp.curg
-	status := readgstatus(gp)
+	mp := acquirem()	// 获取当前协程的m
+	gp := mp.curg		// 获取当前m上的g
+	status := readgstatus(gp)	// 获取g的状态
 
 	//println("m.id：", mp.id, "，当前协程编号：", mp.curg.goid, "，协程当前状态：", status)
 	//{

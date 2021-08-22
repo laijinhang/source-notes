@@ -181,12 +181,27 @@ func sendTime(c interface{}, seq uintptr) {
 	}
 }
 
+/*
+	定时器的原理：记录要触发的时间，到了触发时间时，往这个chan里面发送触发时间
+
+	返回一个chan类型为chan Time，长度为1的chan，d时间之后这个chan会被写值
+	使用案例：
+
+func main()  {
+	t := time.After(3 *time.Second)
+	fmt.Println("3秒前",time.Now().String())
+	fmt.Println("3秒后", (<-t).String())
+}
+ */
 // After waits for the duration to elapse and then sends the current time
 // on the returned channel.
 // It is equivalent to NewTimer(d).C.
 // The underlying Timer is not recovered by the garbage collector
 // until the timer fires. If efficiency is a concern, use NewTimer
 // instead and call Timer.Stop if the timer is no longer needed.
+// After等待过去后，在返回的通道上发送当前时间。
+// 它等同于NewTimer(d).C。
+// 在定时器启动之前，底层的定时器是不会被垃圾收集器恢复的。如果担心效率问题，可以用NewTimer代替，如果不再需要定时器，就调用Timer.Stop。
 func After(d Duration) <-chan Time {
 	return NewTimer(d).C
 }

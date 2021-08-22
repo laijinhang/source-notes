@@ -118,44 +118,65 @@ type timer struct {
 // Values for the timer status field.
 const (
 	// Timer has no status set yet.
+	// 计时器还没有设置状态。
 	timerNoStatus = iota
 
 	// Waiting for timer to fire.
+	// 等待定时器启动。
 	// The timer is in some P's heap.
+	// 定时器在某个P的堆中。
 	timerWaiting
 
 	// Running the timer function.
+	// 运行定时器功能。
 	// A timer will only have this status briefly.
+	// 定时器只会短暂地拥有这种状态。
 	timerRunning
 
 	// The timer is deleted and should be removed.
+	// 定时器被删除了，应该被删除。
 	// It should not be run, but it is still in some P's heap.
+	// 它不应该被运行，但它仍然在某个P的堆中。
 	timerDeleted
 
 	// The timer is being removed.
+	// 定时器正在被移除。
 	// The timer will only have this status briefly.
+	// 计时器只会短暂地拥有这种状态。
 	timerRemoving
 
 	// The timer has been stopped.
+	// 定时器已经停止。
 	// It is not in any P's heap.
+	// 它不在任何P的堆中。
 	timerRemoved
 
 	// The timer is being modified.
+	// 定时器正在被修改。
 	// The timer will only have this status briefly.
+	// 定时器只会短暂地拥有这个状态。
 	timerModifying
 
 	// The timer has been modified to an earlier time.
+	// 计时器已经被修改到一个较早的时间。
 	// The new when value is in the nextwhen field.
+	// 新的时间值在 nextwhen 字段中。
 	// The timer is in some P's heap, possibly in the wrong place.
+	// 定时器在某个P的堆中，可能在错误的地方。
 	timerModifiedEarlier
 
 	// The timer has been modified to the same or a later time.
+	// 计时器已被修改为相同或更晚的时间。
 	// The new when value is in the nextwhen field.
+	// 新的时间值在 nextwhen 字段中。
 	// The timer is in some P's heap, possibly in the wrong place.
+	// 定时器在某个P的堆中，可能在错误的地方。
 	timerModifiedLater
 
 	// The timer has been modified and is being moved.
+	// 定时器已经被修改，正在被移动。
 	// The timer will only have this status briefly.
+	//定时器只会短暂地拥有这种状态。
 	timerMoving
 )
 
@@ -222,6 +243,7 @@ func resetForSleep(gp *g, ut unsafe.Pointer) bool {
 }
 
 // startTimer adds t to the timer heap.
+// startTimer将t添加到定时器堆中。
 //go:linkname startTimer time.startTimer
 func startTimer(t *timer) {
 	if raceenabled {
@@ -264,6 +286,10 @@ func goroutineReady(arg interface{}, seq uintptr) {
 // This should only be called with a newly created timer.
 // That avoids the risk of changing the when field of a timer in some P's heap,
 // which could cause the heap to become unsorted.
+// addtimer将一个定时器添加到当前P中。
+// 只能用一个新创建的定时器来调用它。
+// 这样可以避免改变某个P的堆中的定时器的when字段的风险。
+// 这可能会导致堆变得没有排序。
 func addtimer(t *timer) {
 	// when must be positive. A negative value will cause runtimer to
 	// overflow during its delta calculation and never expire other runtime
@@ -571,6 +597,8 @@ func resettimer(t *timer, when int64) bool {
 // programs that create and delete timers; leaving them in the heap
 // slows down addtimer. Reports whether no timer problems were found.
 // The caller must have locked the timers for pp.
+// cleantimers 清理定时器队列的头部。这加快了创建和删除定时器的程序的速度；将它们留在堆中会降低addtimer的速度。报告是否没有发现定时器问题。
+// 调用者必须为pp锁定定时器。
 func cleantimers(pp *p) {
 	gp := getg()
 	for {
@@ -1102,6 +1130,9 @@ func timeSleepUntil() (int64, *p) {
 // it will cause the program to crash with a mysterious
 // "panic holding locks" message. Instead, we panic while not
 // holding a lock.
+// 堆维护算法。
+// 这些算法手动检查分片索引错误。
+// 如果程序对定时器使用粗暴的访问，就会发生片状索引错误。我们不想在这里恐慌，因为这将导致程序崩溃，出现神秘的 "恐慌持有锁 "信息。相反，我们在不持有锁的情况下进行恐慌。
 
 func siftupTimer(t []*timer, i int) {
 	if i >= len(t) {
