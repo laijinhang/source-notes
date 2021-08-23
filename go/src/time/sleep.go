@@ -206,9 +206,20 @@ func After(d Duration) <-chan Time {
 	return NewTimer(d).C
 }
 
+/*
+	使用案例：
+	fmt.Println(time.Now())
+	time.AfterFunc(3*time.Second, func() {
+		fmt.Println("3秒后", time.Now())
+	})
+	time.Sleep(5 * time.Second)
+
+	内部原理：时间到了之后触发goFunc，goFunc里面开了一个协程去处理传入的函数f
+ */
 // AfterFunc waits for the duration to elapse and then calls f
 // in its own goroutine. It returns a Timer that can
 // be used to cancel the call using its Stop method.
+// AfterFunc等待时间的流逝，然后在自己的goroutine中调用f。它返回一个定时器，可以用它的停止方法来取消调用。
 func AfterFunc(d Duration, f func()) *Timer {
 	t := &Timer{
 		r: runtimeTimer{
