@@ -223,11 +223,14 @@ func unlockProfiles() {
 // 为了与各种读取pprof数据的工具兼容。
 // 配置文件名称不应包含空格。
 func NewProfile(name string) *Profile {
+	// 上互斥锁，如果为nil，则对其进行初始化
 	lockProfiles()
 	defer unlockProfiles()
+	// 如果为空，panic错误
 	if name == "" {
 		panic("pprof: NewProfile with empty name")
 	}
+	// 如果已经在使用，也panic
 	if profiles.m[name] != nil {
 		panic("pprof: NewProfile name already in use: " + name)
 	}
@@ -824,8 +827,10 @@ func StartCPUProfile(w io.Writer) error {
 	// each client to specify the frequency, we hard code it.
 	const hz = 100
 
+	// 上互斥锁
 	cpu.Lock()
 	defer cpu.Unlock()
+	// 如果没有初始化，则进行初始化
 	if cpu.done == nil {
 		cpu.done = make(chan bool)
 	}
@@ -855,6 +860,7 @@ func profileWriter(w io.Writer) {
 	b := newProfileBuilder(w)
 	var err error
 	for {
+		// 100毫秒处理一次
 		time.Sleep(100 * time.Millisecond)
 		data, tags, eof := readProfile()
 		if e := b.addCPUData(data, tags); e != nil && err == nil {
@@ -876,6 +882,8 @@ func profileWriter(w io.Writer) {
 // StopCPUProfile stops the current CPU profile, if any.
 // StopCPUProfile only returns after all the writes for the
 // profile have completed.
+// StopCPUProfile 停止当前的 CPU 配置文件，如果有的话。
+// StopCPUProfile只在该配置文件的所有写操作完成后返回。
 func StopCPUProfile() {
 	cpu.Lock()
 	defer cpu.Unlock()
