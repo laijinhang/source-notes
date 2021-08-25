@@ -935,6 +935,9 @@ type p struct {
 	// The when field of the first entry on the timer heap.
 	// This is updated using atomic functions.
 	// This is 0 if the timer heap is empty.
+	// 定时器堆中第一个entry的when字段
+	// 这是用原子函数进行更新值的
+	// 如果定时器堆是空的，这个字段就是0
 	timer0When uint64
 
 	// The earliest known nextwhen field of a timer with
@@ -980,14 +983,20 @@ type p struct {
 	// 在不同的 P 上进行访问。
 	timersLock mutex
 
+	/*
+		绑定到这个P上的时间堆
+	 */
 	// Actions to take at some time. This is used to implement the
 	// standard library's time package.
 	// Must hold timersLock to access.
 	// 某段时间需要进行的动作。用于实现 time 包。
+	// 必须持有timersLock才能访问。
 	timers []*timer
 
 	// Number of timers in P's heap.
 	// Modified using atomic instructions.
+	// P的堆中的定时器数量。
+	// 使用原子指令进行修改。
 	numTimers uint32
 
 	// Number of timerModifiedEarlier timers on P's heap.
@@ -1000,6 +1009,8 @@ type p struct {
 
 	// Number of timerDeleted timers in P's heap.
 	// Modified using atomic instructions.
+	// P的堆中TimerDeleted定时器的数量。
+	// 使用原子指令进行修改。
 	deletedTimers uint32
 
 	// Race context used while executing timer functions.
