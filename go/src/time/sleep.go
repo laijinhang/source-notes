@@ -15,12 +15,30 @@ func Sleep(d Duration)
 // 在包runtime中实现的定时器的接口。
 // 必须与./runtime/time.go:/^type timer同步。
 type runtimeTimer struct {
+	/*
+		该定时器所绑定的p
+	 */
 	pp       uintptr
+	/*
+		定时器触发时间
+	 */
 	when     int64
+	/*
+		记录触发间隔
+	 */
 	period   int64
+	/*
+		定时器触发的时候，要执行的函数
+	 */
 	f        func(interface{}, uintptr) // NOTE: must not be closure	// 注意：不得关闭
+	/*
+		传入f中的第一个参数，分析源码，一般是chan Time
+	 */
 	arg      interface{}
 	seq      uintptr
+	/*
+		下一次触发的时间
+	 */
 	nextwhen int64
 	status   uint32
 }

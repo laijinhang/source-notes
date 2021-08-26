@@ -3423,12 +3423,16 @@ func checkIdleGCNoP() (*p, *g) {
 // wakeNetPoller wakes up the thread sleeping in the network poller if it isn't
 // going to wake up before the when argument; or it wakes an idle P to service
 // timers and the network poller if there isn't one already.
+// wakeNetPoller 唤醒沉睡在网络轮询器中的线程，如果它在when参数之前不会被唤醒的话；
+// 或者唤醒一个空闲的P来服务于 定时器和网络投票器（如果还没有的话）。
 func wakeNetPoller(when int64) {
 	if atomic.Load64(&sched.lastpoll) == 0 {
 		// In findrunnable we ensure that when polling the pollUntil
 		// field is either zero or the time to which the current
 		// poll is expected to run. This can have a spurious wakeup
 		// but should never miss a wakeup.
+		// 在findrunnable中，我们确保在轮询时，pollUntil字段要么为零，
+		// 要么为当前轮询预期运行的时间。这可能会有一个虚假的唤醒，但不应该错过一个唤醒。
 		pollerPollUntil := int64(atomic.Load64(&sched.pollUntil))
 		if pollerPollUntil == 0 || pollerPollUntil > when {
 			netpollBreak()
@@ -3436,6 +3440,7 @@ func wakeNetPoller(when int64) {
 	} else {
 		// There are no threads in the network poller, try to get
 		// one there so it can handle new timers.
+		// 网络轮询器中没有线程，试着在那里弄一个，这样它就可以处理新的定时器。
 		if GOOS != "plan9" { // Temporary workaround - see issue #42303.
 			wakep()
 		}
